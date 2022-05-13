@@ -4,12 +4,14 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { useSpring, useTransition, config, animated } from '@react-spring/three';
 import { useDrag } from '@use-gesture/react';
 
+// Shapes: Pyramid, Cone, Prism, Cylinder, Sphere
+
 const { degToRad } = ThreeMath
 
-const Pyramid = ({ geometryArgs = [2, 2, 4, 1], rotation, ...props }) => {
+const Pyramid = ({ radius, height, radialSegments, rotation, ...props }) => {
   const mesh = useRef(null)
 
-  useFrame((state, delta) => (mesh.current.rotation.y += 0.01));
+  useFrame(() => (mesh.current.rotation.y += 0.01));
 
   return (
     <animated.mesh
@@ -18,8 +20,64 @@ const Pyramid = ({ geometryArgs = [2, 2, 4, 1], rotation, ...props }) => {
       scale={1}
       rotation={rotation.to((x, y, z) => [degToRad(x), degToRad(y), degToRad(z)])}
     >
-      <coneGeometry args={geometryArgs} />
-      <meshStandardMaterial color="orange" />
+      <coneGeometry args={[radius, height, radialSegments]} />
+      <meshNormalMaterial/>
+    </animated.mesh>
+  );
+};
+
+const Cone = ({ radius, height, rotation, ...props }) => (
+  <Pyramid
+    {...props}
+    radius={radius}
+    height={height}
+    radialSegments={64}
+    rotation={rotation}
+  />
+);
+
+const Prism = ({ radius, height, radialSegments, rotation, ...props }) => {
+  const mesh = useRef(null)
+
+  useFrame(() => (mesh.current.rotation.y += 0.01));
+
+  return (
+    <animated.mesh
+      {...props}
+      ref={mesh}
+      scale={1}
+      rotation={rotation.to((x, y, z) => [degToRad(x), degToRad(y), degToRad(z)])}
+    >
+      <cylinderGeometry args={[radius, radius, height, radialSegments]} />
+      <meshNormalMaterial/>
+    </animated.mesh>
+  );
+};
+
+const Cylinder = ({ radius, height, rotation, ...props }) => (
+  <Prism
+    {...props}
+    radius={radius}
+    height={height}
+    radialSegments={64}
+    rotation={rotation}
+  />
+);
+
+const Sphere = ({ radius, rotation, ...props }) => {
+  const mesh = useRef(null)
+
+  useFrame(() => (mesh.current.rotation.y += 0.01));
+
+  return (
+    <animated.mesh
+      {...props}
+      ref={mesh}
+      scale={1}
+      rotation={rotation.to((x, y, z) => [degToRad(x), degToRad(y), degToRad(z)])}
+    >
+      <sphereGeometry args={[radius, 64, 32]} />
+      <meshNormalMaterial/>
     </animated.mesh>
   );
 };
@@ -48,7 +106,7 @@ const App = () => {
       <Canvas style={{ backgroundColor: '#eeeeee', height: '50vh', }}>
         <ambientLight color="#888888" />
         <pointLight position={[10, 20, 0]} />
-        <Pyramid rotation={rotation} />
+        <Pyramid radius={2} height={2} radialSegments={4} rotation={rotation} />
       </Canvas>
     </div>
   );
