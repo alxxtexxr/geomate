@@ -1,6 +1,4 @@
-import React from 'react';
-
-const App = () => {
+const Home = () => {
   const menu = [
     {
       title: 'Bola',
@@ -64,4 +62,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Home;
