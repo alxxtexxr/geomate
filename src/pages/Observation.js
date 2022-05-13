@@ -100,7 +100,7 @@ const Observation = () => {
   });
 
   return (
-    <div className="h-screen">
+    <main className="h-screen">
       <div {...bind()} className="h-1/2" style={{ touchAction: 'none' }}>
         <Canvas>
           <ambientLight color="#888888" />
@@ -132,7 +132,7 @@ const Observation = () => {
           <button class="btn btn-primary w-full">SELANJUTNYA</button>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 
