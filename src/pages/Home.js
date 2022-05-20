@@ -37,7 +37,7 @@ const Home = () => {
   return (
     <main className="bg-base-200 min-h-screen">
       {/* Header */}
-      <header className="flex flex-col justify-center text-center bg-primary-content pt-8 pb-16">
+      <header className="flex flex-col justify-center text-center bg-primary-content pt-8 pb-14">
         <div className="mb-4">
           <div className="avatar">
             <div className="w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
