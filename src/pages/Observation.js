@@ -1,84 +1,12 @@
-import React, { useRef } from 'react'
-import { Math as ThreeMath } from 'three'
-import { Canvas, useFrame } from '@react-three/fiber';
-import { useSpring, animated } from '@react-spring/three';
+import { useEffect, useState } from 'react';
+import { Canvas } from '@react-three/fiber';
+import { useSpring } from '@react-spring/three';
 import { useDrag } from '@use-gesture/react';
+import { IoCubeOutline } from 'react-icons/io5';
+import cx from 'classnames';
 
-const { degToRad } = ThreeMath
-
-const Pyramid = ({ radius, height, radialSegments, rotation, ...props }) => {
-  const mesh = useRef(null)
-
-  useFrame(() => (mesh.current.rotation.y += 0.01));
-
-  return (
-    <animated.mesh
-      {...props}
-      ref={mesh}
-      scale={1}
-      rotation={rotation.to((x, y, z) => [degToRad(x), degToRad(y), degToRad(z)])}
-    >
-      <coneGeometry args={[radius, height, radialSegments]} />
-      <meshNormalMaterial />
-    </animated.mesh>
-  );
-};
-
-const Cone = ({ radius, height, rotation, ...props }) => (
-  <Pyramid
-    {...props}
-    radius={radius}
-    height={height}
-    radialSegments={64}
-    rotation={rotation}
-  />
-);
-
-const Prism = ({ radius, height, radialSegments, rotation, ...props }) => {
-  const mesh = useRef(null)
-
-  useFrame(() => (mesh.current.rotation.y += 0.01));
-
-  return (
-    <animated.mesh
-      {...props}
-      ref={mesh}
-      scale={1}
-      rotation={rotation.to((x, y, z) => [degToRad(x), degToRad(y), degToRad(z)])}
-    >
-      <cylinderGeometry args={[radius, radius, height, radialSegments]} />
-      <meshNormalMaterial />
-    </animated.mesh>
-  );
-};
-
-const Cylinder = ({ radius, height, rotation, ...props }) => (
-  <Prism
-    {...props}
-    radius={radius}
-    height={height}
-    radialSegments={64}
-    rotation={rotation}
-  />
-);
-
-const Sphere = ({ radius, rotation, ...props }) => {
-  const mesh = useRef(null)
-
-  useFrame(() => (mesh.current.rotation.y += 0.01));
-
-  return (
-    <animated.mesh
-      {...props}
-      ref={mesh}
-      scale={1}
-      rotation={rotation.to((x, y, z) => [degToRad(x), degToRad(y), degToRad(z)])}
-    >
-      <sphereGeometry args={[radius, 64, 32]} />
-      <meshNormalMaterial />
-    </animated.mesh>
-  );
-};
+import Shape from '../components/Shape';
+import Swap from '../components/Swap';
 
 const Observation = () => {
   const [{ rotation }, setRotation] = useSpring(() => ({
@@ -99,39 +27,289 @@ const Observation = () => {
     return memo;
   });
 
+  const [shape, setShape] = useState({
+    code: 'cone',
+    title: 'Kerucut',
+    description: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Et autem omnis placeat a nihil exercitationem voluptate quod aut officia inventore iure, doloribus expedita tenetur ullam est nam similique. Debitis, iste.',
+    v_formula: '(1/3)*PI*r^2*t',
+    lp_formula: 'PI*r*(r+s)',
+    n_vertices: 1,
+    n_edges: 1,
+    n_faces: 2,
+  });
+  const [form, setForm] = useState({
+    n_vertices: 1,
+    n_edges: 1,
+    n_faces: 2,
+    PI: 3.14,
+    r: 20,
+    t: 20,
+    s: 0,
+    la: 0,
+    lst: 0,
+    ka: 0,
+    v: 0,
+    lp: 0,
+  });
+  const [activeTab, setActiveTab] = useState(0);
+  const [wireframe, setWireframe] = useState(true);
+
+  // Functions
+  const formatFormula = (formula) => formula
+    .replaceAll('+', ' + ')
+    .replaceAll('-', ' - ')
+    .replaceAll('*', ' × ')
+    .replaceAll('/', ' / ')
+    .replaceAll('^2', '²')
+    .replaceAll('PI', 'π')
+    ;
+
+  const assignValuesToFormula = (formula) => {
+    let assignedValuesFormula = formula.replaceAll('π', 'PI');
+
+    Object.keys(form).map((formKey) => {
+      assignedValuesFormula = assignedValuesFormula.replaceAll(formKey, form[formKey]);
+    })
+
+    return assignedValuesFormula;
+  };
+
+
+  const getS = (r, t) => Math.sqrt(Math.pow(r, 2) + Math.pow(t, 2)).toFixed(2)
+
+  const handleOnChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: +e.target.value,
+      ...(e.target.name === 'r' ? { s: getS(e.target.value, form.t) } : {}),
+      ...(e.target.name === 't' ? { s: getS(form.r, e.target.value) } : {}),
+    });
+  };
+
+  // Constants
+  const SIZE_VARS = [
+    {
+      symbol: 'r',
+      title: 'Radius',
+    },
+    {
+      symbol: 't',
+      title: 'Tinggi',
+    },
+    {
+      symbol: 's',
+      title: 'Garis Pelukis',
+    },
+    {
+      symbol: 'LA',
+      title: 'Luas Alas',
+    },
+    {
+      symbol: 'LST',
+      title: 'Luas Sisi Tegak',
+    },
+    {
+      symbol: 'KA',
+      title: 'Keliling Alas',
+    },
+    {
+      symbol: 'V',
+      title: 'Volume',
+    },
+    {
+      symbol: 'LP',
+      title: 'Luas Permukaan'
+    },
+  ];
+  const TABS = [
+    {
+      title: 'Informasi',
+      content: (
+        <div className="px-4">
+
+        </div>
+      ),
+    },
+    {
+      title: 'Sifat',
+      content: (
+        <div className="px-4">
+          {/* N. of Vertices */}
+          <div className="flex flex-row w-full mb-4">
+            <label className="label w-1/3">
+              <span className="label-text">Jumlah Sudut</span>
+            </label>
+            <input
+              type="text"
+              placeholder="0"
+              className="input input-bordered w-2/3"
+              name="n_vertices"
+              onChange={handleOnChange}
+              value={form.n_vertices}
+            />
+          </div>
+
+          {/* N. of Edges */}
+          <div className="flex flex-row w-full mb-4">
+            <label className="label w-1/3">
+              <span className="label-text">Jumlah Rusuk</span>
+            </label>
+            <input
+              type="text"
+              placeholder="0"
+              className="input input-bordered w-2/3"
+              name="n_edges"
+              onChange={handleOnChange}
+              value={form.n_edges}
+            />
+          </div>
+
+          {/* N. of Faces */}
+          <div className="flex flex-row w-full mb-4">
+            <label className="label w-1/3">
+              <span className="label-text">Jumlah Sisi</span>
+            </label>
+            <input
+              type="text"
+              placeholder="0"
+              className="input input-bordered w-2/3"
+              name="n_faces"
+              onChange={handleOnChange}
+              value={form.n_faces}
+            />
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: 'Ukuran',
+      content: (
+        <div className="px-4">
+          {SIZE_VARS.map(({ symbol, title }, i) => {
+            if (symbol === 'V' || symbol === 'LP') {
+              return (
+                <div className="flex flex-row w-full mb-4" key={i}>
+                  <label className="label items-start w-1/3">
+                    <span className="label-text">{title} ({symbol})</span>
+                  </label>
+                  <div className="w-2/3">
+                    <input
+                      type="text"
+                      placeholder="0"
+                      className="input input-bordered w-full mb-4"
+                      disabled
+                      value={formatFormula(shape[symbol.toLowerCase() + '_formula'])}
+                    />
+                    <input
+                      type="text"
+                      placeholder="0"
+                      className="input input-bordered w-full mb-4"
+                      disabled
+                      value={assignValuesToFormula(formatFormula(shape[symbol.toLowerCase() + '_formula']))}
+                    />
+                    <input
+                      type="text"
+                      placeholder="0"
+                      className="input input-bordered w-full"
+                      name="v"
+                      onChange={handleOnChange}
+                      value={form.v}
+                    />
+                  </div>
+                </div>
+              );
+            } else if ((shape.v_formula + shape.lp_formula).includes(symbol)) {
+              return (
+                <div className="flex flex-row w-full mb-4" key={i}>
+                  <label className="label items-start w-1/3">
+                    <span className="label-text">{title} ({symbol})</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="0"
+                    className="input input-bordered w-2/3"
+
+                    value={form[symbol.toLowerCase()]}
+                    {...(symbol === 's' ? {
+                      disabled: true
+                    } : {
+                      name: symbol.toLowerCase(),
+                      onChange: handleOnChange
+                    })}
+                  />
+                </div>
+              );
+            }
+          })}
+        </div>
+      ),
+    },
+  ];
+
+  // Effects
+  useEffect(() => {
+    setForm({
+      ...form,
+      s: getS(form.r, form.t),
+    })
+  }, [])
+
   return (
-    <main className="h-screen">
-      <div {...bind()} className="h-1/2" style={{ touchAction: 'none' }}>
+    <main className="min-h-screen">
+
+      <section {...bind()} className="relative h-80" style={{ touchAction: 'none' }}>
         <Canvas>
           <ambientLight color="#888888" />
           <pointLight position={[10, 20, 0]} />
-          <Cylinder radius={2} height={2} radialSegments={4} rotation={rotation} />
+          <Shape.Cone
+            radius={form.r / 10}
+            height={form.t / 10}
+            rotation={rotation}
+            wireframe={wireframe}
+          />
         </Canvas>
-      </div>
-      <div className="flex flex-col h-1/2">
-        <div class="tabs">
-          <a class="tab tab-bordered w-1/3 h-12">Informasi</a>
-          <a class="tab tab-bordered w-1/3 h-12">Sifat</a>
-          <a class="tab tab-bordered tab-active w-1/3 h-12">Ukuran</a>
+
+        <div className="absolute bottom-0 right-0 grid grid-cols-1 gap-2 p-4">
+          <Swap
+            isActive={wireframe}
+            onClick={() => setWireframe(!wireframe)}
+          >
+            <IoCubeOutline className="text-2xl" />
+          </Swap>
+          <Swap>AR</Swap>
         </div>
-        <div className="flex flex-grow flex-col justify-between p-4">
-          <div>
-            <div class="flex flex-row w-full mb-4">
-              <label class="label w-1/3">
-                <span class="label-text">Radius</span>
-              </label>
-              <input type="text" placeholder="0" class="input input-bordered w-2/3" />
-            </div>
-            <div class="flex flex-row w-full mb-4">
-              <label class="label w-1/3">
-                <span class="label-text">Tinggi</span>
-              </label>
-              <input type="text" placeholder="0" class="input input-bordered w-2/3" />
-            </div>
-          </div>
-          <button class="btn btn-primary w-full">SELANJUTNYA</button>
+      </section>
+
+      <section className="flex flex-col h-2/3 pb-20">
+        <div className="tabs mb-4 overflow-hidden">
+          {TABS.map(({ title }, i) => (
+            <a
+              className={cx('tab tab-lifted w-1/3', {
+                'tab-active': i === activeTab,
+              })}
+              onClick={() => setActiveTab(i)}
+              key={i}
+            >
+              {title}
+            </a>
+          ))}
         </div>
-      </div>
+
+        {TABS[activeTab].content}
+
+        <div className="fixed left-0 bottom-0 bg-white w-screen p-4 border-t">
+          <button
+            className="btn btn-primary w-full"
+            onClick={() => {
+              if (activeTab < TABS.length) {
+                setActiveTab(activeTab + 1);
+              }
+              // else
+            }}>
+            SELANJUTNYA
+          </button>
+        </div>
+      </section>
     </main>
   );
 };

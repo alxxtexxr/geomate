@@ -2,13 +2,13 @@ import { Link } from "react-router-dom";
 import { IoArrowBackOutline } from 'react-icons/io5';
 
 const Navbar = ({ backLinkTo }) => (
-    <div className="p-2">
+    <nav className="p-2">
         <Link to={backLinkTo}>
             <button className="btn btn-circle btn-ghost">
                 <IoArrowBackOutline className="text-2xl" />
             </button>
         </Link>
-    </div>
+    </nav>
 );
 
 export default Navbar;
