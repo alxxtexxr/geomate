@@ -1,7 +1,7 @@
 import React from 'react';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import Sheet from 'react-modal-sheet';
-import { IoCamera, IoCheckmarkSharp } from 'react-icons/io5';
+import { HiCamera, HiCheck } from 'react-icons/hi';
 
 const Classification = () => {
     const [isOpen, setOpen] = React.useState(false);
@@ -9,8 +9,8 @@ const Classification = () => {
     return (
         <main className="relative bg-neutral h-screen">
             <section className="fixed bottom-0 w-screen text-center p-8">
-                <button className="btn btn-lg btn-primary btn-circle" onClick={() => setOpen(true)}>
-                    <IoCamera className="text-2xl" />
+                <button className="bg-base-100 hover:bg-base-200 text-primary border-white btn btn-lg btn-circle" onClick={() => setOpen(true)}>
+                    <HiCamera className="text-3xl" />
                 </button>
 
                 <Sheet
@@ -21,7 +21,7 @@ const Classification = () => {
                     <Sheet.Container>
                         <Sheet.Header>
                             <div className="absolute top-0 left-1/2 transform -translate-y-1/2 -translate-x-1/2 w-16 h-16 flex justify-center items-center bg-white rounded-full shadow">
-                                <IoCheckmarkSharp className="text-primary text-3xl" />
+                                <HiCheck className="text-primary text-3xl" />
                             </div>
                         </Sheet.Header>
                         <Sheet.Content>

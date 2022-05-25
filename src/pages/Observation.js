@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { useSpring } from '@react-spring/three';
 import { useDrag } from '@use-gesture/react';
-import { IoCubeOutline } from 'react-icons/io5';
+import { HiOutlineCube } from 'react-icons/hi';
 import cx from 'classnames';
 
 import Shape from '../components/Shape';
@@ -38,9 +38,9 @@ const Observation = () => {
     n_faces: 2,
   });
   const [form, setForm] = useState({
-    n_vertices: 1,
-    n_edges: 1,
-    n_faces: 2,
+    n_vertices: 0,
+    n_edges: 0,
+    n_faces: 0,
     PI: 3.14,
     r: 20,
     t: 20,
@@ -52,7 +52,7 @@ const Observation = () => {
     lp: 0,
   });
   const [activeTab, setActiveTab] = useState(0);
-  const [wireframe, setWireframe] = useState(true);
+  const [wireframe, setWireframe] = useState(false);
 
   // Functions
   const formatFormula = (formula) => formula
@@ -125,24 +125,37 @@ const Observation = () => {
     {
       title: 'Informasi',
       content: (
-        <div className="px-4">
+        <>
+          <h1 className="text-lg font-bold mb-3">Kerucut</h1>
 
-        </div>
+          <p className="text-sm mb-4">
+            Dalam geometri, kerucut adalah sebuah limas istimewa yang beralas lingkaran. Kerucut memiliki 2 sisi, 1 rusuk, dan 1 titik sudut.
+          </p>
+
+          <ul className="text-sm">
+            <li className="flex justify-between py-4 border-t">
+              <strong>Rumus Volume (V)</strong> <span>{formatFormula(shape.v_formula)}</span>
+            </li>
+            <li className="flex justify-between py-4 border-t">
+              <strong>Rumus Luas Permukan (LP)</strong> <span>{formatFormula(shape.lp_formula)}</span>
+            </li>
+          </ul>
+        </>
       ),
     },
     {
       title: 'Sifat',
       content: (
-        <div className="px-4">
+        <>
           {/* N. of Vertices */}
           <div className="flex flex-row w-full mb-4">
-            <label className="label w-1/3">
+            <label className="label items-start w-5/12 pr-4" style={{ paddingTop: 12 }}>
               <span className="label-text">Jumlah Sudut</span>
             </label>
             <input
               type="text"
               placeholder="0"
-              className="input input-bordered w-2/3"
+              className="input input-bordered w-7/12"
               name="n_vertices"
               onChange={handleOnChange}
               value={form.n_vertices}
@@ -151,13 +164,13 @@ const Observation = () => {
 
           {/* N. of Edges */}
           <div className="flex flex-row w-full mb-4">
-            <label className="label w-1/3">
+            <label className="label items-start w-5/12 pr-4" style={{ paddingTop: 12 }}>
               <span className="label-text">Jumlah Rusuk</span>
             </label>
             <input
               type="text"
               placeholder="0"
-              className="input input-bordered w-2/3"
+              className="input input-bordered w-7/12"
               name="n_edges"
               onChange={handleOnChange}
               value={form.n_edges}
@@ -166,33 +179,33 @@ const Observation = () => {
 
           {/* N. of Faces */}
           <div className="flex flex-row w-full mb-4">
-            <label className="label w-1/3">
+            <label className="label items-start w-5/12 pr-4" style={{ paddingTop: 12 }}>
               <span className="label-text">Jumlah Sisi</span>
             </label>
             <input
               type="text"
               placeholder="0"
-              className="input input-bordered w-2/3"
+              className="input input-bordered w-7/12"
               name="n_faces"
               onChange={handleOnChange}
               value={form.n_faces}
             />
           </div>
-        </div>
+        </>
       ),
     },
     {
       title: 'Ukuran',
       content: (
-        <div className="px-4">
+        <>
           {SIZE_VARS.map(({ symbol, title }, i) => {
             if (symbol === 'V' || symbol === 'LP') {
               return (
                 <div className="flex flex-row w-full mb-4" key={i}>
-                  <label className="label items-start w-1/3">
+                  <label className="label items-start w-5/12 pr-4" style={{ paddingTop: 14 }}>
                     <span className="label-text">{title} ({symbol})</span>
                   </label>
-                  <div className="w-2/3">
+                  <div className="w-7/12">
                     <input
                       type="text"
                       placeholder="0"
@@ -221,13 +234,13 @@ const Observation = () => {
             } else if ((shape.v_formula + shape.lp_formula).includes(symbol)) {
               return (
                 <div className="flex flex-row w-full mb-4" key={i}>
-                  <label className="label items-start w-1/3">
+                  <label className="label items-start w-5/12 pr-4" style={{ paddingTop: 14 }}>
                     <span className="label-text">{title} ({symbol})</span>
                   </label>
                   <input
                     type="text"
                     placeholder="0"
-                    className="input input-bordered w-2/3"
+                    className="input input-bordered w-7/12"
 
                     value={form[symbol.toLowerCase()]}
                     {...(symbol === 's' ? {
@@ -241,7 +254,7 @@ const Observation = () => {
               );
             }
           })}
-        </div>
+        </>
       ),
     },
   ];
@@ -255,9 +268,9 @@ const Observation = () => {
   }, [])
 
   return (
-    <main className="min-h-screen">
+    <main className="h-screen bg-neutral">
 
-      <section {...bind()} className="relative h-80" style={{ touchAction: 'none' }}>
+      <section {...bind()} className="sticky top-0 z-0 h-80" style={{ touchAction: 'none' }}>
         <Canvas>
           <ambientLight color="#888888" />
           <pointLight position={[10, 20, 0]} />
@@ -274,18 +287,18 @@ const Observation = () => {
             isActive={wireframe}
             onClick={() => setWireframe(!wireframe)}
           >
-            <IoCubeOutline className="text-2xl" />
+            <HiOutlineCube className="text-2xl" />
           </Swap>
           <Swap>AR</Swap>
         </div>
       </section>
 
-      <section className="flex flex-col h-2/3 pb-20">
-        <div className="tabs mb-4 overflow-hidden">
+      <section className="relative z-10 flex flex-col flex-grow bg-white min-h-screen px-4 pt-2 pb-20 rounded-tl-xl rounded-tr-xl">
+        <div className="tabs mb-4">
           {TABS.map(({ title }, i) => (
             <a
-              className={cx('tab tab-lifted w-1/3', {
-                'tab-active': i === activeTab,
+              className={cx('tab tab-bordered w-1/3 h-auto py-2 uppercase font-bold', {
+                'text-primary border-primary': i === activeTab,
               })}
               onClick={() => setActiveTab(i)}
               key={i}
@@ -297,7 +310,7 @@ const Observation = () => {
 
         {TABS[activeTab].content}
 
-        <div className="fixed left-0 bottom-0 bg-white w-screen p-4 border-t">
+        <div className="fixed left-0 bottom-0 bg-white bg-opacity-60 w-screen p-4">
           <button
             className="btn btn-primary w-full"
             onClick={() => {

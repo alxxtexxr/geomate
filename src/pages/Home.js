@@ -45,7 +45,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <h1 className="font-bold leading-none">Halo, Anggi</h1>
+        <h1 className="font-bold leading-none">Halo, John</h1>
         <p className="text-sm">Mau belajar apa hari ini?</p>
       </header>
 
