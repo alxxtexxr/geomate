@@ -5,19 +5,18 @@ import { animated } from '@react-spring/three';
 
 const { degToRad } = ThreeMath
 
-const Prism = ({ radius, height, radialSegments, rotation, wireframe, ...props }) => {
+const Prism = ({ r, t, radialSegments, rotation, wireframe }) => {
     const mesh = useRef(null)
 
     useFrame(() => (mesh.current.rotation.y += 0.01));
 
     return (
         <animated.mesh
-            {...props}
             ref={mesh}
             scale={1}
             rotation={rotation.to((x, y, z) => [degToRad(x), degToRad(y), degToRad(z)])}
         >
-            <cylinderGeometry args={[radius, radius, height, radialSegments]} />
+            <cylinderGeometry args={[r, r, t, radialSegments]} />
             <meshNormalMaterial wireframe={wireframe} />
         </animated.mesh>
     );

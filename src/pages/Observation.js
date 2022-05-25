@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { Canvas } from '@react-three/fiber';
 import { useSpring } from '@react-spring/three';
 import { useDrag } from '@use-gesture/react';
@@ -8,7 +9,10 @@ import cx from 'classnames';
 import Shape from '../components/Shape';
 import Swap from '../components/Swap';
 
+import { SHAPES } from '../Constants';
+
 const Observation = () => {
+  // Animate the 3D model
   const [{ rotation }, setRotation] = useSpring(() => ({
     rotation: [0, 0, 0],
     config: { mass: 10, tension: 1000, friction: 300, precision: 0.00001 }
@@ -27,16 +31,10 @@ const Observation = () => {
     return memo;
   });
 
-  const [shape, setShape] = useState({
-    code: 'cone',
-    title: 'Kerucut',
-    description: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Et autem omnis placeat a nihil exercitationem voluptate quod aut officia inventore iure, doloribus expedita tenetur ullam est nam similique. Debitis, iste.',
-    v_formula: '(1/3)*PI*r^2*t',
-    lp_formula: 'PI*r*(r+s)',
-    n_vertices: 1,
-    n_edges: 1,
-    n_faces: 2,
-  });
+  // Get selected shape
+  let { shapeCodename } = useParams();
+  const shape = SHAPES.filter((SHAPE) => SHAPE.codename === shapeCodename)[0];
+
   const [form, setForm] = useState({
     n_vertices: 0,
     n_edges: 0,
@@ -61,6 +59,7 @@ const Observation = () => {
     .replaceAll('*', ' × ')
     .replaceAll('/', ' / ')
     .replaceAll('^2', '²')
+    .replaceAll('^3', '³')
     .replaceAll('PI', 'π')
     ;
 
@@ -85,6 +84,18 @@ const Observation = () => {
       ...(e.target.name === 't' ? { s: getS(form.r, e.target.value) } : {}),
     });
   };
+
+  const divideObjectValues = (obj, opd) => {
+    const _obj = {...obj};
+    
+    for (let key in _obj) {
+      if (typeof _obj[key] == 'number') {
+        _obj[key] /= opd;
+      }
+    }
+
+    return _obj;
+  }
 
   // Constants
   const SIZE_VARS = [
@@ -126,11 +137,8 @@ const Observation = () => {
       title: 'Informasi',
       content: (
         <>
-          <h1 className="text-lg font-bold mb-3">Kerucut</h1>
-
-          <p className="text-sm mb-4">
-            Dalam geometri, kerucut adalah sebuah limas istimewa yang beralas lingkaran. Kerucut memiliki 2 sisi, 1 rusuk, dan 1 titik sudut.
-          </p>
+          <h1 className="text-lg font-bold mb-3">{shape.name}</h1>
+          <p className="text-sm mb-4">{shape.description}</p>
 
           <ul className="text-sm">
             <li className="flex justify-between py-4 border-t">
@@ -274,9 +282,15 @@ const Observation = () => {
         <Canvas>
           <ambientLight color="#888888" />
           <pointLight position={[10, 20, 0]} />
-          <Shape.Cone
+          {/* <Shape.Cone
             radius={form.r / 10}
             height={form.t / 10}
+            rotation={rotation}
+            wireframe={wireframe}
+          /> */}
+          <Shape
+            codename={shape.codename}
+            {...divideObjectValues(form, 10)}
             rotation={rotation}
             wireframe={wireframe}
           />

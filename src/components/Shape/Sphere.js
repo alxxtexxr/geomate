@@ -5,19 +5,18 @@ import { animated } from '@react-spring/three';
 
 const { degToRad } = ThreeMath
 
-const Sphere = ({ radius, rotation, wireframe, ...props }) => {
+const Sphere = ({ r, rotation, wireframe }) => {
     const mesh = useRef(null)
 
     useFrame(() => (mesh.current.rotation.y += 0.01));
 
     return (
         <animated.mesh
-            {...props}
             ref={mesh}
             scale={1}
             rotation={rotation.to((x, y, z) => [degToRad(x), degToRad(y), degToRad(z)])}
         >
-            <sphereGeometry args={[radius, 64, 32]} />
+            <sphereGeometry args={[r, 64, 32]} />
             <meshNormalMaterial wireframe={wireframe} />
         </animated.mesh>
     );

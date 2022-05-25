@@ -5,7 +5,7 @@ import { animated } from '@react-spring/three';
 
 const { degToRad } = ThreeMath
 
-const Pyramid = ({ radius, height, radialSegments, rotation, wireframe, ...props }) => {
+const Pyramid = ({ r, t, radialSegments, rotation, wireframe }) => {
     const mesh = useRef(null)
     const geometry = useRef(null)
 
@@ -13,12 +13,11 @@ const Pyramid = ({ radius, height, radialSegments, rotation, wireframe, ...props
 
     return (
         <animated.mesh
-            {...props}
             ref={mesh}
             scale={1}
             rotation={rotation.to((x, y, z) => [degToRad(x), degToRad(y), degToRad(z)])}
         >
-            <coneGeometry ref={geometry} args={[radius, height, radialSegments]} />
+            <coneGeometry ref={geometry} args={[r, t, radialSegments]} />
             <meshNormalMaterial wireframe={wireframe} />
         </animated.mesh>
     );

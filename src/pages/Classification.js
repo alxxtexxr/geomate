@@ -1,10 +1,16 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Sheet from 'react-modal-sheet';
 import { HiCamera, HiCheck } from 'react-icons/hi';
 
+import { SHAPES } from '../Constants';
+
 const Classification = () => {
     const [isOpen, setOpen] = React.useState(false);
+
+    // Get selected shape
+    let { shapeCodename } = useParams();
+    const shape = SHAPES.filter((SHAPE) => SHAPE.codename === shapeCodename)[0];
 
     return (
         <main className="relative bg-neutral h-screen">
@@ -28,10 +34,10 @@ const Classification = () => {
                             <div className="flex justify-between pt-12 pb-8 px-8">
                                 <div>
                                     <h2 className="text-sm">Bangun Ruang</h2>
-                                    <h1 className="text-lg font-bold leading-none">Kerucut</h1>
+                                    <h1 className="text-lg font-bold leading-none">{shape.name}</h1>
                                 </div>
                                 <div>
-                                    <Link to="/observation">
+                                    <Link to={`/observation/${shapeCodename}`}>
                                         <button className="btn btn-primary">
                                             Observasi
                                         </button>

@@ -1,10 +1,9 @@
 import Pyramid from './Pyramid';
 
-const Cone = ({ radius, height, rotation, wireframe, ...props }) => (
+const Cone = ({ r, t, rotation, wireframe }) => (
     <Pyramid
-        {...props}
-        radius={radius}
-        height={height}
+        r={r}
+        t={t}
         radialSegments={64}
         rotation={rotation}
         wireframe={wireframe}

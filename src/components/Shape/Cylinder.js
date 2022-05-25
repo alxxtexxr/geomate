@@ -1,10 +1,9 @@
 import Prism from './Prism';
 
-const Cylinder = ({ radius, height, rotation, wireframe, ...props }) => (
+const Cylinder = ({ r, t, rotation, wireframe }) => (
     <Prism
-        {...props}
-        radius={radius}
-        height={height}
+        r={r}
+        t={t}
         radialSegments={64}
         rotation={rotation}
         wireframe={wireframe}
