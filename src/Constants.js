@@ -65,3 +65,5 @@ export const SHAPES = [
         n_faces: -1,
     },
 ];
+
+// export const SHAPE_NAMES = ['Bola', 'Tabung', 'Prisma', 'Kerucut', 'Limas'];

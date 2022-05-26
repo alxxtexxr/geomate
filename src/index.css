@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.btn-disabled, .btn-disabled:hover, .btn[disabled], .btn[disabled]:hover {
+    @apply bg-opacity-5 text-opacity-50
+}
