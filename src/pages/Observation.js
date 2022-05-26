@@ -282,12 +282,6 @@ const Observation = () => {
         <Canvas>
           <ambientLight color="#888888" />
           <pointLight position={[10, 20, 0]} />
-          {/* <Shape.Cone
-            radius={form.r / 10}
-            height={form.t / 10}
-            rotation={rotation}
-            wireframe={wireframe}
-          /> */}
           <Shape
             codename={shape.codename}
             {...divideObjectValues(form, 10)}
