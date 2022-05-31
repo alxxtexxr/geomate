@@ -9,7 +9,7 @@ import cx from 'classnames';
 import Shape from '../components/Shape';
 import Swap from '../components/Swap';
 
-import { SHAPES } from '../Constants';
+import { getShape } from '../Utils';
 
 const Observation = () => {
   // Animate the 3D model
@@ -33,7 +33,7 @@ const Observation = () => {
 
   // Get selected shape
   let { shapeCodename } = useParams();
-  const shape = SHAPES.filter((SHAPE) => SHAPE.codename === shapeCodename)[0];
+  const shape = getShape(shapeCodename);
 
   const [form, setForm] = useState({
     n_vertices: 0,

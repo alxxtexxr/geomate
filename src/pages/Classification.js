@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+
 import * as tf from '@tensorflow/tfjs';
 import { loadGraphModel } from '@tensorflow/tfjs-converter';
 import Webcam from 'react-webcam';
@@ -7,16 +7,12 @@ import { HiCamera } from 'react-icons/hi';
 
 import ClassificationResult from '../components/ClassificationResult';
 
-import { SHAPES } from '../Constants';
-
 const Classification = () => {
-    let { shapeCodename } = useParams();
-
     // States
     const [model, setModel] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [predictedShape, setPredictedShape] = useState(null);
+    const [predictions, setPredictions] = useState([]);
 
     // Effects 
     useEffect(() => {
@@ -51,14 +47,12 @@ const Classification = () => {
 
         const imgSrc = getScreenshot()
         const imgElem = await createImgElem(imgSrc).catch((err) => console.log(err));
-        const predictions = await predict(imgElem).catch((err) => console.log(err));
-        const predictedI = predictions.indexOf(Math.max(...predictions));
+        let predictions = await predict(imgElem).catch((err) => console.log(err));
+            predictions = tf.softmax(predictions).arraySync()
 
-        if (predictedI > -1) {
-            setPredictedShape(SHAPES[predictedI]);
-            setIsOpen(true);
-            setIsLoading(false);
-        }
+        setPredictions(predictions);
+        setIsOpen(true);
+        setIsLoading(false);
     };
 
     return (
@@ -93,12 +87,11 @@ const Classification = () => {
             </Webcam>
 
             {/* Result */}
-            {predictedShape && (
+            {predictions.length && (
                 <ClassificationResult
                     isOpen={isOpen}
                     setIsOpen={setIsOpen}
-                    predictedShape={predictedShape}
-                    shapeCodename={shapeCodename}
+                    predictions={predictions}
                 />
             )}
         </main>
