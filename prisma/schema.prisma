@@ -11,19 +11,19 @@ datasource db {
 }
 
 model Shape {
-  id                            String        @id @default(cuid())
-  codename                      String        @unique
-  name                          String
-  stimulation                   String
-  stimulationImageUrl           String
-  problemIdentification         String
-  problemIdentificationImageUrl String
-  nVertices                     Int
-  nEdges                        Int
-  nFaces                        Int
-  vFormula                      String
-  lpFormula                     String
-  observations                  Observation[]
+  id                         String        @id @default(cuid())
+  codename                   String        @unique
+  name                       String
+  stimulation                String
+  stimulationImage           String
+  problemIdentification      String
+  problemIdentificationImage String
+  nVertices                  Int
+  nEdges                     Int
+  nFaces                     Int
+  vFormula                   String
+  lpFormula                  String
+  observations               Observation[]
 }
 
 model Observation {

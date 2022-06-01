@@ -1,7 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  images: { domains: ['platform-lookaside.fbsbx.com'] },
+  images: {
+    domains: [
+      'api.lorem.space',
+      'platform-lookaside.fbsbx.com',
+    ],
+  },
 };
 
 module.exports = nextConfig;
