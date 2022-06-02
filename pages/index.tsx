@@ -1,15 +1,14 @@
-import { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 
-import Shape from '../types/Shape';
+// Constants
+import { SHAPES } from '../Constants';
 
-type Props = {
-  shapes: Shape[],
-};
+// Types
+import type ComponentWithAuth from '../types/ComponentWithAuth';
 
-const Home: React.FC<Props> = ({ shapes }) => {
+const Home: ComponentWithAuth = () => {
   const { data: session } = useSession();
 
   return (
@@ -26,6 +25,7 @@ const Home: React.FC<Props> = ({ shapes }) => {
                 src={session?.user?.image || '/images/default-user-image.jpeg'}
                 alt={session?.user?.image || ''}
                 layout="fill"
+                priority
               />
             </div>
           </div>
@@ -45,7 +45,7 @@ const Home: React.FC<Props> = ({ shapes }) => {
               KI/KD
             </h2>
           </div>
-          {shapes.map(({ id, name, codename }) => (
+          {SHAPES.map(({ id, name, codename }) => (
             <Link href={`/stimulation/${codename}`} key={id}>
               <div className="flex flex-col justify-center items-center bg-white py-8 shadow rounded-xl">
                 <div className="relative h-20 w-20 mb-4">
@@ -61,15 +61,8 @@ const Home: React.FC<Props> = ({ shapes }) => {
       </section>
     </main>
   );
-}
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/shapes`);
-  const shapes = await res.json();
-
-  return {
-    props: { shapes },
-  };
 };
+
+Home.auth = true;
 
 export default Home;

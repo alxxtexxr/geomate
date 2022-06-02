@@ -9,13 +9,14 @@ import Navbar from '../../components/Navbar';
 import { getShapeByCodename } from '../../Utils';
 
 // Types
-import Shape from '../../types/Shape';
+import type ComponentWithAuth from '../../types/ComponentWithAuth';
+import type Shape from '../../types/Shape';
 
 type Props = {
     shape: Shape,
 };
 
-const Stimulation: React.FC<Props> = ({ shape }) => {
+const Stimulation: ComponentWithAuth<Props> = ({ shape }) => {
     return (
         <main className="bg-base-200 flex flex-col h-screen">
             <Navbar backHref="/" />
@@ -43,6 +44,8 @@ const Stimulation: React.FC<Props> = ({ shape }) => {
         </main>
     );
 };
+
+Stimulation.auth = true;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const codename = context?.params?.codename || null;

@@ -4,8 +4,8 @@ import { HiCheck, HiX } from 'react-icons/hi';
 import classNames from 'classnames';
 
 // Types
-import { Dispatch, SetStateAction } from 'react';
-import Shape from '../types/Shape';
+import type { Dispatch, SetStateAction } from 'react';
+import type Shape from '../types/Shape';
 
 type Props = {
     isOpen: boolean,
