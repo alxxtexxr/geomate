@@ -28,17 +28,17 @@ model Shape {
 
 model Observation {
   id        String   @id @default(cuid())
-  nVertices Int
-  nEdges    Int
-  nFaces    Int
+  nVertices Int?
+  nEdges    Int?
+  nFaces    Int?
   r         Float?
   t         Float?
   s         Float?
   la        Float?
   lst       Float?
   ka        Float?
-  v         Float
-  lp        Float
+  v         Float?
+  lp        Float?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   user      User     @relation(fields: [userId], references: [id])
