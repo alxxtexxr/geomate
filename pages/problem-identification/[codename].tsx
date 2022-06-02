@@ -2,9 +2,14 @@ import { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import Shape from '../../types/Shape';
-
+// Components
 import Navbar from '../../components/Navbar';
+
+// Utils
+import { getShapeByCodename } from '../../Utils';
+
+// Types
+import Shape from '../../types/Shape';
 
 type Props = {
     shape: Shape,
@@ -40,14 +45,10 @@ const ProblemIdentification: React.FC<Props> = ({ shape }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const shapeCodename = context?.params?.codename || 0;
+    const codename = context?.params?.codename || null;
+    const shape = codename ? getShapeByCodename(codename as string) : null;
 
-    const res = await fetch(`${process.env.NEXTAUTH_URL}/api/shapes/${shapeCodename}`);
-    const shape = await res.json();
-
-    return {
-        props: { shape },
-    };
+    return { props: { shape } };
 };
 
 export default ProblemIdentification;
