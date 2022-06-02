@@ -5,21 +5,22 @@ import Webcam from 'react-webcam';
 import { HiCamera } from 'react-icons/hi';
 
 // Components
-import ClassificationResult from '../../components/ClassificationResult';
+import ClassificationResult from '../../../components/ClassificationResult';
 
 // Utils
-import { getShapeByCodename, getShapeByI } from '../../Utils';
+import { getShapeByI } from '../../../Utils';
 
 // Types
 import type { GetServerSideProps } from 'next';
-import type ComponentWithAuth from '../../types/ComponentWithAuth';
-import type Shape from '../../types/Shape';
+import type ComponentWithAuth from '../../../types/ComponentWithAuth';
+import type Shape from '../../../types/Shape';
+import type Observation from '../../../types/Observation';
 
 type Props = {
-    shape: Shape,
+    observation: Observation,
 };
 
-const Classification: ComponentWithAuth<Props> = ({ shape }) => {
+const Classification: ComponentWithAuth<Props> = ({ observation }) => {
     // Refs
     const webcamRef = useRef<Webcam | null>(null);
 
@@ -39,7 +40,7 @@ const Classification: ComponentWithAuth<Props> = ({ shape }) => {
 
     // Functions
     const createImgElem = (imgSrc: string): Promise<HTMLImageElement> => {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve, _) => {
             const img = new Image()
             img.crossOrigin = 'anonymous';
             img.src = imgSrc;
@@ -97,7 +98,7 @@ const Classification: ComponentWithAuth<Props> = ({ shape }) => {
                 }}
                 className="w-screen h-screen"
             />
-            
+
             <section className="fixed bottom-0 w-screen text-center p-8">
                 <button
                     className="bg-base-100 hover:bg-base-200 text-primary border-white hover:border-white btn btn-lg btn-circle"
@@ -115,11 +116,11 @@ const Classification: ComponentWithAuth<Props> = ({ shape }) => {
             </section>
 
             {/* Result */}
-            {predictedShape && (
+            {(observation.shape && predictedShape) && (
                 <ClassificationResult
                     isOpen={isOpen}
                     setIsOpen={setIsOpen}
-                    shape={shape}
+                    shape={observation.shape}
                     predictedShape={predictedShape}
                 />
             )}
@@ -130,10 +131,12 @@ const Classification: ComponentWithAuth<Props> = ({ shape }) => {
 Classification.auth = true;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const codename = context?.params?.codename || null;
-    const shape = codename ? getShapeByCodename(codename as string) : null;
+    const id = context?.params?.id || null;
 
-    return { props: { shape } };
+    const res = await fetch(`${process.env.NEXTAUTH_URL}/api/observations/${id}`);
+    const observation = await res.json();
+
+    return { props: { observation } };
 };
 
 export default Classification;

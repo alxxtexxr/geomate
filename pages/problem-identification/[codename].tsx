@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import Link from 'next/link';
+import Router from 'next/router';
 
 // Components
 import Navbar from '../../components/Navbar';
@@ -11,12 +11,32 @@ import { getShapeByCodename } from '../../Utils';
 import type { GetServerSideProps } from 'next';
 import type ComponentWithAuth from '../../types/ComponentWithAuth';
 import type Shape from '../../types/Shape';
+import type Observation from '../../types/Observation';
 
 type Props = {
     shape: Shape,
 };
 
 const ProblemIdentification: ComponentWithAuth<Props> = ({ shape }) => {
+    const createObservation = async () => {
+        try {
+            const body = {
+                shapeCodename: shape.codename,
+            };
+
+            const res = await fetch(`/api/observations/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body),
+            });
+            const observation: Observation = await res.json();
+
+            await Router.push(`/observations/${observation.id}/classification`);
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
     return (
         <main className="bg-base-200 flex flex-col h-screen">
             <Navbar backHref={`/stimulation/${shape.codename}`} />
@@ -33,13 +53,15 @@ const ProblemIdentification: ComponentWithAuth<Props> = ({ shape }) => {
                     </div>
                 </div>
 
-                <h1 className="font-semibold">{shape.problemIdentification}</h1>
+                <h1 className="font-semibold">
+                    {shape.problemIdentification}
+                </h1>
             </section>
 
             <section className="p-4">
-                <Link href={`/classification/${shape.codename}`}>
-                    <button className="btn btn-primary w-full">MULAI OBSERVASI</button>
-                </Link>
+                <button className="btn btn-primary w-full" onClick={createObservation}>
+                    Mulai Observasi
+                </button>
             </section>
         </main>
     );
