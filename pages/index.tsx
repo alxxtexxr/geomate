@@ -30,7 +30,7 @@ const Home: ComponentWithAuth = () => {
             </div>
           </div>
         </div>
-        <h1 className="font-bold">Halo, {session?.user?.name || 'Kamu'}</h1>
+        <h1 className="font-semibold">Halo, {session?.user?.name || 'Kamu'}</h1>
         <p className="text-sm">Mau belajar apa hari ini?</p>
       </header>
 
@@ -41,7 +41,7 @@ const Home: ComponentWithAuth = () => {
             <div className="relative h-10 w-10 mr-4">
               <Image src="/images/kikd.png" alt="KI/KD" layout="fill" />
             </div>
-            <h2 className="font-bold">
+            <h2 className="font-semibold">
               KI/KD
             </h2>
           </div>
@@ -51,7 +51,7 @@ const Home: ComponentWithAuth = () => {
                 <div className="relative h-20 w-20 mb-4">
                   <Image src={`/images/${codename}.png`} alt={name} layout="fill" />
                 </div>
-                <h2 className="font-bold">
+                <h2 className="font-semibold">
                   {name}
                 </h2>
               </div>

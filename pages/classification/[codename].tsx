@@ -1,5 +1,4 @@
 import { useRef, useCallback, useState, useEffect } from 'react';
-import { GetServerSideProps } from 'next'
 import * as tf from '@tensorflow/tfjs';
 import { loadGraphModel } from '@tensorflow/tfjs-converter';
 import Webcam from 'react-webcam';
@@ -12,6 +11,7 @@ import ClassificationResult from '../../components/ClassificationResult';
 import { getShapeByCodename, getShapeByI } from '../../Utils';
 
 // Types
+import type { GetServerSideProps } from 'next';
 import type ComponentWithAuth from '../../types/ComponentWithAuth';
 import type Shape from '../../types/Shape';
 
@@ -73,11 +73,11 @@ const Classification: ComponentWithAuth<Props> = ({ shape }) => {
         setPredictedShape(predictedShape);
         setIsOpen(true);
         setIsLoading(false);
-    }, [webcamRef]);
+    }, [webcamRef, model]);
 
     return (
         <main className="relative bg-black h-screen">
-            {!model && (
+            {model === null && (
                 <div className="fixed z-10 flex justify-center items-center bg-black bg-opacity-60 text-white h-screen w-screen ">
                     <svg className="animate-spin h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
@@ -97,7 +97,7 @@ const Classification: ComponentWithAuth<Props> = ({ shape }) => {
                 }}
                 className="w-screen h-screen"
             />
-
+            
             <section className="fixed bottom-0 w-screen text-center p-8">
                 <button
                     className="bg-base-100 hover:bg-base-200 text-primary border-white hover:border-white btn btn-lg btn-circle"

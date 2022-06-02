@@ -4,6 +4,7 @@ const nextConfig = {
   images: {
     domains: [
       'api.lorem.space',
+      'lh3.googleusercontent.com',
       'platform-lookaside.fbsbx.com',
     ],
   },

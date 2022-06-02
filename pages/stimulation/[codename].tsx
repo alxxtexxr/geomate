@@ -1,4 +1,3 @@
-import { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -9,6 +8,7 @@ import Navbar from '../../components/Navbar';
 import { getShapeByCodename } from '../../Utils';
 
 // Types
+import type { GetServerSideProps } from 'next';
 import type ComponentWithAuth from '../../types/ComponentWithAuth';
 import type Shape from '../../types/Shape';
 
@@ -33,7 +33,7 @@ const Stimulation: ComponentWithAuth<Props> = ({ shape }) => {
                     </div>
                 </div>
 
-                <h1 className="font-bold">{shape.stimulation}</h1>
+                <h1 className="font-semibold">{shape.stimulation}</h1>
             </section>
 
             <section className="p-4">

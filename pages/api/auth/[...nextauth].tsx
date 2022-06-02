@@ -1,11 +1,15 @@
-import { NextApiHandler } from 'next';
 import NextAuth from 'next-auth';
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import GoogleProvider from 'next-auth/providers/google';
 import FacebookProvider from 'next-auth/providers/facebook';
 import prisma from '../../../lib/prisma';
 
-const authHandler: NextApiHandler = (req, res) => NextAuth(req, res, options);
+// Types
+import type { NextApiHandler } from 'next';
+import type { NextAuthOptions } from 'next-auth';
+
+const authHandler: NextApiHandler = (req, res) => NextAuth(req, res, options as NextAuthOptions);
+
 export default authHandler;
 
 const options = {
@@ -20,7 +24,10 @@ const options = {
         }),
     ],
     pages: {
-        signIn: '/signin',
+        signIn: '/auth/signin',
+    },
+    callbacks: {
+        redirect: () => process.env.NEXTAUTH_URL,
     },
     adapter: PrismaAdapter(prisma),
     secret: process.env.SECRET,
