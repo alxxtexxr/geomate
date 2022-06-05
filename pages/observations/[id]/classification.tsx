@@ -6,9 +6,10 @@ import { HiCamera } from 'react-icons/hi';
 
 // Components
 import ClassificationResult from '../../../components/ClassificationResult';
+import Spinner from '../../../components/Spinner';
 
 // Utils
-import { getShapeByI } from '../../../Utils';
+import { getShapeByCodename, getShapeByI } from '../../../Utils';
 
 // Types
 import type { GetServerSideProps } from 'next';
@@ -100,27 +101,31 @@ const Classification: ComponentWithAuth<Props> = ({ observation }) => {
             />
 
             <section className="fixed bottom-0 w-screen text-center p-8">
-                <button
-                    className="bg-base-100 hover:bg-base-200 text-primary border-white hover:border-white btn btn-lg btn-circle"
-                    onClick={() => capture()}
-                >
-                    {isLoading ? (
-                        <svg className="animate-spin h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                    ) : (
+                {isLoading ? (
+                    <div className="inline-flex bg-white rounded-full">
+                        <button
+                            className="btn btn-lg btn-circle"
+                            disabled
+                        >
+                            <Spinner />
+                        </button>
+                    </div>
+                ) : (
+                    <button
+                        className="bg-base-100 hover:bg-base-200 text-primary border-white hover:border-white btn btn-lg btn-circle"
+                        onClick={() => capture()}
+                    >
                         <HiCamera className="text-3xl" />
-                    )}
-                </button>
+                    </button>
+                )}
             </section>
 
             {/* Result */}
-            {(observation.shape && predictedShape) && (
+            {predictedShape && (
                 <ClassificationResult
                     isOpen={isOpen}
                     setIsOpen={setIsOpen}
-                    shape={observation.shape}
+                    shape={getShapeByCodename(observation.shapeCodename)}
                     predictedShape={predictedShape}
                 />
             )}

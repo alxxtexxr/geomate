@@ -3,6 +3,7 @@ import type Shape from './Shape';
 
 type Observation = {
     id: string;
+    shapeCodename: string;
     nVertices?: number;
     nEdges?: number;
     nFaces?: number;
@@ -17,8 +18,6 @@ type Observation = {
     createdAt: Date;
     updatedAt: Date;
     userId: string;
-    shapeId: string;
-    shape?: Shape
 };
 
 export default Observation;

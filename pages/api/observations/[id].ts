@@ -7,7 +7,6 @@ const handle = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const shape = await prisma.observation.findUnique({
         where: { id: id as string },
-        include: { shape: true },
     });
 
     res.json(shape);

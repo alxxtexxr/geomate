@@ -28,7 +28,7 @@ const handle = async (req: NextApiRequest, res: NextApiResponse) => {
 
                 const result = await prisma.observation.create({
                     data: {
-                        shape: { connect: { codename: shapeCodename as string } },
+                        shapeCodename: shapeCodename,
                         user: { connect: { email: session.user?.email as string } },
                     },
                 });

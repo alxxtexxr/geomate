@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import Image from 'next/image';
 import Router from 'next/router';
 
 // Components
 import Navbar from '../../components/Navbar';
+import Spinner from '../../components/Spinner';
 
 // Utils
 import { getShapeByCodename } from '../../Utils';
@@ -18,8 +20,12 @@ type Props = {
 };
 
 const ProblemIdentification: ComponentWithAuth<Props> = ({ shape }) => {
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+
     const createObservation = async () => {
         try {
+            setIsLoading(true);
+
             const body = {
                 shapeCodename: shape.codename,
             };
@@ -30,6 +36,8 @@ const ProblemIdentification: ComponentWithAuth<Props> = ({ shape }) => {
                 body: JSON.stringify(body),
             });
             const observation: Observation = await res.json();
+
+            setIsLoading(false);
 
             await Router.push(`/observations/${observation.id}/classification`);
         } catch (err) {
@@ -59,9 +67,15 @@ const ProblemIdentification: ComponentWithAuth<Props> = ({ shape }) => {
             </section>
 
             <section className="p-4">
-                <button className="btn btn-primary w-full" onClick={createObservation}>
-                    Mulai Observasi
-                </button>
+                {isLoading ? (
+                    <button className="btn w-full" disabled>
+                        <Spinner />
+                    </button>
+                ) : (
+                    <button className="btn btn-primary w-full" onClick={createObservation}>
+                        Mulai Observasi
+                    </button>
+                )}
             </section>
         </main>
     );
