@@ -3,8 +3,11 @@ import Link from 'next/link';
 import { HiCheck, HiX } from 'react-icons/hi';
 import classNames from 'classnames';
 
+// Components
+import Spinner from './Spinner';
+
 // Types
-import type { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import type Shape from '../types/Shape';
 
 type Props = {
@@ -15,6 +18,8 @@ type Props = {
 }
 
 const ClassificationResult = ({ isOpen, setIsOpen, shape, predictedShape }: Props) => {
+    const [isLoading, setIsLoading] = useState<boolean>(true)
+
     const isCorrect = shape.codename === predictedShape.codename;
 
     return (
@@ -57,11 +62,17 @@ const ClassificationResult = ({ isOpen, setIsOpen, shape, predictedShape }: Prop
                         </div>
                         <div>
                             {predictedShape.codename === shape.codename ? (
-                                <Link href={`/observation/${shape.codename}`}>
-                                    <button className="btn btn-primary w-full">
-                                        Observasi
+                                isLoading ? (
+                                    <button className="btn w-full" disabled>
+                                        <Spinner />
                                     </button>
-                                </Link>
+                                ) : (
+                                    <Link href={`/observation/${shape.codename}`}>
+                                        <button className="btn btn-primary w-full">
+                                            Observasi
+                                        </button>
+                                    </Link>
+                                )
                             ) : (
                                 <button className="btn w-full" disabled>
                                     Observasi
@@ -72,7 +83,7 @@ const ClassificationResult = ({ isOpen, setIsOpen, shape, predictedShape }: Prop
                 </Sheet.Content>
             </Sheet.Container>
             <Sheet.Backdrop onViewportBoxUpdate onTap={() => setIsOpen(false)} />
-        </Sheet>
+        </Sheet >
     );
 };
 

@@ -29,6 +29,7 @@ datasource db {
 model Observation {
   id            String   @id @default(cuid())
   shapeCodename String
+  image         String?
   nVertices     Int?
   nEdges        Int?
   nFaces        Int?
