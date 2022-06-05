@@ -3,13 +3,14 @@ import * as tf from '@tensorflow/tfjs';
 import { loadGraphModel } from '@tensorflow/tfjs-converter';
 import Webcam from 'react-webcam';
 import { HiCamera } from 'react-icons/hi';
+import Router from 'next/router';
 
 // Components
 import ClassificationResult from '../../../components/ClassificationResult';
 import Spinner from '../../../components/Spinner';
 
 // Utils
-import { getShapeByCodename, getShapeByI } from '../../../Utils';
+import { createImgElemement, dataURItoBlob, getShapeByCodename, getShapeByI } from '../../../Utils';
 
 // Types
 import type { GetServerSideProps } from 'next';
@@ -30,6 +31,8 @@ const Classification: ComponentWithAuth<Props> = ({ observation }) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [predictedShape, setPredictedShape] = useState<Shape | null>(null);
+    const [base64Image, setBase64Image] = useState<string | null>(null);
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
     // Effects 
     useEffect(() => {
@@ -40,15 +43,6 @@ const Classification: ComponentWithAuth<Props> = ({ observation }) => {
     }, []);
 
     // Functions
-    const createImgElem = (imgSrc: string): Promise<HTMLImageElement> => {
-        return new Promise((resolve, _) => {
-            const img = new Image()
-            img.crossOrigin = 'anonymous';
-            img.src = imgSrc;
-            img.onload = () => resolve(img);
-        });
-    };
-
     const predict = (pixels: HTMLImageElement | HTMLVideoElement | tf.PixelData | ImageData | HTMLCanvasElement | ImageBitmap): Promise<Uint8Array | Float32Array | Int32Array> | null => {
         if (!model) { return null; }
 
@@ -65,9 +59,12 @@ const Classification: ComponentWithAuth<Props> = ({ observation }) => {
         setIsLoading(true);
 
         // Predicting the object shape
-        const imgSrc = webcamRef?.current && webcamRef.current.getScreenshot();
-        const imgElem = imgSrc ? await createImgElem(imgSrc) : null;
-        const predictions = imgElem ? await predict(imgElem) : null;
+        const _base64Image = webcamRef?.current && webcamRef.current.getScreenshot();
+
+        setBase64Image(_base64Image);
+
+        const imgElemement = _base64Image ? await createImgElemement(_base64Image) : null;
+        const predictions = imgElemement ? await predict(imgElemement) : null;
         const maxPrediction = predictions ? Math.max(...Array.from(predictions)) : null;
         const maxPredictionI = predictions && maxPrediction ? predictions.indexOf(maxPrediction) : null;
         const predictedShape = maxPredictionI ? getShapeByI(maxPredictionI) : null;
@@ -76,6 +73,33 @@ const Classification: ComponentWithAuth<Props> = ({ observation }) => {
         setIsOpen(true);
         setIsLoading(false);
     }, [webcamRef, model]);
+
+    const onSubmit = async () => {
+        setIsSubmitting(true);
+
+        if (!base64Image) {
+            setIsSubmitting(false);
+            return false;
+        }
+
+        try {
+            const image = dataURItoBlob(base64Image);
+            const formData = new FormData();
+
+            formData.append('image', image);
+
+            await fetch(`/api/observations/${observation.id}/image`, {
+                method: 'PUT',
+                body: formData,
+            });
+
+            setIsSubmitting(false);
+            await Router.push(`/observations/${observation.id}/calculation`);
+        } catch (error) {
+            setIsSubmitting(false);
+            console.error(error);
+        }
+    }
 
     return (
         <main className="relative bg-black h-screen">
@@ -127,6 +151,8 @@ const Classification: ComponentWithAuth<Props> = ({ observation }) => {
                     setIsOpen={setIsOpen}
                     shape={getShapeByCodename(observation.shapeCodename)}
                     predictedShape={predictedShape}
+                    onSubmit={onSubmit}
+                    isSubmitting={isSubmitting}
                 />
             )}
         </main>

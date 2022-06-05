@@ -21,7 +21,7 @@ const SignIn: ComponentWithAuth<Props> = ({ providers }) => {
             <section className="p-4">
                 <div className="mt-4 mb-8">
                     <h2 className="font-semibold text-3xl">Masuk</h2>
-                    <p>Selamat datang, ayo mulai belajar.</p>
+                    <p className="text-sm">Selamat datang, ayo mulai belajar.</p>
                 </div>
                 {providers && Object.values(providers).map((provider) => (
                     <div key={provider.name}>

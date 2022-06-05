@@ -15,11 +15,11 @@ type Props = {
     setIsOpen: Dispatch<SetStateAction<boolean>>,
     shape: Shape,
     predictedShape: Shape,
+    isSubmitting: boolean,
+    onSubmit: () => {},
 }
 
-const ClassificationResult = ({ isOpen, setIsOpen, shape, predictedShape }: Props) => {
-    const [isLoading, setIsLoading] = useState<boolean>(true)
-
+const ClassificationResult = ({ isOpen, setIsOpen, shape, predictedShape, isSubmitting, onSubmit }: Props) => {
     const isCorrect = shape.codename === predictedShape.codename;
 
     return (
@@ -62,16 +62,14 @@ const ClassificationResult = ({ isOpen, setIsOpen, shape, predictedShape }: Prop
                         </div>
                         <div>
                             {predictedShape.codename === shape.codename ? (
-                                isLoading ? (
+                                isSubmitting ? (
                                     <button className="btn w-full" disabled>
                                         <Spinner />
                                     </button>
                                 ) : (
-                                    <Link href={`/observation/${shape.codename}`}>
-                                        <button className="btn btn-primary w-full">
-                                            Observasi
-                                        </button>
-                                    </Link>
+                                    <button className="btn btn-primary w-full" onClick={onSubmit}>
+                                        Observasi
+                                    </button>
                                 )
                             ) : (
                                 <button className="btn w-full" disabled>

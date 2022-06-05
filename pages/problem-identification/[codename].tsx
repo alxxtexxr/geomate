@@ -23,9 +23,9 @@ const ProblemIdentification: ComponentWithAuth<Props> = ({ shape }) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const createObservation = async () => {
-        try {
-            setIsLoading(true);
+        setIsLoading(true);
 
+        try {
             const body = {
                 shapeCodename: shape.codename,
             };
@@ -38,9 +38,9 @@ const ProblemIdentification: ComponentWithAuth<Props> = ({ shape }) => {
             const observation: Observation = await res.json();
 
             setIsLoading(false);
-
             await Router.push(`/observations/${observation.id}/classification`);
         } catch (err) {
+            setIsLoading(false);
             console.error(err);
         }
     };

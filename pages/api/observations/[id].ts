@@ -21,19 +21,21 @@ const handle = async (req: NextApiRequest, res: NextApiResponse) => {
             const result = await prisma.observation.update({
                 where: { id: id as string },
                 data: {
-                    nVertices: nVertices || null,
-                    nEdges: nEdges || null,
-                    nFaces: nFaces || null,
-                    r: r || null,
-                    t: t || null,
-                    s: s || null,
-                    la: la || null,
-                    lst: lst || null,
-                    ka: ka || null,
-                    v: v || null,
-                    lp: lp || null,
+                    nVertices: nVertices,
+                    nEdges: nEdges,
+                    nFaces: nFaces,
+                    r: r,
+                    t: t,
+                    s: s,
+                    la: la,
+                    lst: lst,
+                    ka: ka,
+                    v: v,
+                    lp: lp,
                 },
             });
+
+            res.json(result);
             break;
         default:
             throw new Error(`The HTTP ${req.method} method is not supported at this route.`);
