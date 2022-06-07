@@ -1,6 +1,8 @@
+import ShapeCodename from './ShapeCodename';
+
 type Shape = {
     id: number,
-    codename: string,
+    codename: ShapeCodename,
     name: string,
     stimulation: string,
     stimulationImage: string,

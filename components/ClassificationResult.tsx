@@ -1,5 +1,4 @@
 import Sheet from 'react-modal-sheet';
-import Link from 'next/link';
 import { HiCheck, HiX } from 'react-icons/hi';
 import classNames from 'classnames';
 
@@ -7,7 +6,7 @@ import classNames from 'classnames';
 import Spinner from './Spinner';
 
 // Types
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import type Shape from '../types/Shape';
 
 type Props = {
@@ -41,7 +40,7 @@ const ClassificationResult = ({ isOpen, setIsOpen, shape, predictedShape, isSubm
                 <Sheet.Content onViewportBoxUpdate>
                     <div className="text-center pt-14 pb-4 px-4">
                         <div className="px-8 mb-8">
-                            <h1 className={classNames('font-bold leading-none mb-2', {
+                            <h1 className={classNames('font-semibold leading-none mb-2', {
                                 ['text-primary']: isCorrect,
                                 ['text-red-500']: !isCorrect,
                             })}>
@@ -50,11 +49,11 @@ const ClassificationResult = ({ isOpen, setIsOpen, shape, predictedShape, isSubm
                             <h2 className="text-sm">
                                 {isCorrect ? (
                                     <>
-                                        Benar! Objek yang kamu scan termasuk bangun ruang <strong>{shape.name}</strong>.
+                                        Benar! Objek yang kamu scan termasuk bangun ruang <span className="font-semibold">{shape.name}</span>.
                                     </>
                                 ) : (
                                     <>
-                                        Belum benar, objek yang kamu scan bukan termasuk bangun ruang <strong>{shape.name}</strong>.
+                                        Belum benar, objek yang kamu scan bukan termasuk bangun ruang <span className="font-semibold">{shape.name}</span>.
                                     </>
                                 )}
 

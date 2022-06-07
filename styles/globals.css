@@ -9,3 +9,31 @@
         font-family: Poppins, system-ui, sans-serif;
     }
 }
+
+.btn-disabled, .btn-disabled:hover, .btn[disabled], .btn[disabled]:hover,
+.input-group :where(span) {
+    @apply bg-gray-200 text-gray-400
+}
+
+.input-bordered,
+.input-group :last-child {
+    @apply border-gray-200 
+}
+
+.input-group :first-child {
+    @apply z-10
+}
+
+.input-error {
+    --tw-border-opacity: 1;
+    border-color: hsl(var(--er) / var(--tw-border-opacity));
+}
+
+.input-primary {
+    --tw-border-opacity: 1;
+    border-color: hsl(var(--p) / var(--tw-border-opacity));
+}
+
+.input-disabled, .input[disabled] {
+    @apply bg-gray-100 border-gray-200 
+}

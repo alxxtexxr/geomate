@@ -68,3 +68,31 @@ export const uploadImage = (image: string) => {
         );
     });
 };
+
+export const snakeToPascal = (string: string) => {
+    return string.split("/")
+        .map(snake => snake.split("_")
+            .map(substr => substr.charAt(0)
+                .toUpperCase() +
+                substr.slice(1))
+            .join(""))
+        .join("/");
+};
+
+export const range = (size: number, startAt: number = 0): ReadonlyArray<number> => {
+    return [...Array(size).keys()].map(i => i + startAt);
+};
+
+export const formatFormula = (formula: string) => {
+    return formula
+        .replaceAll('( ', '(')
+        .replaceAll(' )', ')')
+        .replaceAll('*', '×')
+        .replaceAll(' / ', '/')
+        .replaceAll(' ^ 2', '²')
+        .replaceAll(' ^ 3', '³')
+        .replaceAll('PI', 'π')
+        ;
+};
+
+export const getS = (r: number, t: number) => +Math.sqrt(Math.pow(r, 2) + Math.pow(t, 2)).toFixed(2);

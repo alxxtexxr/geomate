@@ -20,9 +20,10 @@ import type Observation from '../../../types/Observation';
 
 type Props = {
     observation: Observation,
+    shape: Shape,
 };
 
-const Classification: ComponentWithAuth<Props> = ({ observation }) => {
+const Classification: ComponentWithAuth<Props> = ({ observation, shape }) => {
     // Refs
     const webcamRef = useRef<Webcam | null>(null);
 
@@ -149,7 +150,7 @@ const Classification: ComponentWithAuth<Props> = ({ observation }) => {
                 <ClassificationResult
                     isOpen={isOpen}
                     setIsOpen={setIsOpen}
-                    shape={getShapeByCodename(observation.shapeCodename)}
+                    shape={shape}
                     predictedShape={predictedShape}
                     onSubmit={onSubmit}
                     isSubmitting={isSubmitting}
@@ -166,8 +167,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     const res = await fetch(`${process.env.NEXTAUTH_URL}/api/observations/${id}`);
     const observation = await res.json();
+    const shape = getShapeByCodename(observation.shapeCodename);
 
-    return { props: { observation } };
+    return { props: { observation, shape } };
 };
 
 export default Classification;
