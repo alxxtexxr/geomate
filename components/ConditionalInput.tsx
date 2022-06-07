@@ -19,14 +19,12 @@ const ConditionalInput = ({ correctValue, className, incorrectMessage, suffix, o
     const getIsCorrect = (_value: string) => isNaN(+correctValue) ? _value === correctValue : +_value === +correctValue
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (onChange) { onChange(e); }
-
         setValue(e.target.value);
-        setIsCorrect(getIsCorrect(value));
     };
 
     useEffect(() => {
         setIsCorrect(getIsCorrect(value));
-    }, [correctValue])
+    }, [correctValue, value]);
 
     return (
         <div className={className}>

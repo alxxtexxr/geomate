@@ -17,6 +17,25 @@ type Props = {
 };
 
 const CalculationCharTab = ({ shape, form, setForm, onSubmit }: Props) => {
+    const correctNVertices = (shape.codename === 'prism' || shape.codename === 'pyramid')
+        ? (shape.codename === 'prism' ? form.nBaseVertices * 2 : (
+            shape.codename === 'pyramid' ? form.nBaseVertices + 1 : form.nVertices
+        ))
+        : form.nVertices;
+    const correctNEdges =
+        (shape.codename === 'prism' || shape.codename === 'pyramid')
+            ? (shape.codename === 'prism' ? form.nBaseVertices * 3 : (
+                shape.codename === 'pyramid' ? form.nBaseVertices * 2 : form.nEdges
+            ))
+            : form.nEdges
+        ;
+    const correctNFaces =
+        (shape.codename === 'prism' || shape.codename === 'pyramid')
+            ? (shape.codename === 'prism' ? form.nBaseVertices * 3 : (
+                shape.codename === 'pyramid' ? form.nBaseVertices * 2 : form.nFaces
+            ))
+            : form.nFaces;
+
     // Functions
     const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
         setForm({
@@ -27,6 +46,24 @@ const CalculationCharTab = ({ shape, form, setForm, onSubmit }: Props) => {
 
     return (
         <>
+            {(shape.codename === 'prism' || shape.codename === 'pyramid') && (
+                <div className="flex flex-row w-full mb-4">
+                    <label className="label items-start w-5/12 pr-4" style={{ paddingTop: 12 }}>
+                        <span className="label-text">Bentuk Alas</span>
+                    </label>
+                    <select
+                        className="select select-bordered w-7/12 font-normal"
+                        name="nBaseVertices"
+                        value={form.nBaseVertices}
+                        onChange={handleChange}
+                    >
+                        {/* <option>Pilih bentuk</option> */}
+                        <option value="3">Segitiga</option>
+                        <option value="4">Persegi</option>
+                    </select>
+                </div>
+            )}
+
             {/* N. of Vertices */}
             <div className="flex flex-row w-full mb-4">
                 <label className="label items-start w-5/12 pr-4" style={{ paddingTop: 12 }}>
@@ -35,9 +72,9 @@ const CalculationCharTab = ({ shape, form, setForm, onSubmit }: Props) => {
                 <ConditionalSelect
                     options={[
                         { title: 'Pilih nilai' },
-                        ...range(5, -1).map((i) => ({ title: i, value: i })),
+                        ...range(11).map((i) => ({ title: i, value: i })),
                     ]}
-                    correctOptionValue={'' + shape.nVertices}
+                    correctOptionValue={'' + correctNVertices}
                     incorrectMessage="Nilai belum benar."
                     className="w-7/12"
                     name="nVertices"
@@ -54,9 +91,9 @@ const CalculationCharTab = ({ shape, form, setForm, onSubmit }: Props) => {
                 <ConditionalSelect
                     options={[
                         { title: 'Pilih nilai' },
-                        ...range(5, -1).map((i) => ({ title: i, value: i })),
+                        ...range(11).map((i) => ({ title: i, value: i })),
                     ]}
-                    correctOptionValue={'' + shape.nEdges}
+                    correctOptionValue={'' + correctNEdges}
                     incorrectMessage="Nilai belum benar."
                     className="w-7/12"
                     name="nEdges"
@@ -73,9 +110,9 @@ const CalculationCharTab = ({ shape, form, setForm, onSubmit }: Props) => {
                 <ConditionalSelect
                     options={[
                         { title: 'Pilih nilai' },
-                        ...range(5, -1).map((i) => ({ title: i, value: i })),
+                        ...range(11).map((i) => ({ title: i, value: i })),
                     ]}
-                    correctOptionValue={'' + shape.nFaces}
+                    correctOptionValue={'' + correctNFaces}
                     incorrectMessage="Nilai belum benar."
                     className="w-7/12"
                     name="nFaces"
@@ -86,9 +123,9 @@ const CalculationCharTab = ({ shape, form, setForm, onSubmit }: Props) => {
 
             <div className="fixed left-0 bottom-0 bg-white bg-opacity-60 w-screen p-4">
                 {(
-                    form.nVertices === shape.nVertices &&
-                    form.nEdges === shape.nEdges &&
-                    form.nFaces === shape.nFaces
+                    form.nVertices === correctNVertices &&
+                    form.nEdges === correctNEdges &&
+                    form.nFaces === correctNFaces
                 ) ? (
                     <button className="btn btn-primary w-full" onClick={onSubmit}>
                         SELANJUTNYA

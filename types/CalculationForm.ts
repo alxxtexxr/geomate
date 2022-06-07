@@ -1,4 +1,5 @@
 type CalculationForm = {
+    nBaseVertices: number,
     nVertices: number,
     nEdges: number,
     nFaces: number,

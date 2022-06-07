@@ -10,14 +10,14 @@ import type { Mesh, BufferGeometry, Material } from 'three';
 export type Props = {
     r: number,
     t: number,
-    radialSegments: number,
+    nBaseVertices: number,
     rotation: SpringValue<number[]>,
     wireframe: boolean,
 };
 
 const { degToRad } = ThreeMath
 
-const Pyramid = ({ r, t, radialSegments, rotation, wireframe }: Props) => {
+const Pyramid = ({ r, t, nBaseVertices, rotation, wireframe }: Props) => {
     const mesh = useRef<Mesh<BufferGeometry, Material | Material[]>>(null)
 
     useFrame(() => {
@@ -32,7 +32,7 @@ const Pyramid = ({ r, t, radialSegments, rotation, wireframe }: Props) => {
             scale={1}
             rotation={rotation.to((x, y, z) => [degToRad(x), degToRad(y), degToRad(z)]) as unknown as [x: number, y: number, z: number]}
         >
-            <coneGeometry args={[r, t, radialSegments]} />
+            <coneGeometry args={[r, t, nBaseVertices]} />
             <meshNormalMaterial wireframe={wireframe} />
         </animated.mesh>
     );

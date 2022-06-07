@@ -33,10 +33,9 @@ const shapeComponents: { [key: string]: React.FC<any> } = {
   Sphere,
 };
 
-
-
 const Shape = ({ codename, ...props }: Props) => {
-  const ShapeComponent = shapeComponents[snakeToPascal(codename)]
+  console.log({props})
+  const ShapeComponent = shapeComponents[snakeToPascal(codename)];
 
   // if shape component undefined ...
 

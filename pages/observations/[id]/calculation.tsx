@@ -10,18 +10,17 @@ import ShapeComponent from '../../../components/Shape';
 import Swap from '../../../components/Swap';
 import CalculationInfoTab from '../../../components/CalculationInfoTab';
 import CalculationCharTab from '../../../components/CalculationCharTab';
+import CalculationSizeTab from '../../../components/CalculationSizeTab';
 
 // Utils
 import { getShapeByCodename, getS } from '../../../Utils';
 
 // Types
-import type { ChangeEvent } from 'react';
 import type { GetServerSideProps } from 'next';
 import type ComponentWithAuth from '../../../types/ComponentWithAuth';
 import type Shape from '../../../types/Shape';
 import type Observation from '../../../types/Observation';
 import type CalculationForm from '../../../types/CalculationForm';
-import CalculationSizeTab from '../../../components/CalculationSizeTab';
 
 type Props = {
   observation: Observation,
@@ -50,6 +49,7 @@ const Calculation: ComponentWithAuth<Props> = ({ observation, shape }) => {
 
   // States
   const [form, setForm] = useState<CalculationForm>({
+    nBaseVertices: 3,
     nVertices: 0,
     nEdges: 0,
     nFaces: 0,
@@ -111,7 +111,9 @@ const Calculation: ComponentWithAuth<Props> = ({ observation, shape }) => {
           <pointLight position={[10, 20, 0]} />
           <ShapeComponent
             codename={shape.codename}
-            {...divideObjectValues(form, 10)}
+            {...form}
+            r={form.r / 10}
+            t={form.t / 10}
             rotation={rotation}
             wireframe={wireframe}
           />
@@ -124,7 +126,7 @@ const Calculation: ComponentWithAuth<Props> = ({ observation, shape }) => {
           >
             <HiOutlineCube className="text-2xl" />
           </Swap>
-          <Swap onClick={() => {}}>AR</Swap>
+          <Swap onClick={() => { }}>AR</Swap>
         </div>
       </section>
 
