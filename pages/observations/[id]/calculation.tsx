@@ -4,6 +4,7 @@ import { useSpring } from '@react-spring/three';
 import { useDrag } from '@use-gesture/react';
 import { HiOutlineCube } from 'react-icons/hi';
 import cx from 'classnames';
+import Router from 'next/router';
 
 // Components
 import ShapeComponent from '../../../components/Shape';
@@ -65,19 +66,26 @@ const Calculation: ComponentWithAuth<Props> = ({ observation, shape }) => {
   });
   const [activeTab, setActiveTab] = useState(0);
   const [wireframe, setWireframe] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   // Functions
-  const divideObjectValues = (obj: { [key: string]: number }, opd: number) => {
-    const _obj = { ...obj };
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
 
-    for (let key in _obj) {
-      if (typeof _obj[key] == 'number') {
-        _obj[key] /= opd;
-      }
+    try {
+      await fetch(`/api/observations/${observation.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+
+      setIsSubmitting(false);
+      await Router.push(`/observations/${observation.id}`);
+    } catch (error) {
+      setIsSubmitting(false);
+      console.error(error);
     }
-
-    return _obj;
-  };
+  }
 
   // Constants
   const TABS = [
@@ -91,7 +99,7 @@ const Calculation: ComponentWithAuth<Props> = ({ observation, shape }) => {
     },
     {
       title: 'Ukuran',
-      content: (<CalculationSizeTab shape={shape} form={form} setForm={setForm} onSubmit={() => { }} />),
+      content: (<CalculationSizeTab shape={shape} form={form} setForm={setForm} isSubmitting={isSubmitting} onSubmit={handleSubmit} />),
     },
   ];
 

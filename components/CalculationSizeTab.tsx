@@ -2,6 +2,7 @@ import { Parser } from 'expr-eval';
 
 // Components
 import ConditionalInput from './ConditionalInput';
+import Spinner from './Spinner';
 
 // Utils
 import { formatFormula, getS } from '../Utils';
@@ -19,41 +20,43 @@ type Props = {
   form: CalculationForm,
   setForm: Dispatch<SetStateAction<CalculationForm>>,
   onSubmit: () => void,
+  isSubmitting: boolean,
 };
 
-const CalculationSizeTab = ({ shape, form, setForm, onSubmit }: Props) => {
+const CalculationSizeTab = ({ shape, form, setForm, onSubmit, isSubmitting }: Props) => {
+  const correctValues = {
+    v: +Parser.evaluate(shape.vFormula.toLowerCase(), form).toFixed(1),
+    lp: +Parser.evaluate(shape.lpFormula.toLowerCase(), form).toFixed(1),
+  };
+
   // Function
   const assignValuesToFormula = (formula: string) => {
     let _formula = formula.toLowerCase().replaceAll('π', 'PI');
-
-    // Object.keys(form).map((formKey) => {
-    //   assignedValuesFormula = assignedValuesFormula.replaceAll(formKey, (form as { [key: string]: any })[formKey]);
-    // })
-
     let _formulaArr = _formula.split(' ');
+
     _formulaArr = _formulaArr.map((_formulaArrI) => form.hasOwnProperty(_formulaArrI) ? (form as { [key: string]: any })[_formulaArrI] : _formulaArrI);
     _formula = _formulaArr.join(' ');
 
     return _formula;
   };
 
+  const inputValueToNumber = (inputValue: string) => {
+    return inputValue.split('').filter(x => x === '.').length === 1
+      ? inputValue
+      : (
+        +inputValue || 0
+      )
+  }
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.value)
     setForm({
       ...form,
-      [e.target.name]: +e.target.value || 0,
+      [e.target.name]: inputValueToNumber(e.target.value),
       ...(e.target.name === 'r' ? { s: getS(+e.target.value, form.t || 0) } : {}),
       ...(e.target.name === 't' ? { s: getS(form.r, +e.target.value || 0) } : {}),
     });
   };
-
-  // const correctV = assignValuesToFormula(shape.vFormula);
-  // const correctLP = assignValuesToFormula(shape.lpFormula);
-  const correctValues = {
-    v: Parser.evaluate(shape.vFormula.toLowerCase(), form),
-    lp: Parser.evaluate(shape.lpFormula.toLowerCase(), form),
-  };
-
-  console.log({ correctValues });
 
   return (
     <>
@@ -132,12 +135,19 @@ const CalculationSizeTab = ({ shape, form, setForm, onSubmit }: Props) => {
 
       <div className="fixed left-0 bottom-0 z-20 bg-white bg-opacity-95 w-screen p-4">
         {(
-          correctValues.v === form.v &&
-          correctValues.lp === form.lp
+          correctValues.v === +form.v &&
+          correctValues.lp === +form.lp
         ) ? (
-          <button className="btn btn-primary w-full" onClick={onSubmit}>
-            Selesaikan Observasi
-          </button>
+          isSubmitting ? (
+            <button className="btn w-full" disabled>
+              <Spinner />
+            </button>
+          ) : (
+            <button className="btn btn-primary w-full" onClick={onSubmit}>
+              Selesaikan Observasi
+            </button>
+          )
+
         ) : (
           <button className="btn w-full" disabled>
             Selesaikan Observasi

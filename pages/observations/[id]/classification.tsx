@@ -75,7 +75,7 @@ const Classification: ComponentWithAuth<Props> = ({ observation, shape }) => {
         setIsLoading(false);
     }, [webcamRef, model]);
 
-    const onSubmit = async () => {
+    const handleSubmit = async () => {
         setIsSubmitting(true);
 
         if (!base64Image) {
@@ -152,7 +152,7 @@ const Classification: ComponentWithAuth<Props> = ({ observation, shape }) => {
                     setIsOpen={setIsOpen}
                     shape={shape}
                     predictedShape={predictedShape}
-                    onSubmit={onSubmit}
+                    onSubmit={handleSubmit}
                     isSubmitting={isSubmitting}
                 />
             )}
