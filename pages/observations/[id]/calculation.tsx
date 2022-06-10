@@ -9,9 +9,9 @@ import Router from 'next/router';
 // Components
 import ShapeComponent from '../../../components/Shape';
 import Swap from '../../../components/Swap';
-import CalculationInfoTab from '../../../components/CalculationInfoTab';
-import CalculationCharTab from '../../../components/CalculationCharTab';
-import CalculationSizeTab from '../../../components/CalculationSizeTab';
+import InfoTab from '../../../components/Calculation/CalculationInfoTab';
+import CharTab from '../../../components/Calculation/CalculationCharTab';
+import SizeTab from '../../../components/Calculation/CalculationSizeTab';
 
 // Utils
 import { getShapeByCodename, getS } from '../../../Utils';
@@ -90,15 +90,15 @@ const Calculation: ComponentWithAuth<Props> = ({ observation, shape }) => {
   const TABS = [
     {
       title: 'Informasi',
-      content: (<CalculationInfoTab shape={shape} onSubmit={() => setActiveTab(1)} />),
+      content: (<InfoTab shape={shape} onSubmit={() => setActiveTab(1)} />),
     },
     {
       title: 'Sifat',
-      content: (<CalculationCharTab shape={shape} form={form} setForm={setForm} onSubmit={() => setActiveTab(2)} />),
+      content: (<CharTab shape={shape} form={form} setForm={setForm} onSubmit={() => setActiveTab(2)} />),
     },
     {
       title: 'Ukuran',
-      content: (<CalculationSizeTab shape={shape} form={form} setForm={setForm} isSubmitting={isSubmitting} onSubmit={handleSubmit} />),
+      content: (<SizeTab shape={shape} form={form} setForm={setForm} isSubmitting={isSubmitting} onSubmit={handleSubmit} />),
     },
   ];
 

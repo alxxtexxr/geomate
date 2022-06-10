@@ -1,13 +1,13 @@
 // Components
-import ConditionalSelect from '../components/ConditionalSelect';
+import ConditionalSelect from '../ConditionalSelect';
 
 // Utils
-import { range } from '../Utils';
+import { range } from '../../Utils';
 
 // Types
 import type { ChangeEvent, Dispatch, SetStateAction } from 'react';
-import type Shape from '../types/Shape';
-import type CalculationForm from '../types/CalculationForm';
+import type Shape from '../../types/Shape';
+import type CalculationForm from '../../types/CalculationForm';
 
 type Props = {
     shape: Shape,
