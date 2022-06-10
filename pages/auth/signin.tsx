@@ -1,4 +1,8 @@
-import { getProviders, signIn } from 'next-auth/react';
+import { getProviders } from 'next-auth/react';
+import Image from 'next/image';
+
+// Components
+import SignInButton from '../../components/SignIn/SignInButton';
 
 // Types
 import type { GetServerSideProps } from 'next';
@@ -12,24 +16,28 @@ type Props = {
 
 const SignIn: ComponentWithAuth<Props> = ({ providers }) => {
     return (
-        <main className="bg-base-200 min-h-screen">
-            {/* <header className="flex flex-col justify-center text-center bg-primary-content py-8 rounded-b-xl">
-                <h1 className="font-semibold text-3xl">
-                    Geomate
-                </h1>
-            </header> */}
-            <section className="p-4">
-                <div className="mt-4 mb-8">
-                    <h2 className="font-semibold text-3xl">Masuk</h2>
-                    <p className="text-sm">Selamat datang, ayo mulai belajar.</p>
+        <main className="bg-base-100 min-h-screen">
+            <header className="flex justify-center items-center bg-primary py-8 mb-8 rounded-b-xl shadow">
+                <div className="relative h-20 w-20 mr-2">
+                    <Image src="/images/logo.png"
+                        layout="fill"
+                        objectFit="contain"
+                    />
                 </div>
-                {providers && Object.values(providers).map((provider) => (
-                    <div key={provider.name}>
-                        <button className="btn btn-primary w-full mb-4" onClick={() => signIn(provider.id)}>
-                            Sign in with {provider.name}
-                        </button>
-                    </div>
-                ))}
+                <h1 className="text-4xl text-primary-content">
+                    GeoMate
+                </h1>
+            </header>
+            <section className="px-4">
+                <div className="mb-8">
+                    <h2 className="font-semibold text-3xl text-black text-opacity-90">Masuk</h2>
+                    <p className="text-black text-opacity-60">Selamat datang, ayo mulai belajar.</p>
+                </div>
+                <div className="grid grid-cols-1 gap-2">
+                    {providers && Object.values(providers).map((provider) => (
+                        <SignInButton provider={provider} key={provider.id} />
+                    ))}
+                </div>
             </section>
         </main>
     )
