@@ -37,7 +37,6 @@ const ProblemIdentification: ComponentWithAuth<Props> = ({ shape }) => {
             });
             const observation: Observation = await res.json();
 
-            setIsLoading(false);
             await Router.push(`/observations/${observation.id}/classification`);
         } catch (err) {
             setIsLoading(false);
@@ -47,16 +46,17 @@ const ProblemIdentification: ComponentWithAuth<Props> = ({ shape }) => {
 
     return (
         <main className="bg-base-200 flex flex-col h-screen">
-            <Navbar backHref={`/stimulation/${shape.codename}`} />
+            <Navbar title="Pernyataan Masalah" backHref={`/stimulation/${shape.codename}`} />
 
             <section className="flex flex-col flex-grow justify-center items-center text-center px-8">
                 <div className="bg-base-100 p-2 mb-8 rounded-xl shadow">
-                    <div className="relative h-60 w-60">
+                    <div className="relative w-60 h-48">
                         <Image
                             src={shape.problemIdentificationImage}
                             alt="Stimulasi"
                             className="rounded-lg"
                             layout="fill"
+                            objectFit="cover"
                         />
                     </div>
                 </div>

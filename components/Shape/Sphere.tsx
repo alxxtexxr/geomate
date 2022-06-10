@@ -9,13 +9,13 @@ import type { Mesh, BufferGeometry, Material } from 'three';
 
 export type Props = {
     r: number,
-    rotation: SpringValue<number[]>,
-    wireframe: boolean,
+    rotation?: SpringValue<number[]>,
+    wireframe?: boolean,
 };
 
 const { degToRad } = ThreeMath
 
-const Sphere = ({ r, rotation, wireframe }: Props) => {
+const Sphere = ({ r, rotation, wireframe = false }: Props) => {
     const mesh = useRef<Mesh<BufferGeometry, Material | Material[]> | null>(null)
 
     useFrame(() => {
@@ -28,7 +28,7 @@ const Sphere = ({ r, rotation, wireframe }: Props) => {
         <animated.mesh
             ref={mesh}
             scale={1}
-            rotation={rotation.to((x, y, z) => [degToRad(x), degToRad(y), degToRad(z)]) as unknown as [x: number, y: number, z: number]}
+            rotation={rotation && rotation.to((x, y, z) => [degToRad(x), degToRad(y), degToRad(z)]) as unknown as [x: number, y: number, z: number]}
         >
             <sphereGeometry args={[r, 64, 32]} />
             <meshNormalMaterial wireframe={wireframe} />

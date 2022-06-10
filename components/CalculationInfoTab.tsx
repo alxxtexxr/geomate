@@ -16,14 +16,20 @@ const CalculationInfoTab = ({ shape, onSubmit }: Props) => (
 
         <ul className="text-sm">
             <li className="flex justify-between py-4 border-t">
-                Rumus Volume (V)<span>{formatFormula(shape.vFormula)}</span>
+                <span>
+                    Rumus Volume (V)
+                </span>
+                <span className="font-semibold">{formatFormula(shape.vFormula)}</span>
             </li>
             <li className="flex justify-between py-4 border-t">
-                Rumus Luas Permukan (LP)<span>{formatFormula(shape.lpFormula)}</span>
+                <span>
+                    Rumus Luas Permukan (LP)
+                </span>
+                <span className="font-semibold">{formatFormula(shape.lpFormula)}</span>
             </li>
         </ul>
 
-        <div className="fixed left-0 bottom-0 bg-white bg-opacity-60 w-screen p-4">
+        <div className="fixed left-0 bottom-0 bg-white bg-opacity-95 w-screen p-4">
             <button className="btn btn-primary w-full" onClick={onSubmit}>
                 SELANJUTNYA
             </button>

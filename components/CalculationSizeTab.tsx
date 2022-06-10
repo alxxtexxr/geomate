@@ -72,11 +72,11 @@ const CalculationSizeTab = ({ shape, form, setForm, onSubmit, isSubmitting }: Pr
                   <input
                     type="text"
                     placeholder="0"
-                    className="input input-bordered w-full"
+                    className="input input-bordered w-1 flex-grow"
                     disabled
                     value={formatFormula((shape as { [key: string]: any })[symbol.toLowerCase() + 'Formula'])}
                   />
-                  <span className="text-sm font-semibold">
+                  <span className="text-sm font-semibold" style={{ width: 60 }}>
                     {symbol === 'V' ? 'cm³' : (symbol === 'LP' ? 'cm²' : 'cm')}
                   </span>
                 </label>
@@ -84,11 +84,11 @@ const CalculationSizeTab = ({ shape, form, setForm, onSubmit, isSubmitting }: Pr
                   <input
                     type="text"
                     placeholder="0"
-                    className="input input-bordered w-full"
+                    className="input input-bordered w-1 flex-grow"
                     disabled
                     value={assignValuesToFormula(formatFormula((shape as { [key: string]: any })[symbol.toLowerCase() + 'Formula']))}
                   />
-                  <span className="text-sm font-semibold">
+                  <span className="text-sm font-semibold" style={{ width: 60 }}>
                     {symbol === 'V' ? 'cm³' : (symbol === 'LP' ? 'cm²' : 'cm')}
                   </span>
                 </label>
@@ -114,7 +114,7 @@ const CalculationSizeTab = ({ shape, form, setForm, onSubmit, isSubmitting }: Pr
                   <input
                     type="text"
                     placeholder="0"
-                    className="input input-bordered w-full"
+                    className="input input-bordered w-1 flex-grow"
                     value={(form as { [key: string]: any })[symbol.toLowerCase()]}
                     {...(symbol === 's' ? {
                       disabled: true
@@ -123,7 +123,7 @@ const CalculationSizeTab = ({ shape, form, setForm, onSubmit, isSubmitting }: Pr
                       onChange: handleChange
                     })}
                   />
-                  <span className="text-sm font-semibold">
+                  <span className="text-sm font-semibold" style={{ width: 60 }}>
                     {symbol === 'V' ? 'cm³' : (symbol === 'LP' ? 'cm²' : 'cm')}
                   </span>
                 </label>

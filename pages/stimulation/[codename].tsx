@@ -19,16 +19,17 @@ type Props = {
 const Stimulation: ComponentWithAuth<Props> = ({ shape }) => {
     return (
         <main className="bg-base-200 flex flex-col h-screen">
-            <Navbar backHref="/" />
+            <Navbar title="Stimulus" backHref="/" />
 
             <section className="flex flex-col flex-grow justify-center items-center text-center px-8">
                 <div className="bg-base-100 p-2 mb-8 rounded-xl shadow">
-                    <div className="relative h-60 w-60">
+                    <div className="relative w-60 h-48">
                         <Image
                             src={shape.stimulationImage}
                             alt="Stimulasi"
                             className="rounded-lg"
                             layout="fill"
+                            objectFit="cover"
                         />
                     </div>
                 </div>
@@ -38,7 +39,7 @@ const Stimulation: ComponentWithAuth<Props> = ({ shape }) => {
 
             <section className="p-4">
                 <Link href={`/problem-identification/${shape.codename}`}>
-                    <button className="btn btn-primary w-full">SELANJUTNYA</button>
+                    <button className="btn btn-primary btn-outline w-full">SELANJUTNYA</button>
                 </Link>
             </section>
         </main>

@@ -121,7 +121,7 @@ const CalculationCharTab = ({ shape, form, setForm, onSubmit }: Props) => {
                 />
             </div>
 
-            <div className="fixed left-0 bottom-0 bg-white bg-opacity-60 w-screen p-4">
+            <div className="fixed left-0 bottom-0 bg-white bg-opacity-95 w-screen p-4">
                 {(
                     form.nVertices === correctNVertices &&
                     form.nEdges === correctNEdges &&

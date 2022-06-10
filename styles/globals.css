@@ -12,12 +12,12 @@
 
 .btn-disabled, .btn-disabled:hover, .btn[disabled], .btn[disabled]:hover,
 .input-group :where(span) {
-    @apply bg-gray-200 text-gray-400
+    @apply bg-gray-200 text-gray-500
 }
 
 .input-bordered,
 .input-group :last-child {
-    @apply border-gray-200 
+    @apply border-gray-100 
 }
 
 .input-group :first-child {
@@ -35,5 +35,5 @@
 }
 
 .input-disabled, .input[disabled] {
-    @apply bg-gray-100 border-gray-200 
+    @apply bg-gray-100 border-gray-100 
 }

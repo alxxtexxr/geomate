@@ -79,7 +79,6 @@ const Calculation: ComponentWithAuth<Props> = ({ observation, shape }) => {
         body: JSON.stringify(form),
       });
 
-      setIsSubmitting(false);
       await Router.push(`/observations/${observation.id}`);
     } catch (error) {
       setIsSubmitting(false);
@@ -153,7 +152,7 @@ const Calculation: ComponentWithAuth<Props> = ({ observation, shape }) => {
           ))}
         </div>
 
-        <div className="bg-white pt-4 pb-20 px-4">
+        <div className="flex-grow bg-white pt-4 pb-20 px-4">
           {TABS[activeTab].content}
         </div>
       </section>

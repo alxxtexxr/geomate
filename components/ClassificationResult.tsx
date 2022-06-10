@@ -39,7 +39,7 @@ const ClassificationResult = ({ isOpen, setIsOpen, shape, predictedShape, isSubm
                 </Sheet.Header>
                 <Sheet.Content onViewportBoxUpdate>
                     <div className="text-center pt-14 pb-4 px-4">
-                        <div className="px-8 mb-8">
+                        <div className="px-4 mb-8">
                             <h1 className={classNames('font-semibold leading-none mb-2', {
                                 ['text-primary']: isCorrect,
                                 ['text-red-500']: !isCorrect,
