@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { getSession } from 'next-auth/react';
 import prisma from '../../../../lib/prisma';
 
 // Utils
@@ -15,23 +16,29 @@ export const config = {
 const handle = async (req: NextApiRequest, res: NextApiResponse) => {
     const { id } = req.query;
 
-    switch (req.method) {
-        case 'PUT':
-            const imageFile = await getImage(req);
-            const uploadedImage: any = await uploadImage(imageFile.path);
-            const image = uploadedImage.secure_url;
+    const session = await getSession({ req });
 
-            console.log({image})
+    if (session) { // Disable this if you want to test it with Postman
+        switch (req.method) {
+            case 'PUT':
+                const imageFile = await getImage(req);
+                const uploadedImage: any = await uploadImage(imageFile.path);
+                const image = uploadedImage.secure_url;
 
-            const result = await prisma.observation.update({
-                where: { id: id as string },
-                data: { image: image },
-            });
+                console.log({ image })
 
-            res.json(result);
-            break;
-        default:
-            throw new Error(`The HTTP ${req.method} method is not supported at this route.`);
+                const result = await prisma.observation.update({
+                    where: { id: id as string },
+                    data: { image: image },
+                });
+
+                res.json(result);
+                break;
+            default:
+                throw new Error(`The HTTP ${req.method} method is not supported at this route.`);
+        }
+    } else {
+        res.status(401).send({ message: 'Unauthorized.' });
     }
 };
 

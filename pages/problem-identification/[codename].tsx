@@ -22,7 +22,7 @@ type Props = {
 const ProblemIdentification: ComponentWithAuth<Props> = ({ shape }) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    const createObservation = async () => {
+    const startObservation = async () => {
         setIsLoading(true);
 
         try {
@@ -72,7 +72,7 @@ const ProblemIdentification: ComponentWithAuth<Props> = ({ shape }) => {
                         <Spinner />
                     </button>
                 ) : (
-                    <button className="btn btn-primary w-full" onClick={createObservation}>
+                    <button className="btn btn-primary w-full" onClick={startObservation}>
                         Mulai Observasi
                     </button>
                 )}
