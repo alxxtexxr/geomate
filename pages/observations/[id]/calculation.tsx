@@ -110,7 +110,7 @@ const Calculation: ComponentWithAuth<Props> = ({ observation, shape }) => {
   }, [])
 
   return (
-    <main className="h-screen bg-neutral">
+    <main className="h-screen bg-gray-900">
       <section {...bind()} className="sticky top-0 z-0 h-80" style={{ touchAction: 'none' }}>
         <Canvas>
           <ambientLight color="#888888" />

@@ -34,8 +34,8 @@ const ConditionalSelect = ({ options, correctOptionValue, className, incorrectMe
         <div className={className}>
             <select
                 className={
-                    'select select-bordered w-full font-normal' +
-                    (isCorrect ? 'select-primary' : 'select-error')
+                    'select select-bordered w-full' +
+                    (isCorrect ? ' select-primary' : ' select-error')
                 }
                 onChange={handleChange}
                 {...props}

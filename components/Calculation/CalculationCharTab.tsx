@@ -45,7 +45,7 @@ const CalculationCharTab = ({ shape, form, setForm, onSubmit }: Props) => {
     };
 
     return (
-        <>
+        <div className="text-gray-500">
             {(shape.codename === 'prism' || shape.codename === 'pyramid') && (
                 <div className="flex flex-row w-full mb-4">
                     <label className="label items-start w-5/12 pr-4" style={{ paddingTop: 12 }}>
@@ -136,7 +136,7 @@ const CalculationCharTab = ({ shape, form, setForm, onSubmit }: Props) => {
                     </button>
                 )}
             </div>
-        </>
+        </div>
     );
 };
 

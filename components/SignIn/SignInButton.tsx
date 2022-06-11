@@ -17,11 +17,11 @@ const SignInButton = ({ provider }: Props) => {
     };
     const cx =
         'btn w-full text-white' +
-        (provider.name ? ` ${providerNameCx[provider.name]}` : '');
+        (provider.name ? ` ${providerNameCx[provider.name.toLowerCase()]}` : '');
 
     return (
         <button className={cx} onClick={() => signIn(provider.id)}>
-            <Icon providerName={provider.name} className="text-lg mr-2 -mt-1" />
+            <Icon providerName={provider.name} className="text-lg mr-2 -mt-0.5" />
             Masuk dengan {provider.name}
         </button>
     );

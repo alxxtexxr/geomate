@@ -1,19 +1,19 @@
 import { Parser } from 'expr-eval';
 
 // Components
-import ConditionalInput from './ConditionalInput';
-import Spinner from './Spinner';
+import ConditionalInput from '../ConditionalInput';
+import Spinner from '../Spinner';
 
 // Utils
-import { formatFormula, getS } from '../Utils';
+import { formatFormula, getS } from '../../Utils';
 
 // Constants
-import { MATH_SYMBOLS } from '../Constants';
+import { MATH_SYMBOLS } from '../../Constants';
 
 // Types
 import type { ChangeEvent, Dispatch, SetStateAction } from 'react';
-import type Shape from '../types/Shape';
-import type CalculationForm from '../types/CalculationForm';
+import type Shape from '../../types/Shape';
+import type CalculationForm from '../../types/CalculationForm';
 
 type Props = {
   shape: Shape,

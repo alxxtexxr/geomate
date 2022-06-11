@@ -4,6 +4,7 @@ import { useSpring } from '@react-spring/three';
 import Link from 'next/link';
 
 // Components
+import Navbar from '../../components/Navbar';
 import ShapeComponent from '../../components/Shape';
 
 // Utils
@@ -32,12 +33,12 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
 
 
     return (
-        <main className="relative flex flex-col bg-base-200 h-screen pb-20">
-            {/* <Navbar title="Hasil Observasi" /> */}
+        <main className="relative flex flex-col bg-base-100 h-screen pb-20">
+            <Navbar title="Hasil Observasi" />
 
             {/* <section> */}
-            <div className="p-4">
-                <div className="relative inline-flex bg-base-100 w-full p-2 rounded-xl shadow overflow-hidden">
+            <div className="px-4 mb-4">
+                <div className="relative inline-flex bg-white w-full p-2 rounded-xl shadow overflow-hidden">
                     <div className="relative h-60 w-full">
                         <Image
                             src="/images/placeholder-image.jpeg"
@@ -47,7 +48,7 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
                             objectFit="cover"
                         />
                     </div>
-                    <div className="absolute right-0 bottom-0 bg-base-100 h-20 w-20 rounded-tl-xl">
+                    <div className="absolute right-0 bottom-0 bg-white h-20 w-20 rounded-tl-xl">
                         <Canvas>
                             <ambientLight color="#888888" />
                             <pointLight position={[10, 20, 0]} />
@@ -62,14 +63,17 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 </div>
             </div>
 
-            <div className="flex-grow bg-base-100 p-4 text-sm rounded-t-xl shadow">
+            <div className="flex-grow bg-white text-gray-500 p-4 text-sm rounded-t-xl shadow">
                 {MATH_SYMBOLS.map(({ symbol, title }, i) => (shape.vFormula + shape.lpFormula + 'V' + 'LP').includes(symbol) && (
-                    <div className="flex justify-between items-center py-4 border-b border-gray-100">
+                    <div className={
+                        'flex justify-between items-center py-4 border-b' +
+                        (i === MATH_SYMBOLS.length ? ' border-gray-100' : '')
+                    }>
                         <div className="w-7/12">
                             {title} ({symbol})
                         </div>
                         {/* <div className="w-5/12"> */}
-                        <span className="font-semibold">
+                        <span className="font-semibold text-gray-800">
                             {(observation as { [key: string]: any })[symbol.toLowerCase()] || 0} {symbol === 'V' ? 'cm³' : (symbol === 'LP' ? 'cm²' : 'cm')}
                         </span>
                         {/* <label className="input-group">

@@ -1,8 +1,8 @@
 // Utils
-import { formatFormula } from '../Utils';
+import { formatFormula } from '../../Utils';
 
 // Types
-import type Shape from '../types/Shape';
+import type Shape from '../../types/Shape';
 
 type Props = {
     shape: Shape,
@@ -10,8 +10,9 @@ type Props = {
 };
 
 const CalculationInfoTab = ({ shape, onSubmit }: Props) => (
-    <>
-        <h1 className="text-lg font-semibold mb-3">{shape.name}</h1>
+    <div className="text-gray-500">
+        <h1 className="text-lg text-gray-800 font-semibold mb-3">{shape.name}</h1>
+        
         <p className="text-sm mb-4">{shape.description}</p>
 
         <ul className="text-sm">
@@ -19,13 +20,13 @@ const CalculationInfoTab = ({ shape, onSubmit }: Props) => (
                 <span>
                     Rumus Volume (V)
                 </span>
-                <span className="font-semibold">{formatFormula(shape.vFormula)}</span>
+                <span className="text-gray-800 font-semibold">{formatFormula(shape.vFormula)}</span>
             </li>
             <li className="flex justify-between py-4 border-t">
                 <span>
                     Rumus Luas Permukan (LP)
                 </span>
-                <span className="font-semibold">{formatFormula(shape.lpFormula)}</span>
+                <span className="text-gray-800 font-semibold">{formatFormula(shape.lpFormula)}</span>
             </li>
         </ul>
 
@@ -34,7 +35,7 @@ const CalculationInfoTab = ({ shape, onSubmit }: Props) => (
                 SELANJUTNYA
             </button>
         </div>
-    </>
+    </div>
 );
 
 export default CalculationInfoTab;

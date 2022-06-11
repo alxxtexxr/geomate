@@ -1,6 +1,9 @@
 import '../styles/globals.css';
 import { SessionProvider, useSession } from 'next-auth/react';
 
+// Components
+import Loader from '../components/Loader';
+
 // Types
 import type { AppProps } from 'next/app';
 import type ComponentWithAuth from '../types/ComponentWithAuth';
@@ -25,8 +28,8 @@ const Auth = ({ children }: AuthProps) => {
     // if `{ required: true }` is supplied, `status` can only be "loading" or "authenticated"
     const { status } = useSession({ required: true });
 
-    if (status === 'loading') {
-        return (<div>Loading...</div>);
+    if (status === 'loading' && true) {
+        return (<Loader />);
     }
 
     return children;
