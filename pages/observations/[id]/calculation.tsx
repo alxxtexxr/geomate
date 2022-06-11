@@ -19,7 +19,7 @@ import { getShapeByCodename, getS } from '../../../Utils';
 import type { GetServerSideProps } from 'next';
 import type ComponentWithAuth from '../../../types/ComponentWithAuth';
 import type Shape from '../../../types/Shape';
-import type Observation from '../../../types/Observation';
+import type { Observation } from '@prisma/client';
 import type CalculationForm from '../../../types/CalculationForm';
 
 type Props = {
@@ -141,7 +141,7 @@ const Calculation: ComponentWithAuth<Props> = ({ observation, shape }) => {
           {TABS.map(({ title }, i) => (
             <a
               className={
-                'tab tab-bordered w-1/3 h-auto py-2 uppercase font-semibold' + 
+                'tab tab-bordered w-1/3 h-auto py-2 uppercase font-semibold' +
                 (i === activeTab ? ' text-primary border-primary' : ' text-gray-400 border-gray-200')
               }
               key={i}
@@ -162,9 +162,12 @@ const Calculation: ComponentWithAuth<Props> = ({ observation, shape }) => {
 Calculation.auth = true;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  const headers = context.req.headers;
   const id = context?.params?.id || null;
 
-  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/observations/${id}`);
+  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/observations/${id}`, {
+    headers: { 'Cookie': headers.cookie as string },
+  });
   const observation = await res.json();
   const shape = getShapeByCodename(observation.shapeCodename);
 

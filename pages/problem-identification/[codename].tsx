@@ -13,7 +13,7 @@ import { getShapeByCodename } from '../../Utils';
 import type { GetServerSideProps } from 'next';
 import type ComponentWithAuth from '../../types/ComponentWithAuth';
 import type Shape from '../../types/Shape';
-import type Observation from '../../types/Observation';
+import type { Observation } from '@prisma/client';
 
 type Props = {
     shape: Shape,

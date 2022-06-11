@@ -14,25 +14,27 @@ const handle = async (req: NextApiRequest, res: NextApiResponse) => {
             case 'POST':
                 const { shapeCodename } = req.body;
 
-                const evaluation = await prisma.evaluation.create({
-                    data: {
-                        user: { connect: { email: session.user?.email as string } },
-                    },
-                });
-
                 const questions = await prisma.question.findMany({
                     where: {
                         shapeCodename: shapeCodename,
                     },
-                })
-
-                await prisma.evaluationQuestion.createMany({
-                    data: questions.map((question) => ({
-                        evaluationId: evaluation.id,
-                        questionId: question.id
-                    })),
                 });
 
+                const evaluation = await prisma.evaluation.create({
+                    data: {
+                        user: { connect: { email: session.user?.email as string } },
+                        evaluationQuestions: {
+                            create: questions.map((question) => ({
+                                question: {
+                                    connect: {
+                                        id: question.id,
+                                    }
+                                }
+                            }))
+                        }
+                    },
+                });
+                
                 res.json(evaluation);
                 break;
             default:

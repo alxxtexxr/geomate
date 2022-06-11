@@ -16,8 +16,7 @@ import { getShapeByCodename } from '../../Utils';
 import type { GetServerSideProps } from 'next';
 import type ComponentWithAuth from '../../types/ComponentWithAuth';
 import type Shape from '../../types/Shape';
-import type Observation from '../../types/Observation';
-import type Evaluation from '../../types/Evaluation';
+import type { Observation, Evaluation } from '@prisma/client';
 
 // Constants
 import { MATH_SYMBOLS } from '../../Constants';
@@ -91,7 +90,7 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
                     <div className={
                         'flex justify-between items-center py-4 border-gray-100' +
                         (i + 1 < _mathSymbols.length ? '  border-b' : '')
-                    }>
+                    } key={symbol}>
                         <div className="w-7/12">
                             {title} ({symbol})
                         </div>
@@ -137,9 +136,12 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
 ObservationPage.auth = true;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+    const headers = context.req.headers;
     const id = context?.params?.id || null;
 
-    const res = await fetch(`${process.env.NEXTAUTH_URL}/api/observations/${id}`);
+    const res = await fetch(`${process.env.NEXTAUTH_URL}/api/observations/${id}`, {
+        headers: { 'Cookie': headers.cookie as string },
+    });
     const observation = await res.json();
     const shape = getShapeByCodename(observation.shapeCodename);
 

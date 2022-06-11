@@ -10,6 +10,10 @@ module.exports = {
         'google-focus': '#e13219',
         'facebook': '#4267B2',
         'facebook-focus': '#34518d',
+        // primary: {
+        //   50: '#dbe8ff',
+        // }
+        'primary-100': '#dbe8ff',
       }
     },
   },
@@ -20,6 +24,7 @@ module.exports = {
           'primary': '#5393FF',
           'primary-focus': '#2073FF',
           'primary-content': '#FFFFFF',
+          
           'base-100': '#E9EDFE',
           'base-200': '#83B1FE',
         },
