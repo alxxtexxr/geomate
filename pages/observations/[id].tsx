@@ -25,49 +25,46 @@ type Props = {
 };
 
 const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
-    // Animate the 3D model
-    const [{ rotation }] = useSpring(() => ({
-        rotation: [0, 0, 0],
-        config: { mass: 10, tension: 1000, friction: 300, precision: 0.00001 }
-    }))
-
+    const _mathSymbols = MATH_SYMBOLS.filter(({ symbol, title }) => (shape.vFormula + shape.lpFormula + 'V' + 'LP').includes(symbol));
 
     return (
         <main className="relative flex flex-col bg-base-100 h-screen pb-20">
             <Navbar title="Hasil Observasi" />
 
             {/* <section> */}
-            <div className="px-4 mb-4">
-                <div className="relative inline-flex bg-white w-full p-2 rounded-xl shadow overflow-hidden">
-                    <div className="relative h-60 w-full">
-                        <Image
-                            src="/images/placeholder-image.jpeg"
-                            alt="Stimulasi"
-                            className="rounded-lg"
-                            layout="fill"
-                            objectFit="cover"
-                        />
-                    </div>
-                    <div className="absolute right-0 bottom-0 bg-white h-20 w-20 rounded-tl-xl">
-                        <Canvas>
-                            <ambientLight color="#888888" />
-                            <pointLight position={[10, 20, 0]} />
-                            <ShapeComponent
-                                codename={shape.codename}
-                                {...observation}
-                                r={(observation.r || 20) / 10}
-                                t={(observation.t || 20) / 10}
+            {observation.image && (
+                <div className="px-4 mb-4">
+                    <div className="relative inline-flex bg-white w-full p-2 rounded-xl shadow overflow-hidden">
+                        <div className="relative h-60 w-full">
+                            <Image
+                                src={observation.image}
+                                alt="Stimulasi"
+                                className="rounded-lg"
+                                layout="fill"
+                                objectFit="cover"
                             />
-                        </Canvas>
+                        </div>
+                        <div className="absolute right-0 bottom-0 bg-white h-20 w-20 rounded-tl-xl">
+                            <Canvas>
+                                <ambientLight color="#888888" />
+                                <pointLight position={[10, 20, 0]} />
+                                <ShapeComponent
+                                    codename={shape.codename}
+                                    {...observation}
+                                    r={(observation.r || 20) / 10}
+                                    t={(observation.t || 20) / 10}
+                                />
+                            </Canvas>
+                        </div>
                     </div>
                 </div>
-            </div>
+            )}
 
             <div className="flex-grow bg-white text-gray-500 p-4 text-sm rounded-t-xl shadow">
-                {MATH_SYMBOLS.map(({ symbol, title }, i) => (shape.vFormula + shape.lpFormula + 'V' + 'LP').includes(symbol) && (
+                {_mathSymbols.map(({ symbol, title }, i) => (
                     <div className={
-                        'flex justify-between items-center py-4 border-b' +
-                        (i === MATH_SYMBOLS.length ? ' border-gray-100' : '')
+                        'flex justify-between items-center py-4 border-gray-100' +
+                        (i + 1 < _mathSymbols.length ? '  border-b' : '')
                     }>
                         <div className="w-7/12">
                             {title} ({symbol})

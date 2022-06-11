@@ -14,6 +14,7 @@ const nextConfig = {
   },
   images: {
     domains: [
+      'res.cloudinary.com',
       'api.lorem.space',
       'lh3.googleusercontent.com',
       'platform-lookaside.fbsbx.com',

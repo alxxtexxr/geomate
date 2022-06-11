@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "dev-prisma-studio": "dotenv -e .env.development.local prisma studio",
+    "dev-prisma-db-push": "dotenv -e .env.development.local prisma db push",
+    "dev-prisma-generate": "dotenv -e .env.development.local prisma generate"
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.3",
@@ -19,6 +22,7 @@
     "@use-gesture/react": "^10.2.12",
     "cloudinary": "^1.25.0",
     "daisyui": "^2.15.2",
+    "dotenv-cli": "^5.1.0",
     "expr-eval": "^2.0.2",
     "formidable": "^1.2.2",
     "next": "12.1.6",
