@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import classNames from 'classnames';
 
 // Types
 import type { InputHTMLAttributes, ChangeEvent } from 'react';
@@ -31,10 +30,10 @@ const ConditionalInput = ({ correctValue, className, incorrectMessage, suffix, o
             {suffix ? (
                 <label className="input-group input-error">
                     <input
-                        className={classNames('input input-bordered w-full font-normal', {
-                            'input-primary': isCorrect,
-                            'input-error': !isCorrect,
-                        })}
+                        className={
+                            'input input-bordered w-full font-normal' +
+                            (isCorrect ? ' input-primary' : ' input-error')
+                        }
                         onChange={handleChange}
                         {...props}
                     />
@@ -44,10 +43,10 @@ const ConditionalInput = ({ correctValue, className, incorrectMessage, suffix, o
                 </label>
             ) : (
                 <input
-                    className={classNames('input input-bordered w-full font-normal', {
-                        'input-primary': isCorrect,
-                        'input-error': !isCorrect,
-                    })}
+                    className={
+                        'input input-bordered w-full font-normal' +
+                        (isCorrect ? ' input-primary' : ' input-error')
+                    }
                     onChange={handleChange}
                     {...props}
                 />

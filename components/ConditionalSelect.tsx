@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import classNames from 'classnames';
 
 // Types
 import type { SelectHTMLAttributes, ChangeEvent } from 'react';
@@ -34,10 +33,10 @@ const ConditionalSelect = ({ options, correctOptionValue, className, incorrectMe
     return (
         <div className={className}>
             <select
-                className={classNames('select select-bordered w-full font-normal', {
-                    'select-primary': isCorrect,
-                    'select-error': !isCorrect,
-                })}
+                className={
+                    'select select-bordered w-full font-normal' +
+                    (isCorrect ? 'select-primary' : 'select-error')
+                }
                 onChange={handleChange}
                 {...props}
             >

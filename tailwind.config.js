@@ -17,11 +17,11 @@ module.exports = {
     themes: [
       {
         mytheme: {
-          // 'primary': '#83B1FE',
           'primary': '#5393FF',
           'primary-focus': '#2073FF',
           'primary-content': '#FFFFFF',
           'base-100': '#E9EDFE',
+          'base-200': '#83B1FE',
         },
       },
     ],

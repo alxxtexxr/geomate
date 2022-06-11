@@ -12,13 +12,13 @@ const Home: ComponentWithAuth = () => {
   const { data: session } = useSession();
 
   return (
-    <main className="bg-base-200 min-h-screen">
+    <main className="bg-base-100 min-h-screen">
       {/* Header */}
-      <header className="flex flex-col justify-center text-center bg-primary-content pt-8 pb-14">
+      <header className="flex flex-col justify-center text-center bg-base-200 text-primary-content pt-8 pb-14">
         <div className="mb-4">
           <div className="avatar">
             <div
-              className="relative h-24 w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2"
+              className="relative h-24 w-24 rounded-full ring ring-white  shadow"
               style={{ backgroundColor: '#C4C5C9' }}
             >
               <Image
@@ -30,7 +30,7 @@ const Home: ComponentWithAuth = () => {
             </div>
           </div>
         </div>
-        <h1 className="font-semibold">Halo, {session?.user?.name || 'Kamu'}</h1>
+        <h1 className="font-semibold text-lg">Halo, {session?.user?.name || 'Kamu'}</h1>
         <p className="text-sm">Mau belajar apa hari ini?</p>
       </header>
 
@@ -41,8 +41,8 @@ const Home: ComponentWithAuth = () => {
             <div className="relative h-10 w-10 mr-4">
               <Image src="/images/kikd.png" alt="KI/KD" layout="fill" />
             </div>
-            <h2 className="font-semibold">
-              KI/KD
+            <h2 className="font-semibold text-black text-opacity-90">
+              Pendahuluan
             </h2>
           </div>
           {SHAPES.map(({ id, name, codename }) => (
@@ -51,7 +51,7 @@ const Home: ComponentWithAuth = () => {
                 <div className="relative h-20 w-20 mb-4">
                   <Image src={`/images/${codename}.png`} alt={name} layout="fill" />
                 </div>
-                <h2 className="font-semibold">
+                <h2 className="font-semibold text-black text-opacity-90">
                   {name}
                 </h2>
               </div>

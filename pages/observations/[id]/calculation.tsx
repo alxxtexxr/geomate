@@ -3,7 +3,6 @@ import { Canvas } from '@react-three/fiber';
 import { useSpring } from '@react-spring/three';
 import { useDrag } from '@use-gesture/react';
 import { HiOutlineCube } from 'react-icons/hi';
-import cx from 'classnames';
 import Router from 'next/router';
 
 // Components
@@ -33,7 +32,7 @@ const Calculation: ComponentWithAuth<Props> = ({ observation, shape }) => {
   const [{ rotation }, setRotation] = useSpring(() => ({
     rotation: [0, 0, 0],
     config: { mass: 10, tension: 1000, friction: 300, precision: 0.00001 }
-  }))
+  }));
 
   const bind = useDrag(({ delta, velocity, direction, memo = rotation.get() }) => {
     const x = memo[0] + (delta[1] / window.innerWidth) * 180;
@@ -141,10 +140,10 @@ const Calculation: ComponentWithAuth<Props> = ({ observation, shape }) => {
         <div className="tabs sticky top-0 z-20 bg-white pt-2 px-4 rounded-tl-xl rounded-tr-xl">
           {TABS.map(({ title }, i) => (
             <a
-              className={cx('tab tab-bordered w-1/3 h-auto py-2 uppercase font-semibold', {
-                'text-gray-400 border-gray-200': i !== activeTab,
-                'text-primary border-primary': i === activeTab,
-              })}
+              className={
+                'tab tab-bordered w-1/3 h-auto py-2 uppercase font-semibold' + 
+                (i === activeTab ? ' text-primary border-primary' : ' text-gray-400 border-gray-200')
+              }
               key={i}
             >
               {title}

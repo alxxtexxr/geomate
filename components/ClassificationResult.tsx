@@ -1,6 +1,5 @@
 import Sheet from 'react-modal-sheet';
 import { HiCheck, HiX } from 'react-icons/hi';
-import classNames from 'classnames';
 
 // Components
 import Spinner from './Spinner';
@@ -40,10 +39,10 @@ const ClassificationResult = ({ isOpen, setIsOpen, shape, predictedShape, isSubm
                 <Sheet.Content onViewportBoxUpdate>
                     <div className="text-center pt-14 pb-4 px-4">
                         <div className="px-4 mb-8">
-                            <h1 className={classNames('font-semibold leading-none mb-2', {
-                                ['text-primary']: isCorrect,
-                                ['text-red-500']: !isCorrect,
-                            })}>
+                            <h1 className={
+                                'font-semibold leading-none mb-2' +
+                                (isCorrect ? ' text-primary' : ' text-red-500')
+                            }>
                                 {predictedShape.name}
                             </h1>
                             <h2 className="text-sm">

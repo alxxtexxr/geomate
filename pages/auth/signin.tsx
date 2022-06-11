@@ -17,14 +17,14 @@ type Props = {
 const SignIn: ComponentWithAuth<Props> = ({ providers }) => {
     return (
         <main className="bg-base-100 min-h-screen">
-            <header className="flex justify-center items-center bg-primary py-8 mb-8 rounded-b-xl shadow">
+            <header className="flex justify-center items-center bg-base-200 text-white py-8 mb-8 rounded-b-xl">
                 <div className="relative h-20 w-20 mr-2">
                     <Image src="/images/logo.png"
                         layout="fill"
                         objectFit="contain"
                     />
                 </div>
-                <h1 className="text-4xl text-primary-content">
+                <h1 className="text-4xl">
                     GeoMate
                 </h1>
             </header>

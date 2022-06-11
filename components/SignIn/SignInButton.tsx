@@ -1,5 +1,4 @@
 import { signIn } from 'next-auth/react';
-import classNames from 'classnames';
 
 // Components
 import Icon from './SignInButtonIcon';
@@ -12,15 +11,16 @@ type Props = {
 };
 
 const SignInButton = ({ provider }: Props) => {
-    const addCns: { [key: string]: string } = {
+    const providerNameCx: { [key: string]: string } = {
         google: 'bg-google hover:bg-google-focus border-google hover:border-google-focus',
         facebook: 'bg-facebook hover:bg-facebook-focus border-facebook hover:border-facebook-focus',
     };
+    const cx =
+        'btn w-full text-white' +
+        (provider.name ? ` ${providerNameCx[provider.name]}` : '');
 
     return (
-        <button className={classNames('btn w-full text-white', addCns[provider.name.toLowerCase()])}
-            onClick={() => signIn(provider.id)}
-        >
+        <button className={cx} onClick={() => signIn(provider.id)}>
             <Icon providerName={provider.name} className="text-lg mr-2 -mt-1" />
             Masuk dengan {provider.name}
         </button>
