@@ -2,7 +2,7 @@ import { useState } from 'react';
 // import Router from 'next/router';
 import { useRouter } from 'next/router';
 // import Image from 'next/image';
-// import Link from 'next/link';
+import Link from 'next/link';
 import { Prisma } from '@prisma/client'
 
 // Components
@@ -50,12 +50,19 @@ const EvalutionPage: ComponentWithAuth<Props> = ({ evaluation }) => {
             <div className="flex overflow-x-scroll px-3 mb-4">
                 {evaluation.evaluationQuestions.map((evaluationQuestion, i) => (
                     <div className="px-1" key={evaluationQuestion.question.id}>
-                        <a className={
-                            'btn btn-circle btn-sm btn-primary ' +
-                            (no - 1 === i ? ' shadow' : ' btn-outline')
-                        }>
-                            {i + 1}
-                        </a>
+                        <Link href={{
+                            pathname: '/evaluations/[id]',
+                            query: { id: evaluation.id, no: i + 1 }
+                        }} shallow>
+                            <button
+                                className={
+                                    'btn btn-circle btn-sm btn-primary ' +
+                                    (no - 1 === i ? ' shadow' : ' btn-outline')
+                                }
+                            >
+                                {i + 1}
+                            </button>
+                        </Link>
                     </div>
                 ))}
             </div>
@@ -98,7 +105,7 @@ const EvalutionPage: ComponentWithAuth<Props> = ({ evaluation }) => {
                     Jawab
                 </button>
             </div>
-        </main>
+        </main >
     );
 };
 
