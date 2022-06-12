@@ -3,7 +3,7 @@ import { getSession } from 'next-auth/react';
 import prisma from '../../../lib/prisma';
 
 // GET /api/evaluations/:id
-// PUT /api/evaluations
+// PUT /api/evaluations/:id
 // Optional fields in body: shapeCodename
 const handle = async (req: NextApiRequest, res: NextApiResponse) => {
     const { id } = req.query;
@@ -19,6 +19,7 @@ const handle = async (req: NextApiRequest, res: NextApiResponse) => {
                         score: true,
                         evaluationQuestions: {
                             select: {
+                                answer: true,
                                 question: {
                                     select: {
                                         id: true,
@@ -40,26 +41,31 @@ const handle = async (req: NextApiRequest, res: NextApiResponse) => {
                 res.json(evaluation);
                 break;
             case 'PUT':
-                // const { nVertices, nEdges, nFaces, r, t, s, la, lst, ka, v, lp } = req.body;
+                const { isCompleted } = req.body;
+                let completedAt, score;
 
-                // const result = await prisma.evaluation.update({
-                //     where: { id: id as string },
-                //     data: {
-                //         nVertices: nVertices,
-                //         nEdges: nEdges,
-                //         nFaces: nFaces,
-                //         r: r,
-                //         t: t,
-                //         s: s,
-                //         la: la,
-                //         lst: lst,
-                //         ka: ka,
-                //         v: v,
-                //         lp: lp,
-                //     },
-                // });
+                if (isCompleted) {
+                    completedAt = new Date();
 
-                // res.json(result);
+                    const evaluationQuestions = await prisma.evaluationQuestion.findMany({
+                        where: { evaluationId: id as string },
+                    });
+                    const nEvaluationQuestions = evaluationQuestions.length;
+                    const nCorrectEvaluationQuestions = evaluationQuestions.filter((evaluationQuestion) => evaluationQuestion.isCorrect).length;
+                    
+                    score = nCorrectEvaluationQuestions / nEvaluationQuestions * 100;
+                }
+
+                const result = await prisma.evaluation.update({
+                    where: { id: id as string },
+                    data: {
+                        isCompleted: isCompleted,
+                        completedAt: completedAt,
+                        score: score,
+                    },
+                });
+
+                res.json(result);
                 break;
             default:
                 throw new Error(`The HTTP ${req.method} method is not supported at this route.`);

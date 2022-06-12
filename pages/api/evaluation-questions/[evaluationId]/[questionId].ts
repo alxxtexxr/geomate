@@ -1,27 +1,38 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
-import prisma from '../../../lib/prisma';
+import prisma from '../../../../lib/prisma';
 
-// PUT /api/evaluations
+// Types
+import type { NextApiRequest, NextApiResponse } from 'next';
+
+// PUT /api/evaluation-questions/:evaluationId/:questionId
 // Required fields in body: evaluationId, questionId, answer
 const handle = async (req: NextApiRequest, res: NextApiResponse) => {
-    const { id } = req.query;
+    const { evaluationId, questionId } = req.query;
     const session = await getSession({ req });
 
     if (session) { // Disable this if you want to test it with Postman
         switch (req.method) {
             case 'PUT':
-                const { evaluationId, questionId, answer } = req.body;
+                const { answer } = req.body;
+
+                const question = await prisma.question.findUnique({
+                    where: {
+                        id: questionId as string,
+                    },
+                });
+
+                const isCorrect = question?.correctAnswer === answer;
 
                 const result = await prisma.evaluationQuestion.update({
                     where: {
                         evaluationId_questionId: {
-                            evaluationId: evaluationId,
-                            questionId: questionId,
+                            evaluationId: evaluationId as string,
+                            questionId: questionId as string,
                         },
                     },
                     data: {
                         answer: answer,
+                        isCorrect: isCorrect,
                     },
                 });
 
