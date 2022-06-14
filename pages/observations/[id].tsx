@@ -112,8 +112,7 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 ))}
             </section>
 
-            <section className="fixed left-0 bottom-0 grid grid-cols-2 gap-4 bg-white w-screen p-4 shadow">
-
+            <section className="fixed left-0 bottom-0 grid grid-cols-2 gap-4 bg-white w-screen p-4">
                 {isLoading ? (
                     <button className="btn w-full" disabled>
                         <Spinner />

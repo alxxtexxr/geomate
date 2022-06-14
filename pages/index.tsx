@@ -18,7 +18,7 @@ const Home: ComponentWithAuth = () => {
         <div className="mb-4">
           <div className="avatar">
             <div
-              className="relative h-24 w-24 rounded-full ring ring-white  shadow"
+              className="relative h-24 w-24 rounded-full ring ring-white shadow"
               style={{ backgroundColor: '#C4C5C9' }}
             >
               <Image

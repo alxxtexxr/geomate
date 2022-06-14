@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 import { Prisma } from '@prisma/client'
 
 // Components
 import Navbar from '../../../../components/Navbar';
 import Spinner from '../../../../components/Spinner';
+import EvaluationQuestion from '../../../../components/EvaluationQuestion';
 
 // Types
 import type { GetServerSideProps } from 'next';
@@ -87,31 +87,11 @@ const EvaluationQuestionPage: ComponentWithAuth<Props> = ({ evaluation }) => {
     return (
         <main>
             <Navbar title="Evaluasi" />
-            <nav className="mb-4">
-                <ol className="flex overflow-x-scroll px-3">
-                    {evaluation.evaluationQuestions.map((evaluationQuestion, i) => (
-                        <li className="px-1" key={evaluationQuestion.question.id}>
-                            <Link href={{
-                                pathname: '/evaluations/[id]/no/[no]',
-                                query: { id: evaluation.id, no: i + 1 },
-                            }}>
-                                <button
-                                    className={
-                                        'btn btn-circle hover:border-primary border-primary' +
-                                        (no - 1 === i
-                                            ? ' hover:bg-primary bg-primary text-primary-content shadow'
-                                            : (evaluationQuestion.answer
-                                                ? ' hover:bg-primary-100 bg-primary-100 text-primary '
-                                                : ' text-primary'))
-                                    }
-                                >
-                                    {i + 1}
-                                </button>
-                            </Link>
-                        </li>
-                    ))}
-                </ol>
-            </nav>
+
+            <EvaluationQuestion.Pagination
+                evaluationQuestions={evaluation.evaluationQuestions}
+                no={no}
+            />
 
             <section className="text-gray-500 px-4">
                 <p className="mb-8">
@@ -119,15 +99,15 @@ const EvaluationQuestionPage: ComponentWithAuth<Props> = ({ evaluation }) => {
                 </p>
 
                 <div className="grid grid-cols-1 gap-4">
-                    {activeQuestion.answerChoices.map((answerChoice) => (
+                    {activeQuestion.answerChoices.map((answerChoice, i) => (
                         <label
                             htmlFor={answerChoice.id}
                             className={
-                                'btn' +
+                                'btn justify-start font-normal normal-case' +
                                 (
                                     answerChoice.id === answer
-                                        ? ' bg-primary-100 hover:bg-primary-100 text-primary border-primary hover:border-primary'
-                                        : ' bg-white hover:bg-white text-primary border-white hover:border-primary shadow'
+                                        ? ' bg-primary hover:bg-primary bg-opacity-5 hover:bg-opacity-5 text-primary border-primary hover:border-primary'
+                                        : ' bg-white hover:bg-white text-gray-500 border-white hover:border-primary shadow'
                                 )
                             }
                             key={answerChoice.id}
@@ -140,6 +120,16 @@ const EvaluationQuestionPage: ComponentWithAuth<Props> = ({ evaluation }) => {
                                 value={answerChoice.id}
                                 onChange={(e) => setAnswer(e.target.value)}
                             />
+                            <span className={
+                                'badge text-primary h-8 w-8 mr-4 border-none' +
+                                (
+                                    answerChoice.id !== answer
+                                        ? ' bg-primary bg-opacity-20'
+                                        : ''
+                                )
+                            }>
+                                {['A', 'B', 'C', 'D'][i]}
+                            </span>
                             {answerChoice.answer}
                         </label>
                     ))}

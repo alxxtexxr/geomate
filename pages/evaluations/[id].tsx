@@ -3,7 +3,7 @@ import { Prisma } from '@prisma/client';
 
 // Components
 // import Navbar from '../../components/Navbar';
-import EvaluationQuestionAnswer from '../../components/EvaluationQuestionAnswer';
+import EvaluationAnswer from '../../components/EvaluationAnswer';
 
 // Utils
 import { range } from '../../Utils';
@@ -37,7 +37,7 @@ const EvaluationPage: ComponentWithAuth<Props> = ({ evaluation }) => {
 
             <section className="flex flex-col flex-grow justify-center items-center text-center px-8">
                 <div className="rating rating-lg rating-half mb-6">
-                    <input type="radio" name="rating-10" className="rating-hidden" />
+                    <input type="radio" name="rating-10" className="rating-hidden" checked={!evaluation.score} />
                     {range(10).map((i) => (
                         <input
                             type="radio"
@@ -47,6 +47,7 @@ const EvaluationPage: ComponentWithAuth<Props> = ({ evaluation }) => {
                                 ((i + 1) % 2 ? ' mask-half-1 ml-0.5' : ' mask-half-2 mr-0.5')
                             }
                             checked={(i + 1) === (evaluation.score / 10)}
+                            readOnly
                             key={i}
                         />
                     ))}
@@ -62,12 +63,12 @@ const EvaluationPage: ComponentWithAuth<Props> = ({ evaluation }) => {
                     <ol className="flex flex-wrap justify-center p-1">
                         {evaluation.evaluationQuestions.map((evaluationQuestion, i) => (
                             <li className="p-1" key={evaluationQuestion.question.id}>
-                                <EvaluationQuestionAnswer isCorrect={evaluationQuestion.isCorrect || false} no={i + 1} />
+                                <EvaluationAnswer isCorrect={evaluationQuestion.isCorrect || false} no={i + 1} />
                             </li>
                         ))}
                         {range(7).map((i) => (
                             <li className="p-1" key={i}>
-                                <EvaluationQuestionAnswer isCorrect={true} no={i + 4} />
+                                <EvaluationAnswer isCorrect={true} no={i + 4} />
                             </li>
                         ))}
                     </ol>

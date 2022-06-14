@@ -19,6 +19,7 @@ const handle = async (req: NextApiRequest, res: NextApiResponse) => {
                         score: true,
                         evaluationQuestions: {
                             select: {
+                                evaluationId: true,
                                 answer: true,
                                 question: {
                                     select: {
