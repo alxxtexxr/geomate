@@ -1,16 +1,11 @@
 import { useEffect, useState } from 'react';
-// import Router from 'next/router';
 import { useRouter } from 'next/router';
-// import Image from 'next/image';
 import Link from 'next/link';
-import { EvaluationQuestion, Prisma } from '@prisma/client'
+import { Prisma } from '@prisma/client'
 
 // Components
 import Navbar from '../../../../components/Navbar';
 import Spinner from '../../../../components/Spinner';
-
-// Utils
-import { range } from '../../../../Utils';
 
 // Types
 import type { GetServerSideProps } from 'next';
@@ -71,13 +66,13 @@ const EvaluationQuestionPage: ComponentWithAuth<Props> = ({ evaluation }) => {
                     query: { id: evaluation.id, no: no + 1 },
                 });
             } else {
+                // If last question
                 await fetch(`/api/evaluations/${evaluation.id}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ isCompleted: true }),
                 });
 
-                // If last question
                 await router.push({
                     pathname: '/evaluations/[id]',
                     query: { id: evaluation.id },
@@ -92,29 +87,31 @@ const EvaluationQuestionPage: ComponentWithAuth<Props> = ({ evaluation }) => {
     return (
         <main>
             <Navbar title="Evaluasi" />
-            <div className="flex overflow-x-scroll px-3 mb-4">
-                {evaluation.evaluationQuestions.map((evaluationQuestion, i) => (
-                    <div className="px-1" key={evaluationQuestion.question.id}>
-                        <Link href={{
-                            pathname: '/evaluations/[id]/no/[no]',
-                            query: { id: evaluation.id, no: i + 1 },
-                        }}>
-                            <button
-                                className={
-                                    'btn btn-circle btn-sm hover:border-primary border-primary' +
-                                    (no - 1 === i
-                                        ? ' hover:bg-primary bg-primary text-primary-content shadow'
-                                        : (evaluationQuestion.answer
-                                            ? ' hover:bg-primary-100 bg-primary-100 text-primary '
-                                            : ' text-primary'))
-                                }
-                            >
-                                {i + 1}
-                            </button>
-                        </Link>
-                    </div>
-                ))}
-            </div>
+            <nav className="mb-4">
+                <ol className="flex overflow-x-scroll px-3">
+                    {evaluation.evaluationQuestions.map((evaluationQuestion, i) => (
+                        <li className="px-1" key={evaluationQuestion.question.id}>
+                            <Link href={{
+                                pathname: '/evaluations/[id]/no/[no]',
+                                query: { id: evaluation.id, no: i + 1 },
+                            }}>
+                                <button
+                                    className={
+                                        'btn btn-circle hover:border-primary border-primary' +
+                                        (no - 1 === i
+                                            ? ' hover:bg-primary bg-primary text-primary-content shadow'
+                                            : (evaluationQuestion.answer
+                                                ? ' hover:bg-primary-100 bg-primary-100 text-primary '
+                                                : ' text-primary'))
+                                    }
+                                >
+                                    {i + 1}
+                                </button>
+                            </Link>
+                        </li>
+                    ))}
+                </ol>
+            </nav>
 
             <section className="text-gray-500 px-4">
                 <p className="mb-8">
@@ -149,7 +146,7 @@ const EvaluationQuestionPage: ComponentWithAuth<Props> = ({ evaluation }) => {
                 </div>
             </section>
 
-            <div className="fixed left-0 bottom-0 z-20 w-screen p-4">
+            <section className="fixed left-0 bottom-0 z-20 w-screen p-4">
                 {/* Jika telah menjawab semua baru bisa mengumpul jawaban */}
 
                 {answer ? (
@@ -167,7 +164,7 @@ const EvaluationQuestionPage: ComponentWithAuth<Props> = ({ evaluation }) => {
                         {no < evaluation.evaluationQuestions.length ? 'Jawab' : 'Kumpulkan Jawaban'}
                     </button>
                 )}
-            </div>
+            </section>
         </main >
     );
 };

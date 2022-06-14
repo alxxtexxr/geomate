@@ -39,7 +39,7 @@ const Stimulation: ComponentWithAuth<Props> = ({ shape }) => {
 
             <section className="p-4">
                 <Link href={`/problem-identification/${shape.codename}`}>
-                    <button className="btn btn-primary btn-outline w-full">SELANJUTNYA</button>
+                    <button className="btn btn-primary w-full">SELANJUTNYA</button>
                 </Link>
             </section>
         </main>

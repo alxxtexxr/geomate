@@ -40,7 +40,7 @@ const ClassificationResult = ({ isOpen, setIsOpen, shape, predictedShape, isSubm
                     <div className="text-center pt-14 pb-4 px-4">
                         <div className="px-4 mb-8">
                             <h1 className={
-                                'font-semibold leading-none mb-2' +
+                                'font-semibold mb-2' +
                                 (isCorrect ? ' text-primary' : ' text-red-500')
                             }>
                                 {predictedShape.name}
