@@ -45,11 +45,11 @@ const Home: ComponentWithAuth = () => {
               Pendahuluan
             </h2>
           </div>
-          {SHAPES.map(({ id, name, codename }) => (
-            <Link href={`/stimulation/${codename}`} key={id}>
+          {SHAPES.map(({ id, name, code }) => (
+            <Link href={`/stimulation/${code}`} key={id}>
               <div className="flex flex-col justify-center items-center bg-white py-8 shadow rounded-xl">
                 <div className="relative h-20 w-20 mb-4">
-                  <Image src={`/images/${codename}.png`} alt={name} layout="fill" />
+                  <Image src={`/images/${code}.png`} alt={name} layout="fill" />
                 </div>
                 <h2 className="font-semibold text-gray-800">
                   {name}

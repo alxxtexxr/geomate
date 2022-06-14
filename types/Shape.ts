@@ -1,8 +1,8 @@
-import type { ShapeCodename } from '@prisma/client';
+import type { ShapeCode } from '@prisma/client';
 
 type Shape = {
     id: number,
-    codename: ShapeCodename,
+    code: ShapeCode,
     name: string,
     stimulation: string,
     stimulationImage: string,

@@ -6,7 +6,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 // GET /api/observations
 // POST /api/observations
-// Required fields in body: shapeCodename
+// Required fields in body: shapeCode
 const handle = async (req: NextApiRequest, res: NextApiResponse) => {
     const session = await getSession({ req });
 
@@ -24,11 +24,11 @@ const handle = async (req: NextApiRequest, res: NextApiResponse) => {
                 res.json(observations);
                 break;
             case 'POST':
-                const { shapeCodename } = req.body;
+                const { shapeCode } = req.body;
 
                 const result = await prisma.observation.create({
                     data: {
-                        shapeCodename: shapeCodename,
+                        shapeCode: shapeCode,
                         user: { connect: { email: session.user?.email as string } },
                     },
                 });

@@ -13,7 +13,7 @@ import CharTab from '../../../components/Mensuration/MensurationCharTab';
 import SizeTab from '../../../components/Mensuration/MensurationSizeTab';
 
 // Utils
-import { getShapeByCodename, getS } from '../../../Utils';
+import { getShapeByCode, getS } from '../../../Utils';
 
 // Types
 import type { GetServerSideProps } from 'next';
@@ -116,7 +116,7 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
           <ambientLight color="#888888" />
           <pointLight position={[10, 20, 0]} />
           <ShapeComponent
-            codename={shape.codename}
+            code={shape.code}
             {...form}
             r={form.r / 10}
             t={form.t / 10}
@@ -169,7 +169,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     headers: { 'Cookie': headers.cookie as string },
   });
   const observation = await res.json();
-  const shape = getShapeByCodename(observation.shapeCodename);
+  const shape = getShapeByCode(observation.shapeCode);
 
   return { props: { observation, shape } };
 };

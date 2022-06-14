@@ -4,7 +4,7 @@ export const SHAPES: Shape[] = [
     {
         id: 1,
         name: 'Bola',
-        codename: 'sphere',
+        code: 'sphere',
         stimulation: 'Ut Consequat Semper Viverra Nam?',
         stimulationImage: '/images/placeholder-image.jpeg',
         problemIdentification: 'Aliquam Faucibus Purus in Massa?',
@@ -19,7 +19,7 @@ export const SHAPES: Shape[] = [
     {
         id: 2,
         name: 'Tabung',
-        codename: 'cylinder',
+        code: 'cylinder',
         stimulation: 'Ut Consequat Semper Viverra Nam?',
         stimulationImage: '/images/placeholder-image.jpeg',
         problemIdentification: 'Aliquam Faucibus Purus in Massa?',
@@ -34,7 +34,7 @@ export const SHAPES: Shape[] = [
     {
         id: 3,
         name: 'Prisma',
-        codename: 'prism',
+        code: 'prism',
         stimulation: 'Ut Consequat Semper Viverra Nam?',
         stimulationImage: '/images/placeholder-image.jpeg',
         problemIdentification: 'Aliquam Faucibus Purus in Massa?',
@@ -49,7 +49,7 @@ export const SHAPES: Shape[] = [
     {
         id: 4,
         name: 'Kerucut',
-        codename: 'cone',
+        code: 'cone',
         stimulation: 'Ut Consequat Semper Viverra Nam?',
         stimulationImage: '/images/placeholder-image.jpeg',
         problemIdentification: 'Aliquam Faucibus Purus in Massa?',
@@ -64,7 +64,7 @@ export const SHAPES: Shape[] = [
     {
         id: 5,
         name: 'Limas',
-        codename: 'pyramid',
+        code: 'pyramid',
         stimulation: 'Ut Consequat Semper Viverra Nam?',
         stimulationImage: '/images/placeholder-image.jpeg',
         problemIdentification: 'Aliquam Faucibus Purus in Massa?',

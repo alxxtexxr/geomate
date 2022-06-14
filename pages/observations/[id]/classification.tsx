@@ -10,7 +10,7 @@ import ClassificationResult from '../../../components/ClassificationResult';
 import Spinner from '../../../components/Spinner';
 
 // Utils
-import { createImgElemement, dataURItoBlob, getShapeByCodename, getShapeByI } from '../../../Utils';
+import { createImgElemement, dataURItoBlob, getShapeByCode, getShapeByI } from '../../../Utils';
 
 // Types
 import type { GetServerSideProps } from 'next';
@@ -166,7 +166,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         headers: { 'Cookie': headers.cookie as string },
     });
     const observation = await res.json();
-    const shape = getShapeByCodename(observation.shapeCodename);
+    const shape = getShapeByCode(observation.shapeCode);
 
     return { props: { observation, shape } };
 };

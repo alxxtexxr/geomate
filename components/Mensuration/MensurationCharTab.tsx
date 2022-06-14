@@ -17,22 +17,22 @@ type Props = {
 };
 
 const MensurationCharTab = ({ shape, form, setForm, onSubmit }: Props) => {
-    const correctNVertices = (shape.codename === 'prism' || shape.codename === 'pyramid')
-        ? (shape.codename === 'prism' ? form.nBaseVertices * 2 : (
-            shape.codename === 'pyramid' ? form.nBaseVertices + 1 : form.nVertices
+    const correctNVertices = (shape.code === 'prism' || shape.code === 'pyramid')
+        ? (shape.code === 'prism' ? form.nBaseVertices * 2 : (
+            shape.code === 'pyramid' ? form.nBaseVertices + 1 : form.nVertices
         ))
         : form.nVertices;
     const correctNEdges =
-        (shape.codename === 'prism' || shape.codename === 'pyramid')
-            ? (shape.codename === 'prism' ? form.nBaseVertices * 3 : (
-                shape.codename === 'pyramid' ? form.nBaseVertices * 2 : form.nEdges
+        (shape.code === 'prism' || shape.code === 'pyramid')
+            ? (shape.code === 'prism' ? form.nBaseVertices * 3 : (
+                shape.code === 'pyramid' ? form.nBaseVertices * 2 : form.nEdges
             ))
             : form.nEdges
         ;
     const correctNFaces =
-        (shape.codename === 'prism' || shape.codename === 'pyramid')
-            ? (shape.codename === 'prism' ? form.nBaseVertices * 3 : (
-                shape.codename === 'pyramid' ? form.nBaseVertices * 2 : form.nFaces
+        (shape.code === 'prism' || shape.code === 'pyramid')
+            ? (shape.code === 'prism' ? form.nBaseVertices * 3 : (
+                shape.code === 'pyramid' ? form.nBaseVertices * 2 : form.nFaces
             ))
             : form.nFaces;
 
@@ -46,7 +46,7 @@ const MensurationCharTab = ({ shape, form, setForm, onSubmit }: Props) => {
 
     return (
         <div className="text-gray-500">
-            {(shape.codename === 'prism' || shape.codename === 'pyramid') && (
+            {(shape.code === 'prism' || shape.code === 'pyramid') && (
                 <div className="flex flex-row w-full mb-4">
                     <label className="label items-start w-5/12 pr-4" style={{ paddingTop: 12 }}>
                         <span className="label-text">Bentuk Alas</span>

@@ -7,7 +7,7 @@ import Navbar from '../../components/Navbar';
 import Spinner from '../../components/Spinner';
 
 // Utils
-import { getShapeByCodename } from '../../Utils';
+import { getShapeByCode } from '../../Utils';
 
 // Types
 import type { GetServerSideProps } from 'next';
@@ -27,7 +27,7 @@ const ProblemIdentification: ComponentWithAuth<Props> = ({ shape }) => {
 
         try {
             const body = {
-                shapeCodename: shape.codename,
+                shapeCode: shape.code,
             };
 
             const res = await fetch(`/api/observations/`, {
@@ -46,7 +46,7 @@ const ProblemIdentification: ComponentWithAuth<Props> = ({ shape }) => {
 
     return (
         <main className="bg-base-100 flex flex-col h-screen">
-            <Navbar title="Pernyataan Masalah" backHref={`/stimulation/${shape.codename}`} />
+            <Navbar title="Pernyataan Masalah" backHref={`/stimulation/${shape.code}`} />
 
             <section className="flex flex-col flex-grow justify-center items-center text-center px-8">
                 <div className="bg-white p-2 mb-8 rounded-xl shadow">
@@ -84,8 +84,8 @@ const ProblemIdentification: ComponentWithAuth<Props> = ({ shape }) => {
 ProblemIdentification.auth = true;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const shapeCodename = context?.params?.shapeCodename || null;
-    const shape = shapeCodename ? getShapeByCodename(shapeCodename as string) : null;
+    const shapeCode = context?.params?.shapeCode || null;
+    const shape = shapeCode ? getShapeByCode(shapeCode as string) : null;
 
     return { props: { shape } };
 };

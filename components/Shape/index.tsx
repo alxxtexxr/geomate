@@ -14,7 +14,7 @@ import { snakeToPascal } from '../../Utils';
 // import type { Props as ConeProps } from './Cone';
 // import type { Props as PyramidProps } from './Pyramid';
 // import type { SpringValue } from '@react-spring/three';
-import type { ShapeCodename } from '@prisma/client';
+import type { ShapeCode } from '@prisma/client';
 
 // type _Props = {
 //   r: number,
@@ -23,7 +23,7 @@ import type { ShapeCodename } from '@prisma/client';
 //   rotation: SpringValue<number[]>,
 //   wireframe: boolean,
 // };
-type Props = { codename: ShapeCodename } & any;
+type Props = { code: ShapeCode } & any;
 
 const shapeComponents: { [key: string]: React.FC<any> } = {
   Cylinder,
@@ -33,8 +33,8 @@ const shapeComponents: { [key: string]: React.FC<any> } = {
   Sphere,
 };
 
-const Shape = ({ codename, ...props }: Props) => {
-  const ShapeComponent = shapeComponents[snakeToPascal(codename)];
+const Shape = ({ code, ...props }: Props) => {
+  const ShapeComponent = shapeComponents[snakeToPascal(code)];
 
   // if shape component undefined ...
 

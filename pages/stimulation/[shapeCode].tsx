@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Navbar from '../../components/Navbar';
 
 // Utils
-import { getShapeByCodename } from '../../Utils';
+import { getShapeByCode } from '../../Utils';
 
 // Types
 import type { GetServerSideProps } from 'next';
@@ -38,7 +38,7 @@ const Stimulation: ComponentWithAuth<Props> = ({ shape }) => {
             </section>
 
             <section className="p-4">
-                <Link href={`/problem-identification/${shape.codename}`}>
+                <Link href={`/problem-identification/${shape.code}`}>
                     <button className="btn btn-primary w-full">SELANJUTNYA</button>
                 </Link>
             </section>
@@ -49,8 +49,8 @@ const Stimulation: ComponentWithAuth<Props> = ({ shape }) => {
 Stimulation.auth = true;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const shapeCodename = context?.params?.shapeCodename || null;
-    const shape = shapeCodename ? getShapeByCodename(shapeCodename as string) : null;
+    const shapeCode = context?.params?.shapeCode || null;
+    const shape = shapeCode ? getShapeByCode(shapeCode as string) : null;
 
     return { props: { shape } };
 };

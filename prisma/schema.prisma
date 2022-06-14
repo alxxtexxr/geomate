@@ -11,7 +11,7 @@ datasource db {
 }
 
 // Enums
-enum ShapeCodename {
+enum ShapeCode {
   sphere
   cylinder
   prism
@@ -52,7 +52,7 @@ model AnswerChoice {
 
 model Question {
   id                  String               @id @default(cuid())
-  shapeCodename       ShapeCodename
+  shapeCode       ShapeCode
   image               String?
   question            String
   correctAnswer       String
@@ -86,7 +86,7 @@ model Evaluation {
 
 model Observation {
   id            String        @id @default(cuid())
-  shapeCodename ShapeCodename
+  shapeCode ShapeCode
   image         String?
   nVertices     Int?
   nEdges        Int?

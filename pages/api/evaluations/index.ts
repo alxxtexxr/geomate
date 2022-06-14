@@ -5,18 +5,18 @@ import prisma from '../../../lib/prisma';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 // POST /api/evaluations
-// Required fields in body: shapeCodename
+// Required fields in body: shapeCode
 const handle = async (req: NextApiRequest, res: NextApiResponse) => {
     const session = await getSession({ req });
 
     if (session) {
         switch (req.method) {
             case 'POST':
-                const { shapeCodename } = req.body;
+                const { shapeCode } = req.body;
 
                 const questions = await prisma.question.findMany({
                     where: {
-                        shapeCodename: shapeCodename,
+                        shapeCode: shapeCode,
                     },
                 });
 

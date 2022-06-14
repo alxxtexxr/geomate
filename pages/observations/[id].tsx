@@ -10,7 +10,7 @@ import ShapeComponent from '../../components/Shape';
 import Spinner from '../../components/Spinner';
 
 // Utils
-import { getShapeByCodename } from '../../Utils';
+import { getShapeByCode } from '../../Utils';
 
 // Types
 import type { GetServerSideProps } from 'next';
@@ -36,7 +36,7 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
 
         try {
             const body = {
-                shapeCodename: shape.codename,
+                shapeCode: shape.code,
             };
 
             const res = await fetch(`/api/evaluations/`, {
@@ -74,7 +74,7 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                 <ambientLight color="#888888" />
                                 <pointLight position={[10, 20, 0]} />
                                 <ShapeComponent
-                                    codename={shape.codename}
+                                    code={shape.code}
                                     {...observation}
                                     r={(observation.r || 20) / 10}
                                     t={(observation.t || 20) / 10}
@@ -142,7 +142,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         headers: { 'Cookie': headers.cookie as string },
     });
     const observation = await res.json();
-    const shape = getShapeByCodename(observation.shapeCodename);
+    const shape = getShapeByCode(observation.shapeCode);
 
     return { props: { observation, shape } };
 };

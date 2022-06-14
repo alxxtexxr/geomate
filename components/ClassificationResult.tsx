@@ -18,7 +18,7 @@ type Props = {
 }
 
 const ClassificationResult = ({ isOpen, setIsOpen, shape, predictedShape, isSubmitting, onSubmit }: Props) => {
-    const isCorrect = shape.codename === predictedShape.codename;
+    const isCorrect = shape.code === predictedShape.code;
 
     return (
         <Sheet
@@ -59,7 +59,7 @@ const ClassificationResult = ({ isOpen, setIsOpen, shape, predictedShape, isSubm
                             </p>
                         </div>
                         <div>
-                            {predictedShape.codename === shape.codename ? (
+                            {predictedShape.code === shape.code ? (
                                 isSubmitting ? (
                                     <button className="btn w-full" disabled>
                                         <Spinner />

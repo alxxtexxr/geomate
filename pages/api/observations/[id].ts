@@ -4,7 +4,7 @@ import prisma from '../../../lib/prisma';
 
 // GET /api/observations/:id
 // PUT /api/observations
-// Optional fields in body: shapeCodename
+// Optional fields in body: shapeCode
 const handle = async (req: NextApiRequest, res: NextApiResponse) => {
     const { id } = req.query;
     const session = await getSession({ req });

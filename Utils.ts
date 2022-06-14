@@ -10,7 +10,7 @@ import { SHAPES } from './Constants';
 
 export const getShapeByI = (i: number) => SHAPES[i];
 
-export const getShapeByCodename = (codename: string) => SHAPES.filter((SHAPE) => SHAPE.codename === codename)[0];
+export const getShapeByCode = (code: string) => SHAPES.filter((SHAPE) => SHAPE.code === code)[0];
 
 export const createImgElemement = (imgSrc: string): Promise<HTMLImageElement> => {
     return new Promise((resolve, _) => {
