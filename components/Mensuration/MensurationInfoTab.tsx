@@ -9,7 +9,7 @@ type Props = {
     onSubmit: () => void,
 };
 
-const CalculationInfoTab = ({ shape, onSubmit }: Props) => (
+const MensurationInfoTab = ({ shape, onSubmit }: Props) => (
     <div className="text-gray-500">
         <h1 className="text-lg text-gray-800 font-semibold mb-3">{shape.name}</h1>
         
@@ -38,4 +38,4 @@ const CalculationInfoTab = ({ shape, onSubmit }: Props) => (
     </div>
 );
 
-export default CalculationInfoTab;
+export default MensurationInfoTab;

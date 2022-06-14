@@ -1,4 +1,4 @@
-import ShapeCodename from './ShapeCodename';
+import type { ShapeCodename } from '@prisma/client';
 
 type Shape = {
     id: number,

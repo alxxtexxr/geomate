@@ -13,17 +13,17 @@ import { MATH_SYMBOLS } from '../../Constants';
 // Types
 import type { ChangeEvent, Dispatch, SetStateAction } from 'react';
 import type Shape from '../../types/Shape';
-import type CalculationForm from '../../types/CalculationForm';
+import type MensurationForm from '../../types/MensurationForm';
 
 type Props = {
   shape: Shape,
-  form: CalculationForm,
-  setForm: Dispatch<SetStateAction<CalculationForm>>,
+  form: MensurationForm,
+  setForm: Dispatch<SetStateAction<MensurationForm>>,
   onSubmit: () => void,
   isSubmitting: boolean,
 };
 
-const CalculationSizeTab = ({ shape, form, setForm, onSubmit, isSubmitting }: Props) => {
+const MensurationSizeTab = ({ shape, form, setForm, onSubmit, isSubmitting }: Props) => {
   const correctValues = {
     v: +Parser.evaluate(shape.vFormula.toLowerCase(), form).toFixed(1),
     lp: +Parser.evaluate(shape.lpFormula.toLowerCase(), form).toFixed(1),
@@ -49,7 +49,6 @@ const CalculationSizeTab = ({ shape, form, setForm, onSubmit, isSubmitting }: Pr
   }
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value)
     setForm({
       ...form,
       [e.target.name]: inputValueToNumber(e.target.value),
@@ -158,4 +157,4 @@ const CalculationSizeTab = ({ shape, form, setForm, onSubmit, isSubmitting }: Pr
   );
 };
 
-export default CalculationSizeTab;
+export default MensurationSizeTab;

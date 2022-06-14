@@ -24,9 +24,6 @@ const handle = async (req: NextApiRequest, res: NextApiResponse) => {
                 const imageFile = await getImage(req);
                 const uploadedImage: any = await uploadImage(imageFile.path);
                 const image = uploadedImage.secure_url;
-
-                console.log({ image })
-
                 const result = await prisma.observation.update({
                     where: { id: id as string },
                     data: { image: image },

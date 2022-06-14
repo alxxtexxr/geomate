@@ -16,12 +16,13 @@
 }
 
 .input-bordered,
-.input-group :last-child {
-    @apply border-gray-100 
+.select {
+    @apply bg-white font-normal
 }
 
-.input-group :first-child {
-    @apply z-10
+.input-bordered,
+.input-group :last-child {
+    @apply border-gray-100 
 }
 
 .input-error {
@@ -38,7 +39,7 @@
     @apply bg-gray-100 border-gray-100 
 }
 
-.input-bordered,
-.select {
-    @apply bg-white font-normal
+.input-group :first-child {
+    @apply z-10
 }
+

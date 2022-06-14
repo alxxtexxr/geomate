@@ -8,9 +8,9 @@ import Router from 'next/router';
 // Components
 import ShapeComponent from '../../../components/Shape';
 import Swap from '../../../components/Swap';
-import InfoTab from '../../../components/Calculation/CalculationInfoTab';
-import CharTab from '../../../components/Calculation/CalculationCharTab';
-import SizeTab from '../../../components/Calculation/CalculationSizeTab';
+import InfoTab from '../../../components/Mensuration/MensurationInfoTab';
+import CharTab from '../../../components/Mensuration/MensurationCharTab';
+import SizeTab from '../../../components/Mensuration/MensurationSizeTab';
 
 // Utils
 import { getShapeByCodename, getS } from '../../../Utils';
@@ -20,14 +20,14 @@ import type { GetServerSideProps } from 'next';
 import type ComponentWithAuth from '../../../types/ComponentWithAuth';
 import type Shape from '../../../types/Shape';
 import type { Observation } from '@prisma/client';
-import type CalculationForm from '../../../types/CalculationForm';
+import type MensurationForm from '../../../types/MensurationForm';
 
 type Props = {
   observation: Observation,
   shape: Shape,
 };
 
-const Calculation: ComponentWithAuth<Props> = ({ observation, shape }) => {
+const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
   // Animate the 3D model
   const [{ rotation }, setRotation] = useSpring(() => ({
     rotation: [0, 0, 0],
@@ -48,7 +48,7 @@ const Calculation: ComponentWithAuth<Props> = ({ observation, shape }) => {
   });
 
   // States
-  const [form, setForm] = useState<CalculationForm>({
+  const [form, setForm] = useState<MensurationForm>({
     nBaseVertices: 3,
     nVertices: 0,
     nEdges: 0,
@@ -63,7 +63,7 @@ const Calculation: ComponentWithAuth<Props> = ({ observation, shape }) => {
     v: 0,
     lp: 0,
   });
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeTabI, setActiveTabI] = useState(0);
   const [wireframe, setWireframe] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
@@ -89,11 +89,11 @@ const Calculation: ComponentWithAuth<Props> = ({ observation, shape }) => {
   const TABS = [
     {
       title: 'Informasi',
-      content: (<InfoTab shape={shape} onSubmit={() => setActiveTab(1)} />),
+      content: (<InfoTab shape={shape} onSubmit={() => setActiveTabI(1)} />),
     },
     {
       title: 'Sifat',
-      content: (<CharTab shape={shape} form={form} setForm={setForm} onSubmit={() => setActiveTab(2)} />),
+      content: (<CharTab shape={shape} form={form} setForm={setForm} onSubmit={() => setActiveTabI(2)} />),
     },
     {
       title: 'Ukuran',
@@ -142,7 +142,7 @@ const Calculation: ComponentWithAuth<Props> = ({ observation, shape }) => {
             <a
               className={
                 'tab tab-bordered w-1/3 h-auto py-2 uppercase font-semibold' +
-                (i === activeTab ? ' text-primary border-primary' : ' text-gray-400 border-gray-200')
+                (i === activeTabI ? ' text-primary border-primary' : ' text-gray-400 border-gray-200')
               }
               key={i}
             >
@@ -152,14 +152,14 @@ const Calculation: ComponentWithAuth<Props> = ({ observation, shape }) => {
         </div>
 
         <div className="flex-grow bg-white pt-4 pb-20 px-4">
-          {TABS[activeTab].content}
+          {TABS[activeTabI].content}
         </div>
       </section>
     </main>
   );
 };
 
-Calculation.auth = true;
+Mensuration.auth = true;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const headers = context.req.headers;
@@ -174,4 +174,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return { props: { observation, shape } };
 };
 
-export default Calculation;
+export default Mensuration;

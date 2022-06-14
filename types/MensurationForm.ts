@@ -1,4 +1,4 @@
-type CalculationForm = {
+type MensurationForm = {
     nBaseVertices: number,
     nVertices: number,
     nEdges: number,
@@ -14,4 +14,4 @@ type CalculationForm = {
     lp: number,
 };
 
-export default CalculationForm;
+export default MensurationForm;

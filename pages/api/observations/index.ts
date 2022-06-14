@@ -9,7 +9,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 // Required fields in body: shapeCodename
 const handle = async (req: NextApiRequest, res: NextApiResponse) => {
     const session = await getSession({ req });
-    console.log({session});
+
     if (session) {
         switch (req.method) {
             case 'GET':

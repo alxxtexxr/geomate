@@ -14,7 +14,7 @@ import { snakeToPascal } from '../../Utils';
 // import type { Props as ConeProps } from './Cone';
 // import type { Props as PyramidProps } from './Pyramid';
 // import type { SpringValue } from '@react-spring/three';
-import type ShapeCodename from '../../types/ShapeCodename';
+import type { ShapeCodename } from '@prisma/client';
 
 // type _Props = {
 //   r: number,

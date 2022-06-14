@@ -46,7 +46,7 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
             });
             const evaluation: Evaluation = await res.json();
 
-            await Router.push(`/evaluations/${evaluation.id}`);
+            await Router.push(`/evaluations/${evaluation.id}/no/1`);
         } catch (err) {
             setIsLoading(false);
             console.error(err);

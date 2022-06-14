@@ -7,16 +7,16 @@ import { range } from '../../Utils';
 // Types
 import type { ChangeEvent, Dispatch, SetStateAction } from 'react';
 import type Shape from '../../types/Shape';
-import type CalculationForm from '../../types/CalculationForm';
+import type MensurationForm from '../../types/MensurationForm';
 
 type Props = {
     shape: Shape,
-    form: CalculationForm,
-    setForm: Dispatch<SetStateAction<CalculationForm>>,
+    form: MensurationForm,
+    setForm: Dispatch<SetStateAction<MensurationForm>>,
     onSubmit: () => void,
 };
 
-const CalculationCharTab = ({ shape, form, setForm, onSubmit }: Props) => {
+const MensurationCharTab = ({ shape, form, setForm, onSubmit }: Props) => {
     const correctNVertices = (shape.codename === 'prism' || shape.codename === 'pyramid')
         ? (shape.codename === 'prism' ? form.nBaseVertices * 2 : (
             shape.codename === 'pyramid' ? form.nBaseVertices + 1 : form.nVertices
@@ -140,4 +140,4 @@ const CalculationCharTab = ({ shape, form, setForm, onSubmit }: Props) => {
     );
 };
 
-export default CalculationCharTab;
+export default MensurationCharTab;
