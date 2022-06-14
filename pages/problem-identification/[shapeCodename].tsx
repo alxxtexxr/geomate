@@ -84,8 +84,8 @@ const ProblemIdentification: ComponentWithAuth<Props> = ({ shape }) => {
 ProblemIdentification.auth = true;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const codename = context?.params?.codename || null;
-    const shape = codename ? getShapeByCodename(codename as string) : null;
+    const shapeCodename = context?.params?.shapeCodename || null;
+    const shape = shapeCodename ? getShapeByCodename(shapeCodename as string) : null;
 
     return { props: { shape } };
 };
