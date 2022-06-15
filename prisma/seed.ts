@@ -3,6 +3,14 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient()
 
 const main = async () => {
+    // Comment codes below if you don't want to delete them
+    await prisma.answerChoice.deleteMany();
+    await prisma.question.deleteMany();
+    await prisma.evaluationQuestion.deleteMany();
+    await prisma.evaluation.deleteMany();
+    await prisma.userAchievement.deleteMany();
+    await prisma.achievement.deleteMany();
+
     const createdQuestions = await prisma.question.createMany({
         data: [
             {
@@ -44,7 +52,7 @@ const main = async () => {
         await prisma.question.update({
             where: { id: question.id },
             data: {
-                correctAnswer: answerChoice?.answer,
+                correctAnswer: answerChoice?.id,
             },
         });
     });
