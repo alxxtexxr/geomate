@@ -6,7 +6,7 @@ import prisma from '../../../lib/prisma';
 
 // Types
 import type { NextApiHandler } from 'next';
-import type { NextAuthOptions } from 'next-auth';
+import type { NextAuthOptions, Session, TokenSet, User } from 'next-auth';
 
 const authHandler: NextApiHandler = (req, res) => NextAuth(req, res, options as NextAuthOptions);
 
@@ -27,6 +27,16 @@ const options = {
         signIn: '/auth/signin',
     },
     callbacks: {
+        session: async ({ session, token, user }: { session: Session, token: TokenSet, user: User }) => {
+            return {
+                ...session,
+                user: {
+                    ...session.user,
+                    xp: user.xp,
+                    level: user.level,
+                }
+            };
+        },
         redirect: () => process.env.NEXTAUTH_URL,
     },
     adapter: PrismaAdapter(prisma),

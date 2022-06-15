@@ -38,17 +38,29 @@ enum QuestionType {
 }
 
 // Models
-model Achievement {
-  id          String             @id @default(cuid())
-  code        AchievementCode
+model UserNotification {
+  id          String  @id @default(cuid())
   title       String
   description String?
   image       String?
-  users       UserAchievements[]
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
 }
 
-model UserAchievements {
-  createdAt     DateTime    @default(now())
+model Achievement {
+  id          String          @id @default(cuid())
+  code        AchievementCode @unique
+  title       String
+  description String?
+  image       String?
+
+  users UserAchievement[]
+}
+
+model UserAchievement {
+  createdAt DateTime @default(now())
+
   user          User        @relation(fields: [userId], references: [id])
   userId        String
   achievement   Achievement @relation(fields: [achievementId], references: [id])
@@ -58,26 +70,29 @@ model UserAchievements {
 }
 
 model AnswerChoice {
-  id         String   @id @default(cuid())
-  answer     String
+  id     String @id @default(cuid())
+  answer String
+
   question   Question @relation(fields: [questionId], references: [id])
   questionId String
 }
 
 model Question {
-  id                  String               @id @default(cuid())
-  shapeCode           ShapeCode
-  image               String?
-  question            String
-  correctAnswer       String
+  id            String    @id @default(cuid())
+  shapeCode     ShapeCode
+  image         String?
+  question      String
+  correctAnswer String
+
   type                QuestionType
   answerChoices       AnswerChoice[]
   evaluationQuestions EvaluationQuestion[]
 }
 
 model EvaluationQuestion {
-  answer       String?
-  isCorrect    Boolean?
+  answer    String?
+  isCorrect Boolean?
+
   evaluation   Evaluation @relation(fields: [evaluationId], references: [id])
   evaluationId String
   question     Question   @relation(fields: [questionId], references: [id])
@@ -87,12 +102,12 @@ model EvaluationQuestion {
 }
 
 model Evaluation {
-  id                  String               @id @default(cuid())
-  score               Int                  @default(0)
-  isCompleted         Boolean              @default(false)
-  completedAt         DateTime?
-  createdAt           DateTime             @default(now())
-  updatedAt           DateTime             @updatedAt
+  id          String   @id @default(cuid())
+  score       Int      @default(0)
+  isCompleted Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
   user                User                 @relation(fields: [userId], references: [id])
   userId              String
   evaluationQuestions EvaluationQuestion[]
@@ -114,11 +129,11 @@ model Observation {
   v           Float?
   lp          Float?
   isCompleted Boolean   @default(false)
-  completedAt DateTime?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  user        User      @relation(fields: [userId], references: [id])
-  userId      String
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
 }
 
 model Account {
@@ -158,11 +173,12 @@ model User {
   xp    Int @default(0)
   level Int @default(1)
 
-  accounts     Account[]
-  sessions     Session[]
-  observations Observation[]
-  evaluations  Evaluation[]
-  achievements UserAchievements[]
+  accounts         Account[]
+  sessions         Session[]
+  observations     Observation[]
+  evaluations      Evaluation[]
+  achievements     UserAchievement[]
+  UserNotification UserNotification[]
 }
 
 model VerificationToken {

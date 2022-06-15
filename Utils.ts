@@ -83,6 +83,7 @@ export const range = (size: number, startAt: number = 0): ReadonlyArray<number> 
     return [...Array(size).keys()].map(i => i + startAt);
 };
 
+// Mensuration
 export const formatFormula = (formula: string) => {
     return formula
         .replaceAll('( ', '(')
@@ -96,3 +97,10 @@ export const formatFormula = (formula: string) => {
 };
 
 export const getS = (r: number, t: number) => +Math.sqrt(Math.pow(r, 2) + Math.pow(t, 2)).toFixed(2);
+
+// Gamification
+const initXpLimit = 100;
+
+export const getLevel = (xp: number) => xp < initXpLimit ? 1 : Math.floor((Math.log((xp - 1) / initXpLimit) / Math.log(1.5))) + 2;
+export const getXpLimit = (level: number) => Math.floor(1.5 ** (level - 1) * initXpLimit);
+export const getXpPct = (xp: number) => xp / getXpLimit(getLevel(xp)) * 100;

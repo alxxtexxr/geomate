@@ -66,11 +66,11 @@ const EvaluationPage: ComponentWithAuth<Props> = ({ evaluation }) => {
                                 <EvaluationAnswer isCorrect={evaluationQuestion.isCorrect || false} no={i + 1} />
                             </li>
                         ))}
-                        {range(7).map((i) => (
+                        {/* {range(7).map((i) => (
                             <li className="p-1" key={i}>
                                 <EvaluationAnswer isCorrect={true} no={i + 4} />
                             </li>
-                        ))}
+                        ))} */}
                     </ol>
                 </div>
             </section>

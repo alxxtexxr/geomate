@@ -2,9 +2,11 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
 import prisma from '../../../lib/prisma';
 
+// Utils
+import { getLevel } from './../../../Utils';
+
 // GET /api/evaluations/:id
 // PUT /api/evaluations/:id
-// Optional fields in body: shapeCode
 const handle = async (req: NextApiRequest, res: NextApiResponse) => {
     const { id } = req.query;
     const session = await getSession({ req });
@@ -43,25 +45,61 @@ const handle = async (req: NextApiRequest, res: NextApiResponse) => {
                 break;
             case 'PUT':
                 const { isCompleted } = req.body;
-                let completedAt, score;
+                let score;
 
                 if (isCompleted) {
-                    completedAt = new Date();
-
+                    // Calculate score
                     const evaluationQuestions = await prisma.evaluationQuestion.findMany({
                         where: { evaluationId: id as string },
+                        select: {
+                            isCorrect: true,
+                            question: {
+                                select: {
+                                    shapeCode: true
+                                },
+                            }
+                        },
                     });
                     const nEvaluationQuestions = evaluationQuestions.length;
                     const nCorrectEvaluationQuestions = evaluationQuestions.filter((evaluationQuestion) => evaluationQuestion.isCorrect).length;
-                    
+
                     score = nCorrectEvaluationQuestions / nEvaluationQuestions * 100;
+
+                    if (session.user?.email) {
+                        // Update XP and level
+                        if (score) {
+                            await prisma.user.update({
+                                where: { email: session.user.email },
+                                data: {
+                                    xp: session.user.xp + score,
+                                    level: getLevel(session.user.xp + score)
+                                },
+                            });
+                        }
+
+                        // Set achievemnent [shapeCodename]_evaluation
+                        // !!! Have to check if [shapeCodename]_evaluation is exist !!!
+                        await prisma.userAchievement.create({
+                            data: {
+                                user: {
+                                    connect: {
+                                        email: session.user.email,
+                                    },
+                                },
+                                achievement: {
+                                    connect: {
+                                        code: `${evaluationQuestions[0].question.shapeCode}_evaluation`,
+                                    },
+                                },
+                            },
+                        });
+                    }
                 }
 
                 const result = await prisma.evaluation.update({
                     where: { id: id as string },
                     data: {
                         isCompleted: isCompleted,
-                        completedAt: completedAt,
                         score: score,
                     },
                 });

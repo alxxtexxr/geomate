@@ -1,4 +1,3 @@
-import { Question } from './../node_modules/.prisma/client/index.d';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient()
@@ -36,6 +35,17 @@ const main = async () => {
                 questionId: question.id,
                 answer: answer,
             }))
+        });
+
+        const answerChoice = await prisma.answerChoice.findFirst({
+            where: { questionId: question.id },
+        });
+
+        await prisma.question.update({
+            where: { id: question.id },
+            data: {
+                correctAnswer: answerChoice?.answer,
+            },
         });
     });
 
