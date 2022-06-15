@@ -1,9 +1,12 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
 import prisma from '../../../lib/prisma';
 
 // Utils
 import { getLevel } from './../../../Utils';
+
+// Types
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { AchievementCode } from '@prisma/client';
 
 // GET /api/evaluations/:id
 // PUT /api/evaluations/:id
@@ -23,6 +26,7 @@ const handle = async (req: NextApiRequest, res: NextApiResponse) => {
                             select: {
                                 evaluationId: true,
                                 answer: true,
+                                isCorrect: true,
                                 question: {
                                     select: {
                                         id: true,
@@ -63,36 +67,50 @@ const handle = async (req: NextApiRequest, res: NextApiResponse) => {
                     const nEvaluationQuestions = evaluationQuestions.length;
                     const nCorrectEvaluationQuestions = evaluationQuestions.filter((evaluationQuestion) => evaluationQuestion.isCorrect).length;
 
-                    score = nCorrectEvaluationQuestions / nEvaluationQuestions * 100;
+                    score = Math.round(nCorrectEvaluationQuestions / nEvaluationQuestions * 100);
 
                     if (session.user?.email) {
                         // Update XP and level
+                        const earnedXp = session.user.xp + score;
+                        const earnedLevel = getLevel(earnedXp);
                         if (score) {
                             await prisma.user.update({
                                 where: { email: session.user.email },
                                 data: {
-                                    xp: session.user.xp + score,
-                                    level: getLevel(session.user.xp + score)
+                                    xp: earnedXp,
+                                    level: earnedLevel,
                                 },
                             });
                         }
 
+                        // If level up, add notification
+                        if (earnedLevel > session.user.level) {
+                            await prisma.notification.create({
+                                data: {
+                                    title: `Naik Level ${earnedLevel}`,
+                                    user: {
+                                        connect: { email: session.user.email }
+                                    },
+                                }
+                            });
+                        }
+
                         // Set achievemnent [shapeCodename]_evaluation
-                        // !!! Have to check if [shapeCodename]_evaluation is exist !!!
-                        await prisma.userAchievement.create({
-                            data: {
-                                user: {
-                                    connect: {
-                                        email: session.user.email,
-                                    },
+                        const achievementCode: AchievementCode = `${evaluationQuestions[0].question.shapeCode}_evaluation`;
+
+                        // Check if achievemnent [shapeCodename]_evaluation exists
+                        const userAchievement = await prisma.userAchievement.findFirst({
+                            where: { achievement: { code: achievementCode } }
+                        })
+                        
+                        if (!userAchievement) {
+                            await prisma.userAchievement.create({
+                                data: {
+                                    user: { connect: { email: session.user.email } },
+                                    achievement: { connect: { code: achievementCode } },
                                 },
-                                achievement: {
-                                    connect: {
-                                        code: `${evaluationQuestions[0].question.shapeCode}_evaluation`,
-                                    },
-                                },
-                            },
-                        });
+                            });
+                        }
                     }
                 }
 

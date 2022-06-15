@@ -6,7 +6,7 @@ import { Prisma } from '@prisma/client';
 import EvaluationAnswer from '../../components/EvaluationAnswer';
 
 // Utils
-import { range } from '../../Utils';
+import { round10, range } from '../../Utils';
 
 // Types
 import type { GetServerSideProps } from 'next';
@@ -46,7 +46,7 @@ const EvaluationPage: ComponentWithAuth<Props> = ({ evaluation }) => {
                                 'bg-yellow-400 mask mask-star-2' +
                                 ((i + 1) % 2 ? ' mask-half-1 ml-0.5' : ' mask-half-2 mr-0.5')
                             }
-                            checked={(i + 1) === (evaluation.score / 10)}
+                            checked={(i + 1) === (round10(evaluation.score) / 10)}
                             readOnly
                             key={i}
                         />

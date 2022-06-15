@@ -83,6 +83,8 @@ export const range = (size: number, startAt: number = 0): ReadonlyArray<number> 
     return [...Array(size).keys()].map(i => i + startAt);
 };
 
+export const round10 = (x: number) => Math.ceil(x / 10) * 10;
+
 // Mensuration
 export const formatFormula = (formula: string) => {
     return formula
