@@ -83,14 +83,12 @@ const handle = async (req: NextApiRequest, res: NextApiResponse) => {
                             });
                         }
 
-                        // If level up, add notification
+                        // Add notification for level up
                         if (earnedLevel > session.user.level) {
                             await prisma.notification.create({
                                 data: {
                                     title: `Naik Level ${earnedLevel}`,
-                                    user: {
-                                        connect: { email: session.user.email }
-                                    },
+                                    user: { connect: { email: session.user.email } },
                                 }
                             });
                         }
@@ -102,7 +100,7 @@ const handle = async (req: NextApiRequest, res: NextApiResponse) => {
                         const userAchievement = await prisma.userAchievement.findFirst({
                             where: { achievement: { code: achievementCode } }
                         })
-                        
+
                         if (!userAchievement) {
                             await prisma.userAchievement.create({
                                 data: {
@@ -110,6 +108,20 @@ const handle = async (req: NextApiRequest, res: NextApiResponse) => {
                                     achievement: { connect: { code: achievementCode } },
                                 },
                             });
+
+                            // Add notification for achievement
+                            const achievement = await prisma.achievement.findUnique({
+                                where: { code: achievementCode },
+                            })
+
+                            if (achievement) {
+                                await prisma.notification.create({
+                                    data: {
+                                        title: `Mendapatkan Penghargaan "${achievement.title}"`,
+                                        user: { connect: { email: session.user.email } },
+                                    }
+                                });
+                            }
                         }
                     }
                 }

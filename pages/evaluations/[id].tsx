@@ -1,5 +1,6 @@
+import { useEffect } from 'react';
 import Link from 'next/link';
-import { Prisma } from '@prisma/client';
+import { toast } from 'react-toastify';
 
 // Components
 // import Navbar from '../../components/Navbar';
@@ -11,6 +12,7 @@ import { round10, range } from '../../Utils';
 // Types
 import type { GetServerSideProps } from 'next';
 import type ComponentWithAuth from '../../types/ComponentWithAuth';
+import type { Prisma, Notification } from '@prisma/client';
 
 type Evaluation = Prisma.EvaluationGetPayload<{
     include: {
@@ -28,16 +30,47 @@ type Evaluation = Prisma.EvaluationGetPayload<{
 
 type Props = {
     evaluation: Evaluation,
+    notifications: Notification[],
 };
 
-const EvaluationPage: ComponentWithAuth<Props> = ({ evaluation }) => {
+const EvaluationPage: ComponentWithAuth<Props> = ({ evaluation, notifications }) => {
+    const showNotifications = () => {
+        notifications.map((notification) => {
+            toast.success(
+                notification.title,
+                {
+                    toastId: notification.title,
+                    onClose: () => {
+                        readNotification(notification.id)
+                    }
+                },
+            );
+        });
+    };
+
+    const readNotification = async (notificationId: string) => {
+        try {
+            await fetch(`/api/notifications/${notificationId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    isRead: true,
+                }),
+            });
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    useEffect(showNotifications, []);
+
     return (
         <main className="flex flex-col h-screen pb-20">
             {/* <Navbar title="Hasil Evaluasi" /> */}
 
             <section className="flex flex-col flex-grow justify-center items-center text-center px-8">
                 <div className="rating rating-lg rating-half mb-6">
-                    <input type="radio" name="rating-10" className="rating-hidden" checked={!evaluation.score} />
+                    <input type="radio" name="rating-10" className="rating-hidden" checked={!evaluation.score} readOnly />
                     {range(10).map((i) => (
                         <input
                             type="radio"
@@ -92,12 +125,18 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const headers = context.req.headers;
     const id = context?.params?.id || null;
 
-    const res = await fetch(`${process.env.NEXTAUTH_URL}/api/evaluations/${id}`, {
+    let res;
+    res = await fetch(`${process.env.NEXTAUTH_URL}/api/evaluations/${id}`, {
         headers: { 'Cookie': headers.cookie as string },
     });
     const evaluation = await res.json();
 
-    return { props: { evaluation } };
+    res = await fetch(`${process.env.NEXTAUTH_URL}/api/notifications`, {
+        headers: { 'Cookie': headers.cookie as string },
+    });
+    const notifications = await res.json();
+
+    return { props: { evaluation, notifications } };
 };
 
 export default EvaluationPage;

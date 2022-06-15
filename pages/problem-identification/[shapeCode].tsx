@@ -26,14 +26,12 @@ const ProblemIdentification: ComponentWithAuth<Props> = ({ shape }) => {
         setIsLoading(true);
 
         try {
-            const body = {
-                shapeCode: shape.code,
-            };
-
             const res = await fetch(`/api/observations/`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(body),
+                body: JSON.stringify({
+                    shapeCode: shape.code,
+                }),
             });
             const observation: Observation = await res.json();
 

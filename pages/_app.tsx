@@ -1,5 +1,9 @@
-import '../styles/globals.css';
 import { SessionProvider, useSession } from 'next-auth/react';
+import { ToastContainer } from 'react-toastify';
+
+// Styles
+import 'react-toastify/dist/ReactToastify.css';
+import '../styles/globals.css';
 
 // Components
 import Loader from '../components/Loader';
@@ -17,6 +21,17 @@ const MyApp = ({ Component, pageProps }: AppProps) => (
         ) : (
             <Component {...pageProps} />
         )}
+        <ToastContainer
+            position="top-center"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+        />
     </SessionProvider>
 );
 
