@@ -40,7 +40,7 @@ const ClassificationResult = ({ isOpen, setIsOpen, shape, predictedShape, isSubm
                     <div className="text-center pt-14 pb-4 px-4">
                         <div className="px-4 mb-8">
                             <h1 className={
-                                'font-semibold mb-2' +
+                                'font-medium mb-2' +
                                 (isCorrect ? ' text-primary' : ' text-red-500')
                             }>
                                 {predictedShape.name}
@@ -48,11 +48,11 @@ const ClassificationResult = ({ isOpen, setIsOpen, shape, predictedShape, isSubm
                             <p className="text-gray-500 text-sm">
                                 {isCorrect ? (
                                     <>
-                                        Benar! Objek yang kamu scan termasuk bangun ruang <span className="font-semibold">{shape.name}</span>.
+                                        Benar! Objek yang kamu scan termasuk bangun ruang <span className="font-medium">{shape.name}</span>.
                                     </>
                                 ) : (
                                     <>
-                                        Belum benar, objek yang kamu scan bukan termasuk bangun ruang <span className="font-semibold">{shape.name}</span>.
+                                        Belum benar, objek yang kamu scan bukan termasuk bangun ruang <span className="font-medium">{shape.name}</span>.
                                     </>
                                 )}
 

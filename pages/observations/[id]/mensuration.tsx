@@ -141,7 +141,7 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
           {TABS.map(({ title }, i) => (
             <a
               className={
-                'tab tab-bordered w-1/3 h-auto py-2 uppercase font-semibold' +
+                'tab tab-bordered w-1/3 h-auto py-2 uppercase font-medium' +
                 (i === activeTabI ? ' text-primary border-primary' : ' text-gray-400 border-gray-200')
               }
               key={i}

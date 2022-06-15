@@ -11,7 +11,7 @@ type Props = {
 
 const MensurationInfoTab = ({ shape, onSubmit }: Props) => (
     <div className="text-gray-500">
-        <h1 className="text-lg text-gray-800 font-semibold mb-3">{shape.name}</h1>
+        <h1 className="text-lg text-gray-800 font-medium mb-3">{shape.name}</h1>
         
         <p className="text-sm mb-4">{shape.description}</p>
 
@@ -20,13 +20,13 @@ const MensurationInfoTab = ({ shape, onSubmit }: Props) => (
                 <span>
                     Rumus Volume (V)
                 </span>
-                <span className="text-gray-800 font-semibold">{formatFormula(shape.vFormula)}</span>
+                <span className="text-gray-800 font-medium">{formatFormula(shape.vFormula)}</span>
             </li>
             <li className="flex justify-between py-4 border-t">
                 <span>
                     Rumus Luas Permukan (LP)
                 </span>
-                <span className="text-gray-800 font-semibold">{formatFormula(shape.lpFormula)}</span>
+                <span className="text-gray-800 font-medium">{formatFormula(shape.lpFormula)}</span>
             </li>
         </ul>
 

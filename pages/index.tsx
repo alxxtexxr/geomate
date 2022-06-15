@@ -2,8 +2,11 @@ import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 
+// Components
+import Navbar from '../components/Navbar';
+
 // Constants
-import { SHAPES } from '../Constants';
+import { SHAPES, NAVBAR_BOTTOM_MENU } from '../Constants';
 
 // Types
 import type ComponentWithAuth from '../types/ComponentWithAuth';
@@ -12,7 +15,7 @@ const Home: ComponentWithAuth = () => {
   const { data: session } = useSession();
 
   return (
-    <main className="bg-base-100 min-h-screen">
+    <main className="bg-base-100 min-h-screen pb-20">
       {/* Header */}
       <header className="flex flex-col justify-center text-center bg-base-200 text-primary-content pt-8 pb-14">
         <div className="mb-4">
@@ -30,7 +33,7 @@ const Home: ComponentWithAuth = () => {
             </div>
           </div>
         </div>
-        <h1 className="font-semibold">Halo, {session?.user?.name || 'Kamu'}</h1>
+        <h1 className="font-medium">Halo, {session?.user?.name || 'Kamu'}</h1>
         <p className="text-sm">Mau belajar apa hari ini?</p>
       </header>
 
@@ -41,7 +44,7 @@ const Home: ComponentWithAuth = () => {
             <div className="relative h-10 w-10 mr-4">
               <Image src="/images/kikd.png" alt="KI/KD" layout="fill" />
             </div>
-            <h2 className="font-semibold text-gray-800">
+            <h2 className="font-medium text-gray-800">
               Pendahuluan
             </h2>
           </div>
@@ -51,7 +54,7 @@ const Home: ComponentWithAuth = () => {
                 <div className="relative h-20 w-20 mb-4">
                   <Image src={`/images/${code}.png`} alt={name} layout="fill" />
                 </div>
-                <h2 className="font-semibold text-gray-800">
+                <h2 className="font-medium text-gray-800">
                   {name}
                 </h2>
               </div>
@@ -59,6 +62,8 @@ const Home: ComponentWithAuth = () => {
           ))}
         </div>
       </section>
+
+      <Navbar.Bottom menu={NAVBAR_BOTTOM_MENU} />
     </main>
   );
 };

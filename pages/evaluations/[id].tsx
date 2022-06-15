@@ -87,8 +87,8 @@ const EvaluationPage: ComponentWithAuth<Props> = ({ evaluation, notifications })
                 </div>
 
                 <div className="mb-6 px-8">
-                    <h1 className="font-semibold text-5xl text-gray-800 mb-4">{evaluation.score}</h1>
-                    <h2 className="font-semibold text-gray-800 mb-2">Lorem Ipsum!</h2>
+                    <h1 className="font-medium text-5xl text-gray-800 mb-4">{evaluation.score}</h1>
+                    <h2 className="font-medium text-gray-800 mb-2">Lorem Ipsum!</h2>
                     <p className="text-gray-500 text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                 </div>
 

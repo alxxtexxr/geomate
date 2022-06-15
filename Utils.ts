@@ -1,3 +1,4 @@
+import qs from 'qs';
 import { IncomingForm } from 'formidable';
 import cloudinary from 'cloudinary/lib/cloudinary';
 
@@ -8,10 +9,35 @@ import type { Fields, Files, File } from 'formidable';
 // Constants
 import { SHAPES } from './Constants';
 
-export const getShapeByI = (i: number) => SHAPES[i];
+export const snakeToPascal = (string: string) => {
+    return string.split("/")
+        .map(snake => snake.split("_")
+            .map(substr => substr.charAt(0)
+                .toUpperCase() +
+                substr.slice(1))
+            .join(""))
+        .join("/");
+};
 
+export const range = (size: number, startAt: number = 0): ReadonlyArray<number> => {
+    return [...Array(size).keys()].map(i => i + startAt);
+};
+
+export const round10 = (x: number) => Math.ceil(x / 10) * 10;
+
+export const getInitials = (name: string) => {
+    const nameArr = name.split(' ');
+
+    return nameArr.length > 1
+        ? nameArr[0] + ' ' + nameArr[1][0] + '.'
+        : nameArr[0];
+};
+
+// Shape
+export const getShapeByI = (i: number) => SHAPES[i];
 export const getShapeByCode = (code: string) => SHAPES.filter((SHAPE) => SHAPE.code === code)[0];
 
+// Tensorflow
 export const createImgElemement = (imgSrc: string): Promise<HTMLImageElement> => {
     return new Promise((resolve, _) => {
         const img = new Image()
@@ -41,6 +67,15 @@ export const dataURItoBlob = (dataURI: string) => {
     return new Blob([ia], { type: mimeString });
 };
 
+// Prisma
+export const getQuery = ({ req }: { req: IncomingMessage | undefined }) => {
+    return new Promise<{ [key: string]: string | string[]; }>((resolve) => {
+        if (req && req.url) {
+            resolve(qs.parse(req.url.split('?')[1]) as { [key: string]: string | string[] });
+        }
+    });
+};
+
 export const getImage = async (formData: IncomingMessage) => {
     const data: {
         fields: Fields,
@@ -68,22 +103,6 @@ export const uploadImage = (image: string) => {
         );
     });
 };
-
-export const snakeToPascal = (string: string) => {
-    return string.split("/")
-        .map(snake => snake.split("_")
-            .map(substr => substr.charAt(0)
-                .toUpperCase() +
-                substr.slice(1))
-            .join(""))
-        .join("/");
-};
-
-export const range = (size: number, startAt: number = 0): ReadonlyArray<number> => {
-    return [...Array(size).keys()].map(i => i + startAt);
-};
-
-export const round10 = (x: number) => Math.ceil(x / 10) * 10;
 
 // Mensuration
 export const formatFormula = (formula: string) => {

@@ -75,7 +75,7 @@ const MensurationSizeTab = ({ shape, form, setForm, onSubmit, isSubmitting }: Pr
                     disabled
                     value={formatFormula((shape as { [key: string]: any })[symbol.toLowerCase() + 'Formula'])}
                   />
-                  <span className="text-sm font-semibold" style={{ width: 60 }}>
+                  <span className="text-sm font-medium" style={{ width: 60 }}>
                     {symbol === 'V' ? 'cm³' : (symbol === 'LP' ? 'cm²' : 'cm')}
                   </span>
                 </label>
@@ -87,7 +87,7 @@ const MensurationSizeTab = ({ shape, form, setForm, onSubmit, isSubmitting }: Pr
                     disabled
                     value={assignValuesToFormula(formatFormula((shape as { [key: string]: any })[symbol.toLowerCase() + 'Formula']))}
                   />
-                  <span className="text-sm font-semibold" style={{ width: 60 }}>
+                  <span className="text-sm font-medium" style={{ width: 60 }}>
                     {symbol === 'V' ? 'cm³' : (symbol === 'LP' ? 'cm²' : 'cm')}
                   </span>
                 </label>
@@ -122,7 +122,7 @@ const MensurationSizeTab = ({ shape, form, setForm, onSubmit, isSubmitting }: Pr
                       onChange: handleChange
                     })}
                   />
-                  <span className="text-sm font-semibold" style={{ width: 60 }}>
+                  <span className="text-sm font-medium" style={{ width: 60 }}>
                     {symbol === 'V' ? 'cm³' : (symbol === 'LP' ? 'cm²' : 'cm')}
                   </span>
                 </label>

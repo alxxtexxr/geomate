@@ -59,7 +59,7 @@ const ProblemIdentification: ComponentWithAuth<Props> = ({ shape }) => {
                     </div>
                 </div>
 
-                <h1 className="font-semibold text-gray-800">
+                <h1 className="font-medium text-gray-800">
                     {shape.problemIdentification}
                 </h1>
             </section>

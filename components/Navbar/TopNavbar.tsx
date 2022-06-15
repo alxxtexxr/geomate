@@ -6,7 +6,7 @@ type Props = {
     title?: string,
 };
 
-const Navbar = ({ backHref, title }: Props) => (
+const TopNavbar = ({ backHref, title }: Props) => (
     <nav className="flex justify-between items-center p-2">
         {backHref ? (
             <Link href={backHref}>
@@ -18,10 +18,10 @@ const Navbar = ({ backHref, title }: Props) => (
             <div className="h-12 w-12" />
         )}
         {title && (
-            <h1 className="font-semibold">{title}</h1>
+            <h1 className="font-medium">{title}</h1>
         )}
         <div className="h-12 w-12" />
     </nav>
 );
 
-export default Navbar;
+export default TopNavbar;

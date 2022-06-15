@@ -12,14 +12,14 @@ import Spinner from '../../components/Spinner';
 // Utils
 import { getShapeByCode } from '../../Utils';
 
+// Constants
+import { MATH_SYMBOLS } from '../../Constants';
+
 // Types
 import type { GetServerSideProps } from 'next';
 import type ComponentWithAuth from '../../types/ComponentWithAuth';
 import type Shape from '../../types/Shape';
 import type { Observation, Evaluation } from '@prisma/client';
-
-// Constants
-import { MATH_SYMBOLS } from '../../Constants';
 
 type Props = {
     observation: Observation,
@@ -55,7 +55,7 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
 
     return (
         <main className="relative flex flex-col bg-base-100 h-screen pb-20">
-            <Navbar title="Hasil Observasi" />
+            <Navbar.Top title="Hasil Observasi" />
 
             {observation.image && (
                 <section className="px-4 mb-4">
@@ -95,7 +95,7 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
                             {title} ({symbol})
                         </div>
                         {/* <div className="w-5/12"> */}
-                        <span className="font-semibold text-gray-800">
+                        <span className="font-medium text-gray-800">
                             {(observation as { [key: string]: any })[symbol.toLowerCase()] || 0} {symbol === 'V' ? 'cm³' : (symbol === 'LP' ? 'cm²' : 'cm')}
                         </span>
                         {/* <label className="input-group">
@@ -105,7 +105,7 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                     value={(observation as { [key: string]: any })[symbol.toLowerCase()] || 0}
                                     disabled
                                 />
-                                <span className="font-semibold" style={{ width: 60 }}>{symbol === 'V' ? 'cm³' : (symbol === 'LP' ? 'cm²' : 'cm')}</span>
+                                <span className="font-medium" style={{ width: 60 }}>{symbol === 'V' ? 'cm³' : (symbol === 'LP' ? 'cm²' : 'cm')}</span>
                             </label> */}
                     </div>
                     // </div>

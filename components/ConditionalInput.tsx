@@ -37,7 +37,7 @@ const ConditionalInput = ({ correctValue, className, incorrectMessage, suffix, o
                         onChange={handleChange}
                         {...props}
                     />
-                    <span className="text-sm font-semibold">
+                    <span className="text-sm font-medium">
                         {suffix}
                     </span>
                 </label>
