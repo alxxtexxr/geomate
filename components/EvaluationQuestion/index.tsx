@@ -1,9 +1,7 @@
-import EvaluationQuestionPagination from './EvaluationQuestionPagination';
-import EvaluationQuestionPaginationButton from './EvaluationQuestionPaginationButton';
+import { default as Pagination } from './EvaluationQuestionPagination';
+import { default as AnswerChoices } from './EvaluationQuestionAnswerChoices';
 
-const EvaluationQuestion = {
-    Pagination: EvaluationQuestionPagination,
-    PaginationButton: EvaluationQuestionPaginationButton,
+export {
+    Pagination,
+    AnswerChoices,
 };
-
-export default EvaluationQuestion;

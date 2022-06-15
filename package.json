@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "dev-prisma-studio": "dotenv -e .env.development.local prisma studio",
+    "dev-prisma-db-seed": "dotenv -e .env.development.local prisma db seed",
     "dev-prisma-db-push": "dotenv -e .env.development.local prisma db push",
     "dev-prisma-generate": "dotenv -e .env.development.local prisma generate"
   },

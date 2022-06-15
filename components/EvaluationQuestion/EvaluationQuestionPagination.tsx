@@ -32,7 +32,7 @@ const EvaluationQuestionPagination = ({ evaluationQuestions, no }: Props) => (
                         <a>
                             <Button
                                 isActive={no - 1 === i}
-                                isAnswered={!!!evaluationQuestion.answer}
+                                isAnswered={!!evaluationQuestion.answer}
                             >
                                 {i + 1}
                             </Button>

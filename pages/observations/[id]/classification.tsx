@@ -94,7 +94,7 @@ const Classification: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 body: formData,
             });
 
-            await Router.push(`/observations/${observation.id}/calculation`);
+            await Router.push(`/observations/${observation.id}/mensuration`);
         } catch (error) {
             setIsSubmitting(false);
             console.error(error);

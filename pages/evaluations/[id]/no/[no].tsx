@@ -4,8 +4,8 @@ import { Prisma } from '@prisma/client'
 
 // Components
 import Navbar from '../../../../components/Navbar';
-import Spinner from '../../../../components/Spinner';
-import EvaluationQuestion from '../../../../components/EvaluationQuestion';
+import { Pagination, AnswerChoices } from '../../../../components/EvaluationQuestion';
+import LoaderButton from '../../../../components/LoaderButton';
 
 // Types
 import type { GetServerSideProps } from 'next';
@@ -88,72 +88,51 @@ const EvaluationQuestionPage: ComponentWithAuth<Props> = ({ evaluation }) => {
         <main>
             <Navbar title="Evaluasi" />
 
-            <EvaluationQuestion.Pagination
+            <Pagination
                 evaluationQuestions={evaluation.evaluationQuestions}
                 no={no}
             />
 
-            <section className="text-gray-500 px-4">
-                <p className="mb-8">
+            <section className="px-4">
+                <p className="text-gray-500 text-sm mb-8">
                     {activeQuestion.question}
                 </p>
 
-                <div className="grid grid-cols-1 gap-4">
-                    {activeQuestion.answerChoices.map((answerChoice, i) => (
-                        <label
-                            htmlFor={answerChoice.id}
-                            className={
-                                'btn justify-start font-normal normal-case' +
-                                (
-                                    answerChoice.id === answer
-                                        ? ' bg-primary hover:bg-primary bg-opacity-5 hover:bg-opacity-5 text-primary border-primary hover:border-primary'
-                                        : ' bg-white hover:bg-white text-gray-500 border-white hover:border-primary shadow'
-                                )
-                            }
-                            key={answerChoice.id}
-                        >
-                            <input
-                                type="radio"
-                                name="answer"
-                                id={answerChoice.id}
-                                className="hidden"
-                                value={answerChoice.id}
-                                onChange={(e) => setAnswer(e.target.value)}
-                            />
-                            <span className={
-                                'badge text-primary h-8 w-8 mr-4 border-none' +
-                                (
-                                    answerChoice.id !== answer
-                                        ? ' bg-primary bg-opacity-20'
-                                        : ''
-                                )
-                            }>
-                                {['A', 'B', 'C', 'D'][i]}
-                            </span>
-                            {answerChoice.answer}
-                        </label>
-                    ))}
-                </div>
+                <AnswerChoices
+                    answerChoices={activeQuestion.answerChoices}
+                    answer={answer}
+                    setAnswer={setAnswer}
+                />
             </section>
 
             <section className="fixed left-0 bottom-0 z-20 w-screen p-4">
-                {/* Jika telah menjawab semua baru bisa mengumpul jawaban */}
-
-                {answer ? (
-                    isLoading ? (
-                        <button className="btn w-full" disabled>
-                            <Spinner />
-                        </button>
+                {isLoading && (<LoaderButton />)}
+                {!isLoading && (
+                    no < evaluation.evaluationQuestions.length ? (
+                        answer ? (
+                            <button className="btn btn-primary w-full shadow" onClick={answerQuestion}>
+                                Jawab
+                            </button>
+                        ) : (
+                            <button className="btn w-full" disabled>
+                                Jawab
+                            </button>
+                        )
                     ) : (
-                        <button className="btn btn-primary w-full shadow" onClick={answerQuestion}>
-                            {no < evaluation.evaluationQuestions.length ? 'Jawab' : 'Kumpulkan Jawaban'}
-                        </button>
+                        // Check whether every evaluation question (except the last one) is answered or not
+                        answer && evaluation.evaluationQuestions.slice(0, 1).every((evaluationQuestion) => evaluationQuestion.answer) ? (
+                            <button className="btn btn-primary w-full shadow" onClick={answerQuestion}>
+                                Kumpulkan Jawaban
+                            </button>
+                        ) : (
+                            <button className="btn w-full" disabled>
+                                {answer ? 'Kumpulkan Jawaban' : 'Jawab'} 
+                            </button>
+                        )
                     )
-                ) : (
-                    <button className="btn w-full" disabled>
-                        {no < evaluation.evaluationQuestions.length ? 'Jawab' : 'Kumpulkan Jawaban'}
-                    </button>
                 )}
+
+
             </section>
         </main >
     );
