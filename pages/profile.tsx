@@ -1,9 +1,11 @@
+import {useState} from 'react';
 import { useSession } from 'next-auth/react';
 import { MdEdit } from 'react-icons/md';
 
 // Components
 import Navbar from '../components/Navbar';
 import AvatarUploader from '../components/AvatarUploader';
+import NameEditForm from '../components/ProfileNameEditForm';
 import Achievement from '../components/Achievement';
 
 // Constants
@@ -32,6 +34,8 @@ type Props = {
 const Profile: ComponentWithAuth<Props> = ({ achievements }) => {
     const { data: session } = useSession();
 
+    const [isOpen, setIsOpen] = useState(false);
+
     return (
         <main className="pb-20">
             {/* Header */}
@@ -40,7 +44,7 @@ const Profile: ComponentWithAuth<Props> = ({ achievements }) => {
 
                 />
                 <div className="mt-4">
-                    <a className="link link-hover">
+                    <a className="link link-hover" onClick={() => setIsOpen(!isOpen)}>
                         <h1 className="inline-flex items-center font-medium">
                             {session?.user?.name || 'Kamu'}
                             <MdEdit className="text-lg ml-1" />
@@ -51,8 +55,7 @@ const Profile: ComponentWithAuth<Props> = ({ achievements }) => {
             </header>
 
             {/* Achievements */}
-            <section className="grid grid-cols-2 gap-4 p-4">
-                {/* {console.log({achievements})} */}
+            <section className="grid grid-cols-3 gap-4 p-4">
                 {achievements.map((achievement) => (
                     <Achievement
                         title={achievement.title}
@@ -61,6 +64,8 @@ const Profile: ComponentWithAuth<Props> = ({ achievements }) => {
                     />
                 ))}
             </section>
+
+            <NameEditForm isOpen={isOpen} setIsOpen={setIsOpen} />
 
 
             {/* Navbar Bottom */}

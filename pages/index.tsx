@@ -47,7 +47,7 @@ const Home: ComponentWithAuth = () => {
                 <div className="relative h-20 w-20 mb-4">
                   <Image src={`/images/${code}.png`} alt={name} layout="fill" />
                 </div>
-                <h2 className="font-medium text-gray-800">
+                <h2 className="font-medium text-gray-800 -mb-1">
                   {name}
                 </h2>
               </div>

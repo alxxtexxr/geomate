@@ -2,7 +2,7 @@ import Sheet from 'react-modal-sheet';
 import { HiCheck, HiX } from 'react-icons/hi';
 
 // Components
-import Spinner from './Spinner';
+import LoaderButton from './LoaderButton';
 
 // Types
 import { Dispatch, SetStateAction } from 'react';
@@ -15,7 +15,7 @@ type Props = {
     predictedShape: Shape,
     isSubmitting: boolean,
     onSubmit: () => {},
-}
+};
 
 const ClassificationResult = ({ isOpen, setIsOpen, shape, predictedShape, isSubmitting, onSubmit }: Props) => {
     const isCorrect = shape.code === predictedShape.code;
@@ -61,9 +61,7 @@ const ClassificationResult = ({ isOpen, setIsOpen, shape, predictedShape, isSubm
                         <div>
                             {predictedShape.code === shape.code ? (
                                 isSubmitting ? (
-                                    <button className="btn w-full" disabled>
-                                        <Spinner />
-                                    </button>
+                                    <LoaderButton />
                                 ) : (
                                     <button className="btn btn-primary w-full" onClick={onSubmit}>
                                         Observasi
