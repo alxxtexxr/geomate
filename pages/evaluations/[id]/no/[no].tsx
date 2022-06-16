@@ -18,11 +18,11 @@ type Evaluation = Prisma.EvaluationGetPayload<{
                 question: {
                     include: {
                         answerChoices: true,
-                    }
+                    },
                 },
             },
         },
-    }
+    },
 }>;
 
 type Props = {
@@ -86,7 +86,7 @@ const EvaluationQuestionPage: ComponentWithAuth<Props> = ({ evaluation }) => {
 
     return (
         <main>
-            <Navbar title="Evaluasi" />
+            <Navbar.Top title="Evaluasi" />
 
             <Pagination
                 evaluationQuestions={evaluation.evaluationQuestions}

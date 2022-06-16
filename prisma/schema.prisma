@@ -56,7 +56,7 @@ model Achievement {
   description String?
   image       String?
 
-  users UserAchievement[]
+  userAchievements UserAchievement[]
 }
 
 model UserAchievement {
@@ -174,12 +174,12 @@ model User {
   xp    Int @default(0)
   level Int @default(1)
 
-  accounts      Account[]
-  sessions      Session[]
-  observations  Observation[]
-  evaluations   Evaluation[]
-  achievements  UserAchievement[]
-  notifications Notification[]
+  accounts         Account[]
+  sessions         Session[]
+  observations     Observation[]
+  evaluations      Evaluation[]
+  userAchievements UserAchievement[]
+  notifications    Notification[]
 }
 
 model VerificationToken {

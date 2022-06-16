@@ -18,6 +18,7 @@
     "@react-spring/three": "^9.4.5",
     "@react-three/fiber": "^8.0.13",
     "@react-three/xr": "^3.5.0",
+    "@svgr/webpack": "^6.2.1",
     "@tensorflow/tfjs": "^3.18.0",
     "@tensorflow/tfjs-converter": "^3.18.0",
     "@use-gesture/react": "^10.2.12",

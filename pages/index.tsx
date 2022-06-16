@@ -1,5 +1,5 @@
-import Image from 'next/image';
 import { useSession } from 'next-auth/react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 // Components
@@ -34,7 +34,7 @@ const Home: ComponentWithAuth = () => {
         <div className="grid grid-cols-2 gap-4 -mt-12">
           <div className="animation col-span-2 flex justify-start items-center bg-white py-4 px-6 shadow rounded-xl">
             <div className="relative h-10 w-10 mr-4">
-              <Image src="/images/kikd.png" alt="KI/KD" layout="fill" />
+              <Image src="/images/intro.png" alt="KI/KD" layout="fill" />
             </div>
             <h2 className="font-medium text-gray-800">
               Pendahuluan
@@ -55,6 +55,7 @@ const Home: ComponentWithAuth = () => {
         </div>
       </section>
 
+      {/* Navbar Bottom */}
       <Navbar.Bottom menu={NAVBAR_BOTTOM_MENU} />
     </main>
   );
