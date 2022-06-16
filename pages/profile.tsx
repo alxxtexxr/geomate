@@ -1,8 +1,9 @@
 import { useSession } from 'next-auth/react';
+import { MdEdit } from 'react-icons/md';
 
 // Components
 import Navbar from '../components/Navbar';
-import Avatar from '../components/Avatar';
+import AvatarUploader from '../components/AvatarUploader';
 import Achievement from '../components/Achievement';
 
 // Constants
@@ -12,6 +13,7 @@ import { NAVBAR_BOTTOM_MENU } from '../Constants';
 import type { GetServerSideProps } from 'next';
 import type ComponentWithAuth from '../types/ComponentWithAuth';
 import type { Prisma } from '@prisma/client';
+
 
 type Achievement = Prisma.AchievementGetPayload<{
     include: {
@@ -34,13 +36,16 @@ const Profile: ComponentWithAuth<Props> = ({ achievements }) => {
         <main className="pb-20">
             {/* Header */}
             <header className="flex flex-col justify-center items-center text-center bg-base-200 text-primary-content pt-8 pb-14 rounded-b-xl">
-                <Avatar
-                    src={session?.user.image || undefined}
-                    alt={session?.user.name ? `${session?.user.name}'s Avatar` : undefined}
-                    size='lg'
+                <AvatarUploader
+
                 />
                 <div className="mt-4">
-                    <h1 className="font-medium">Halo, {session?.user?.name || 'Kamu'}</h1>
+                    <a className="link link-hover">
+                        <h1 className="inline-flex items-center font-medium">
+                            {session?.user?.name || 'Kamu'}
+                            <MdEdit className="text-lg ml-1" />
+                        </h1>
+                    </a>
                     <p className="text-sm">Mau belajar apa hari ini?</p>
                 </div>
             </header>

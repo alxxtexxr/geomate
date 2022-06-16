@@ -68,6 +68,11 @@ export const dataURItoBlob = (dataURI: string) => {
 };
 
 // Prisma
+export const reloadSession = () => {
+    const event = new Event('visibilitychange');
+    document.dispatchEvent(event)
+};
+
 export const getQuery = ({ req }: { req: IncomingMessage | undefined }) => {
     return new Promise<{ [key: string]: string | string[]; }>((resolve) => {
         if (req && req.url) {

@@ -1,5 +1,6 @@
 import Image from 'next/image';
 
+// Types
 type Props = {
     src?: string | undefined,
     alt?: string | undefined,
