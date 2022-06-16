@@ -29,7 +29,11 @@ const Leaderboard: ComponentWithAuth<Props> = ({ users }) => (
                         }
                         key={user.name}
                     >
-                        <Avatar user={user} size="sm" />
+                        <Avatar
+                            src={user.image || undefined}
+                            alt={user.name ? `${user.name}'s Avatar` : undefined}
+                            size='sm'
+                        />
                         <div className="ml-4 mr-auto">
                             <h2 className="text-gray-800 font-medium leading-none">
                                 {user.name}

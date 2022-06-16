@@ -20,7 +20,8 @@ const Home: ComponentWithAuth = () => {
       {/* Header */}
       <header className="flex flex-col justify-center items-center text-center bg-base-200 text-primary-content pt-8 pb-14">
         <Avatar
-          user={session?.user}
+          src={session?.user.image || undefined}
+          alt={session?.user.name ? `${session?.user.name}'s Avatar` : undefined}
           size='lg'
         />
         <div className="mt-4">

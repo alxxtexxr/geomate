@@ -25,7 +25,10 @@ const LeaderboardPodium = ({ users }: Props) => (
 
             return (
                 <div className="w-1/3 text-center" key={rank}>
-                    <Avatar user={user} />
+                    <Avatar
+                        src={user.image || undefined}
+                        alt={user.name ? `${user.name}'s Avatar` : undefined}
+                    />
                     <div className="my-2">
                         <h1 className="font-medium leading-none">
                             {user.name && getInitials(user.name)}
