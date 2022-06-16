@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import Sheet from 'react-modal-sheet';
+import { toast } from 'react-toastify';
 
 // Components
 import LoaderButton from './LoaderButton';
@@ -39,7 +40,7 @@ const ProfileNameEditForm = ({ isOpen, setIsOpen }: Props) => {
 
             reloadSession();
 
-            // !!! If success, give message here !!!
+            toast.success('Berhasil mengedit nama lengkap!');
 
             setIsOpen(false);
             setIsLoading(false);
