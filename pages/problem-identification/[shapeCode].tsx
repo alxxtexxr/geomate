@@ -43,8 +43,8 @@ const ProblemIdentification: ComponentWithAuth<Props> = ({ shape }) => {
     };
 
     return (
-        <main className="bg-base-100 flex flex-col h-screen">
-            <Navbar title="Pernyataan Masalah" backHref={`/stimulation/${shape.code}`} />
+        <main className="flex flex-col h-screen">
+            <Navbar.Top title="Pernyataan Masalah" backHref={`/stimulation/${shape.code}`} />
 
             <section className="flex flex-col flex-grow justify-center items-center text-center px-8">
                 <div className="bg-white p-2 mb-8 rounded-xl shadow">

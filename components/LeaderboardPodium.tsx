@@ -1,10 +1,12 @@
-import Image from 'next/image';
+// Components
+import Avatar from './Avatar';
 
 // Utils
 import { getInitials } from '../Utils';
 
 // Types
 import type { User } from '@prisma/client';
+
 
 type Props = {
     users: User[],
@@ -23,19 +25,7 @@ const LeaderboardPodium = ({ users }: Props) => (
 
             return (
                 <div className="w-1/3 text-center" key={rank}>
-                    <div className="avatar">
-                        <div
-                            className="relative h-16 w-16 rounded-full ring ring-white shadow"
-                            style={{ backgroundColor: '#C4C5C9' }}
-                        >
-                            <Image
-                                src={user.image || '/images/default-user-image.jpeg'}
-                                alt={user.name || ''}
-                                layout="fill"
-                                priority
-                            />
-                        </div>
-                    </div>
+                    <Avatar user={user} />
                     <div className="my-2">
                         <h1 className="font-medium leading-none">
                             {user.name && getInitials(user.name)}

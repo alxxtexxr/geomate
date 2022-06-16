@@ -1,10 +1,7 @@
-import Image from 'next/image';
-
 // Components
 import Navbar from '../components/Navbar';
-
-// Utils
-import { range } from '../Utils';
+import Podium from '../components/LeaderboardPodium';
+import Avatar from '../components/Avatar';
 
 // Constants
 import { NAVBAR_BOTTOM_MENU } from '../Constants';
@@ -13,8 +10,6 @@ import { NAVBAR_BOTTOM_MENU } from '../Constants';
 import type { GetServerSideProps } from 'next';
 import type ComponentWithAuth from '../types/ComponentWithAuth';
 import type { User } from '@prisma/client';
-import Podium from '../components/LeaderboardPodium';
-
 
 type Props = {
     users: User[],
@@ -34,19 +29,7 @@ const Leaderboard: ComponentWithAuth<Props> = ({ users }) => (
                         }
                         key={user.name}
                     >
-                        <div className="avatar">
-                            <div
-                                className="relative h-12 w-12 rounded-full ring ring-white shadow"
-                                style={{ backgroundColor: '#C4C5C9' }}
-                            >
-                                <Image
-                                    src={user.image || '/images/default-user-image.jpeg'}
-                                    alt={user.name || ''}
-                                    layout="fill"
-                                    priority
-                                />
-                            </div>
-                        </div>
+                        <Avatar user={user} size="sm" />
                         <div className="ml-4 mr-auto">
                             <h2 className="text-gray-800 font-medium leading-none">
                                 {user.name}

@@ -4,6 +4,7 @@ import Link from 'next/link';
 
 // Components
 import Navbar from '../components/Navbar';
+import Avatar from '../components/Avatar';
 
 // Constants
 import { SHAPES, NAVBAR_BOTTOM_MENU } from '../Constants';
@@ -15,26 +16,17 @@ const Home: ComponentWithAuth = () => {
   const { data: session } = useSession();
 
   return (
-    <main className="bg-base-100 min-h-screen pb-20">
+    <main className="pb-20">
       {/* Header */}
-      <header className="flex flex-col justify-center text-center bg-base-200 text-primary-content pt-8 pb-14">
-        <div className="mb-4">
-          <div className="avatar">
-            <div
-              className="relative h-24 w-24 rounded-full ring ring-white shadow"
-              style={{ backgroundColor: '#C4C5C9' }}
-            >
-              <Image
-                src={session?.user?.image || '/images/default-user-image.jpeg'}
-                alt={session?.user?.image || ''}
-                layout="fill"
-                priority
-              />
-            </div>
-          </div>
+      <header className="flex flex-col justify-center items-center text-center bg-base-200 text-primary-content pt-8 pb-14">
+        <Avatar
+          user={session?.user}
+          size='lg'
+        />
+        <div className="mt-4">
+          <h1 className="font-medium">Halo, {session?.user?.name || 'Kamu'}</h1>
+          <p className="text-sm">Mau belajar apa hari ini?</p>
         </div>
-        <h1 className="font-medium">Halo, {session?.user?.name || 'Kamu'}</h1>
-        <p className="text-sm">Mau belajar apa hari ini?</p>
       </header>
 
       {/* Menu */}
