@@ -22,7 +22,7 @@ const ClassificationResult = ({ isOpen, setIsOpen, shape, predictedShape, isSubm
 
     return (
         <Sheet
-            snapPoints={[216]}
+            snapPoints={[224]}
             isOpen={isOpen}
             onClose={() => setIsOpen(false)}
         >

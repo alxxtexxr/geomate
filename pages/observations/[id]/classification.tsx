@@ -1,16 +1,15 @@
 import { useRef, useCallback, useState, useEffect } from 'react';
-import * as tf from '@tensorflow/tfjs';
-import { loadGraphModel } from '@tensorflow/tfjs-converter';
 import Webcam from 'react-webcam';
 import { HiCamera } from 'react-icons/hi';
 import Router from 'next/router';
+import * as tmImage from '@teachablemachine/image';
 
 // Components
 import ClassificationResult from '../../../components/ClassificationResult';
 import Spinner from '../../../components/Spinner';
 
 // Utils
-import { createImgElemement, dataURItoBlob, getShapeByCode, getShapeByI } from '../../../Utils';
+import { createImgElemement, dataURItoBlob, getShapeByCode } from '../../../Utils';
 
 // Types
 import type { GetServerSideProps } from 'next';
@@ -24,11 +23,15 @@ type Props = {
 };
 
 const Classification: ComponentWithAuth<Props> = ({ observation, shape }) => {
+    // Constants
+    const MODEL_URL = '/models/3d-shape-classification-model/model.json';
+    const METADATA_URL = '/models/3d-shape-classification-model/metadata.json';
+
     // Refs
     const webcamRef = useRef<Webcam | null>(null);
 
     // States
-    const [model, setModel] = useState<tf.GraphModel<string | tf.io.IOHandler> | null>(null);
+    const [model, setModel] = useState<tmImage.CustomMobileNet | null>(null);
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [predictedShape, setPredictedShape] = useState<Shape | null>(null);
@@ -37,26 +40,13 @@ const Classification: ComponentWithAuth<Props> = ({ observation, shape }) => {
 
     // Effects 
     useEffect(() => {
-        // Load 3D Shape Classification model
-        loadGraphModel('/models/3d-shape-classification-model/model.json')
-            .then((model) => setModel(model))
-            .catch((err) => console.error(err));
+        tmImage.load(MODEL_URL, METADATA_URL)
+            .then((model) => setModel(model));
     }, []);
 
-    // Functions
-    const predict = (pixels: HTMLImageElement | HTMLVideoElement | tf.PixelData | ImageData | HTMLCanvasElement | ImageBitmap): Promise<Uint8Array | Float32Array | Int32Array> | null => {
-        if (!model) { return null; }
-
-        // Preprocessing the image
-        let imgTf3d = tf.browser.fromPixels(pixels);
-        imgTf3d = tf.image.resizeBilinear(imgTf3d, [224, 224]);
-        imgTf3d = tf.cast(imgTf3d, 'float32');
-        const imgTf4d = tf.tensor4d(Array.from(imgTf3d.dataSync()), [1, 224, 224, 3])
-
-        return (model.predict(imgTf4d, { batchSize: 32 }) as tf.Tensor).data();
-    };
-
     const capture = useCallback(async () => {
+        if (!model) { return; }
+
         setIsLoading(true);
 
         // Predicting the object shape
@@ -65,10 +55,12 @@ const Classification: ComponentWithAuth<Props> = ({ observation, shape }) => {
         setBase64Image(_base64Image);
 
         const imgElemement = _base64Image ? await createImgElemement(_base64Image) : null;
-        const predictions = imgElemement ? await predict(imgElemement) : null;
-        const maxPrediction = predictions ? Math.max(...Array.from(predictions)) : null;
-        const maxPredictionI = predictions && maxPrediction ? predictions.indexOf(maxPrediction) : null;
-        const predictedShape = maxPredictionI ? getShapeByI(maxPredictionI) : null;
+        const prediction = imgElemement ? await model.predict(imgElemement) : null;
+        // Get the max. probability of predictions
+        const maxPrediction = prediction ? prediction.reduce(function(prev, current) {
+            return (prev.probability > current.probability) ? prev : current
+        }) : null;
+        const predictedShape = maxPrediction ? getShapeByCode(maxPrediction.className) : null;
 
         setPredictedShape(predictedShape);
         setIsOpen(true);
