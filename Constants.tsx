@@ -133,3 +133,77 @@ export const NAVBAR_BOTTOM_MENU = [
     href: '/profile',
   },
 ];
+
+export const INTROS = [
+  {
+      title: 'Kompetensi Inti',
+      contents: [
+          {
+              no: '3',
+              content: 'Memahami pengetahuan faktual dan konseptual dengan cara mengamati, menanya, dan mencoba berdasarkan rasa ingin tahu tentang dirinya, makhluk ciptaan Tuhan, dan kegiatannya, dan benda-benda yang dijumpainya di rumah, di sekolah, dan tempat bermain.',
+          },
+          {
+              no: '4',
+              content: 'Menyajikan pengetahuan faktual dan konseptual dalam bahasa yang jelas, sistematis, logis, dan kritis, dalam karya yang estetis, dalam gerakan yang mencerminkan anak sehat, dalam tindakan yang mencerminkan perilaku anak beriman dan berakhlak mulia.',
+          },
+      ],
+  },
+  {
+      title: 'Kompetensi Dasar',
+      contents: [
+          {
+              no: '3',
+              content: 'Membandingkan prisma, tabung, limas, kerucut, dan bola.',
+          },
+          {
+              no: '4',
+              content: 'Mengidentifikasi prisma, tabung,limas, kerucut, dan bola.',
+          },
+      ],
+  },
+  {
+      title: 'Indikator',
+      contents: [
+          {
+              no: '3.6.1',
+              content: 'Memahami bangun ruang prisma.',
+          },
+          {
+              no: '3.6.2',
+              content: 'Mengetahui bangun ruang limas.',
+          },
+          {
+              no: '3.6.3',
+              content: 'Mengerti bangun ruang tabung.',
+          },
+          {
+              no: '3.6.4',
+              content: 'Memahami bangun ruang kerucut.',
+          },
+          {
+              no: '3.6.5',
+              content: 'Mengetahui bangun ruang bola.',
+          },
+          {
+              no: '4.6.1',
+              content: 'Mengidentifikasi bangun ruang prisma.',
+          },
+          {
+              no: '4.6.2',
+              content: 'Menentukan bangun ruang limas.',
+          },
+          {
+              no: '4.6.3',
+              content: 'Menunjukan bangun ruang tabung.',
+          },
+          {
+              no: '4.6.4',
+              content: 'Menjelaskan bangun ruang kerucut.',
+          },
+          {
+              no: '4.6.5',
+              content: 'Menentukan bangun ruang bola.',
+          },
+      ],
+  }
+];

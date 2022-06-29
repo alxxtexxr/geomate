@@ -33,14 +33,16 @@ const Home: ComponentWithAuth = () => {
       {/* Menu */}
       <section className="p-4">
         <div className="grid grid-cols-2 gap-4 -mt-12">
-          <div className="animation col-span-2 flex justify-start items-center bg-white py-4 px-6 shadow rounded-xl">
-            <div className="relative h-10 w-10 mr-4">
-              <Image src="/images/intro.png" alt="KI/KD" layout="fill" />
+          <Link href="/intro">
+            <div className="animation col-span-2 flex justify-start items-center bg-white py-4 px-6 shadow rounded-xl">
+              <div className="relative h-10 w-10 mr-4">
+                <Image src="/images/intro.png" alt="KI/KD" layout="fill" />
+              </div>
+              <h2 className="font-medium text-gray-800">
+                Pendahuluan
+              </h2>
             </div>
-            <h2 className="font-medium text-gray-800">
-              Pendahuluan
-            </h2>
-          </div>
+          </Link>
           {SHAPES.map(({ id, name, code }) => (
             <Link href={`/stimulation/${code}`} key={id}>
               <div className="flex flex-col justify-center items-center bg-white py-8 shadow rounded-xl">

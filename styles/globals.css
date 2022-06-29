@@ -43,6 +43,11 @@
     @apply z-10
 }
 
+.collapse-arrow .collapse-title:after {
+    top:  1.8rem;
+    right: 2rem;
+}
+
 /* React Toastify */
 .Toastify__toast-container {
     @apply grid grid-cols-1 gap-2 p-2
