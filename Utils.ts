@@ -5,9 +5,10 @@ import cloudinary from 'cloudinary/lib/cloudinary';
 // Types
 import type { IncomingMessage } from 'http';
 import type { Fields, Files, File } from 'formidable';
+import type MensurationForm from './types/MensurationForm';
 
 // Constants
-import { SHAPES } from './Constants';
+import { SHAPES, MATH_SYMBOLS } from './Constants';
 
 export const snakeToPascal = (string: string) => {
     return string.split("/")
@@ -36,6 +37,27 @@ export const getInitials = (name: string) => {
 // Shape
 export const getShapeByI = (i: number) => SHAPES[i];
 export const getShapeByCode = (code: string) => SHAPES.filter((SHAPE) => SHAPE.code === code)[0];
+
+// Math Symbol
+export const getMathSymbolByCode = (code: string) => MATH_SYMBOLS.filter((MATH_SYMBOL) => MATH_SYMBOL.code === code)[0];
+
+// Base Shape Symbol
+export const getBaseShapeSymbol = (nBaseVertices: number) => {
+    const baseShapeSymbols: { [key: number]: string } = {
+        3: '△',
+        4: '□',
+    };
+
+    return baseShapeSymbols[nBaseVertices];
+};
+export const getBaseShapeName = (nBaseVertices: number) => {
+    const baseShapeNames: { [key: number]: string } = {
+        3: 'Segitiga',
+        4: 'Persegi',
+    };
+
+    return baseShapeNames[nBaseVertices];
+};
 
 // Tensorflow
 export const createImgElemement = (imgSrc: string): Promise<HTMLImageElement> => {
@@ -111,7 +133,30 @@ export const uploadImage = (image: string) => {
 
 // Mensuration
 export const formatFormula = (formula: string) => {
-    return formula
+    const formulaArr = formula.split(' ');
+    let formattedFormulaArr: string[] = [];
+
+    formulaArr.map((formulaArrI) => {
+        let isExist = false;
+
+        MATH_SYMBOLS.map((mathSymbol, i) => {
+            if (!isExist) {
+                if (mathSymbol.code === formulaArrI) {
+                    if (mathSymbol.symbol) {
+                        formattedFormulaArr.push(mathSymbol.symbol);
+                        isExist = true;
+                    }
+                } else {
+                    if (i + 1 === MATH_SYMBOLS.length) {
+                        formattedFormulaArr.push(formulaArrI);
+                    }
+                }
+            }
+        });
+    });
+
+
+    return formattedFormulaArr.join(' ')
         .replaceAll('( ', '(')
         .replaceAll(' )', ')')
         .replaceAll('*', '×')
@@ -123,6 +168,24 @@ export const formatFormula = (formula: string) => {
 };
 
 export const getS = (r: number, t: number) => +Math.sqrt(Math.pow(r, 2) + Math.pow(t, 2)).toFixed(2);
+
+export const assignFormToFormula = (form: MensurationForm, formula: string) => {
+    let _formula = formula.replaceAll('pi', 'PI');
+    let _formulaArr = _formula.split(' ');
+
+    _formulaArr = _formulaArr.map((_formulaArrI) => form.hasOwnProperty(_formulaArrI) ? (form as { [key: string]: any })[_formulaArrI] : _formulaArrI);
+    _formula = _formulaArr.join(' ');
+
+    return _formula;
+};
+
+export const inputValueToNumber = (inputValue: string) => {
+    return inputValue.split('').filter(x => x === '.').length === 1
+        ? inputValue
+        : (
+            +inputValue || 0
+        )
+};
 
 // Gamification
 const initXpLimit = 100;

@@ -1,4 +1,7 @@
 type MensurationForm = {
+    baseA: number,
+    baseT: number,
+    baseS: number,
     nBaseVertices: number,
     nVertices: number,
     nEdges: number,

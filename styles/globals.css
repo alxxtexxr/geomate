@@ -36,7 +36,7 @@
 }
 
 .input-disabled, .input[disabled] {
-    @apply bg-gray-200 border-gray-200 
+    @apply bg-gray-50 border-gray-200 
 }
 
 .input-group :first-child {
@@ -46,6 +46,15 @@
 .collapse-arrow .collapse-title:after {
     top:  1.8rem;
     right: 2rem;
+}
+
+.steps .step:before,
+.steps .step:after {
+    @apply bg-gray-200 font-semibold text-gray-500
+}
+
+.steps .step-primary + .step-primary:before, .steps .step-primary:after {
+    @apply bg-primary text-primary-content
 }
 
 /* React Toastify */

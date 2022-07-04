@@ -125,7 +125,7 @@ const Classification: ComponentWithAuth<Props> = ({ observation, shape }) => {
                     </div>
                 ) : (
                     <button
-                        className="bg-base-100 hover:bg-base-200 text-primary border-white hover:border-white btn btn-lg btn-circle"
+                        className="bg-white hover:bg-white text-primary border-white hover:border-white btn btn-lg btn-circle"
                         onClick={() => capture()}
                     >
                         <HiCamera className="text-3xl" />

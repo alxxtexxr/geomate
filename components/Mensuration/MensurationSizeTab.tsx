@@ -5,7 +5,7 @@ import ConditionalInput from '../ConditionalInput';
 import Spinner from '../Spinner';
 
 // Utils
-import { formatFormula, getS } from '../../Utils';
+import { formatFormula, assignFormToFormula, inputValueToNumber, getS } from '../../Utils';
 
 // Constants
 import { MATH_SYMBOLS } from '../../Constants';
@@ -30,24 +30,6 @@ const MensurationSizeTab = ({ shape, form, setForm, onSubmit, isSubmitting }: Pr
   };
 
   // Function
-  const assignValuesToFormula = (formula: string) => {
-    let _formula = formula.toLowerCase().replaceAll('π', 'PI');
-    let _formulaArr = _formula.split(' ');
-
-    _formulaArr = _formulaArr.map((_formulaArrI) => form.hasOwnProperty(_formulaArrI) ? (form as { [key: string]: any })[_formulaArrI] : _formulaArrI);
-    _formula = _formulaArr.join(' ');
-
-    return _formula;
-  };
-
-  const inputValueToNumber = (inputValue: string) => {
-    return inputValue.split('').filter(x => x === '.').length === 1
-      ? inputValue
-      : (
-        +inputValue || 0
-      )
-  }
-
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setForm({
       ...form,
@@ -85,7 +67,7 @@ const MensurationSizeTab = ({ shape, form, setForm, onSubmit, isSubmitting }: Pr
                     placeholder="0"
                     className="input input-bordered w-1 flex-grow"
                     disabled
-                    value={assignValuesToFormula(formatFormula((shape as { [key: string]: any })[symbol.toLowerCase() + 'Formula']))}
+                    value={assignFormToFormula(form, formatFormula((shape as { [key: string]: any })[symbol.toLowerCase() + 'Formula']))}
                   />
                   <span className="text-sm font-medium" style={{ width: 60 }}>
                     {symbol === 'V' ? 'cm³' : (symbol === 'LP' ? 'cm²' : 'cm')}

@@ -2,6 +2,7 @@ import { MdOutlineHome, MdOutlineLeaderboard, MdOutlinePersonOutline } from 'rea
 
 // Types
 import Shape from './types/Shape';
+import MathSymbol from './types/MathSymbol';
 
 export const SHAPES: Shape[] = [
   {
@@ -13,8 +14,8 @@ export const SHAPES: Shape[] = [
     problemIdentification: 'Aliquam Faucibus Purus in Massa?',
     problemIdentificationImage: '/images/placeholder-image.jpeg',
     description: 'Bola adalah objek geometri dalam ruang tiga dimensi yang merupakan permukaan dari bola, analog dengan objek melingkar dalam dua dimensi, yaitu "lingkaran" adalah batas dari "cakram".',
-    vFormula: '( 4 / 3 ) * PI * r ^ 3',
-    lpFormula: '4 * PI * r ^ 2',
+    vFormula: '( 4 / 3 ) * pi * r ^ 3',
+    lpFormula: '4 * pi * r ^ 2',
     nVertices: 0,
     nEdges: 0,
     nFaces: 1,
@@ -28,8 +29,8 @@ export const SHAPES: Shape[] = [
     problemIdentification: 'Aliquam Faucibus Purus in Massa?',
     problemIdentificationImage: '/images/placeholder-image.jpeg',
     description: 'Tabung atau silinder adalah bangun ruang tiga dimensi yang dibentuk oleh dua buah lingkaran identik yang sejajar dan sebuah persegi panjang yang mengelilingi kedua lingkaran tersebut. Tabung memiliki 3 sisi dan 2 rusuk.',
-    vFormula: 'PI * r ^ 2 * t',
-    lpFormula: '2 * PI * r * ( r + t )',
+    vFormula: 'pi * r ^ 2 * t',
+    lpFormula: '2 * pi * r * ( r + t )',
     nVertices: 0,
     nEdges: 2,
     nFaces: 3,
@@ -58,8 +59,8 @@ export const SHAPES: Shape[] = [
     problemIdentification: 'Aliquam Faucibus Purus in Massa?',
     problemIdentificationImage: '/images/placeholder-image.jpeg',
     description: 'Dalam geometri, kerucut adalah sebuah limas istimewa yang beralas lingkaran. Kerucut memiliki 2 sisi, 1 rusuk, dan 1 titik sudut.',
-    vFormula: '( 1 / 3 ) * PI * r ^ 2 * t',
-    lpFormula: 'PI * r * ( r + s )',
+    vFormula: '( 1 / 3 ) * pi * r ^ 2 * t',
+    lpFormula: 'pi * r * ( r + s )',
     nVertices: 1,
     nEdges: 1,
     nFaces: 2,
@@ -73,46 +74,71 @@ export const SHAPES: Shape[] = [
     problemIdentification: 'Aliquam Faucibus Purus in Massa?',
     problemIdentificationImage: '/images/placeholder-image.jpeg',
     description: 'Dalam geometri, limas adalah bangun ruang tiga dimensi yang dibatasi oleh alas berbentuk segi-n dan sisi-sisi tegak berbentuk segitiga. Limas memiliki n + 1 sisi, 2n rusuk dan n + 1 titik sudut.',
-    vFormula: '( 1 / 3 ) * LA * t',
-    lpFormula: 'LA + LST',
+    vFormula: '( 1 / 3 ) * la * t',
+    lpFormula: 'la + lst',
     nVertices: -1,
     nEdges: -1,
     nFaces: -1,
   },
 ];
 
-export const MATH_SYMBOLS = [
+export const MATH_SYMBOLS: MathSymbol[] = [
+  {
+    symbol: 'LA',
+    code: 'la',
+    title: 'Luas Alas',
+  },
   {
     symbol: 'r',
+    code: 'r',
     title: 'Radius',
   },
   {
     symbol: 't',
+    code: 't',
     title: 'Tinggi',
   },
   {
     symbol: 's',
+    code: 's',
     title: 'Garis Pelukis',
   },
-  {
-    symbol: 'LA',
-    title: 'Luas Alas',
-  },
+  
   {
     symbol: 'LST',
+    code: 'lst',
     title: 'Luas Sisi Tegak',
   },
   {
     symbol: 'KA',
+    code: 'ka',
     title: 'Keliling Alas',
   },
   {
     symbol: 'V',
+    code: 'v',
     title: 'Volume',
   },
   {
     symbol: 'LP',
-    title: 'Luas Permukaan'
+    code: 'lp',
+    title: 'Luas Permukaan',
+  },
+
+  {
+    symbol: 's□',
+    code: 'baseS',
+    title: 'Sisi Persegi',
+  },
+  {
+    symbol: 'a△',
+    code: 'baseA',
+    title: 'Alas Segitiga',
+  },
+  {
+    symbol: 't△',
+    code: 'baseT',
+    title: 'Tinggi Segitiga',
   },
 ];
 

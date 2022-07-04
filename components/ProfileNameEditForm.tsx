@@ -61,9 +61,9 @@ const ProfileNameEditForm = ({ isOpen, setIsOpen }: Props) => {
                 <Sheet.Content onViewportBoxUpdate>
                     <div className="px-4">
                         <div className="form-control w-full mb-4">
-                            <label className="label text-sm">
-                                <span className="label-text text-gray-800">Nama Lengkap</span>
-                                <span className="label-text-alt text-gray-800">
+                            <label className="label text-gray-800 text-sm">
+                                <span className="label-text">Nama Lengkap</span>
+                                <span className="label-text-alt">
                                     (NB: Ubah untuk edit)
                                 </span>
                             </label>
