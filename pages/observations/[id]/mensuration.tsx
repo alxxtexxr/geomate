@@ -146,6 +146,11 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
         });
     };
 
+    const correctValues: { [key: string]: number } = {
+        la: +Parser.evaluate(LA_FORMULAS[form.nBaseVertices], form).toFixed(1),
+        v: +Parser.evaluate(shape.vFormula, form).toFixed(1),
+    };
+
     // Effects
     useEffect(() => {
         // setForm({
@@ -262,7 +267,7 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                 {/* </span> */}
                             </span>
                         </label>
-                        {/* Bentuk Alas */}
+                        {/* Base Shape */}
                         {tabs[activeTabI].code === 'baseShape' ? (
                             <div>
                                 {(shape.code === 'prism' || shape.code === 'pyramid') && (
@@ -279,7 +284,7 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                 )}
                             </div>
                         ) : (
-                            // Luas Alas
+                            // LA (Luas Alas)
                             tabs[activeTabI].code === 'la' ? (
                                 <>
                                     <label className="input-group mb-4">
@@ -301,7 +306,7 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                         <span className="text-xs font-semibold">cm³</span>
                                     </label>
                                     <ConditionalInput
-                                        correctValue={Parser.evaluate(LA_FORMULAS[form.nBaseVertices], form).toFixed(1)}
+                                        correctValue={'' + correctValues.la}
                                         incorrectMessage="Nilai belum benar."
                                         suffix="cm³"
                                         onChange={handleChange}
@@ -310,6 +315,7 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                     />
                                 </>
                             ) : (
+                                // Volume
                                 tabs[activeTabI].code === 'v' ? (
                                     <>
                                         <label className="input-group mb-4">
@@ -330,9 +336,8 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                             />
                                             <span className="text-xs font-semibold">cm³</span>
                                         </label>
-                                        {console.log(Parser.evaluate(shape.vFormula, form).toFixed(1))}
                                         <ConditionalInput
-                                            correctValue={Parser.evaluate(shape.vFormula, form).toFixed(1)}
+                                            correctValue={'' + correctValues.v}
                                             incorrectMessage="Nilai belum benar."
                                             suffix="cm³"
                                             onChange={handleChange}
@@ -367,6 +372,7 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 <div className="fixed left-0 bottom-0 grid grid-cols-2 gap-4 bg-white bg-opacity-95 w-screen p-4 border-t border-gray-200">
                     <button
                         className="btn btn-primary btn-outline w-full"
+                        // If it's first tab, disable prev button
                         {...(activeTabI > 0 ? {
                             onClick: () => setActiveTabI(activeTabI - 1)
                         } : {
@@ -376,17 +382,33 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
                         Sebelumnya
                     </button>
                     {activeTabI + 1 < tabs.length ? (
-                        <button className="btn btn-primary w-full" onClick={() => setActiveTabI(activeTabI + 1)}>
+                        < button
+                            className="btn btn-primary w-full"
+                            // If LA is incorrect, disable next button
+                            {...((tabs[activeTabI].code === 'la' && +form.la !== correctValues.la) ? {
+                                disabled: true,
+                            } : {
+                                onClick: () => setActiveTabI(activeTabI + 1)
+                            })}
+                        >
                             Selanjutnya
                         </button>
                     ) : (
-                        <button className="btn btn-primary w-full" onClick={handleSubmit}>
+                        <button
+                            className="btn btn-primary w-full"
+                            // If V is incorrect, disable submit button
+                            {...((tabs[activeTabI].code === 'v' && +form.v !== correctValues.v) ? {
+                                disabled: true,
+                            } : {
+                                onClick: handleSubmit,
+                            })}
+                        >
                             Selesai
                         </button>
                     )}
                 </div>
             </section>
-        </main>
+        </main >
     );
 };
 

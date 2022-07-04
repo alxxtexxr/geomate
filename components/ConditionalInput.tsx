@@ -9,20 +9,20 @@ type Props = {
     suffix?: any,
 }
 
-const ConditionalInput = ({ correctValue, className, incorrectMessage, suffix, onChange, ...props }: Props & InputHTMLAttributes<HTMLInputElement>) => {
+const ConditionalInput = ({ correctValue, className, incorrectMessage, suffix, onChange, value, ...props }: Props & InputHTMLAttributes<HTMLInputElement>) => {
     // States
     const [isCorrect, setIsCorrect] = useState<boolean>(false);
-    const [value, setValue] = useState<string>('');
+    // const [value, setValue] = useState<string>('');
 
     // Functions
     const getIsCorrect = (_value: string) => isNaN(+correctValue) ? _value === correctValue : +_value === +correctValue
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (onChange) { onChange(e); }
-        setValue(e.target.value);
+        // setValue(e.target.value);
     };
 
     useEffect(() => {
-        setIsCorrect(getIsCorrect(value));
+        setIsCorrect(getIsCorrect('' + value));
     }, [correctValue, value]);
 
     return (
@@ -35,6 +35,7 @@ const ConditionalInput = ({ correctValue, className, incorrectMessage, suffix, o
                             (isCorrect ? ' input-primary' : ' input-error')
                         }
                         onChange={handleChange}
+                        value={value}
                         {...props}
                     />
                     <span className="text-sm font-medium">
@@ -48,6 +49,7 @@ const ConditionalInput = ({ correctValue, className, incorrectMessage, suffix, o
                         (isCorrect ? ' input-primary' : ' input-error')
                     }
                     onChange={handleChange}
+                    value={value}
                     {...props}
                 />
             )}
