@@ -121,6 +121,10 @@ model Observation {
   nVertices   Int?
   nEdges      Int?
   nFaces      Int?
+  nBaseVertices Int?
+  baseA Float?
+  baseT Float?
+  baseS Float?
   r           Float?
   t           Float?
   s           Float?

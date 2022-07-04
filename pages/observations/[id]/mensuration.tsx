@@ -10,10 +10,11 @@ import { Parser } from 'expr-eval';
 // Components
 import ShapeComponent from '../../../components/Shape';
 import Swap from '../../../components/Swap';
-import InfoTab from '../../../components/Mensuration/MensurationInfoTab';
-import CharTab from '../../../components/Mensuration/MensurationCharTab';
-import SizeTab from '../../../components/Mensuration/MensurationSizeTab';
+// import InfoTab from '../../../components/Mensuration/MensurationInfoTab';
+// import CharTab from '../../../components/Mensuration/MensurationCharTab';
+// import SizeTab from '../../../components/Mensuration/MensurationSizeTab';
 import ConditionalInput from '../../../components/ConditionalInput';
+import LoaderButton from '../../../components/LoaderButton';
 
 // Constants
 import { MATH_SYMBOLS } from '../../../Constants';
@@ -25,8 +26,6 @@ import {
     assignFormToFormula,
     inputValueToNumber,
     getS,
-    getBaseShapeSymbol,
-    getBaseShapeName,
 } from '../../../Utils';
 
 // Types
@@ -99,7 +98,12 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
             await fetch(`/api/observations/${observation.id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(form),
+                body: JSON.stringify({
+                    ...form,
+                    // Convert LA and V to number
+                    la: +form.la,
+                    v: +form.v,
+                }),
             });
 
             await Router.push(`/observations/${observation.id}`);
@@ -125,7 +129,7 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
     //     },
     // ];
 
-    const initTabs: MathSymbol[] = [
+    const [tabs, setTabs] = useState<MathSymbol[]>([
         ...(['prism', 'pyramid'].includes(shape.code) ? [
             {
                 title: 'Bentuk Alas',
@@ -134,8 +138,7 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
             }
         ] : []),
         ...MATH_SYMBOLS.filter((mathSymbol) => (shape.vFormula + 'v').includes(mathSymbol.code)),
-    ];
-    const [tabs, setTabs] = useState(initTabs);
+    ]);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         setForm({
@@ -394,17 +397,22 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
                             Selanjutnya
                         </button>
                     ) : (
-                        <button
-                            className="btn btn-primary w-full"
-                            // If V is incorrect, disable submit button
-                            {...((tabs[activeTabI].code === 'v' && +form.v !== correctValues.v) ? {
-                                disabled: true,
-                            } : {
-                                onClick: handleSubmit,
-                            })}
-                        >
-                            Selesai
-                        </button>
+                        isSubmitting ? (
+                            <LoaderButton />
+                        ) : (
+                            <button
+                                className="btn btn-primary w-full"
+                                // If V is incorrect, disable submit button
+                                {...((tabs[activeTabI].code === 'v' && +form.v !== correctValues.v) ? {
+                                    disabled: true,
+                                } : {
+                                    onClick: handleSubmit,
+                                })}
+                            >
+                                Selesai
+                            </button>
+                        )
+
                     )}
                 </div>
             </section>

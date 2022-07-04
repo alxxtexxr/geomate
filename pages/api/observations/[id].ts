@@ -19,7 +19,23 @@ const handle = async (req: NextApiRequest, res: NextApiResponse) => {
                 res.json(observation);
                 break;
             case 'PUT':
-                const { nVertices, nEdges, nFaces, r, t, s, la, lst, ka, v, lp } = req.body;
+                const {
+                    nVertices,
+                    nEdges,
+                    nFaces,
+                    nBaseVertices,
+                    baseA,
+                    baseT,
+                    baseS,
+                    r,
+                    t,
+                    s,
+                    la,
+                    lst,
+                    ka,
+                    v,
+                    lp
+                } = req.body;
 
                 const result = await prisma.observation.update({
                     where: { id: id as string },
@@ -27,6 +43,10 @@ const handle = async (req: NextApiRequest, res: NextApiResponse) => {
                         nVertices: nVertices,
                         nEdges: nEdges,
                         nFaces: nFaces,
+                        nBaseVertices: nBaseVertices,
+                        baseA: baseA,
+                        baseT: baseT,
+                        baseS: baseS,
                         r: r,
                         t: t,
                         s: s,
