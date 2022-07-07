@@ -13,7 +13,7 @@ import Spinner from '../../components/Spinner';
 import { getShapeByCode } from '../../Utils';
 
 // Constants
-import { MATH_SYMBOLS } from '../../Constants';
+import { MATH_SYMBOLS, DEFAULT_SIZE, DEFAULT_SIZE_DIVIDER } from '../../Constants';
 
 // Types
 import type { GetServerSideProps } from 'next';
@@ -27,7 +27,16 @@ type Props = {
 };
 
 const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
-    const _mathSymbols = MATH_SYMBOLS.filter(({ symbol }) => (shape.vFormula + shape.lpFormula + 'V' + 'LP').includes(symbol));
+    const baseParams: { [key: number]: string[] } = {
+        3: ['baseA', 'baseT'],
+        4: ['baseS'],
+    };
+    const mathSymbolCodes = [
+        ...(observation.nBaseVertices ? baseParams[observation.nBaseVertices] : []),
+        ...shape.vFormula.split(' '),
+        'v'
+    ];
+    const _mathSymbols = MATH_SYMBOLS.filter((mathSymbol) => mathSymbolCodes.includes(mathSymbol.code));
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -76,8 +85,11 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                 <ShapeComponent
                                     code={shape.code}
                                     {...observation}
-                                    r={(observation.r || 20) / 10}
-                                    t={(observation.t || 20) / 10}
+                                    r={(observation.r || DEFAULT_SIZE) / DEFAULT_SIZE_DIVIDER}
+                                    t={(observation.t || DEFAULT_SIZE) / DEFAULT_SIZE_DIVIDER}
+                                    baseA={(observation.baseA || DEFAULT_SIZE) / DEFAULT_SIZE_DIVIDER}
+                                    baseT={(observation.baseT || DEFAULT_SIZE) / DEFAULT_SIZE_DIVIDER}
+                                    baseS={(observation.baseS || DEFAULT_SIZE) / DEFAULT_SIZE_DIVIDER}
                                 />
                             </Canvas>
                         </div>
@@ -86,17 +98,20 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
             )}
 
             <section className="flex-grow bg-white text-gray-500 p-4 text-sm rounded-t-xl shadow">
-                {_mathSymbols.map(({ symbol, title }, i) => (
+                {_mathSymbols.map((mathSymbol, i) => (
                     <div className={
                         'flex justify-between items-center py-4 border-gray-100' +
                         (i + 1 < _mathSymbols.length ? '  border-b' : '')
-                    } key={symbol}>
+                    } key={mathSymbol.code}>
                         <div className="w-7/12">
-                            {title} ({symbol})
+                            <div className="badge badge-primary badge-outline text-xs font-semibold w-8 mr-2 -mt-0.5">
+                                {mathSymbol.symbol}
+                            </div>
+                            {mathSymbol.title}
                         </div>
                         {/* <div className="w-5/12"> */}
                         <span className="font-medium text-gray-800">
-                            {(observation as { [key: string]: any })[symbol.toLowerCase()] || 0} {symbol === 'V' ? 'cm³' : (symbol === 'LP' ? 'cm²' : 'cm')}
+                            {(observation as { [key: string]: any })[mathSymbol.code] || 0} {mathSymbol.code === 'v' ? 'cm³' : (mathSymbol.code === 'la' ? 'cm²' : 'cm')}
                         </span>
                         {/* <label className="input-group">
                                 <input
@@ -113,6 +128,11 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
             </section>
 
             <section className="fixed left-0 bottom-0 grid grid-cols-2 gap-4 bg-white w-screen p-4">
+                <Link href="/">
+                    <button className="btn btn-primary btn-outline w-full">
+                        Selesai
+                    </button>
+                </Link>
                 {isLoading ? (
                     <button className="btn w-full" disabled>
                         <Spinner />
@@ -122,11 +142,6 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
                         Evaluasi
                     </button>
                 )}
-                <Link href="/">
-                    <button className="btn btn-primary btn-outline w-full">
-                        Selesai
-                    </button>
-                </Link>
             </section>
         </main>
     );

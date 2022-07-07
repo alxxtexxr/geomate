@@ -11,14 +11,23 @@ export type Props = {
     r: number,
     t: number,
     nBaseVertices: number,
+    baseA?: number,
+    baseT?: number,
+    baseS?: number,
     rotation?: SpringValue<number[]>,
     wireframe?: boolean,
 };
 
 const { degToRad } = ThreeMath
 
-const Prism = ({ r, t, nBaseVertices, rotation, wireframe = false }: Props) => {
-    const mesh = useRef<Mesh<BufferGeometry, Material | Material[]>>(null)
+const Prism = ({ r, t, nBaseVertices, baseA, baseT, baseS, rotation, wireframe = false }: Props) => {
+    const mesh = useRef<Mesh<BufferGeometry, Material | Material[]>>(null);
+
+    const rList: {[key: number]: number} = {
+        3: baseA && baseT ? Math.sqrt(Math.pow(baseA, 2) + Math.pow(baseT, 2)) : 0,
+        4: baseS ? Math.sqrt(Math.pow(baseS, 2) + Math.pow(baseS, 2)) : 0,
+    };
+    const _r = r ? r : rList[nBaseVertices];
 
     useFrame(() => {
         if (mesh.current) {
@@ -32,7 +41,7 @@ const Prism = ({ r, t, nBaseVertices, rotation, wireframe = false }: Props) => {
             scale={1}
             rotation={rotation && rotation.to((x, y, z) => [degToRad(x), degToRad(y), degToRad(z)]) as unknown as [x: number, y: number, z: number]}
         >
-            <cylinderGeometry args={[r, r, t, nBaseVertices]} />
+            <cylinderGeometry args={[_r, _r, t, nBaseVertices]} />
             <meshNormalMaterial wireframe={wireframe} />
         </animated.mesh>
     );

@@ -17,7 +17,7 @@ import ConditionalInput from '../../../components/ConditionalInput';
 import LoaderButton from '../../../components/LoaderButton';
 
 // Constants
-import { MATH_SYMBOLS } from '../../../Constants';
+import { MATH_SYMBOLS, DEFAULT_SIZE, DEFAULT_SIZE_DIVIDER } from '../../../Constants';
 
 // Utils
 import {
@@ -67,18 +67,22 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
         return memo;
     });
 
+    const hasBaseWithVertices = ['prism', 'pyramid'].includes(shape.code);
+    const hasR = ['sphere', 'cylinder', 'cone'].includes(shape.code);
+    const hasT = ['cylinder', 'prism', 'cone', 'pyramid'].includes(shape.code);
+
     // States
     const [form, setForm] = useState<MensurationForm>({
         baseA: 0,
         baseT: 0,
         baseS: 0,
-        nBaseVertices: ['prism', 'pyramid'].includes(shape.code) ? 3 : 0,
+        nBaseVertices: hasBaseWithVertices ? 3 : 0,
         nVertices: 0,
         nEdges: 0,
         nFaces: 0,
         PI: 3.14,
-        r: 10,
-        t: 10,
+        r: hasR ? DEFAULT_SIZE : 0,
+        t: hasT ? DEFAULT_SIZE : 0,
         s: 0,
         la: 0,
         lst: 0,
@@ -130,7 +134,7 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
     // ];
 
     const [tabs, setTabs] = useState<MathSymbol[]>([
-        ...(['prism', 'pyramid'].includes(shape.code) ? [
+        ...(hasBaseWithVertices ? [
             {
                 title: 'Bentuk Alas',
                 code: 'baseShape',
@@ -144,15 +148,17 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
         setForm({
             ...form,
             [e.target.name]: inputValueToNumber(e.target.value),
-            ...(e.target.name === 'r' ? { s: getS(+e.target.value, form.t || 0) } : {}),
-            ...(e.target.name === 't' ? { s: getS(form.r, +e.target.value || 0) } : {}),
+            // ...(e.target.name === 'r' ? { s: getS(+e.target.value, form.t || 0) } : {}),
+            // ...(e.target.name === 't' ? { s: getS(form.r, +e.target.value || 0) } : {}),
         });
     };
 
     const correctValues: { [key: string]: number } = {
-        la: +Parser.evaluate(LA_FORMULAS[form.nBaseVertices], form).toFixed(1),
+        la: hasBaseWithVertices ? +Parser.evaluate(LA_FORMULAS[form.nBaseVertices], form).toFixed(1) : 0,
         v: +Parser.evaluate(shape.vFormula, form).toFixed(1),
     };
+
+    console.log({correctValues});
 
     // Effects
     useEffect(() => {
@@ -164,11 +170,11 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
         if (form.nBaseVertices) {
             const baseParams: { [key: number]: { form: any, symbols: MathSymbol[] } } = {
                 3: {
-                    form: { baseA: 10, baseT: 10 },
+                    form: { baseA: DEFAULT_SIZE, baseT: DEFAULT_SIZE },
                     symbols: MATH_SYMBOLS.filter((mathSymbol) => ['baseA', 'baseT'].includes(mathSymbol.code))
                 },
                 4: {
-                    form: { baseS: 10 },
+                    form: { baseS: DEFAULT_SIZE },
                     symbols: MATH_SYMBOLS.filter((mathSymbol) => ['baseS'].includes(mathSymbol.code))
                 },
             };
@@ -210,11 +216,11 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
                     <ShapeComponent
                         code={shape.code}
                         {...form}
-                        r={form.r / 10}
-                        t={form.t / 10}
-                        baseA={form.baseA / 10}
-                        baseT={form.baseT / 10}
-                        baseS={form.baseS / 10}
+                        r={form.r / DEFAULT_SIZE_DIVIDER}
+                        t={form.t / DEFAULT_SIZE_DIVIDER}
+                        baseA={form.baseA / DEFAULT_SIZE_DIVIDER}
+                        baseT={form.baseT / DEFAULT_SIZE_DIVIDER}
+                        baseS={form.baseS / DEFAULT_SIZE_DIVIDER}
                         rotation={rotation}
                         wireframe={wireframe}
                     />

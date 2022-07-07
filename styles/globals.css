@@ -50,7 +50,7 @@
 
 .steps .step:before,
 .steps .step:after {
-    @apply bg-gray-200 font-semibold text-gray-500
+    @apply bg-gray-200 font-medium text-gray-500
 }
 
 .steps .step-primary + .step-primary:before, .steps .step-primary:after {
