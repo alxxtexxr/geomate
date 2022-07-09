@@ -13,7 +13,7 @@ const BottomNavbar = ({ menu }: Props) => {
     const router = useRouter();
 
     return (
-        <nav className="fixed z-10 bottom-0 bg-white bg-opacity-95 w-screen p-4 rounded-t-xl shadow">
+        <nav className="fixed z-90 bottom-0 bg-white bg-opacity-95 w-screen p-4 rounded-t-xl shadow">
             <ul className="grid grid-cols-3 gap-4 text-center">
                 {menu.map((menuI) => (
                     <li key={menuI.href}>

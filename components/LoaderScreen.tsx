@@ -1,9 +1,9 @@
 import Logo from "./Logo";
 
-const Loader = () => (
+const LoaderScreen = () => (
     <main className="bg-base-200 h-screen flex justify-center items-center">
         <Logo />
     </main>
 );
 
-export default Loader;
+export default LoaderScreen;

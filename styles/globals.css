@@ -57,6 +57,16 @@
     @apply bg-primary text-primary-content
 }
 
+.divider:before,
+.divider:after {
+    height: 1px;
+}
+
+.divider-white:before,
+.divider-white:after {  
+    @apply bg-white bg-opacity-40
+}
+
 /* React Toastify */
 .Toastify__toast-container {
     @apply grid grid-cols-1 gap-2 p-2
