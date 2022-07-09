@@ -78,7 +78,7 @@ const ProfileNameEditForm = ({ isOpen, setIsOpen }: Props) => {
                         {isLoading ? (
                             <LoaderButton />
                         ) : (
-                            name === session?.user.name ? (
+                            name === '' || name === session?.user.name ? (
                                 <button className="btn w-full" disabled>
                                     Edit
                                 </button>
