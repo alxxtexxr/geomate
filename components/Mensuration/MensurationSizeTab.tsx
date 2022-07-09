@@ -41,7 +41,7 @@ const MensurationSizeTab = ({ shape, form, setForm, onSubmit, isSubmitting }: Pr
 
   return (
     <>
-      {MATH_SYMBOLS.map(({ symbol, title }, i) => {
+      {MATH_SYMBOLS.map(({ title, code, symbol }, i) => {
         if (symbol === 'V' || symbol === 'LP') {
           return (
             <div className="flex flex-row w-full mb-4" key={i}>
@@ -84,7 +84,7 @@ const MensurationSizeTab = ({ shape, form, setForm, onSubmit, isSubmitting }: Pr
               </div>
             </div>
           );
-        } else if ((shape.vFormula + shape.lpFormula).includes(symbol)) {
+        } else if ((shape.vFormula + shape.lpFormula).includes(code)) {
           return (
             <div className="flex flex-row w-full mb-4" key={i}>
               <label className="label items-start h-12 w-5/12 pr-4" style={{ paddingTop: 14 }}>
@@ -96,11 +96,11 @@ const MensurationSizeTab = ({ shape, form, setForm, onSubmit, isSubmitting }: Pr
                     type="text"
                     placeholder="0"
                     className="input input-bordered w-1 flex-grow"
-                    value={(form as { [key: string]: any })[symbol.toLowerCase()]}
+                    value={(form as { [key: string]: any })[code.toLowerCase()]}
                     {...(symbol === 's' ? {
                       disabled: true
                     } : {
-                      name: symbol.toLowerCase(),
+                      name: code.toLowerCase(),
                       onChange: handleChange
                     })}
                   />
