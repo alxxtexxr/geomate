@@ -27,6 +27,7 @@ const nextConfig = {
       'platform-lookaside.fbsbx.com',
     ],
   },
+  output: 'standalone',
 };
 
 module.exports = nextConfig;
