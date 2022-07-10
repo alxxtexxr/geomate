@@ -39,5 +39,6 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 - Write `.env`
 - ```npm install```
 - ```npx prisma generate```
+- ```npx prisma db push```
 - ```npm run build```
 - ```npm start```

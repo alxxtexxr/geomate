@@ -10,7 +10,7 @@ FROM node:16-alpine AS builder
 WORKDIR /app
 COPY . .
 COPY --from=deps /app/node_modules ./node_modules
-RUN npm run prd-prisma-generate
+RUN npx prisma generate
 RUN npm run build
 
 # Production image, copy all the files and run next
