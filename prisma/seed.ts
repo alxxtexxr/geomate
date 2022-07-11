@@ -7,8 +7,8 @@ const prisma = new PrismaClient()
 const main = async () => {
     // Comment codes below if you don't want to delete them
     await prisma.answerChoice.deleteMany();
-    await prisma.question.deleteMany();
     await prisma.evaluationQuestion.deleteMany();
+    await prisma.question.deleteMany();
     await prisma.evaluation.deleteMany();
     await prisma.userAchievement.deleteMany();
     await prisma.achievement.deleteMany();
