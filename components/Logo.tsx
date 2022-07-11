@@ -6,10 +6,11 @@ const Logo = () => (
             <Image src="/images/logo.png"
                 layout="fill"
                 objectFit="contain"
+                alt={process.env.NEXT_PUBLIC_APP_NAME}
             />
         </div>
         <h1 className="text-4xl">
-            GeoMate
+        {process.env.NEXT_PUBLIC_APP_NAME}
         </h1>
     </div>
 );

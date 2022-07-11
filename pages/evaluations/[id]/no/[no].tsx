@@ -42,9 +42,7 @@ const EvaluationQuestionPage: ComponentWithAuth<Props> = ({ evaluation }) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     // Effects
-    useEffect(() => {
-        setAnswer(activeEvaluationQuestion.answer)
-    }, [router]);
+    useEffect(() => setAnswer(activeEvaluationQuestion.answer), [activeEvaluationQuestion.answer]);
 
     // Functions
     const answerQuestion = async () => {

@@ -26,9 +26,7 @@ const ConditionalSelect = ({ options, correctOptionValue, className, incorrectMe
         setValue(e.target.value);
     };
 
-    useEffect(() => {
-        setIsCorrect(getIsCorrect(value));
-    }, [correctOptionValue, value]);
+    useEffect(() => setIsCorrect(getIsCorrect(value)), [correctOptionValue, value, getIsCorrect]);
 
     return (
         <div className={className}>

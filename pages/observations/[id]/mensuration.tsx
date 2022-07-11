@@ -192,10 +192,10 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
 
             // Update form
             console.log(baseParams[form.nBaseVertices].form);
-            setForm({
-                ...form,
-                ...baseParams[form.nBaseVertices].form
-            });
+            setForm((_form) => ({
+                ..._form,
+                ...baseParams[_form.nBaseVertices].form
+            }));
             console.log({ form });
 
             // Add additional tabs
@@ -205,7 +205,7 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 ...restTabs,
             ]);
         }
-    }, [form.nBaseVertices]); // Run when form.nBaseVertices changes
+    }, [form, tabs]); // Run when form.nBaseVertices changes
 
     return (
         <main className="h-screen bg-gray-900">

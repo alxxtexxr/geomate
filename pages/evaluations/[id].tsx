@@ -62,7 +62,7 @@ const EvaluationPage: ComponentWithAuth<Props> = ({ evaluation, notifications })
         }
     }
 
-    useEffect(showNotifications, []);
+    useEffect(showNotifications, [notifications]);
 
     return (
         <main className="flex flex-col h-screen pb-20">

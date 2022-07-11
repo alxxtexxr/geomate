@@ -21,9 +21,7 @@ const ConditionalInput = ({ correctValue, className, incorrectMessage, suffix, o
         // setValue(e.target.value);
     };
 
-    useEffect(() => {
-        setIsCorrect(getIsCorrect('' + value));
-    }, [correctValue, value]);
+    useEffect(() => setIsCorrect(getIsCorrect('' + value)), [correctValue, value, getIsCorrect]);
 
     return (
         <div className={className}>
