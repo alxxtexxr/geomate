@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 
 // Types
 import type { InputHTMLAttributes, ChangeEvent } from 'react';
@@ -15,13 +15,16 @@ const ConditionalInput = ({ correctValue, className, incorrectMessage, suffix, o
     // const [value, setValue] = useState<string>('');
 
     // Functions
-    const getIsCorrect = (_value: string) => isNaN(+correctValue) ? _value === correctValue : +_value === +correctValue
+    const getIsCorrect = useCallback(
+        (_value: string) => isNaN(+correctValue) ? _value === correctValue : +_value === +correctValue,
+        [correctValue]
+    );
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (onChange) { onChange(e); }
         // setValue(e.target.value);
     };
 
-    useEffect(() => setIsCorrect(getIsCorrect('' + value)), [correctValue, value, getIsCorrect]);
+    useEffect(() => setIsCorrect(getIsCorrect('' + value)), [getIsCorrect, value]);
 
     return (
         <div className={className}>

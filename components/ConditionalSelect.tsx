@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 
 // Types
 import type { SelectHTMLAttributes, ChangeEvent } from 'react';
@@ -20,13 +20,16 @@ const ConditionalSelect = ({ options, correctOptionValue, className, incorrectMe
     const [value, setValue] = useState<string>('');
 
     // Functions
-    const getIsCorrect = (_value: string) => isNaN(+correctOptionValue) ? _value === correctOptionValue : +_value === +correctOptionValue;
+    const getIsCorrect = useCallback(
+        (_value: string) => isNaN(+correctOptionValue) ? _value === correctOptionValue : +_value === +correctOptionValue,
+        [correctOptionValue]
+    );
     const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
         if (onChange) { onChange(e); }
         setValue(e.target.value);
     };
 
-    useEffect(() => setIsCorrect(getIsCorrect(value)), [correctOptionValue, value, getIsCorrect]);
+    useEffect(() => setIsCorrect(getIsCorrect(value)), [getIsCorrect, value]);
 
     return (
         <div className={className}>
