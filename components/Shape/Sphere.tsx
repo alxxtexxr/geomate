@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import { MathUtils as ThreeMath } from 'three'
 import { useFrame } from '@react-three/fiber';
 import { animated } from '@react-spring/three';
+import { Sphere } from '@react-three/drei';
 
 // Types
 import type { SpringValue } from '@react-spring/three';
@@ -15,7 +16,7 @@ export type Props = {
 
 const { degToRad } = ThreeMath
 
-const Sphere = ({ r, rotation, wireframe = false }: Props) => {
+const MySphere = ({ r, rotation, wireframe = false }: Props) => {
     const mesh = useRef<Mesh<BufferGeometry, Material | Material[]> | null>(null)
 
     useFrame(() => {
@@ -30,10 +31,11 @@ const Sphere = ({ r, rotation, wireframe = false }: Props) => {
             scale={1}
             rotation={rotation && rotation.to((x, y, z) => [degToRad(x), degToRad(y), degToRad(z)]) as unknown as [x: number, y: number, z: number]}
         >
-            <sphereGeometry args={[r, 64, 32]} />
-            <meshNormalMaterial wireframe={wireframe} />
+            <Sphere args={[r, 64, 32]}>
+                <meshNormalMaterial wireframe={wireframe} />
+            </Sphere>
         </animated.mesh>
     );
 };
 
-export default Sphere;
+export default MySphere;
