@@ -18,6 +18,7 @@ const Reticle = React.forwardRef<THREE.Mesh<THREE.BufferGeometry, THREE.Material
         <Circle args={[0.005, 32]} rotation={[-Math.PI / 2, 0, 0]} />
     </mesh>
 ));
+Reticle.displayName = 'Reticle';
 
 type XREventProps = {
     onSelect: () => void,
@@ -116,12 +117,12 @@ const CanvasInner = ({ onSubmit }: CanvasInnerProps) => {
 
             {measurements
                 .filter(filterMeasurements)
-                .map((measurement) => {
+                .map((measurement, i) => {
                     const distance = Math.round(getDistance(measurement) * 100);
                     const [x, y, z] = getCenterPoint(measurement);
 
                     return (
-                        <mesh>
+                        <mesh key={i}>
                             <Dialog
                                 messages={["Measurement:", distance + " cm"]}
                                 position={[x, y + 0.05, z]}

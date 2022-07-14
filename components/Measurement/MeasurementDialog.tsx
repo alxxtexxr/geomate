@@ -41,6 +41,7 @@ const MeasurementDialog = ({ messages, position, onConfirm, confirmText, onCance
                             color="#FFFFFF"
                             anchorX="center"
                             anchorY="middle"
+                            key={i}
                         >
                             {message}
                         </Text>
