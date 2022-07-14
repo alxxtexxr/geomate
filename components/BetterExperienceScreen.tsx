@@ -5,7 +5,7 @@ type Props = {
 }
 
 const BetterExperienceScreen = ({ onClose }: Props) => (
-    <div className="fixed z-90 inset-0 flex justify-center items-center text-center w-screen h-screen bg-base-200 bg-opacity-95 text-white">
+    <div className="fixed z-10 inset-0 flex justify-center items-center text-center w-screen h-screen bg-base-200 bg-opacity-95 text-white">
         {/* <div> */}
 
         <div className="w-96">

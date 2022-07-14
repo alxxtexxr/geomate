@@ -92,3 +92,8 @@
 .Toastify__close-button {
     @apply self-center -mb-0.5
 }
+
+/* AR */
+#ARButton {
+    position: fixed !important;
+}

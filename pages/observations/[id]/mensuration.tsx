@@ -15,6 +15,7 @@ import Swap from '../../../components/Swap';
 // import SizeTab from '../../../components/Mensuration/MensurationSizeTab';
 import ConditionalInput from '../../../components/ConditionalInput';
 import LoaderButton from '../../../components/LoaderButton';
+import Measurement from '../../../components/Measurement';
 
 // Constants
 import { MATH_SYMBOLS, DEFAULT_SIZE, DEFAULT_SIZE_DIVIDER } from '../../../Constants';
@@ -92,7 +93,8 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
     });
     const [activeTabI, setActiveTabI] = useState(0);
     const [wireframe, setWireframe] = useState(false);
-    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isMeasuring, setIsMeasuring] = useState(false);
 
     // Functions
     const handleSubmit = async () => {
@@ -158,8 +160,6 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
         v: +Parser.evaluate(shape.vFormula, form).toFixed(1),
     };
 
-    console.log({correctValues});
-
     // Effects
     useEffect(() => {
         // setForm({
@@ -191,12 +191,10 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
             const [firstTab, ...restTabs] = tabs.filter((tab) => !addTabSymbols.includes(tab.code));
 
             // Update form
-            console.log(baseParams[form.nBaseVertices].form);
             setForm((_form) => ({
                 ..._form,
                 ...baseParams[_form.nBaseVertices].form
             }));
-            console.log({ form });
 
             // Add additional tabs
             setTabs([
@@ -205,10 +203,11 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 ...restTabs,
             ]);
         }
-    }, [form, tabs]); // Run when form.nBaseVertices changes
+    }, []); // Run when form.nBaseVertices changes
 
     return (
         <main className="h-screen bg-gray-900">
+            {/* Preview */}
             <section {...bind()} className="sticky top-0 z-0 h-80" style={{ touchAction: 'none' }}>
                 <Canvas>
                     <ambientLight color="#888888" />
@@ -237,24 +236,8 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 </div>
             </section>
 
-            <section className="relative z-10 flex flex-col flex-grow bg-white min-h-screen px-4 rounded-tl-xl rounded-tr-xl overflow-hidden">
-                {/* <div className="tabs sticky top-0 z-20 bg-white pt-2 px-4 rounded-tl-xl rounded-tr-xl">
-          {TABS.map(({ title }, i) => (
-            <a
-              className={
-                'tab tab-bordered w-1/3 h-auto py-2 uppercase font-medium' +
-                (i === activeTabI ? ' text-primary border-primary' : ' text-gray-400 border-gray-200')
-              }
-              key={i}
-            >
-              {title}
-            </a>
-          ))}
-        </div>
-
-        <div className="flex-grow bg-white pt-4 pb-20 px-4">
-          {TABS[activeTabI].content}
-        </div> */}
+            {/* Tabs */}
+            <section className="relative z-90 flex flex-col flex-grow bg-white min-h-screen px-4 rounded-tl-xl rounded-tr-xl overflow-hidden">
                 <ul className="steps steps-horizontal bg-white text-xs py-4 border-b border-gray-200">
                     {tabs.map((tab, i) => (
                         <li className={'step' + (i <= activeTabI ? ' step-primary' : '')} key={i}>
@@ -271,9 +254,7 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                         {tabs[activeTabI].symbol}
                                     </div>
                                 )}
-                                {/* <span style={{ marginBottom: -2 }}> */}
                                 {tabs[activeTabI].title}
-                                {/* </span> */}
                             </span>
                         </label>
                         {/* Base Shape */}
@@ -369,7 +350,7 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                 )))}
                     </div>
                     {!['baseShape', 'la', 'v'].includes(tabs[activeTabI].code) && (
-                        <button className="btn btn-primary">
+                        <button className="btn btn-primary" onClick={() => setIsMeasuring(true)}>
                             <MdOutlineSwitchCamera className="text-2xl mr-2" />
                             <span style={{ marginBottom: -1 }}>
                                 Ukur dengan Kamera
@@ -422,6 +403,20 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
                     )}
                 </div>
             </section>
+
+            {/* Measurement */}
+            {isMeasuring && (
+                <Measurement
+                    onSubmit={(distance: number) => {
+                        setForm((_form) => ({
+                            ..._form,
+                            [tabs[activeTabI].code]: distance,
+                        }));
+                        setIsMeasuring(false);
+                    }}
+                    onClose={() => setIsMeasuring(false)}
+                />
+            )}
         </main >
     );
 };
