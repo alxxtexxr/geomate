@@ -203,7 +203,7 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 ...restTabs,
             ]);
         }
-    }, []); // Run when form.nBaseVertices changes
+    }, [form.nBaseVertices]); // Run when form.nBaseVertices changes
 
     return (
         <main className="h-screen bg-gray-900">

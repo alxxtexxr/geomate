@@ -233,5 +233,5 @@ export const INTROS = [
   }
 ];
 
-export const DEFAULT_SIZE = 10;
-export const DEFAULT_SIZE_DIVIDER = 8;
+export const DEFAULT_SIZE = 30;
+export const DEFAULT_SIZE_DIVIDER = 15
