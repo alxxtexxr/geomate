@@ -192,7 +192,7 @@ const Measurement = ({ onSubmit, onClose }: Props) => (
                 far: 20
             }}
             sessionInit={{ requiredFeatures: ['hit-test'] }}
-            style={{ position: 'absolute', width: '100vw', height: '100vh' }}
+            className="w-0 h-0"
         >
             <CanvasInner onSubmit={onSubmit} />
         </ARCanvas>

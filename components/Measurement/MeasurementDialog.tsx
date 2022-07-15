@@ -51,7 +51,7 @@ const MeasurementDialog = ({ messages, position, onConfirm, confirmText, onCance
 
             {/* Confirm Button */}
             <Button
-                onSelect={() => onConfirm}
+                onSelect={onConfirm}
                 onHover={() => setIsConfirmButtonHovered(true)}
                 onBlur={() => setIsConfirmButtonHovered(false)}
                 args={[w, h]}
@@ -76,7 +76,7 @@ const MeasurementDialog = ({ messages, position, onConfirm, confirmText, onCance
                 fontSize={fontSize}
                 textColor="#FFFFFF"
             >
-                {confirmText}
+                {cancelText}
             </Button>
         </group>
     );
