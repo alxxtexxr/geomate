@@ -6,6 +6,7 @@ import {
     DefaultXRControllers,
     useXREvent
 } from '@react-three/xr';
+import { useThree } from '@react-three/fiber';
 import { Ring, Circle, Line } from '@react-three/drei';
 import { IoArrowBackOutline } from 'react-icons/io5';
 
@@ -50,6 +51,7 @@ type CanvasInnerProps = {
 }
 
 const CanvasInner = ({ onSubmit }: CanvasInnerProps) => {
+    const { gl } = useThree();
     const reticleRef = React.createRef<THREE.Mesh<THREE.BufferGeometry, THREE.Material | THREE.Material[]>>();
     const [lineStart, setLineStart] = React.useState<THREE.Vector3 | null>(null);
     const [lineEnd, setLineEnd] = React.useState<THREE.Vector3 | null>(null);
@@ -124,9 +126,17 @@ const CanvasInner = ({ onSubmit }: CanvasInnerProps) => {
                     return (
                         <mesh key={i}>
                             <Dialog
-                                messages={["Measurement:", distance + " cm"]}
+                                messages={["Hasil Pengukuran:", distance + " cm"]}
                                 position={[x, y + 0.05, z]}
-                                onConfirm={() => onSubmit(distance)}
+                                onConfirm={async () => {
+                                    onSubmit(distance);
+                                    
+                                    // End XR session
+                                    const session = gl.xr.getSession();
+                                    if (session !== null) {
+                                        await session.end();
+                                    }                                    
+                                }}
                                 confirmText="OK"
                                 onCancel={handleReset}
                                 cancelText="RESET"
