@@ -108,7 +108,7 @@ const Classification: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 videoConstraints={{
                     width: 360,
                     height: 720,
-                    facingMode: 'user',
+                    facingMode: 'environment',
                 }}
                 className="w-screen h-screen"
             />
