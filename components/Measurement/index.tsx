@@ -130,12 +130,12 @@ const CanvasInner = ({ onSubmit }: CanvasInnerProps) => {
                                 position={[x, y + 0.05, z]}
                                 onConfirm={async () => {
                                     onSubmit(distance);
-                                    
+
                                     // End XR session
                                     const session = gl.xr.getSession();
                                     if (session !== null) {
                                         await session.end();
-                                    }                                    
+                                    }
                                 }}
                                 confirmText="OK"
                                 onCancel={handleReset}
@@ -192,7 +192,7 @@ const Measurement = ({ onSubmit, onClose }: Props) => (
                 far: 20
             }}
             sessionInit={{ requiredFeatures: ['hit-test'] }}
-            className="absolute w-0 h-0"
+            style={{ position: 'absolute', width: 0, height: 0 }}
         >
             <CanvasInner onSubmit={onSubmit} />
         </ARCanvas>

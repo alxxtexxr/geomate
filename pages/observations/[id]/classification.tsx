@@ -109,6 +109,7 @@ const Classification: ComponentWithAuth<Props> = ({ observation, shape }) => {
                     width: 360,
                     height: 720,
                     facingMode: 'environment',
+                    aspectRatio: 0.5,
                 }}
                 className="w-screen h-screen"
             />
