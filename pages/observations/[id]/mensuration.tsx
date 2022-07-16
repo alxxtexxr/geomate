@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
+import * as THREE from 'three';
 import { Canvas } from '@react-three/fiber';
+import { PerspectiveCamera, OrbitControls, Plane } from '@react-three/drei';
 import { useSpring } from '@react-spring/three';
 import { useDrag } from '@use-gesture/react';
 import { HiOutlineCube } from 'react-icons/hi';
@@ -18,7 +20,7 @@ import LoaderButton from '../../../components/LoaderButton';
 import Measurement from '../../../components/Measurement';
 
 // Constants
-import { MATH_SYMBOLS, DEFAULT_SIZE, DEFAULT_SIZE_DIVIDER } from '../../../Constants';
+import { MATH_SYMBOLS, DEFAULT_SIZE } from '../../../Constants';
 
 // Utils
 import {
@@ -50,23 +52,23 @@ const LA_FORMULAS: { [key: number]: string } = {
 
 const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
     // Animate the 3D model
-    const [{ rotation }, setRotation] = useSpring(() => ({
-        rotation: [0, 0, 0],
-        config: { mass: 10, tension: 1000, friction: 300, precision: 0.00001 }
-    }));
+    // const [{ rotation }, setRotation] = useSpring(() => ({
+    //     rotation: [0, 0, 0],
+    //     config: { mass: 10, tension: 1000, friction: 300, precision: 0.00001 }
+    // }));
 
-    const bind = useDrag(({ delta, velocity, direction, memo = rotation.get() }) => {
-        const x = memo[0] + (delta[1] / window.innerWidth) * 180;
-        const y = memo[1] + (delta[0] / window.innerHeight) * 180;
-        const vxyz = [direction[1] * (velocity[1] / 1), direction[0] * (velocity[0] / 1), 0];
+    // const bind = useDrag(({ delta, velocity, direction, memo = rotation.get() }) => {
+    //     const x = memo[0] + (delta[1] / window.innerWidth) * 180;
+    //     const y = memo[1] + (delta[0] / window.innerHeight) * 180;
+    //     const vxyz = [direction[1] * (velocity[1] / 1), direction[0] * (velocity[0] / 1), 0];
 
-        setRotation({
-            rotation: [x, y, 0],
-            config: { velocity: vxyz, decay: true }
-        });
+    //     setRotation({
+    //         rotation: [x, y, 0],
+    //         config: { velocity: vxyz, decay: true }
+    //     });
 
-        return memo;
-    });
+    //     return memo;
+    // });
 
     const hasBaseWithVertices = ['prism', 'pyramid'].includes(shape.code);
     const hasR = ['sphere', 'cylinder', 'cone'].includes(shape.code);
@@ -83,7 +85,7 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
         nFaces: 0,
         PI: 3.14,
         r: hasR ? DEFAULT_SIZE : 0,
-        t: hasT ? DEFAULT_SIZE : 0,
+        t: hasT ? DEFAULT_SIZE * 2 : 0,
         s: 0,
         la: 0,
         lst: 0,
@@ -118,22 +120,6 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
             console.error(error);
         }
     }
-
-    // Constants
-    // const TABS = [
-    //     {
-    //         title: 'Informasi',
-    //         content: (<InfoTab shape={shape} onSubmit={() => setActiveTabI(1)} />),
-    //     },
-    //     {
-    //         title: 'Sifat',
-    //         content: (<CharTab shape={shape} form={form} setForm={setForm} onSubmit={() => setActiveTabI(2)} />),
-    //     },
-    //     {
-    //         title: 'Ukuran',
-    //         content: (<SizeTab shape={shape} form={form} setForm={setForm} isSubmitting={isSubmitting} onSubmit={handleSubmit} />),
-    //     },
-    // ];
 
     const [tabs, setTabs] = useState<MathSymbol[]>([
         ...(hasBaseWithVertices ? [
@@ -206,23 +192,37 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
     }, [form.nBaseVertices]); // Run when form.nBaseVertices changes
 
     return (
-        <main className="h-screen bg-gray-900">
+        <main className="h-screen bg-black">
             {/* Preview */}
-            <section {...bind()} className="sticky top-0 z-0 h-80" style={{ touchAction: 'none' }}>
-                <Canvas>
-                    <ambientLight color="#888888" />
-                    <pointLight position={[10, 20, 0]} />
+            <section
+                // {...bind()}
+                className="sticky top-0 z-0 h-80"
+                style={{ touchAction: 'none' }}
+            >
+                <Canvas camera={{}}>
+                    <fog args={['#000', 2, 250]} attach="fog" />
+                    {/* <ambientLight color="#FFFFFF" /> */}
+                    <ambientLight intensity={0.5} />
+                    <pointLight position={[1, 3, 1]} intensity={1.0} />
+                    {/* <pointLight position={[10, 20, 0]} /> */}
+                    <PerspectiveCamera makeDefault position={[0, 50, 100]} fov={50} />
+                    <OrbitControls autoRotate target={[0, 20, 0]} />
+
                     <ShapeComponent
                         code={shape.code}
                         {...form}
-                        r={form.r / DEFAULT_SIZE_DIVIDER}
-                        t={form.t / DEFAULT_SIZE_DIVIDER}
-                        baseA={form.baseA / DEFAULT_SIZE_DIVIDER}
-                        baseT={form.baseT / DEFAULT_SIZE_DIVIDER}
-                        baseS={form.baseS / DEFAULT_SIZE_DIVIDER}
-                        rotation={rotation}
+                        r={form.r}
+                        t={form.t}
+                        baseA={form.baseA}
+                        baseT={form.baseT}
+                        baseS={form.baseS}
+                        // rotation={rotation}
                         wireframe={wireframe}
                     />
+
+                    <Plane args={[250, 250, 10, 10]} rotation={[-Math.PI / 2, 0, 0]}>
+                        <meshStandardMaterial color="#FFFFFF" wireframe />
+                    </Plane>
                 </Canvas>
 
                 <div className="absolute bottom-0 right-0 grid grid-cols-1 gap-2 p-4">
@@ -359,7 +359,7 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
                     )}
                 </div>
 
-                <div className="fixed left-0 bottom-0 grid grid-cols-2 gap-4 bg-white bg-opacity-95 w-screen p-4 border-t border-gray-200">
+                <div className="fixed z-10 left-0 bottom-0 grid grid-cols-2 gap-4 bg-white bg-opacity-95 w-screen p-4 border-t border-gray-200">
                     <button
                         className="btn btn-primary btn-outline w-full"
                         // If it's first tab, disable prev button

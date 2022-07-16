@@ -11,7 +11,7 @@ export type Props = {
     wireframe: boolean,
 };
 
-const Cylinder = ({ r, t, rotation, wireframe }: Props) => (
+const Cylinder = ({ r, t, rotation, wireframe}: Props) => (
     <Prism
         r={r}
         t={t}

@@ -19,17 +19,18 @@ const { degToRad } = ThreeMath
 const MySphere = ({ r, rotation, wireframe = false }: Props) => {
     const mesh = useRef<Mesh<BufferGeometry, Material | Material[]> | null>(null)
 
-    useFrame(() => {
-        if (mesh.current) {
-            mesh.current.rotation.y += 0.01;
-        }
-    });
+    // useFrame(() => {
+    //     if (mesh.current) {
+    //         mesh.current.rotation.y += 0.01;
+    //     }
+    // });
 
     return (
         <animated.mesh
             ref={mesh}
             scale={1}
             rotation={rotation && rotation.to((x, y, z) => [degToRad(x), degToRad(y), degToRad(z)]) as unknown as [x: number, y: number, z: number]}
+            position={[0, 0 + r, 0]}
         >
             <Sphere args={[r, 64, 32]}>
                 <meshNormalMaterial wireframe={wireframe} />

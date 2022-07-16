@@ -30,17 +30,18 @@ const Pyramid = ({ r, t, nBaseVertices, baseA, baseT, baseS, rotation, wireframe
     };
     const _r = r ? r : rList[nBaseVertices];
 
-    useFrame(() => {
-        if (mesh.current) {
-            mesh.current.rotation.y += 0.01;
-        }
-    });
+    // useFrame(() => {
+    //     if (mesh.current) {
+    //         mesh.current.rotation.y += 0.01;
+    //     }
+    // });
 
     return (
         <animated.mesh
             ref={mesh}
             scale={1}
             rotation={rotation && rotation.to((x, y, z) => [degToRad(x), degToRad(y), degToRad(z)]) as unknown as [x: number, y: number, z: number]}
+            position={[0, 0 + t / 2, 0]}
         >
             <Cone args={[_r, t, nBaseVertices]}>
                 <meshNormalMaterial wireframe={wireframe} />
