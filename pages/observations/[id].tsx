@@ -13,7 +13,7 @@ import Spinner from '../../components/Spinner';
 import { getShapeByCode } from '../../Utils';
 
 // Constants
-import { MATH_SYMBOLS, DEFAULT_SIZE, DEFAULT_SIZE_DIVIDER } from '../../Constants';
+import { MATH_SYMBOLS, DEFAULT_SIZE } from '../../Constants';
 
 // Types
 import type { GetServerSideProps } from 'next';
