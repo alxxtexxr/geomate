@@ -20,5 +20,6 @@ const MySphere = forwardRef<THREE.Mesh<THREE.BufferGeometry, THREE.Material | TH
         </Sphere>
     </animated.mesh>
 ));
+MySphere.displayName = 'MySphere';
 
 export default MySphere;

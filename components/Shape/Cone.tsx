@@ -18,5 +18,6 @@ const Cone = forwardRef<THREE.Mesh<THREE.BufferGeometry, THREE.Material | THREE.
         wireframe={wireframe}
     />
 ));
+Cone.displayName = 'Cone';
 
 export default Cone;

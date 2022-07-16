@@ -33,5 +33,6 @@ const Pyramid = forwardRef<THREE.Mesh<THREE.BufferGeometry, THREE.Material | THR
         </animated.mesh>
     );
 });
+Pyramid.displayName = 'Pyramid';
 
 export default Pyramid;

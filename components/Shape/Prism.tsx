@@ -33,5 +33,6 @@ const Prism = forwardRef<THREE.Mesh<THREE.BufferGeometry, THREE.Material | THREE
         </animated.mesh>
     );
 });
+Prism.displayName = 'Prism';
 
 export default Prism;

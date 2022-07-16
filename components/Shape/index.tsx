@@ -41,5 +41,6 @@ const Shape = forwardRef<THREE.Mesh<THREE.BufferGeometry, THREE.Material | THREE
 
   return <ShapeComponent ref={ref} {...props} />
 }) 
+Shape.displayName = 'Shape';
 
 export default Shape;

@@ -18,5 +18,6 @@ const Cylinder = forwardRef<THREE.Mesh<THREE.BufferGeometry, THREE.Material | TH
         wireframe={wireframe}
     />
 ));
+Cylinder.displayName = 'Cylinder';
 
 export default Cylinder;
