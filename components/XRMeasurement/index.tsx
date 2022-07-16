@@ -1,4 +1,4 @@
-import React from 'react';
+import { createRef, forwardRef, useState } from 'react';
 import * as THREE from 'three';
 import {
     useHitTest,
@@ -12,9 +12,9 @@ import { IoArrowBackOutline } from 'react-icons/io5';
 
 // Components
 import Overlay from '../Overlay';
-import Dialog from './MeasurementDialog';
+import Dialog from './XRMeasurementDialog';
 
-const Reticle = React.forwardRef<THREE.Mesh<THREE.BufferGeometry, THREE.Material | THREE.Material[]>>((props, ref) => (
+const Reticle = forwardRef<THREE.Mesh<THREE.BufferGeometry, THREE.Material | THREE.Material[]>>((props, ref) => (
     <mesh ref={ref}>
         <Ring args={[0.045, 0.05, 32]} rotation={[-Math.PI / 2, 0, 0]} />
         <Circle args={[0.005, 32]} rotation={[-Math.PI / 2, 0, 0]} />
@@ -49,14 +49,14 @@ const getCenterPoint = (points: THREE.Vector3[]) => {
 
 type CanvasInnerProps = {
     onSubmit: (distance: number) => void,
-}
+};
 
 const CanvasInner = ({ onSubmit }: CanvasInnerProps) => {
     const { gl } = useThree();
-    const reticleRef = React.createRef<THREE.Mesh<THREE.BufferGeometry, THREE.Material | THREE.Material[]>>();
-    const [lineStart, setLineStart] = React.useState<THREE.Vector3 | null>(null);
-    const [lineEnd, setLineEnd] = React.useState<THREE.Vector3 | null>(null);
-    const [measurements, setMeasurements] = React.useState<(THREE.Vector3 | null)[][]>([]);
+    const reticleRef = createRef<THREE.Mesh<THREE.BufferGeometry, THREE.Material | THREE.Material[]>>();
+    const [lineStart, setLineStart] = useState<THREE.Vector3 | null>(null);
+    const [lineEnd, setLineEnd] = useState<THREE.Vector3 | null>(null);
+    const [measurements, setMeasurements] = useState<(THREE.Vector3 | null)[][]>([]);
 
     useHitTest((hit) => {
         if (reticleRef.current) {
@@ -158,7 +158,7 @@ type Props = {
     onClose: () => void,
 };
 
-const Measurement = ({ onSubmit, onClose }: Props) => (
+const XRMeasurement = ({ onSubmit, onClose }: Props) => (
     <Overlay.Black>
         <button className="btn btn-circle btn-ghost absolute z-10 left-2 top-2" onClick={onClose}>
             <IoArrowBackOutline className="text-2xl" />
@@ -200,4 +200,4 @@ const Measurement = ({ onSubmit, onClose }: Props) => (
     </Overlay.Black>
 );
 
-export default Measurement;
+export default XRMeasurement;

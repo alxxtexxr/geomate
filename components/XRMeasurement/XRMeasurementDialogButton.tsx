@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { Interactive } from '@react-three/xr';
 import { Text, Plane } from '@react-three/drei';
 
-type MeasurementDialogButtonProps = {
+type Props = {
     onSelect: () => void,
     onHover: () => void,
     onBlur: () => void,
@@ -15,7 +15,7 @@ type MeasurementDialogButtonProps = {
     children: string,
 }
 
-const MeasurementDialogButton = ({ onSelect, onHover, onBlur, args, position, color, opacity, fontSize, textColor, children }: MeasurementDialogButtonProps) => (
+const XRMeasurementDialogButton = ({ onSelect, onHover, onBlur, args, position, color, opacity, fontSize, textColor, children }: Props) => (
     <Interactive
         onSelect={onSelect}
         onHover={onHover}
@@ -42,4 +42,4 @@ const MeasurementDialogButton = ({ onSelect, onHover, onBlur, args, position, co
     </Interactive>
 );
 
-export default MeasurementDialogButton;
+export default XRMeasurementDialogButton;

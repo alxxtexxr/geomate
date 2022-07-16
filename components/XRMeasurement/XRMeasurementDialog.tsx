@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Text, Plane } from '@react-three/drei';
 
 // Components
-import Button from './MeasurementDialogButton';
+import Button from './XRMeasurementDialogButton';
 
 // Types
 type Props = {
@@ -14,7 +14,7 @@ type Props = {
     cancelText: string,
 };
 
-const MeasurementDialog = ({ messages, position, onConfirm, confirmText, onCancel, cancelText }: Props) => {
+const XRMeasurementDialog = ({ messages, position, onConfirm, confirmText, onCancel, cancelText }: Props) => {
     const [isConfirmButtonHovered, setIsConfirmButtonHovered] = useState(false);
     const [isCancelButtonHovered, setIsCancelButtonHovered] = useState(false);
 
@@ -82,4 +82,4 @@ const MeasurementDialog = ({ messages, position, onConfirm, confirmText, onCance
     );
 };
 
-export default MeasurementDialog;
+export default XRMeasurementDialog;

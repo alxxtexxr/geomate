@@ -1,13 +1,9 @@
-import { useRef } from 'react'
-import { MathUtils as ThreeMath } from 'three'
-import { useFrame } from '@react-three/fiber';
+import { forwardRef } from 'react'
+import * as THREE from 'three';
 import { animated } from '@react-spring/three';
 import { Cone } from '@react-three/drei';
 
 // Types
-import type { SpringValue } from '@react-spring/three';
-import type { Mesh, BufferGeometry, Material } from 'three';
-
 export type Props = {
     r: number,
     t: number,
@@ -15,32 +11,20 @@ export type Props = {
     baseA?: number,
     baseT?: number,
     baseS?: number,
-    rotation?: SpringValue<number[]>,
     wireframe?: boolean,
 };
 
-const { degToRad } = ThreeMath
-
-const Pyramid = ({ r, t, nBaseVertices, baseA, baseT, baseS, rotation, wireframe = false }: Props) => {
-    const mesh = useRef<Mesh<BufferGeometry, Material | Material[]>>(null)
-
+const Pyramid = forwardRef<THREE.Mesh<THREE.BufferGeometry, THREE.Material | THREE.Material[]>, Props>(({ r, t, nBaseVertices, baseA, baseT, baseS, wireframe = false }, ref) => {
     const rList: { [key: number]: number } = {
         3: baseA && baseT ? Math.sqrt(Math.pow(baseA, 2) + Math.pow(baseT, 2)) : 0,
         4: baseS ? Math.sqrt(Math.pow(baseS, 2) + Math.pow(baseS, 2)) : 0,
     };
     const _r = r ? r : rList[nBaseVertices];
 
-    // useFrame(() => {
-    //     if (mesh.current) {
-    //         mesh.current.rotation.y += 0.01;
-    //     }
-    // });
-
     return (
         <animated.mesh
-            ref={mesh}
+            ref={ref}
             scale={1}
-            rotation={rotation && rotation.to((x, y, z) => [degToRad(x), degToRad(y), degToRad(z)]) as unknown as [x: number, y: number, z: number]}
             position={[0, 0 + t / 2, 0]}
         >
             <Cone args={[_r, t, nBaseVertices]}>
@@ -48,6 +32,6 @@ const Pyramid = ({ r, t, nBaseVertices, baseA, baseT, baseS, rotation, wireframe
             </Cone>
         </animated.mesh>
     );
-};
+});
 
 export default Pyramid;

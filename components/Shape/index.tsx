@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import Sphere from './Sphere';
 import Cylinder from './Cylinder';
 import Prism from './Prism';
@@ -33,12 +34,12 @@ const shapeComponents: { [key: string]: React.FC<any> } = {
   Sphere,
 };
 
-const Shape = ({ code, ...props }: Props) => {
+const Shape = forwardRef<THREE.Mesh<THREE.BufferGeometry, THREE.Material | THREE.Material[]>, Props>(({ code, ...props }, ref) => {
   const ShapeComponent = shapeComponents[snakeToPascal(code)];
 
   // if shape component undefined ...
 
-  return <ShapeComponent {...props} />
-};
+  return <ShapeComponent ref={ref} {...props} />
+}) 
 
 export default Shape;

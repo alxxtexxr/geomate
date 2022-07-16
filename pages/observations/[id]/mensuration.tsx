@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react';
-import * as THREE from 'three';
 import { Canvas } from '@react-three/fiber';
 import { PerspectiveCamera, OrbitControls, Plane } from '@react-three/drei';
-import { useSpring } from '@react-spring/three';
-import { useDrag } from '@use-gesture/react';
 import { HiOutlineCube } from 'react-icons/hi';
 import Router from 'next/router';
 import { MdOutlineSwitchCamera } from 'react-icons/md';
@@ -12,12 +9,10 @@ import { Parser } from 'expr-eval';
 // Components
 import ShapeComponent from '../../../components/Shape';
 import Swap from '../../../components/Swap';
-// import InfoTab from '../../../components/Mensuration/MensurationInfoTab';
-// import CharTab from '../../../components/Mensuration/MensurationCharTab';
-// import SizeTab from '../../../components/Mensuration/MensurationSizeTab';
 import ConditionalInput from '../../../components/ConditionalInput';
 import LoaderButton from '../../../components/LoaderButton';
-import Measurement from '../../../components/Measurement';
+import XRMeasurement from '../../../components/XRMeasurement';
+import ARLivePreview from '../../../components/ARLivePreview';
 
 // Constants
 import { MATH_SYMBOLS, DEFAULT_SIZE } from '../../../Constants';
@@ -28,7 +23,6 @@ import {
     formatFormula,
     assignFormToFormula,
     inputValueToNumber,
-    getS,
 } from '../../../Utils';
 
 // Types
@@ -51,25 +45,6 @@ const LA_FORMULAS: { [key: number]: string } = {
 };
 
 const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
-    // Animate the 3D model
-    // const [{ rotation }, setRotation] = useSpring(() => ({
-    //     rotation: [0, 0, 0],
-    //     config: { mass: 10, tension: 1000, friction: 300, precision: 0.00001 }
-    // }));
-
-    // const bind = useDrag(({ delta, velocity, direction, memo = rotation.get() }) => {
-    //     const x = memo[0] + (delta[1] / window.innerWidth) * 180;
-    //     const y = memo[1] + (delta[0] / window.innerHeight) * 180;
-    //     const vxyz = [direction[1] * (velocity[1] / 1), direction[0] * (velocity[0] / 1), 0];
-
-    //     setRotation({
-    //         rotation: [x, y, 0],
-    //         config: { velocity: vxyz, decay: true }
-    //     });
-
-    //     return memo;
-    // });
-
     const hasBaseWithVertices = ['prism', 'pyramid'].includes(shape.code);
     const hasR = ['sphere', 'cylinder', 'cone'].includes(shape.code);
     const hasT = ['cylinder', 'prism', 'cone', 'pyramid'].includes(shape.code);
@@ -93,10 +68,27 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
         v: 0,
         lp: 0,
     });
+    const [tabs, setTabs] = useState<MathSymbol[]>([
+        ...(hasBaseWithVertices ? [
+            {
+                title: 'Bentuk Alas',
+                code: 'baseShape',
+                symbol: null,
+            }
+        ] : []),
+        ...MATH_SYMBOLS.filter((mathSymbol) => (shape.vFormula + 'v').includes(mathSymbol.code)),
+    ]);
     const [activeTabI, setActiveTabI] = useState(0);
     const [wireframe, setWireframe] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isLivePreviewing, setIsLivePreviewing] = useState(false);
     const [isMeasuring, setIsMeasuring] = useState(false);
+
+
+    const correctValues: { [key: string]: number } = {
+        la: hasBaseWithVertices ? +Parser.evaluate(LA_FORMULAS[form.nBaseVertices], form).toFixed(1) : 0,
+        v: +Parser.evaluate(shape.vFormula, form).toFixed(1),
+    };
 
     // Functions
     const handleSubmit = async () => {
@@ -119,40 +111,17 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
             setIsSubmitting(false);
             console.error(error);
         }
-    }
-
-    const [tabs, setTabs] = useState<MathSymbol[]>([
-        ...(hasBaseWithVertices ? [
-            {
-                title: 'Bentuk Alas',
-                code: 'baseShape',
-                symbol: null,
-            }
-        ] : []),
-        ...MATH_SYMBOLS.filter((mathSymbol) => (shape.vFormula + 'v').includes(mathSymbol.code)),
-    ]);
-
-    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        setForm({
-            ...form,
-            [e.target.name]: inputValueToNumber(e.target.value),
-            // ...(e.target.name === 'r' ? { s: getS(+e.target.value, form.t || 0) } : {}),
-            // ...(e.target.name === 't' ? { s: getS(form.r, +e.target.value || 0) } : {}),
-        });
     };
 
-    const correctValues: { [key: string]: number } = {
-        la: hasBaseWithVertices ? +Parser.evaluate(LA_FORMULAS[form.nBaseVertices], form).toFixed(1) : 0,
-        v: +Parser.evaluate(shape.vFormula, form).toFixed(1),
+    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        setForm((_form) => ({
+            ..._form,
+            [e.target.name]: inputValueToNumber(e.target.value),
+        }));
     };
 
     // Effects
     useEffect(() => {
-        // setForm({
-        //     ...form,
-        //     s: getS(form.r, form.t),
-        // })
-
         if (form.nBaseVertices) {
             const baseParams: { [key: number]: { form: any, symbols: MathSymbol[] } } = {
                 3: {
@@ -195,7 +164,6 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
         <main className="h-screen bg-black">
             {/* Preview */}
             <section
-                // {...bind()}
                 className="sticky top-0 z-0 h-80"
                 style={{ touchAction: 'none' }}
             >
@@ -216,7 +184,6 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
                         baseA={form.baseA}
                         baseT={form.baseT}
                         baseS={form.baseS}
-                        // rotation={rotation}
                         wireframe={wireframe}
                     />
 
@@ -226,13 +193,12 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 </Canvas>
 
                 <div className="absolute bottom-0 right-0 grid grid-cols-1 gap-2 p-4">
-                    <Swap
-                        isActive={wireframe}
-                        onClick={() => setWireframe(!wireframe)}
-                    >
+                    <Swap isActive={wireframe} onClick={() => setWireframe(!wireframe)}>
                         <HiOutlineCube className="text-2xl" />
                     </Swap>
-                    <Swap onClick={() => { }}>AR</Swap>
+                    <Swap isActive={isLivePreviewing} onClick={() => setIsLivePreviewing(true)}>
+                        AR
+                    </Swap>
                 </div>
             </section>
 
@@ -404,9 +370,24 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 </div>
             </section>
 
-            {/* Measurement */}
+            {isLivePreviewing && (
+                <ARLivePreview onClose={() => setIsLivePreviewing(false)}>
+                    <ShapeComponent
+                        code={shape.code}
+                        {...form}
+                        r={form.r}
+                        t={form.t}
+                        baseA={form.baseA}
+                        baseT={form.baseT}
+                        baseS={form.baseS}
+                        wireframe={wireframe}
+                    />
+                </ARLivePreview>
+            )}
+
+            {/* XR Measurement */}
             {isMeasuring && (
-                <Measurement
+                <XRMeasurement
                     onSubmit={(distance: number) => {
                         setForm((_form) => ({
                             ..._form,
