@@ -85,11 +85,11 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                 <ShapeComponent
                                     code={shape.code}
                                     {...observation}
-                                    r={(observation.r || DEFAULT_SIZE) / DEFAULT_SIZE_DIVIDER}
-                                    t={(observation.t || DEFAULT_SIZE) / DEFAULT_SIZE_DIVIDER}
-                                    baseA={(observation.baseA || DEFAULT_SIZE) / DEFAULT_SIZE_DIVIDER}
-                                    baseT={(observation.baseT || DEFAULT_SIZE) / DEFAULT_SIZE_DIVIDER}
-                                    baseS={(observation.baseS || DEFAULT_SIZE) / DEFAULT_SIZE_DIVIDER}
+                                    r={(observation.r || DEFAULT_SIZE)}
+                                    t={(observation.t || DEFAULT_SIZE)}
+                                    baseA={(observation.baseA || DEFAULT_SIZE)}
+                                    baseT={(observation.baseT || DEFAULT_SIZE)}
+                                    baseS={(observation.baseS || DEFAULT_SIZE)}
                                 />
                             </Canvas>
                         </div>
