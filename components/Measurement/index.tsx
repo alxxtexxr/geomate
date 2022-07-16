@@ -11,6 +11,7 @@ import { Ring, Circle, Line } from '@react-three/drei';
 import { IoArrowBackOutline } from 'react-icons/io5';
 
 // Components
+import Overlay from '../Overlay';
 import Dialog from './MeasurementDialog';
 
 const Reticle = React.forwardRef<THREE.Mesh<THREE.BufferGeometry, THREE.Material | THREE.Material[]>>((props, ref) => (
@@ -158,7 +159,7 @@ type Props = {
 };
 
 const Measurement = ({ onSubmit, onClose }: Props) => (
-    <div className="fixed z-20 inset-0 flex justify-center items-center w-screen h-screen bg-black bg-opacity-90 text-gray-300 text-sm">
+    <Overlay.Black>
         <button className="btn btn-circle btn-ghost absolute z-10 left-2 top-2" onClick={onClose}>
             <IoArrowBackOutline className="text-2xl" />
         </button>
@@ -196,7 +197,7 @@ const Measurement = ({ onSubmit, onClose }: Props) => (
         >
             <CanvasInner onSubmit={onSubmit} />
         </ARCanvas>
-    </div >
+    </Overlay.Black>
 );
 
 export default Measurement;

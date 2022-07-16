@@ -1,15 +1,16 @@
 import QRCode from 'react-qr-code';
 
+// Components
+import Overlay from './Overlay';
+
+// Types
 type Props = {
     onClose: () => void,
 }
 
 const BetterExperienceScreen = ({ onClose }: Props) => (
-    <div className="fixed z-10 inset-0 flex justify-center items-center text-center w-screen h-screen bg-base-200 bg-opacity-95 text-white">
-        {/* <div> */}
-
+    <Overlay.Primary>
         <div className="w-96">
-            {/* <h1 className="font-medium mb-1">Bukalah di Smartphone</h1> */}
             <div className="inline-flex bg-white p-4 mb-4 rounded-xl shadow">
                 <QRCode value={window.location.href} size={176} />
             </div>
@@ -22,8 +23,7 @@ const BetterExperienceScreen = ({ onClose }: Props) => (
                 Tetap Akses di Desktop
             </button>
         </div>
-        {/* </div> */}
-    </div>
+    </Overlay.Primary>
 );
 
 export default BetterExperienceScreen;
