@@ -8,12 +8,24 @@ import { IoArrowBackOutline } from 'react-icons/io5';
 
 // Components
 import Overlay from './Overlay';
+import Shape from './Shape';
+
+// Types
+import type { ShapeCode } from '@prisma/client';
 
 type CanvasInnerProps = {
-    children: JSX.Element;
+    shapeCode: ShapeCode, 
+    r: number, 
+    t: number, 
+    baseA: number, 
+    baseT: number, 
+    baseS: number, 
+    wireframe: boolean,
 };
 
-const CanvasInner = ({ children }: CanvasInnerProps) => {
+const SIZE_DIVIDER = 100;
+
+const CanvasInner = ({ shapeCode, r, t, baseA, baseT, baseS, wireframe }: CanvasInnerProps) => {
     const childrenRef = useRef<THREE.Mesh<THREE.BufferGeometry, THREE.Material | THREE.Material[]> | null>(null);
 
     useHitTest((hit) => {
@@ -33,19 +45,24 @@ const CanvasInner = ({ children }: CanvasInnerProps) => {
                 position={[0.5, 1, 0.25]}
             />
 
-            {cloneElement(children, {
-                ref: (ref: THREE.Mesh<THREE.BufferGeometry, THREE.Material | THREE.Material[]> | null) => childrenRef.current = ref,
-            })}
+            <Shape
+                code={shapeCode}
+                r={r / SIZE_DIVIDER}
+                t={t / SIZE_DIVIDER}
+                baseA={baseA / SIZE_DIVIDER}
+                baseT={baseT / SIZE_DIVIDER}
+                baseS={baseS / SIZE_DIVIDER}
+                wireframe={wireframe}
+            />
         </>
     );
 };
 
-type Props = {
-    children: JSX.Element,
+type Props = CanvasInnerProps & {
     onClose: () => void,
 };
 
-const ARLivePreview = ({ children, onClose }: Props) => (
+const ARLivePreview = ({ onClose, ...canvasInnerProps }: Props) => (
     <Overlay.Black>
         <button className="btn btn-circle btn-ghost absolute z-10 left-2 top-2" onClick={onClose}>
             <IoArrowBackOutline className="text-2xl" />
@@ -81,9 +98,7 @@ const ARLivePreview = ({ children, onClose }: Props) => (
             sessionInit={{ requiredFeatures: ['hit-test'] }}
             style={{ position: 'absolute', opacity: 0 }}
         >
-            <CanvasInner>
-                {children}
-            </CanvasInner>
+            <CanvasInner {...canvasInnerProps} />
         </ARCanvas>
     </Overlay.Black>
 );

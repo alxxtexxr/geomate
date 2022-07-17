@@ -371,18 +371,17 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
             </section>
 
             {isLivePreviewing && (
-                <ARLivePreview onClose={() => setIsLivePreviewing(false)}>
-                    <ShapeComponent
-                        code={shape.code}
-                        {...form}
-                        r={form.r}
-                        t={form.t}
-                        baseA={form.baseA}
-                        baseT={form.baseT}
-                        baseS={form.baseS}
-                        wireframe={wireframe}
-                    />
-                </ARLivePreview>
+                <ARLivePreview
+                    onClose={() => setIsLivePreviewing(false)}
+                    shapeCode={shape.code}
+                    {...form}
+                    r={form.r}
+                    t={form.t}
+                    baseA={form.baseA}
+                    baseT={form.baseT}
+                    baseS={form.baseS}
+                    wireframe={wireframe}
+                />
             )}
 
             {/* XR Measurement */}
