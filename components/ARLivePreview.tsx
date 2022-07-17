@@ -14,12 +14,12 @@ import Shape from './Shape';
 import type { ShapeCode } from '@prisma/client';
 
 type CanvasInnerProps = {
-    shapeCode: ShapeCode, 
-    r: number, 
-    t: number, 
-    baseA: number, 
-    baseT: number, 
-    baseS: number, 
+    shapeCode: ShapeCode,
+    r: number,
+    t: number,
+    baseA: number,
+    baseT: number,
+    baseS: number,
     wireframe: boolean,
 };
 
@@ -46,6 +46,7 @@ const CanvasInner = ({ shapeCode, r, t, baseA, baseT, baseS, wireframe }: Canvas
             />
 
             <Shape
+                ref={childrenRef}
                 code={shapeCode}
                 r={r / SIZE_DIVIDER}
                 t={t / SIZE_DIVIDER}
