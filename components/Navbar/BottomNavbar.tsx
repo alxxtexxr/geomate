@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 type Props = {
     menu: {
         icon: JSX.Element,
+        activeIcon: JSX.Element,
         title: string,
         href: string,
     }[],
@@ -12,14 +13,26 @@ type Props = {
 const BottomNavbar = ({ menu }: Props) => {
     const router = useRouter();
 
+    const midI = Math.round(menu.length / 2);
+
     return (
-        <nav className="fixed z-90 bottom-0 bg-white bg-opacity-95 w-screen p-4 rounded-t-xl shadow">
-            <ul className="grid grid-cols-3 gap-4 text-center">
-                {menu.map((menuI) => (
-                    <li key={menuI.href}>
+        <nav className="fixed z-90 bottom-0 bg-white bg-opacity-90 w-screen rounded-t-xl shadow">
+            <ul className="flex text-center px-2">
+                {menu.map((menuI, i) => i + 1 === midI ? (
+                    <li key={menuI.href} className="flex-none -mt-8 -mx-2">
                         <Link href={menuI.href}>
                             <a className={
-                                'flex flex-col items-center text-sm font-medium normal-case' +
+                                'btn btn-primary btn-circle btn-lg shadow'
+                            }>
+                                    {menuI.icon}
+                            </a>
+                        </Link>
+                    </li>
+                ) : (
+                    <li key={menuI.href} className="flex-1">
+                        <Link href={menuI.href}>
+                            <a className={
+                                'flex flex-col items-center text-xs font-medium normal-case py-4' +
                                 (
                                     router.pathname === menuI.href
                                         ? ' text-primary'
@@ -27,7 +40,7 @@ const BottomNavbar = ({ menu }: Props) => {
                                 )
                             }>
                                 <span className="mb-1">
-                                    {menuI.icon}
+                                {router.pathname === menuI.href ? menuI.activeIcon : menuI.icon}
                                 </span>
                                 {menuI.title}
                             </a>

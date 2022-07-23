@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Navbar from '../components/Navbar';
 
 // Constants
-import { INTROS } from '../Constants';
+import { INTROS, NAVBAR_BOTTOM_MENU } from '../Constants';
 
 // Types
 import type ComponentWithAuth from '../types/ComponentWithAuth';
@@ -44,6 +44,8 @@ const Intro: ComponentWithAuth = () => (
                 </div>
             ))}
         </section>
+
+        <Navbar.Bottom menu={NAVBAR_BOTTOM_MENU} />
     </main>
 );
 

@@ -1,4 +1,5 @@
-import { MdOutlineHome, MdOutlineLeaderboard, MdOutlinePersonOutline } from 'react-icons/md';
+import { MdOutlineHome, MdInfoOutline, MdOutlineLeaderboard, MdOutlinePersonOutline, MdHome, MdLeaderboard, MdPerson, MdInfo } from 'react-icons/md';
+import { AiOutlineScan } from 'react-icons/ai'
 
 // Types
 import Shape from './types/Shape';
@@ -144,16 +145,31 @@ export const MATH_SYMBOLS: MathSymbol[] = [
 export const NAVBAR_BOTTOM_MENU = [
   {
     icon: (<MdOutlineHome className="text-2xl" />),
+    activeIcon: (<MdHome className="text-2xl" />),
     title: 'Beranda',
     href: '/',
   },
   {
+    icon: (<MdInfoOutline className="text-2xl" />),
+    activeIcon: (<MdInfo className="text-2xl" />),
+    title: 'Pengantar',
+    href: '/intro',
+  },
+  {
+    icon: (<AiOutlineScan className="text-3xl" />),
+    activeIcon: (<AiOutlineScan className="text-3xl" />),
+    title: 'Scanner',
+    href: '/classification',
+  },
+  {
     icon: (<MdOutlineLeaderboard className="text-2xl" />),
+    activeIcon: (<MdLeaderboard className="text-2xl" />),
     title: 'Peringkat',
     href: '/leaderboard',
   },
   {
     icon: (<MdOutlinePersonOutline className="text-2xl" />),
+    activeIcon: (<MdPerson className="text-2xl" />),
     title: 'Profil',
     href: '/profile',
   },
