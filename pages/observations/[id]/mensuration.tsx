@@ -13,6 +13,7 @@ import ConditionalInput from '../../../components/ConditionalInput';
 import LoaderButton from '../../../components/LoaderButton';
 import XRMeasurement from '../../../components/XRMeasurement';
 import ARLivePreview from '../../../components/ARLivePreview';
+import BottomSheet from '../../../components/BottomSheet';
 
 // Constants
 import { MATH_SYMBOLS, DEFAULT_SIZE } from '../../../Constants';
@@ -203,7 +204,8 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
             </section>
 
             {/* Tabs */}
-            <section className="relative z-90 flex flex-col flex-grow bg-white min-h-screen px-4 rounded-tl-xl rounded-tr-xl overflow-hidden">
+
+            <BottomSheet>
                 <ul className="steps steps-horizontal bg-white text-xs py-4 border-b border-gray-200">
                     {tabs.map((tab, i) => (
                         <li className={'step' + (i <= activeTabI ? ' step-primary' : '')} key={i}>
@@ -368,7 +370,7 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
 
                     )}
                 </div>
-            </section>
+            </BottomSheet>
 
             {isLivePreviewing && (
                 <ARLivePreview

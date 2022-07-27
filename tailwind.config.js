@@ -14,7 +14,11 @@ module.exports = {
         //   50: '#dbe8ff',
         // }
         'primary-100': '#dbe8ff',
-      }
+      },
+      transitionProperty: {
+        'height': 'height',
+        'spacing': 'margin, padding',
+      },
     },
   },
   daisyui: {

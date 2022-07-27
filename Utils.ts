@@ -155,15 +155,14 @@ export const formatFormula = (formula: string) => {
         });
     });
 
-
     return formattedFormulaArr.join(' ')
         .replaceAll('( ', '(')
         .replaceAll(' )', ')')
-        .replaceAll('*', '×')
         .replaceAll(' / ', '/')
-        .replaceAll(' ^ 2', '²')
-        .replaceAll(' ^ 3', '³')
-        .replaceAll('PI', 'π')
+        .replaceAll('*', '\\times')
+        .replaceAll('PI', '\\pi')
+        .replaceAll('(1/3)', '\\frac{1}{3}')
+        .replaceAll('(4/3)', '\\frac{4}{3}')
         ;
 };
 

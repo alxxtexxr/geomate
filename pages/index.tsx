@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -5,15 +6,22 @@ import Link from 'next/link';
 // Components
 import Navbar from '../components/Navbar';
 import Avatar from '../components/Avatar';
+import ShapeInformation from '../components/ShapeInformation';
 
 // Constants
 import { SHAPES, NAVBAR_BOTTOM_MENU } from '../Constants';
 
 // Types
 import type ComponentWithAuth from '../types/ComponentWithAuth';
+import type { ShapeCode } from '@prisma/client';
 
 const Home: ComponentWithAuth = () => {
+  // Session
   const { data: session } = useSession();
+
+  // State
+  const [selectedShapeCode, setSetectedShapeCode] = useState<ShapeCode>();
+  const [isShapeInformationShowing, setIsShapeInformationShowing] = useState(false);
 
   return (
     <main className="pb-20">
@@ -33,33 +41,37 @@ const Home: ComponentWithAuth = () => {
       {/* Menu */}
       <section className="p-4">
         <div className="grid grid-cols-2 gap-4 -mt-12">
-          {/* <Link href="/intro">
-            <div className="animation col-span-2 flex justify-start items-center bg-white py-4 px-6 shadow rounded-xl">
-              <div className="relative h-10 w-10 mr-4">
-                <Image src="/images/intro.png" alt="KI/KD" layout="fill" />
+          {SHAPES.map((shape) => (
+            <div
+              className="flex flex-col justify-center items-center bg-white py-8 shadow rounded-xl"
+              onClick={() => {
+                setSetectedShapeCode(shape.code);
+                setIsShapeInformationShowing(true);
+              }}
+              key={shape.code}
+            >
+              <div className="relative h-20 w-20 mb-4">
+                <Image src={`/images/${shape.code}.png`} alt={shape.name} layout="fill" />
               </div>
-              <h2 className="font-medium text-gray-800">
-                Pendahuluan
+              <h2 className="font-medium text-gray-800 -mb-1">
+                {shape.name}
               </h2>
             </div>
-          </Link> */}
-          {SHAPES.map(({ id, name, code }) => (
-            <Link href={`/stimulation/${code}`} key={id}>
-              <div className="flex flex-col justify-center items-center bg-white py-8 shadow rounded-xl">
-                <div className="relative h-20 w-20 mb-4">
-                  <Image src={`/images/${code}.png`} alt={name} layout="fill" />
-                </div>
-                <h2 className="font-medium text-gray-800 -mb-1">
-                  {name}
-                </h2>
-              </div>
-            </Link>
           ))}
         </div>
       </section>
 
       {/* Navbar Bottom */}
       <Navbar.Bottom menu={NAVBAR_BOTTOM_MENU} />
+
+      {/* Shape Information */}
+      {selectedShapeCode && (
+        <ShapeInformation
+          shapeCode={selectedShapeCode}
+          isShowing={isShapeInformationShowing}
+          setIsShowing={setIsShapeInformationShowing}
+        />
+      )}
     </main>
   );
 };

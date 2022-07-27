@@ -1,7 +1,6 @@
 import type { ShapeCode } from '@prisma/client';
 
 type Shape = {
-    id: number,
     code: ShapeCode,
     name: string,
     stimulation: string,
