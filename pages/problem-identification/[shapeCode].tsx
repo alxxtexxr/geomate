@@ -35,7 +35,7 @@ const ProblemIdentification: ComponentWithAuth<Props> = ({ shape }) => {
             });
             const observation: Observation = await res.json();
 
-            await Router.push(`/observations/${observation.id}/classification`);
+            await Router.push(`/observations/${observation.id}/mensuration`);
         } catch (err) {
             setIsLoading(false);
             console.error(err);

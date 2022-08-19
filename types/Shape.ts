@@ -8,9 +8,9 @@ type Shape = {
     problemIdentification: string,
     problemIdentificationImage: string,
     description: string,
-    nVertices: number,
-    nEdges: number,
-    nFaces: number,
+    nVertices: number | string,
+    nEdges: number | string,
+    nFaces: number | string,
     vFormula: string,
     lpFormula: string,
 };

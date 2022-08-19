@@ -5,6 +5,7 @@ import { AiOutlineScan } from 'react-icons/ai'
 import Shape from './types/Shape';
 import MathSymbol from './types/MathSymbol';
 
+// Shape descriptions is from mathway.com
 export const SHAPES: Shape[] = [
   {
     name: 'Bola',
@@ -13,7 +14,7 @@ export const SHAPES: Shape[] = [
     stimulationImage: '/images/placeholder-image.jpeg',
     problemIdentification: 'Aliquam Faucibus Purus in Massa?',
     problemIdentificationImage: '/images/placeholder-image.jpeg',
-    description: 'Bola adalah objek geometri dalam ruang tiga dimensi yang merupakan permukaan dari bola.',
+    description: 'Bangun tiga dimensi dengan semua titik dalam ruang berjarak tetap dari titik tertentu, yang disebut pusat.',
     vFormula: '( 4 / 3 ) * PI * r ^ 3',
     lpFormula: '4 * PI * r ^ 2',
     nVertices: 0,
@@ -21,13 +22,13 @@ export const SHAPES: Shape[] = [
     nFaces: 1,
   },
   {
-    name: 'Tabung',
+    name: 'Silinder',
     code: 'cylinder',
     stimulation: 'Ut Consequat Semper Viverra Nam?',
     stimulationImage: '/images/placeholder-image.jpeg',
     problemIdentification: 'Aliquam Faucibus Purus in Massa?',
     problemIdentificationImage: '/images/placeholder-image.jpeg',
-    description: 'Tabung atau silinder adalah bangun ruang tiga dimensi yang dibentuk oleh dua buah lingkaran identik yang sejajar dan sebuah persegi panjang yang mengelilingi kedua lingkaran tersebut.',
+    description: 'Bangun tiga-dimensi mempunyai dua alas sejajar dan keduanya lingkaran yang kongruen.',
     vFormula: 'PI * r ^ 2 * t',
     lpFormula: '2 * PI * r * ( r + t )',
     nVertices: 0,
@@ -41,12 +42,12 @@ export const SHAPES: Shape[] = [
     stimulationImage: '/images/placeholder-image.jpeg',
     problemIdentification: 'Aliquam Faucibus Purus in Massa?',
     problemIdentificationImage: '/images/placeholder-image.jpeg',
-    description: 'Prisma adalah bangun ruang tiga dimensi yang dibatasi oleh alas beserta tutup yang identik berbentuk segi-n dan sisi-sisi tegak berbentuk persegi atau persegi panjang.',
+    description: 'Bangun geometri dengan dua alas yang kongruen, segi banyak yang sejajar, dan semua permukaannya merupakan jajaran genjang.',
     vFormula: 'la * t',
     lpFormula: '( 2 * la ) + ( ka * t )',
-    nVertices: -1,
-    nEdges: -1,
-    nFaces: -1,
+    nVertices: 'n × 2',
+    nEdges: 'n × 3',
+    nFaces: 'n + 2',
   },
   {
     name: 'Kerucut',
@@ -55,7 +56,7 @@ export const SHAPES: Shape[] = [
     stimulationImage: '/images/placeholder-image.jpeg',
     problemIdentification: 'Aliquam Faucibus Purus in Massa?',
     problemIdentificationImage: '/images/placeholder-image.jpeg',
-    description: 'Kerucut adalah sebuah limas istimewa yang beralas lingkaran.',
+    description: 'Bangun tiga-dimensi dengan alas lingkaran dan satu verteks.',
     vFormula: '( 1 / 3 ) * PI * r ^ 2 * t',
     lpFormula: 'PI * r * ( r + s )',
     nVertices: 1,
@@ -69,12 +70,12 @@ export const SHAPES: Shape[] = [
     stimulationImage: '/images/placeholder-image.jpeg',
     problemIdentification: 'Aliquam Faucibus Purus in Massa?',
     problemIdentificationImage: '/images/placeholder-image.jpeg',
-    description: 'Limas adalah bangun ruang tiga dimensi yang dibatasi oleh alas berbentuk segi-n dan sisi-sisi tegak berbentuk segitiga.',
+    description: 'Bangun tiga-dimensi yang mempunyai segi banyak sebagai alas dan semua sisinya segitiga dengan verteks yang saling bertemu.',
     vFormula: '( 1 / 3 ) * la * t',
     lpFormula: 'la + lst',
-    nVertices: -1,
-    nEdges: -1,
-    nFaces: -1,
+    nVertices: 'n + 1',
+    nEdges: 'n × 2',
+    nFaces: 'n + 1',
   },
 ];
 

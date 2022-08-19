@@ -91,6 +91,8 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
         v: +Parser.evaluate(shape.vFormula, form).toFixed(1),
     };
 
+    console.log({correctValues})
+
     // Functions
     const handleSubmit = async () => {
         setIsSubmitting(true);
@@ -276,7 +278,7 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                 // Volume
                                 tabs[activeTabI].code === 'v' ? (
                                     <>
-                                        <label className="input-group mb-4">
+                                        {/* <label className="input-group mb-4">
                                             <input
                                                 type="text"
                                                 className="input input-bordered w-full"
@@ -293,7 +295,7 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                                 disabled
                                             />
                                             <span className="text-xs font-semibold">cm³</span>
-                                        </label>
+                                        </label> */}
                                         <ConditionalInput
                                             correctValue={'' + correctValues.v}
                                             incorrectMessage="Nilai belum benar."

@@ -1,5 +1,6 @@
 import { Transition } from '@headlessui/react'
 import Image from 'next/image';
+import Link from 'next/link';
 import katex from 'katex';
 
 // Components
@@ -20,9 +21,10 @@ type Props = {
     shapeCode: ShapeCode,
     isShowing: boolean,
     setIsShowing: Dispatch<SetStateAction<boolean>>,
+    onHide?: () => void,
 };
 
-const ShapeInformation = ({ shapeCode, isShowing, setIsShowing }: Props) => {
+const ShapeInformation = ({ shapeCode, isShowing, setIsShowing, onHide }: Props) => {
     const shape = getShapeByCode(shapeCode);
 
     let vFormulaSymbols: MathSymbol[] = [];
@@ -59,12 +61,17 @@ const ShapeInformation = ({ shapeCode, isShowing, setIsShowing }: Props) => {
                 <Transition.Child
                     enter="transition-height duration-300"
                     enterFrom="h-screen"
-                    enterTo="h-72"
+                    enterTo="h-80"
                     leave="transition-height duration-300"
-                    leaveFrom="h-72"
+                    leaveFrom="h-80"
                     leaveTo="h-screen"
                 >
-                    <div className="h-full" onClick={() => setIsShowing(false)} />
+                    <div className="h-full" onClick={() => {
+                        setIsShowing(false);
+                        if (onHide) {
+                            onHide();
+                        }
+                    }} />
                 </Transition.Child>
 
                 {/* Bottom Sheet */}
@@ -151,9 +158,11 @@ const ShapeInformation = ({ shapeCode, isShowing, setIsShowing }: Props) => {
                                         </div>
                                     </div>
 
-                                    <button className="btn btn-primary btn-outline w-full">
-                                        Pelajari Volume
-                                    </button>
+                                    <Link href={`/stimulation/${shapeCode}`}>
+                                        <button className="btn btn-primary btn-outline w-full">
+                                            Pelajari Volume
+                                        </button>
+                                    </Link>
                                 </td>
                             </tr>
 
@@ -186,9 +195,11 @@ const ShapeInformation = ({ shapeCode, isShowing, setIsShowing }: Props) => {
                                         </div>
                                     </div>
 
-                                    <button className="btn btn-primary btn-outline w-full">
-                                        Pelajari Luas Permukaan
-                                    </button>
+                                    <Link href={`/stimulation/${shapeCode}`}>
+                                        <button className="btn btn-primary btn-outline w-full">
+                                            Pelajari Luas Permukaan
+                                        </button>
+                                    </Link>
                                 </td>
                             </tr>
                         </tbody>

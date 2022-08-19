@@ -64,7 +64,7 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
 
     return (
         <main className="relative flex flex-col bg-base-100 h-screen pb-20">
-            <Navbar.Top title="Hasil Observasi" />
+            {/* <Navbar.Top title="Hasil Observasi" /> */}
 
             {observation.image && (
                 <section className="px-4 mb-4">
@@ -98,7 +98,8 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
             )}
 
             <section className="flex-grow bg-white text-gray-500 p-4 text-sm rounded-t-xl shadow">
-                {_mathSymbols.map((mathSymbol, i) => (
+                Coming soon..
+                {/* {_mathSymbols.map((mathSymbol, i) => (
                     <div className={
                         'flex justify-between items-center py-4 border-gray-100' +
                         (i + 1 < _mathSymbols.length ? '  border-b' : '')
@@ -109,22 +110,12 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
                             </div>
                             {mathSymbol.title}
                         </div>
-                        {/* <div className="w-5/12"> */}
+                        
                         <span className="font-medium text-gray-800">
                             {(observation as { [key: string]: any })[mathSymbol.code] || 0} {mathSymbol.code === 'v' ? 'cm³' : (mathSymbol.code === 'la' ? 'cm²' : 'cm')}
                         </span>
-                        {/* <label className="input-group">
-                                <input
-                                    type="text"
-                                    className="input input-bordered w-1 flex-grow"
-                                    value={(observation as { [key: string]: any })[symbol.toLowerCase()] || 0}
-                                    disabled
-                                />
-                                <span className="font-medium" style={{ width: 60 }}>{symbol === 'V' ? 'cm³' : (symbol === 'LP' ? 'cm²' : 'cm')}</span>
-                            </label> */}
                     </div>
-                    // </div>
-                ))}
+                ))} */}
             </section>
 
             <section className="fixed left-0 bottom-0 grid grid-cols-2 gap-4 bg-white w-screen p-4">
