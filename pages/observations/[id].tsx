@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import Router from 'next/router';
-import Image from 'next/image';
-import { Canvas } from '@react-three/fiber';
-import Link from 'next/link';
+// import Image from 'next/image';
+// import { Canvas } from '@react-three/fiber';
+// import Link from 'next/link';
 
 // Components
 import Navbar from '../../components/Navbar';
-import ShapeComponent from '../../components/Shape';
+import ShapePreview from '../../components/ShapePreview';
 import Spinner from '../../components/Spinner';
+
 
 // Utils
 import { getShapeByCode } from '../../Utils';
@@ -20,6 +21,7 @@ import type { GetServerSideProps } from 'next';
 import type ComponentWithAuth from '../../types/ComponentWithAuth';
 import type Shape from '../../types/Shape';
 import type { Observation, Evaluation } from '@prisma/client';
+import MensurationForm from '../../types/MensurationForm';
 
 type Props = {
     observation: Observation,
@@ -64,9 +66,9 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
 
     return (
         <main className="relative flex flex-col bg-base-100 h-screen pb-20">
-            {/* <Navbar.Top title="Hasil Observasi" /> */}
+            <Navbar.Top title="Hasil Observasi" />
 
-            {observation.image && (
+            {/* {observation.image && (
                 <section className="px-4 mb-4">
                     <div className="relative inline-flex bg-white w-full p-2 rounded-xl shadow overflow-hidden">
                         <div className="relative h-60 w-full">
@@ -95,41 +97,51 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
                         </div>
                     </div>
                 </section>
-            )}
+            )} */}
 
-            <section className="flex-grow bg-white text-gray-500 p-4 text-sm rounded-t-xl shadow">
-                Coming soon..
-                {/* {_mathSymbols.map((mathSymbol, i) => (
-                    <div className={
-                        'flex justify-between items-center py-4 border-gray-100' +
-                        (i + 1 < _mathSymbols.length ? '  border-b' : '')
-                    } key={mathSymbol.code}>
-                        <div className="w-7/12">
-                            <div className="badge badge-primary badge-outline text-xs font-semibold w-8 mr-2 -mt-0.5">
-                                {mathSymbol.symbol}
-                            </div>
-                            {mathSymbol.title}
-                        </div>
-                        
-                        <span className="font-medium text-gray-800">
-                            {(observation as { [key: string]: any })[mathSymbol.code] || 0} {mathSymbol.code === 'v' ? 'cm³' : (mathSymbol.code === 'la' ? 'cm²' : 'cm')}
-                        </span>
+            <section className="flex-grow text-gray-500 px-4 text-sm">
+                <div className="bg-white shadow rounded-xl overflow-hidden">
+                    <div className="bg-black">
+                        <ShapePreview
+                            shapeCode={shape.code}
+                            mensurationForm={observation as unknown as MensurationForm}
+                        />
                     </div>
-                ))} */}
+                    <div className="px-4">
+                        {_mathSymbols.map((mathSymbol, i) => (
+                            <div className={
+                                'flex justify-between items-center py-4 border-gray-100' +
+                                (i + 1 < _mathSymbols.length ? '  border-b' : '')
+                            } key={mathSymbol.code}>
+                                <div className="w-7/12">
+                                    <div className="badge badge-primary badge-outline text-xs font-semibold w-8 mr-2 -mt-0.5">
+                                        {mathSymbol.symbol}
+                                    </div>
+                                    {mathSymbol.title}
+                                </div>
+
+                                <span className="font-medium text-gray-800">
+                                    {(observation as { [key: string]: any })[mathSymbol.code] || 0} {mathSymbol.code === 'v' ? 'cm³' : (mathSymbol.code === 'la' ? 'cm²' : 'cm')}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+
+                </div>
             </section>
 
-            <section className="fixed left-0 bottom-0 grid grid-cols-2 gap-4 bg-white w-screen p-4">
-                <Link href="/">
+            <section className="fixed left-0 bottom-0 w-screen p-4">
+                {/* <Link href="/">
                     <button className="btn btn-primary btn-outline w-full">
                         Selesai
                     </button>
-                </Link>
+                </Link> */}
                 {isLoading ? (
                     <button className="btn w-full" disabled>
                         <Spinner />
                     </button>
                 ) : (
-                    <button className="btn btn-primary w-full" onClick={startEvaluation}>
+                    <button className="btn btn-primary w-full shadow" onClick={startEvaluation}>
                         Evaluasi
                     </button>
                 )}

@@ -9,6 +9,7 @@ import { Parser } from 'expr-eval';
 // Components
 import ShapeComponent from '../../../components/Shape';
 import Swap from '../../../components/Swap';
+import ShapePreview from '../../../components/ShapePreview';
 import ConditionalInput from '../../../components/ConditionalInput';
 import LoaderButton from '../../../components/LoaderButton';
 import XRMeasurement from '../../../components/XRMeasurement';
@@ -165,48 +166,7 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
 
     return (
         <main className="h-screen bg-black">
-            {/* Preview */}
-            <section
-                className="sticky top-0 z-0 h-80"
-                style={{ touchAction: 'none' }}
-            >
-                <Canvas camera={{}}>
-                    <fog args={['#000', 2, 250]} attach="fog" />
-                    {/* <ambientLight color="#FFFFFF" /> */}
-                    <ambientLight intensity={0.5} />
-                    <pointLight position={[1, 3, 1]} intensity={1.0} />
-                    {/* <pointLight position={[10, 20, 0]} /> */}
-                    <PerspectiveCamera makeDefault position={[0, 50, 100]} fov={50} />
-                    <OrbitControls autoRotate target={[0, 20, 0]} />
-
-                    <ShapeComponent
-                        code={shape.code}
-                        {...form}
-                        r={form.r}
-                        t={form.t}
-                        baseA={form.baseA}
-                        baseT={form.baseT}
-                        baseS={form.baseS}
-                        wireframe={wireframe}
-                    />
-
-                    <Plane args={[250, 250, 10, 10]} rotation={[-Math.PI / 2, 0, 0]}>
-                        <meshStandardMaterial color="#FFFFFF" wireframe />
-                    </Plane>
-                </Canvas>
-
-                <div className="absolute bottom-0 right-0 grid grid-cols-1 gap-2 p-4">
-                    <Swap isActive={wireframe} onClick={() => setWireframe(!wireframe)}>
-                        <HiOutlineCube className="text-2xl" />
-                    </Swap>
-                    <Swap isActive={isLivePreviewing} onClick={() => setIsLivePreviewing(true)}>
-                        AR
-                    </Swap>
-                </div>
-            </section>
-
-            {/* Tabs */}
-
+            <ShapePreview shapeCode={shape.code} mensurationForm={form} />
             <BottomSheet>
                 <ul className="steps steps-horizontal bg-white text-xs py-4 border-b border-gray-200">
                     {tabs.map((tab, i) => (
