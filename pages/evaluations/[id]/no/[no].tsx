@@ -83,7 +83,7 @@ const EvaluationQuestionPage: ComponentWithAuth<Props> = ({ evaluation }) => {
     };
 
     return (
-        <main>
+        <main className="texture-base h-screen">
             <Navbar.Top title="Evaluasi" />
 
             <Pagination
@@ -92,7 +92,7 @@ const EvaluationQuestionPage: ComponentWithAuth<Props> = ({ evaluation }) => {
             />
 
             <section className="px-4">
-                <p className="text-gray-500 text-sm mb-8">
+                <p className="text-gray-600 text-sm mb-6">
                     {activeQuestion.question}
                 </p>
 

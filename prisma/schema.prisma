@@ -76,7 +76,7 @@ model UserAchievement {
 
 model AnswerChoice {
   id     String @id @default(cuid())
-  answer String
+  answer String @db.Text()
 
   question   Question @relation(fields: [questionId], references: [id])
   questionId String
@@ -88,7 +88,7 @@ model Question {
   id            String    @id @default(cuid())
   shapeCode     ShapeCode
   image         String?
-  question      String
+  question      String    @db.Text()
   correctAnswer String
 
   type                QuestionType

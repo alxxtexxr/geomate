@@ -16,14 +16,14 @@ type Props = {
 
 const SignIn: ComponentWithAuth<Props> = ({ providers }) => {
     return (
-        <main className="bg-base-100 min-h-screen">
+        <main className="bg-base-100 texture-base min-h-screen">
             <header className="flex justify-center bg-base-200 py-8 mb-8 rounded-b-xl">
                 <Logo />
             </header>
             <section className="px-4">
                 <div className="mb-8">
                     <h2 className="font-medium text-3xl text-gray-800">Masuk</h2>
-                    <p className="text-gray-500 text-sm">Selamat datang, ayo mulai belajar.</p>
+                    <p className="text-gray-600 text-sm">Selamat datang, ayo mulai belajar.</p>
                 </div>
                 <div className="grid grid-cols-1 gap-2">
                     {providers && Object.values(providers).map((provider) => (

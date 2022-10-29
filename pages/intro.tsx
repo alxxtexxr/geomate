@@ -26,7 +26,7 @@ const Intro: ComponentWithAuth = () => (
                         </h2>
                     </div>
                     <div className="collapse-content">
-                        <table className="text-gray-500 text-sm mx-2">
+                        <table className="text-gray-600 text-sm mx-2">
                             <tbody>
                                 {intro.contents.map((content) => (
                                     <tr className="align-top" key={content.no}>

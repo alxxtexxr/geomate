@@ -45,7 +45,7 @@ const ClassificationResult = ({ isOpen, setIsOpen, shape, predictedShape, isSubm
                             }>
                                 {predictedShape.name}
                             </h1>
-                            <p className="text-gray-500 text-sm">
+                            <p className="text-gray-600 text-sm">
                                 {isCorrect ? (
                                     <>
                                         Benar! Objek yang kamu scan termasuk bangun ruang <span className="font-medium">{shape.name}</span>.

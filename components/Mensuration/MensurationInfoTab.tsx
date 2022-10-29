@@ -10,7 +10,7 @@ type Props = {
 };
 
 const MensurationInfoTab = ({ shape, onSubmit }: Props) => (
-    <div className="text-gray-500">
+    <div className="text-gray-600">
         <h1 className="text-lg text-gray-800 font-medium mb-3">{shape.name}</h1>
         
         <p className="text-sm mb-4">{shape.description}</p>

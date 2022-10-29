@@ -82,9 +82,9 @@ const ShapeInformation = ({ shapeCode, isShowing, setIsShowing, onHide }: Props)
                         </div>
                     </div>
 
-                    <div className="text-center mb-8 px-4">
-                        <h1 className="text-gray-800 text-base font-medium mb-2">{shape.name}</h1>
-                        <p>{shape.description}</p>
+                    <div className="z-10 text-center mb-8 px-4">
+                        <h1 className="text-gray-800 text-lg font-semibold mb-1">{shape.name}</h1>
+                        <p className="text-sm">{shape.description}</p>
                     </div>
 
                     <table className="w-full mb-2">

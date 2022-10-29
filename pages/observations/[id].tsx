@@ -65,52 +65,32 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
     };
 
     return (
-        <main className="relative flex flex-col bg-base-100 h-screen pb-20">
-            <Navbar.Top title="Hasil Observasi" />
+        <main className="relative flex flex-col bg-base-100 texture-base h-screen pb-20">
+            {/* <Navbar.Top title="Hasil Observasi" /> */}
 
-            {/* {observation.image && (
-                <section className="px-4 mb-4">
-                    <div className="relative inline-flex bg-white w-full p-2 rounded-xl shadow overflow-hidden">
-                        <div className="relative h-60 w-full">
-                            <Image
-                                src={observation.image}
-                                alt="Stimulasi"
-                                className="rounded-lg"
-                                layout="fill"
-                                objectFit="cover"
-                            />
-                        </div>
-                        <div className="absolute right-0 bottom-0 bg-white h-20 w-20 rounded-tl-xl">
-                            <Canvas>
-                                <ambientLight color="#888888" />
-                                <pointLight position={[10, 20, 0]} />
-                                <ShapeComponent
-                                    code={shape.code}
-                                    {...observation}
-                                    r={(observation.r || DEFAULT_SIZE)}
-                                    t={(observation.t || DEFAULT_SIZE)}
-                                    baseA={(observation.baseA || DEFAULT_SIZE)}
-                                    baseT={(observation.baseT || DEFAULT_SIZE)}
-                                    baseS={(observation.baseS || DEFAULT_SIZE)}
-                                />
-                            </Canvas>
-                        </div>
-                    </div>
-                </section>
-            )} */}
+            
 
-            <section className="flex-grow text-gray-500 px-4 text-sm">
-                <div className="bg-white shadow rounded-xl overflow-hidden">
-                    <div className="bg-black">
+            <section className="flex flex-col justify-center flex-grow px-4 text-sm">
+                <div className="text-center px-4 mb-6">
+                    <h1 className="font-semibold text-gray-800 text-lg mb-1">
+                        Pengamatan Selesai!
+                    </h1>
+                    <p className="text-sm text-gray-600">
+                        Dari pengamatan yang telah dilakukan, diketahui volume air yang diperlukan untuk memenuhi toples yaitu <span className="font-medium text-gray-800">1256.4 cm3</span>
+                    </p>
+                </div>
+
+                <div className="bg-white p-2 shadow rounded-2xl overflow-hidden">
+                    <div className="bg-black rounded-xl overflow-hidden">
                         <ShapePreview
                             shapeCode={shape.code}
                             mensurationForm={observation as unknown as MensurationForm}
                         />
                     </div>
-                    <div className="px-4">
+                    <div className="pt-2 px-2">
                         {_mathSymbols.map((mathSymbol, i) => (
                             <div className={
-                                'flex justify-between items-center py-4 border-gray-100' +
+                                'flex justify-between items-center py-2 border-gray-100' +
                                 (i + 1 < _mathSymbols.length ? '  border-b' : '')
                             } key={mathSymbol.code}>
                                 <div className="w-7/12">
@@ -129,7 +109,7 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
 
                 </div>
             </section>
-
+            
             <section className="fixed left-0 bottom-0 w-screen p-4">
                 {/* <Link href="/">
                     <button className="btn btn-primary btn-outline w-full">

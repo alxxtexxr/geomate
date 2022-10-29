@@ -21,8 +21,8 @@ type Props = {
 };
 
 const EvaluationQuestionPagination = ({ evaluationQuestions, no }: Props) => (
-    <nav className="mb-4">
-        <ol className="flex overflow-x-scroll px-3">
+    <nav className="mb-1">
+        <ol className="flex overflow-x-scroll px-2 pb-5">
             {evaluationQuestions.map((evaluationQuestion, i) => (
                 <li className="px-1" key={evaluationQuestion.question.id}>
                     <Link href={{

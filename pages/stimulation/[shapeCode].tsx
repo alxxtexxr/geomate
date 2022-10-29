@@ -18,23 +18,25 @@ type Props = {
 
 const Stimulation: ComponentWithAuth<Props> = ({ shape }) => {
     return (
-        <main className="flex flex-col h-screen">
+        <main className="flex flex-col h-screen texture-base">
             <Navbar.Top title="Stimulus" backHref="/" />
 
             <section className="flex flex-col flex-grow justify-center items-center text-center px-8">
-                <div className="bg-white p-2 mb-8 rounded-xl shadow">
-                    <div className="relative w-60 h-48">
+                <div className="bg-white p-2 mb-6 rounded-2xl shadow">
+                    <div className="relative w-72 h-48">
                         <Image
                             src={shape.stimulationImage}
                             alt="Stimulasi"
-                            className="rounded-lg"
+                            className="rounded-xl"
                             layout="fill"
                             objectFit="cover"
                         />
                     </div>
                 </div>
 
-                <h1 className="font-medium text-black text-opacity-90">{shape.stimulation}</h1>
+                <h1 className="text-sm text-gray-600">
+                    {shape.stimulation}
+                </h1>
             </section>
 
             <section className="p-4">

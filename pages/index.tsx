@@ -24,7 +24,7 @@ const Home: ComponentWithAuth = () => {
   const [isShapeInformationShowing, setIsShapeInformationShowing] = useState(false);
 
   return (
-    <main className="pb-20">
+    <main className="bg-base-100 texture-base pb-20">
       {/* Header */}
       <header className="flex flex-col justify-center items-center text-center bg-base-200 text-primary-content pt-8 pb-14">
         <Avatar
@@ -43,7 +43,7 @@ const Home: ComponentWithAuth = () => {
         <div className="grid grid-cols-2 gap-4 -mt-12">
           {SHAPES.map((shape) => (
             <div
-              className="flex flex-col justify-center items-center bg-white py-8 shadow rounded-xl"
+              className="flex flex-col justify-center items-center bg-white py-8 shadow rounded-2xl"
               onClick={() => {
                 setSetectedShapeCode(shape.code);
                 setIsShapeInformationShowing(true);

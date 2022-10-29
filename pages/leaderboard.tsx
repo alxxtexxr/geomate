@@ -38,7 +38,7 @@ const Leaderboard: ComponentWithAuth<Props> = ({ users }) => (
                             <h2 className="text-gray-800 font-medium leading-none">
                                 {user.name}
                             </h2>
-                            <span className="text-gray-500 text-sm">
+                            <span className="text-gray-600 text-sm">
                                 {user.xp} XP
                             </span>
                         </div>

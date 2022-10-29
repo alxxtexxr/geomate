@@ -64,8 +64,37 @@ const EvaluationPage: ComponentWithAuth<Props> = ({ evaluation, notifications })
 
     useEffect(showNotifications, [notifications]);
 
+    // Function
+    const getTitle = (score: number) => {
+        if (score >= 100) {
+            return 'Hebat!';
+        } else if (score >= 80) {
+            return 'Keren!';
+        } else if (score >= 60) {
+            return 'Cukup Bagus!';
+        } else if (score >= 40) {
+            return 'Pelan-Pelan Saja!';
+        } else {
+            return 'Jangan Menyerah!';
+        }
+    };
+
+    const getDescription = (score: number) => {
+        if (score >= 100) {
+            return 'Hebat sekali, pertahankan untuk nilainya ya.';
+        } else if (score >= 80) {
+            return 'Wow keren, sedikit lagi pasti dapat nilai sempurna.';
+        } else if (score >= 60) {
+            return 'Nilaimu sudah cukup bagus tetapi bisa kamu tingkatkan lagi!';
+        } else if (score >= 40) {
+            return 'Pelan-pelan saja, nanti pasti juga akan bisa.';
+        } else {
+            return 'Jangan menyerah ya, yuk coba sekali lagi!';
+        }
+    };
+
     return (
-        <main className="flex flex-col h-screen pb-20">
+        <main className="flex flex-col texture-base h-screen pb-20">
             {/* <Navbar title="Hasil Evaluasi" /> */}
 
             <section className="flex flex-col flex-grow justify-center items-center text-center px-8">
@@ -87,9 +116,22 @@ const EvaluationPage: ComponentWithAuth<Props> = ({ evaluation, notifications })
                 </div>
 
                 <div className="mb-6 px-8">
-                    <h1 className="font-bold text-6xl text-gray-800 mb-4">{round10(evaluation.score)}</h1>
-                    <h2 className="font-medium text-gray-800 mb-2">Lorem Ipsum!</h2>
-                    <p className="text-gray-500 text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <span className="relative">
+                        <h1 className="font-bold text-6xl text-gray-800 mb-4">
+                            {round10(evaluation.score)}
+                        </h1>
+                        <div className="badge absolute top-0 right-0 bg-primary text-white p-4 -mr-2 border-0 rounded-bl-none">
+                            <span className="-mb-0.5">
+                                +{round10(evaluation.score)} XP
+                            </span>
+                        </div>
+                    </span>
+                    <h2 className="font-semibold text-lg text-gray-800 mb-1">
+                        {getTitle(round10(evaluation.score))}
+                    </h2>
+                    <p className="text-gray-600 text-sm">
+                        {getDescription(round10(evaluation.score))}
+                    </p>
                 </div>
 
                 <div>

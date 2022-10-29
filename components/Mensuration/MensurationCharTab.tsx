@@ -45,7 +45,7 @@ const MensurationCharTab = ({ shape, form, setForm, onSubmit }: Props) => {
     };
 
     return (
-        <div className="text-gray-500">
+        <div className="text-gray-600">
             {(shape.code === 'prism' || shape.code === 'pyramid') && (
                 <div className="flex flex-row w-full mb-4">
                     <label className="label items-start w-5/12 pr-4" style={{ paddingTop: 12 }}>
