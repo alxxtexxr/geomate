@@ -22,7 +22,7 @@ const BottomNavbar = ({ menu }: Props) => {
                     <li key={menuI.href} className="flex-none -mt-8 -mx-2">
                         <Link href={menuI.href}>
                             <a className={
-                                'btn btn-primary btn-circle btn-lg shadow-xl'
+                                'btn btn-primary btn-circle btn-lg shadow'
                             }>
                                     {menuI.icon}
                             </a>

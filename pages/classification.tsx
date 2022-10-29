@@ -65,7 +65,7 @@ const Classification: ComponentWithAuth = () => {
                 screenshotFormat="image/jpeg"
                 videoConstraints={{
                     width: 360,
-                    height: 720,
+                    height: 480,
                     facingMode: 'environment',
                     aspectRatio: 0.5,
                 }}
