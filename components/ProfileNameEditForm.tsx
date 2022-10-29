@@ -56,9 +56,9 @@ const ProfileNameEditForm = ({ isOpen, setIsOpen }: Props) => {
             isOpen={isOpen}
             onClose={() => setIsOpen(false)}
         >
-            <Sheet.Container onViewportBoxUpdate>
-                <Sheet.Header onViewportBoxUpdate />
-                <Sheet.Content onViewportBoxUpdate>
+            <Sheet.Container>
+                <Sheet.Header />
+                <Sheet.Content>
                     <div className="px-4">
                         <div className="form-control w-full mb-4">
                             <label className="label text-gray-800 text-sm">
@@ -91,7 +91,7 @@ const ProfileNameEditForm = ({ isOpen, setIsOpen }: Props) => {
                     </div>
                 </Sheet.Content>
             </Sheet.Container>
-            <Sheet.Backdrop onViewportBoxUpdate onTap={() => setIsOpen(false)} />
+            <Sheet.Backdrop onTap={() => setIsOpen(false)} />
         </Sheet >
     );
 };

@@ -26,8 +26,8 @@ const ClassificationResult = ({ isOpen, setIsOpen, shape, predictedShape, isSubm
             isOpen={isOpen}
             onClose={() => setIsOpen(false)}
         >
-            <Sheet.Container onViewportBoxUpdate>
-                <Sheet.Header onViewportBoxUpdate>
+            <Sheet.Container>
+                <Sheet.Header>
                     <div className="absolute top-0 left-1/2 transform -translate-y-1/2 -translate-x-1/2 w-16 h-16 flex justify-center items-center bg-white rounded-full shadow">
                         {isCorrect ? (
                             <HiCheck className="text-primary text-3xl" />
@@ -36,7 +36,7 @@ const ClassificationResult = ({ isOpen, setIsOpen, shape, predictedShape, isSubm
                         )}
                     </div>
                 </Sheet.Header>
-                <Sheet.Content onViewportBoxUpdate>
+                <Sheet.Content>
                     <div className="text-center pt-14 pb-4 px-4">
                         <div className="px-4 mb-8">
                             <h1 className={
@@ -76,7 +76,7 @@ const ClassificationResult = ({ isOpen, setIsOpen, shape, predictedShape, isSubm
                     </div>
                 </Sheet.Content>
             </Sheet.Container>
-            <Sheet.Backdrop onViewportBoxUpdate onTap={() => setIsOpen(false)} />
+            <Sheet.Backdrop onTap={() => setIsOpen(false)} />
         </Sheet >
     );
 };
