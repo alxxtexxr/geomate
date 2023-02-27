@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  devIndicators: {
+    buildActivity: false
+  },
   reactStrictMode: true,
   webpack5: true,
   webpack: (config, { isServer, webpack }) => {

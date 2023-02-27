@@ -5,6 +5,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      width: {
+        'inherit': 'inherit',
+      },
       colors: {
         'google': '#EA5843',
         'google-focus': '#e13219',

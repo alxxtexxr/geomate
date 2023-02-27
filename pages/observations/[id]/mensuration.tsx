@@ -13,7 +13,7 @@ import ShapePreview from '../../../components/ShapePreview';
 import ConditionalInput from '../../../components/ConditionalInput';
 import LoaderButton from '../../../components/LoaderButton';
 import XRMeasurement from '../../../components/XRMeasurement';
-import ARLivePreview from '../../../components/ARLivePreview';
+
 import BottomSheet from '../../../components/BottomSheet';
 
 // Constants
@@ -334,19 +334,7 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 </div>
             </BottomSheet>
 
-            {isLivePreviewing && (
-                <ARLivePreview
-                    onClose={() => setIsLivePreviewing(false)}
-                    shapeCode={shape.code}
-                    {...form}
-                    r={form.r}
-                    t={form.t}
-                    baseA={form.baseA}
-                    baseT={form.baseT}
-                    baseS={form.baseS}
-                    wireframe={wireframe}
-                />
-            )}
+            
 
             {/* XR Measurement */}
             {isMeasuring && (

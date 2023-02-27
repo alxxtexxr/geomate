@@ -39,7 +39,7 @@ const Profile: ComponentWithAuth<Props> = ({ achievements }) => {
     return (
         <main className="pb-20">
             {/* Header */}
-            <header className="flex flex-col justify-center items-center text-center bg-base-200 text-primary-content pt-8 pb-14 rounded-b-xl">
+            <header className="flex flex-col justify-center items-center text-center bg-base-200 text-primary-content pt-8 pb-8 rounded-b-xl">
                 <AvatarUploader
 
                 />
@@ -56,6 +56,20 @@ const Profile: ComponentWithAuth<Props> = ({ achievements }) => {
 
             {/* Achievements */}
             <section className="grid grid-cols-3 gap-4 p-4">
+            {achievements.map((achievement) => (
+                    <Achievement
+                        title={achievement.title}
+                        isLocked={!!!achievement.userAchievements.length}
+                        key={achievement.id}
+                    />
+                ))}
+                {achievements.map((achievement) => (
+                    <Achievement
+                        title={achievement.title}
+                        isLocked={!!!achievement.userAchievements.length}
+                        key={achievement.id}
+                    />
+                ))}
                 {achievements.map((achievement) => (
                     <Achievement
                         title={achievement.title}

@@ -76,7 +76,7 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
                         Pengamatan Selesai!
                     </h1>
                     <p className="text-sm text-gray-600">
-                        Dari pengamatan yang telah dilakukan, diketahui volume air yang diperlukan untuk memenuhi toples yaitu <span className="font-medium text-gray-800">1256.4 cm3</span>
+                        Dari pengamatan yang telah dilakukan, diketahui volume air yang diperlukan untuk memenuhi toples yaitu <span className="font-medium text-gray-800">1178.1 cm3</span>
                     </p>
                 </div>
 

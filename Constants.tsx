@@ -242,6 +242,51 @@ export const INTROS = [
         content: 'Menentukan bangun ruang bola.',
       },
     ],
+  },
+  {
+    title: 'Tujuan Pembelajaran',
+    contents: [
+      {
+        no: '3.6.1',
+        content: 'Memahami bangun ruang prisma.',
+      },
+      {
+        no: '3.6.2',
+        content: 'Mengetahui bangun ruang limas.',
+      },
+      {
+        no: '3.6.3',
+        content: 'Mengerti bangun ruang tabung.',
+      },
+      {
+        no: '3.6.4',
+        content: 'Memahami bangun ruang kerucut.',
+      },
+      {
+        no: '3.6.5',
+        content: 'Mengetahui bangun ruang bola.',
+      },
+      {
+        no: '4.6.1',
+        content: 'Mengidentifikasi bangun ruang prisma.',
+      },
+      {
+        no: '4.6.2',
+        content: 'Menentukan bangun ruang limas.',
+      },
+      {
+        no: '4.6.3',
+        content: 'Menunjukan bangun ruang tabung.',
+      },
+      {
+        no: '4.6.4',
+        content: 'Menjelaskan bangun ruang kerucut.',
+      },
+      {
+        no: '4.6.5',
+        content: 'Menentukan bangun ruang bola.',
+      },
+    ],
   }
 ];
 
