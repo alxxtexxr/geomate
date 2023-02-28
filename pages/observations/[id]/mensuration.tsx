@@ -46,44 +46,58 @@ type Props = {
 //     4: 'baseS ^ 2',
 // };
 
-type InputProps = {
+type MensurationInputProps = {
     label: string,
     symbol: string,
     suffix: string,
     canMeasure?: boolean,
 }
 
-const Input = ({ label, symbol, suffix, canMeasure = false, ...rest }: InputProps & InputHTMLAttributes<HTMLInputElement>) => (
-    <div className="grid grid-cols-3">
-        <span className="label-text flex items-self-center items-center text-xs text-gray-800">
-            <div className="badge badge-primary badge-outline text-xs h-7 w-7 mr-2">
-                {symbol}
-            </div>
-            {label}
-        </span>
-        <div className="col-span-2">
-            <div className="flex bg-gray-200 rounded-lg">
-                <div className="relative w-full">
-                    <input
-                        type="text"
-                        className="input input-bordered text-xs w-full"
-                        {...rest}
-                    />
-                    {canMeasure && (
-                        <button className="absolute right-0 btn bg-transparent hover:bg-transparent hover:text-primary border-0 ml-2">
-                            <MdOutlineSwitchCamera className="text-2xl" />
-                        </button>
-                    )}
+const MensurationInput = ({ label, symbol, suffix, canMeasure = false, ...rest }: MensurationInputProps & InputHTMLAttributes<HTMLInputElement>) => {
+    return (
+        <div className="grid grid-cols-3">
+            <span className="label-text flex items-self-center items-center text-xs text-gray-800">
+                <div className="badge badge-primary badge-outline text-xs h-7 w-7 mr-2">
+                    {symbol}
                 </div>
-                <div className="flex justify-center items-center text-xs text-gray-400 aspect-square h-12">
-                    <span className="-mt-0.5">
-                        {suffix}
-                    </span>
+                {label}
+            </span>
+            <div className="col-span-2">
+                <div className="flex bg-gray-200 rounded-lg">
+                    <div className="relative w-full">
+                        <input
+                            type="text"
+                            className="input input-bordered text-xs w-full"
+                            {...rest}
+                        />
+                        {canMeasure && (
+                            <button className="absolute right-0 btn bg-transparent hover:bg-transparent hover:text-primary border-0 ml-2">
+                                <MdOutlineSwitchCamera className="text-2xl" />
+                            </button>
+                        )}
+                    </div>
+                    <div className="flex justify-center items-center text-xs text-gray-400 aspect-square h-12">
+                        <span className="-mt-0.5">
+                            {suffix}
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-);
+    );
+};
+
+type MessageBalloonProps = {
+    children: string,
+}
+
+const MessageBalloon = ({ children }: MessageBalloonProps) => {
+    return (
+        <div className="message-balloon message-balloon-base-100">
+            {children}
+        </div>
+    );
+};
 
 const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
     const hasBaseWithVertices = ['prism', 'pyramid'].includes(shape.code);
@@ -231,16 +245,16 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                 <img src="https://faces-img.xcdn.link/image-lorem-face-891.jpg" />
                             </div>
                         </div>
-                        <div className="bg-base-100 text-xs ml-4 p-4 rounded-xl">
+                        <MessageBalloon>
                             That sounds like a great idea. I was actually planning on going for a run on Saturday morning.
-                        </div>
+                        </MessageBalloon>
                     </div>
 
                     <div className="grid grid-cols-1 gap-2">
-                        <Input label="Radius" symbol="r" suffix="cm" canMeasure name="r" value={form.r} onChange={handleChange} />
-                        <Input label="Tinggi" symbol="t" suffix="cm" canMeasure name="t" value={form.t} onChange={handleChange} />
+                        <MensurationInput label="Radius" symbol="r" suffix="cm" canMeasure name="r" value={form.r} onChange={handleChange} />
+                        <MensurationInput label="Tinggi" symbol="t" suffix="cm" canMeasure name="t" value={form.t} onChange={handleChange} />
                         <hr />
-                        <Input label="Volume" symbol="v" suffix="cm²" value={form.v} disabled />
+                        <MensurationInput label="Volume" symbol="v" suffix="cm²" value={form.v} disabled />
                     </div>
 
                 </div>

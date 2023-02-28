@@ -106,3 +106,22 @@
 #ARButton {
     position: fixed !important;
 }
+
+/* Custom styles */
+.message-balloon {
+    @apply relative text-xs ml-4 p-4 rounded-xl
+}
+
+.message-balloon::before {
+    content: "";
+
+    @apply absolute top-1/2 transform -translate-y-1/2 -left-4 inline-flex border-x-8 border-y-6 border-transparent
+}
+
+.message-balloon-base-100 {
+    @apply bg-base-100
+}
+
+.message-balloon-base-100::before {
+    @apply border-r-base-100
+}

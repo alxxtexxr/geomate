@@ -11,6 +11,9 @@ module.exports = {
       height: {
         'inherit': 'inherit',
       },
+      borderWidth: {
+        '6': '6px',
+      },
       colors: {
         'google': '#EA5843',
         'google-focus': '#e13219',
