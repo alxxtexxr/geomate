@@ -90,7 +90,7 @@ const ShapeInformation = ({ shapeCode, isShowing, setIsShowing, onHide }: Props)
 
                     <table className="w-full mb-2">
                         <tbody>
-                            <tr className="border-t">
+                            {/* <tr className="border-t">
                                 <td className="py-2">
                                     <h2>
                                         <div className="badge badge-primary badge-outline text-xs font-medium w-8 mr-2 -mt-0.5">
@@ -128,7 +128,7 @@ const ShapeInformation = ({ shapeCode, isShowing, setIsShowing, onHide }: Props)
                                 <td className="text-gray-800 text-right font-medium py-2">
                                     {shape.nFaces}
                                 </td>
-                            </tr>
+                            </tr> */}
 
                             {/* V Formula Row */}
                             <tr className="border-t">

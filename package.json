@@ -13,7 +13,7 @@
     "dev-prisma-generate": "dotenv -e .env.development.local prisma generate",
     "prd-prisma-studio": "dotenv -e .env.production.local prisma studio",
     "prd-prisma-db-push": "dotenv -e .env.production.local prisma db push",
-    "prd-prisma-db-seed": "dotenv -e .env.production.local prisma db seed",    
+    "prd-prisma-db-seed": "dotenv -e .env.production.local prisma db seed",
     "prd-prisma-generate": "dotenv -e .env.production.local prisma generate"
   },
   "dependencies": {
@@ -30,7 +30,7 @@
     "@tensorflow/tfjs-converter": "^3.18.0",
     "@use-gesture/react": "^10.2.12",
     "cloudinary": "^1.25.0",
-    "daisyui": "^2.15.2",
+    "daisyui": "^2.51.2",
     "dotenv-cli": "^5.1.0",
     "expr-eval": "^2.0.2",
     "formidable": "^1.2.2",

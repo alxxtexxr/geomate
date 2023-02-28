@@ -1,4 +1,4 @@
-import { InputHTMLAttributes, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { PerspectiveCamera, OrbitControls, Plane } from '@react-three/drei';
 import { HiOutlineCube } from 'react-icons/hi';
@@ -41,49 +41,10 @@ type Props = {
     shape: Shape,
 };
 
-// const LA_FORMULAS: { [key: number]: string } = {
-//     3: '( 1 / 2 ) * baseA * baseT',
-//     4: 'baseS ^ 2',
-// };
-
-type InputProps = {
-    label: string,
-    symbol: string,
-    suffix: string,
-    canMeasure?: boolean,
-}
-
-const Input = ({ label, symbol, suffix, canMeasure = false, ...rest }: InputProps & InputHTMLAttributes<HTMLInputElement>) => (
-    <div className="grid grid-cols-3">
-        <span className="label-text flex items-self-center items-center text-xs text-gray-800">
-            <div className="badge badge-primary badge-outline text-xs h-7 w-7 mr-2">
-                {symbol}
-            </div>
-            {label}
-        </span>
-        <div className="col-span-2">
-            <div className="flex bg-gray-200 rounded-lg">
-                <div className="relative w-full">
-                    <input
-                        type="text"
-                        className="input input-bordered text-xs w-full"
-                        {...rest}
-                    />
-                    {canMeasure && (
-                        <button className="absolute right-0 btn bg-transparent hover:bg-transparent hover:text-primary border-0 ml-2">
-                            <MdOutlineSwitchCamera className="text-2xl" />
-                        </button>
-                    )}
-                </div>
-                <div className="flex justify-center items-center text-xs text-gray-400 aspect-square h-12">
-                    <span className="-mt-0.5">
-                        {suffix}
-                    </span>
-                </div>
-            </div>
-        </div>
-    </div>
-);
+const LA_FORMULAS: { [key: number]: string } = {
+    3: '( 1 / 2 ) * baseA * baseT',
+    4: 'baseS ^ 2',
+};
 
 const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
     const hasBaseWithVertices = ['prism', 'pyramid'].includes(shape.code);
@@ -109,27 +70,29 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
         v: 0,
         lp: 0,
     });
-    // const [tabs, setTabs] = useState<any>([
-    // ...(hasBaseWithVertices ? [
-    //     {
-    //         title: 'Bentuk Alas',
-    //         code: 'baseShape',
-    //         symbol: null,
-    //     }
-    // ] : []),
-    // ...MATH_SYMBOLS.filter((mathSymbol) => (shape.vFormula + 'v').includes(mathSymbol.code)),
-    // ]);
-    // const [activeTabI, setActiveTabI] = useState(0);
-    // const [wireframe, setWireframe] = useState(false);
+    const [tabs, setTabs] = useState<MathSymbol[]>([
+        ...(hasBaseWithVertices ? [
+            {
+                title: 'Bentuk Alas',
+                code: 'baseShape',
+                symbol: null,
+            }
+        ] : []),
+        ...MATH_SYMBOLS.filter((mathSymbol) => (shape.vFormula + 'v').includes(mathSymbol.code)),
+    ]);
+    const [activeTabI, setActiveTabI] = useState(0);
+    const [wireframe, setWireframe] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    // const [isLivePreviewing, setIsLivePreviewing] = useState(false);
-    // const [isMeasuring, setIsMeasuring] = useState(false);
+    const [isLivePreviewing, setIsLivePreviewing] = useState(false);
+    const [isMeasuring, setIsMeasuring] = useState(false);
 
 
-    // const correctValues: { [key: string]: number } = {
-    //     la: hasBaseWithVertices ? +Parser.evaluate(LA_FORMULAS[form.nBaseVertices], form).toFixed(1) : 0,
-    //     v: +Parser.evaluate(shape.vFormula, form).toFixed(1),
-    // };
+    const correctValues: { [key: string]: number } = {
+        la: hasBaseWithVertices ? +Parser.evaluate(LA_FORMULAS[form.nBaseVertices], form).toFixed(1) : 0,
+        v: +Parser.evaluate(shape.vFormula, form).toFixed(1),
+    };
+
+    console.log({correctValues})
 
     // Functions
     const handleSubmit = async () => {
@@ -154,98 +117,57 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
         }
     };
 
-    // const calculateVolume = () => 
-
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        // setForm((_form) => ({
-        //     ..._form,
-        //     [e.target.name]: inputValueToNumber(e.target.value),
-        // }));
-
-        setForm({
-            ...form,
+        setForm((_form) => ({
+            ..._form,
             [e.target.name]: inputValueToNumber(e.target.value),
-        });
+        }));
     };
 
     // Effects
     useEffect(() => {
-        // Calculate object volume
-        const previousV = form.v;
-        const newV = +Parser.evaluate(shape.vFormula, form).toFixed(1);
+        if (form.nBaseVertices) {
+            const baseParams: { [key: number]: { form: any, symbols: MathSymbol[] } } = {
+                3: {
+                    form: { baseA: DEFAULT_SIZE, baseT: DEFAULT_SIZE },
+                    symbols: MATH_SYMBOLS.filter((mathSymbol) => ['baseA', 'baseT'].includes(mathSymbol.code))
+                },
+                4: {
+                    form: { baseS: DEFAULT_SIZE },
+                    symbols: MATH_SYMBOLS.filter((mathSymbol) => ['baseS'].includes(mathSymbol.code))
+                },
+            };
 
-        if (newV !== previousV) {
-            setForm({
-                ...form,
-                v: newV
+            // Get all symbols of addtional tabs
+            let addTabSymbols: string[] = [];
+            Object.keys(baseParams).map((key) => {
+                baseParams[+key].symbols.map((addTab) =>
+                    addTabSymbols.push(addTab.code)
+                );
             });
+
+            // Remove additional tabs
+            const [firstTab, ...restTabs] = tabs.filter((tab) => !addTabSymbols.includes(tab.code));
+
+            // Update form
+            setForm((_form) => ({
+                ..._form,
+                ...baseParams[_form.nBaseVertices].form
+            }));
+
+            // Add additional tabs
+            setTabs([
+                firstTab,
+                ...baseParams[form.nBaseVertices].symbols,
+                ...restTabs,
+            ]);
         }
-
-        // if (form.nBaseVertices) {
-        //     const baseParams: { [key: number]: { form: any, symbols: MathSymbol[] } } = {
-        //         3: {
-        //             form: { baseA: DEFAULT_SIZE, baseT: DEFAULT_SIZE },
-        //             symbols: MATH_SYMBOLS.filter((mathSymbol) => ['baseA', 'baseT'].includes(mathSymbol.code))
-        //         },
-        //         4: {
-        //             form: { baseS: DEFAULT_SIZE },
-        //             symbols: MATH_SYMBOLS.filter((mathSymbol) => ['baseS'].includes(mathSymbol.code))
-        //         },
-        //     };
-
-        //     // Get all symbols of addtional tabs
-        //     let addTabSymbols: string[] = [];
-        //     Object.keys(baseParams).map((key) => {
-        //         baseParams[+key].symbols.map((addTab) =>
-        //             addTabSymbols.push(addTab.code)
-        //         );
-        //     });
-
-        //     // Remove additional tabs
-        //     const [firstTab, ...restTabs] = tabs.filter((tab: any) => !addTabSymbols.includes(tab.code));
-
-        //     // Update form
-        //     setForm((_form) => ({
-        //         ..._form,
-        //         ...baseParams[_form.nBaseVertices].form
-        //     }));
-
-        //     // Add additional tabs
-        //     setTabs([
-        //         firstTab,
-        //         ...baseParams[form.nBaseVertices].symbols,
-        //         ...restTabs,
-        //     ]);
-        // }
-    }, [form]);
+    }, [form.nBaseVertices]); // Run when form.nBaseVertices changes
 
     return (
         <main className="w-inherit h-screen bg-black">
             <ShapePreview shapeCode={shape.code} mensurationForm={form} />
             <BottomSheet>
-                <div className="grid grid-cols-1 gap-4 pt-4">
-                    {/* Message */}
-                    <div className="flex">
-                        <div className="avatar">
-                            <div className="w-20 rounded-full">
-                                <img src="https://faces-img.xcdn.link/image-lorem-face-891.jpg" />
-                            </div>
-                        </div>
-                        <div className="bg-base-100 text-xs ml-4 p-4 rounded-xl">
-                            That sounds like a great idea. I was actually planning on going for a run on Saturday morning.
-                        </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 gap-2">
-                        <Input label="Radius" symbol="r" suffix="cm" canMeasure name="r" value={form.r} onChange={handleChange} />
-                        <Input label="Tinggi" symbol="t" suffix="cm" canMeasure name="t" value={form.t} onChange={handleChange} />
-                        <hr />
-                        <Input label="Volume" symbol="v" suffix="cm²" value={form.v} disabled />
-                    </div>
-
-                </div>
-
-                {/* Stepper */}
                 {/* <ul className="steps steps-horizontal bg-white text-xs py-4 border-b border-gray-200">
                     {tabs.map((tab, i) => (
                         <li className={'step' + (i <= activeTabI ? ' step-primary' : '')} key={i}>
@@ -253,8 +175,7 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
                         </li>
                     ))}
                 </ul> */}
-
-                {/* <div className="grid grid-cols-1 gap-4 bg-white pt-2">
+                <div className="grid grid-cols-1 gap-4 bg-white pt-2">
                     <div className="form-control">
                         <label className="label">
                             <span className="label-text flex justify-center items-center text-sm text-gray-800">
@@ -266,7 +187,7 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                 {tabs[activeTabI].title}
                             </span>
                         </label>
-                        // Base Shape
+                        {/* Base Shape */}
                         {tabs[activeTabI].code === 'baseShape' ? (
                             <div>
                                 {(shape.code === 'prism' || shape.code === 'pyramid') && (
@@ -276,6 +197,7 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                         value={form.nBaseVertices}
                                         onChange={handleChange}
                                     >
+                                        {/* <option>Pilih bentuk alas</option> */}
                                         <option value="3">Segitiga</option>
                                         <option value="4">Persegi</option>
                                     </select>
@@ -316,7 +238,7 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                 // Volume
                                 tabs[activeTabI].code === 'v' ? (
                                     <>
-                                        // <label className="input-group mb-4">
+                                        {/* <label className="input-group mb-4">
                                             <input
                                                 type="text"
                                                 className="input input-bordered w-full"
@@ -333,7 +255,7 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                                 disabled
                                             />
                                             <span className="text-xs font-semibold">cm³</span>
-                                        </label> //
+                                        </label> */}
                                         <ConditionalInput
                                             correctValue={'' + correctValues.v}
                                             incorrectMessage="Nilai belum benar."
@@ -365,9 +287,9 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
                             </span>
                         </button>
                     )}
-                </div> */}
+                </div>
 
-                {/* <div className="absolute z-10 left-0 bottom-0 grid grid-cols-2 gap-4 bg-white bg-opacity-95 w-inherit p-4 border-t border-gray-200">
+                <div className="absolute z-10 left-0 bottom-0 grid grid-cols-2 gap-4 bg-white bg-opacity-95 w-inherit p-4 border-t border-gray-200">
                     <button
                         className="btn btn-primary btn-outline w-full"
                         // If it's first tab, disable prev button
@@ -409,12 +331,13 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
                         )
 
                     )}
-                </div> */}
+                </div>
             </BottomSheet>
 
+            
 
             {/* XR Measurement */}
-            {/* {isMeasuring && (
+            {isMeasuring && (
                 <XRMeasurement
                     onSubmit={(distance: number) => {
                         setForm((_form) => ({
@@ -425,7 +348,7 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
                     }}
                     onClose={() => setIsMeasuring(false)}
                 />
-            )} */}
+            )}
         </main >
     );
 };
