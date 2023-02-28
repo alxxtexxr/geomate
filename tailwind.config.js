@@ -8,6 +8,9 @@ module.exports = {
       width: {
         'inherit': 'inherit',
       },
+      height: {
+        'inherit': 'inherit',
+      },
       colors: {
         'google': '#EA5843',
         'google-focus': '#e13219',

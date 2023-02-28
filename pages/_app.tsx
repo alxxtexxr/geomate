@@ -10,22 +10,11 @@ import '../styles/globals.css';
 // Components
 import LoaderScreen from '../components/LoaderScreen';
 // import BetterExperienceScreen from '../components/BetterExperienceScreen';
+import Wrapper from '../components/Wrapper';
 
 // Types
 import type { AppProps } from 'next/app';
 import type ComponentWithAuth from '../types/ComponentWithAuth';
-
-type WrapperPropsType = {
-    children: JSX.Element,
-};
-
-const Wrapper = ({ children }: WrapperPropsType) => (
-    <div className="bg-white flex justify-center">
-        <div className="relative w-96">
-            {children}
-        </div>
-    </div>
-);
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
     // const [isMounted, setIsMounted] = useState(false);

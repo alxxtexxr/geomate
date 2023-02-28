@@ -55,8 +55,9 @@ const ShapeInformation = ({ shapeCode, isShowing, setIsShowing, onHide }: Props)
             leave="transition-opacity duration-300"
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
+            className="w-inherit"
         >
-            <div className="fixed inset-0 bg-black bg-opacity-60 overflow-y-scroll">
+            <div className="absolute inset-0 bg-black bg-opacity-60 w-inherit overflow-y-scroll">
                 {/* Overlay */}
                 <Transition.Child
                     enter="transition-height duration-300"
