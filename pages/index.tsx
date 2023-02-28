@@ -24,7 +24,7 @@ const Home: ComponentWithAuth = () => {
   const [isShapeInformationShowing, setIsShapeInformationShowing] = useState(false);
 
   return (
-    <main className="bg-base-100 texture-base w-inherit h-inherit">
+    <main className="bg-base-100 texture-base w-inherit min-h-screen">
       {/* Header */}
       <header className="flex flex-col justify-center items-center text-center bg-base-200 text-primary-content pt-8 pb-14">
         <Avatar

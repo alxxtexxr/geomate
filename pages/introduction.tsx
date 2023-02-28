@@ -10,7 +10,7 @@ import { INTROS, NAVBAR_BOTTOM_MENU } from '../Constants';
 import type ComponentWithAuth from '../types/ComponentWithAuth';
 
 const Intro: ComponentWithAuth = () => (
-    <main>
+    <main className="bg-base-100 texture-base w-inherit min-h-screen">
         <Navbar.Top title="Pendahuluan" backHref="/" />
 
         <section className="grid grid-cols-1 gap-4 p-4">

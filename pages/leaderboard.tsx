@@ -16,7 +16,7 @@ type Props = {
 };
 
 const Leaderboard: ComponentWithAuth<Props> = ({ users }) => (
-    <main>
+    <main className="bg-base-100 w-inherit min-h-screen">
         <Podium users={users.slice(0, 3)} />
 
         <section className="p-4">

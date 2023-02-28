@@ -165,7 +165,7 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
     }, [form.nBaseVertices]); // Run when form.nBaseVertices changes
 
     return (
-        <main className="h-screen bg-black">
+        <main className="w-inherit h-screen bg-black">
             <ShapePreview shapeCode={shape.code} mensurationForm={form} />
             <BottomSheet>
                 <ul className="steps steps-horizontal bg-white text-xs py-4 border-b border-gray-200">
@@ -289,7 +289,7 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
                     )}
                 </div>
 
-                <div className="fixed z-10 left-0 bottom-0 grid grid-cols-2 gap-4 bg-white bg-opacity-95 w-screen p-4 border-t border-gray-200">
+                <div className="absolute z-10 left-0 bottom-0 grid grid-cols-2 gap-4 bg-white bg-opacity-95 w-inherit p-4 border-t border-gray-200">
                     <button
                         className="btn btn-primary btn-outline w-full"
                         // If it's first tab, disable prev button

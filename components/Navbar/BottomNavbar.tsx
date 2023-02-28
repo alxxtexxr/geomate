@@ -16,7 +16,7 @@ const BottomNavbar = ({ menu }: Props) => {
     const midI = Math.round(menu.length / 2);
 
     return (
-        <nav className="absolute z-90 left-0 bottom-0 bg-white bg-opacity-90 w-inherit rounded-t-2xl shadow">
+        <nav className="fixed z-90 left-1/2 transform -translate-x-1/2 bottom-0 bg-white bg-opacity-90 w-inherit rounded-t-2xl shadow">
             <ul className="flex text-center px-2">
                 {menu.map((menuI, i) => i + 1 === midI ? (
                     <li key={menuI.href} className="flex-none -mt-8 -mx-2">

@@ -149,7 +149,7 @@ export const NAVBAR_BOTTOM_MENU = [
     icon: (<MdInfoOutline className="text-2xl" />),
     activeIcon: (<MdInfo className="text-2xl" />),
     title: 'Pengantar',
-    href: '/intro',
+    href: '/introduction',
   },
   {
     icon: (<AiOutlineScan className="text-3xl" />),
