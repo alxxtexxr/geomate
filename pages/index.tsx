@@ -24,9 +24,9 @@ const Home: ComponentWithAuth = () => {
   const [isShapeInformationShowing, setIsShapeInformationShowing] = useState(false);
 
   return (
-    <main className="bg-base-100 texture-base w-inherit min-h-screen">
+    <main className="bg-base-100 w-inherit min-h-screen">
       {/* Header */}
-      <header className="flex flex-col justify-center items-center text-center bg-base-200 text-primary-content pt-8 pb-14">
+      <header className="flex flex-col justify-center items-center text-center bg-base-200 text-primary-content py-8 rounded-b-xl shadow">
         <Avatar
           src={session?.user.image || undefined}
           alt={session?.user.name ? `${session?.user.name}'s Avatar` : undefined}
@@ -40,20 +40,20 @@ const Home: ComponentWithAuth = () => {
 
       {/* Menu */}
       <section className="p-4">
-        <div className="grid grid-cols-2 gap-4 -mt-12">
+        <div className="grid grid-cols-1 gap-4">
           {SHAPES.map((shape) => (
             <div
-              className="flex flex-col justify-center items-center bg-white py-8 shadow rounded-2xl"
+              className="flex items-center bg-white p-4 shadow rounded-2xl"
               onClick={() => {
                 setSetectedShapeCode(shape.code);
                 setIsShapeInformationShowing(true);
               }}
               key={shape.code}
             >
-              <div className="relative h-20 w-20 mb-4">
+              <div className="relative h-10 w-10 mr-4">
                 <Image src={`/images/${shape.code}.png`} alt={shape.name} layout="fill" />
               </div>
-              <h2 className="font-medium text-gray-800 -mb-1">
+              <h2 className="font-medium text-gray-800">
                 {shape.name}
               </h2>
             </div>

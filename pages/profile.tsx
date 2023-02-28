@@ -37,9 +37,9 @@ const Profile: ComponentWithAuth<Props> = ({ achievements }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <main className="bg-base-100 texture-base w-inherit min-h-screen pb-20">
+        <main className="bg-base-100 w-inherit min-h-screen pb-20">
             {/* Header */}
-            <header className="flex flex-col justify-center items-center text-center bg-base-200 text-primary-content pt-8 pb-8 rounded-b-xl">
+            <header className="flex flex-col justify-center items-center text-center bg-base-200 text-primary-content pt-8 pb-8 rounded-b-xl shadow">
                 <AvatarUploader
 
                 />
