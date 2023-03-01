@@ -38,17 +38,8 @@ export const getInitials = (name: string) => {
 export const getShape = (code: string) => SHAPES.filter((SHAPE) => SHAPE.code === code)[0];
 
 // Math Symbol
-export const getMathSymbol = (code: string) => {
-    return MATH_SYMBOLS.filter((MATH_SYMBOL) => MATH_SYMBOL.code === code)[0];
-}
-
-export const getMathSymbolTitle = (code: string) => {
-    return getMathSymbol(code).title;
-};
-
-export const getMathSymbolDefaultValue = (code: string) => { 
-    return getMathSymbol(code).defaultValue;
-};
+export const getMathSymbol = (code: string) => MATH_SYMBOLS.filter((MATH_SYMBOL) => MATH_SYMBOL.code === code)[0];
+export const extractMathSymbolCodes = (formula: string) => formula.replace('PI', '').match(/\b(?<!PI )[a-zA-Z]+\b/g) || [];
 
 // Base Shape Symbol
 export const getBaseShapeSymbol = (nBaseVertices: number) => {
@@ -201,3 +192,5 @@ const initXpLimit = 100;
 export const getLevel = (xp: number) => xp < initXpLimit ? 1 : Math.floor((Math.log((xp - 1) / initXpLimit) / Math.log(1.5))) + 2;
 export const getXpLimit = (level: number) => Math.floor(1.5 ** (level - 1) * initXpLimit);
 export const getXpPct = (xp: number) => xp / getXpLimit(getLevel(xp)) * 100;
+
+
