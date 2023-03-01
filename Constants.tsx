@@ -104,11 +104,13 @@ export const MATH_SYMBOLS: MathSymbol[] = [
     symbol: 'r',
     code: 'r',
     title: 'Radius',
+    defaultValue: 14,
   },
   {
     symbol: 't',
     code: 't',
     title: 'Tinggi',
+    defaultValue: 20,
   },
   {
     symbol: 's',
@@ -289,6 +291,3 @@ export const INTROS = [
     ],
   }
 ];
-
-export const DEFAULT_SIZE = 20;
-// export const DEFAULT_SIZE_DIVIDER = 15

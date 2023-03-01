@@ -7,12 +7,12 @@ import { range } from '../../Utils';
 // Types
 import type { ChangeEvent, Dispatch, SetStateAction } from 'react';
 import type Shape from '../../types/Shape';
-import type MensurationForm from '../../types/MensurationForm';
+import type ObservationForm from '../../types/ObservationForm';
 
 type Props = {
     shape: Shape,
-    form: MensurationForm,
-    setForm: Dispatch<SetStateAction<MensurationForm>>,
+    form: ObservationForm,
+    setForm: Dispatch<SetStateAction<ObservationForm>>,
     onSubmit: () => void,
 };
 

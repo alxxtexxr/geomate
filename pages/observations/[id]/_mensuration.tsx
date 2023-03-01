@@ -21,7 +21,7 @@ import { MATH_SYMBOLS, DEFAULT_SIZE } from '../../../Constants';
 
 // Utils
 import {
-    getShapeByCode,
+    getShape,
     formatFormula,
     assignFormToFormula,
     inputValueToNumber,
@@ -33,7 +33,7 @@ import type { GetServerSideProps } from 'next';
 import type ComponentWithAuth from '../../../types/ComponentWithAuth';
 import type Shape from '../../../types/Shape';
 import type { Observation } from '@prisma/client';
-import type MensurationForm from '../../../types/MensurationForm';
+import type ObservationForm from '../../../types/ObservationForm';
 import type MathSymbol from '../../../types/MathSymbol';
 
 type Props = {
@@ -52,7 +52,7 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
     const hasT = ['cylinder', 'prism', 'cone', 'pyramid'].includes(shape.code);
 
     // States
-    const [form, setForm] = useState<MensurationForm>({
+    const [form, setForm] = useState<ObservationForm>({
         baseA: 0,
         baseT: 0,
         baseS: 0,
@@ -166,7 +166,7 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
 
     return (
         <main className="w-inherit h-screen bg-black">
-            <ShapePreview shapeCode={shape.code} mensurationForm={form} />
+            <ShapePreview shapeCode={shape.code} ObservationForm={form} />
             <BottomSheet>
                 {/* <ul className="steps steps-horizontal bg-white text-xs py-4 border-b border-gray-200">
                     {tabs.map((tab, i) => (
@@ -363,7 +363,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         headers: { 'Cookie': headers.cookie as string },
     });
     const observation = await res.json();
-    const shape = getShapeByCode(observation.shapeCode);
+    const shape = getShape(observation.shapeCode);
 
     return { props: { observation, shape } };
 };

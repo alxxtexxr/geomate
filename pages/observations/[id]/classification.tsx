@@ -9,7 +9,7 @@ import ClassificationResult from '../../../components/ClassificationResult';
 import Spinner from '../../../components/Spinner';
 
 // Utils
-import { createImgElemement, dataURItoBlob, getShapeByCode } from '../../../Utils';
+import { createImgElemement, dataURItoBlob, getShape } from '../../../Utils';
 
 // Types
 import type { GetServerSideProps } from 'next';
@@ -60,7 +60,7 @@ const Classification: ComponentWithAuth<Props> = ({ observation, shape }) => {
         const maxPrediction = prediction ? prediction.reduce(function(prev, current) {
             return (prev.probability > current.probability) ? prev : current
         }) : null;
-        const predictedShape = maxPrediction ? getShapeByCode(maxPrediction.className) : null;
+        const predictedShape = maxPrediction ? getShape(maxPrediction.className) : null;
 
         setPredictedShape(predictedShape);
         setIsOpen(true);
@@ -159,7 +159,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         headers: { 'Cookie': headers.cookie as string },
     });
     const observation = await res.json();
-    const shape = getShapeByCode(observation.shapeCode);
+    const shape = getShape(observation.shapeCode);
 
     return { props: { observation, shape } };
 };

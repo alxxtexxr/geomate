@@ -7,35 +7,32 @@ import { MdOutlineSwitchCamera } from 'react-icons/md';
 import { Parser } from 'expr-eval';
 
 // Components
-import ShapeComponent from '../../../components/Shape';
-import Swap from '../../../components/Swap';
-import ShapePreview from '../../../components/ShapePreview';
-import ConditionalInput from '../../../components/ConditionalInput';
-import LoaderButton from '../../../components/LoaderButton';
-import XRMeasurement from '../../../components/XRMeasurement';
+import ShapeComponent from '../../../../components/Shape';
+import Swap from '../../../../components/Swap';
+import ShapePreview from '../../../../components/ShapePreview';
+import ConditionalInput from '../../../../components/ConditionalInput';
+import LoaderButton from '../../../../components/LoaderButton';
+import XRMeasurement from '../../../../components/XRMeasurement';
 
-import BottomSheet from '../../../components/BottomSheet';
-
-// Constants
-import { MATH_SYMBOLS, DEFAULT_SIZE } from '../../../Constants';
+import BottomSheet from '../../../../components/BottomSheet';
 
 // Utils
 import {
     getShape,
-    getMathSymbolTitle,
+    getMathSymbol,
     formatFormula,
     assignFormToFormula,
     inputValueToNumber,
-} from '../../../Utils';
+} from '../../../../Utils';
 
 // Types
 import type { ChangeEvent } from 'react';
 import type { GetServerSideProps } from 'next';
-import type ComponentWithAuth from '../../../types/ComponentWithAuth';
-import type Shape from '../../../types/Shape';
+import type ComponentWithAuth from '../../../../types/ComponentWithAuth';
+import type Shape from '../../../../types/Shape';
 import type { Observation } from '@prisma/client';
-import type ObservationForm from '../../../types/ObservationForm';
-import type MathSymbol from '../../../types/MathSymbol';
+import type ObservationForm from '../../../../types/ObservationForm';
+import type MathSymbol from '../../../../types/MathSymbol';
 
 type Props = {
     observation: Observation,
@@ -47,14 +44,14 @@ type Props = {
 //     4: 'baseS ^ 2',
 // };
 
-type MensurationInputProps = {
+type ObservationInputProps = {
     title: string,
     symbol: string,
     suffix: string,
     canMeasure?: boolean,
-}
+};
 
-const MensurationInput = ({ title, symbol, suffix, canMeasure = false, ...rest }: MensurationInputProps & InputHTMLAttributes<HTMLInputElement>) => {
+const ObservationInput = ({ title, symbol, suffix, canMeasure = false, ...rest }: ObservationInputProps & InputHTMLAttributes<HTMLInputElement>) => {
     return (
         <div className="grid grid-cols-3">
             <span className="label-text flex items-self-center items-center text-xs text-gray-800">
@@ -100,23 +97,12 @@ const MessageBalloon = ({ children }: MessageBalloonProps) => {
     );
 };
 
-const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
-    const hasBaseWithVertices = ['prism', 'pyramid'].includes(shape.code);
-    const hasR = ['sphere', 'cylinder', 'cone'].includes(shape.code);
-    const hasT = ['cylinder', 'prism', 'cone', 'pyramid'].includes(shape.code);
-
+const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
     // States
     const [form, setForm] = useState<ObservationForm>({
-        baseA: 0,
-        baseT: 0,
-        baseS: 0,
-        nBaseVertices: hasBaseWithVertices ? 3 : 0,
-        nVertices: 0,
-        nEdges: 0,
-        nFaces: 0,
         PI: 3.14,
-        r: hasR ? DEFAULT_SIZE : 0,
-        t: hasT ? DEFAULT_SIZE * 2 : 0,
+        r: getMathSymbol('r').defaultValue!,
+        t: getMathSymbol('t').defaultValue!,
         s: 0,
         la: 0,
         lst: 0,
@@ -124,27 +110,7 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
         v: 0,
         lp: 0,
     });
-    // const [tabs, setTabs] = useState<any>([
-    // ...(hasBaseWithVertices ? [
-    //     {
-    //         title: 'Bentuk Alas',
-    //         code: 'baseShape',
-    //         symbol: null,
-    //     }
-    // ] : []),
-    // ...MATH_SYMBOLS.filter((mathSymbol) => (shape.vFormula + 'v').includes(mathSymbol.code)),
-    // ]);
-    // const [activeTabI, setActiveTabI] = useState(0);
-    // const [wireframe, setWireframe] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    // const [isLivePreviewing, setIsLivePreviewing] = useState(false);
-    // const [isMeasuring, setIsMeasuring] = useState(false);
-
-
-    // const correctValues: { [key: string]: number } = {
-    //     la: hasBaseWithVertices ? +Parser.evaluate(LA_FORMULAS[form.nBaseVertices], form).toFixed(1) : 0,
-    //     v: +Parser.evaluate(shape.vFormula, form).toFixed(1),
-    // };
 
     // Functions
     const handleSubmit = async () => {
@@ -169,23 +135,24 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
         }
     };
 
-    // const calculateVolume = () => 
-
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        // setForm((_form) => ({
-        //     ..._form,
-        //     [e.target.name]: inputValueToNumber(e.target.value),
-        // }));
-
         setForm({
             ...form,
             [e.target.name]: inputValueToNumber(e.target.value),
         });
     };
 
+    const extractMathSymbolCodes = (formula: string) => 
+        formula.replace('PI', '').match(/\b(?<!PI )[a-zA-Z]+\b/g) || [];
+
+    const isFormFilled = () => 
+        !extractMathSymbolCodes(shape.vFormula).every((mathSymbolCode) => 
+            (form as { [key: string]: number })[mathSymbolCode] === getMathSymbol(mathSymbolCode).defaultValue
+        );
+
     // Effects
     useEffect(() => {
-        // Calculate object volume
+        // Calculate the volume
         const previousV = form.v;
         const newV = +Parser.evaluate(shape.vFormula, form).toFixed(1);
 
@@ -195,49 +162,12 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 v: newV
             });
         }
-
-        // if (form.nBaseVertices) {
-        //     const baseParams: { [key: number]: { form: any, symbols: MathSymbol[] } } = {
-        //         3: {
-        //             form: { baseA: DEFAULT_SIZE, baseT: DEFAULT_SIZE },
-        //             symbols: MATH_SYMBOLS.filter((mathSymbol) => ['baseA', 'baseT'].includes(mathSymbol.code))
-        //         },
-        //         4: {
-        //             form: { baseS: DEFAULT_SIZE },
-        //             symbols: MATH_SYMBOLS.filter((mathSymbol) => ['baseS'].includes(mathSymbol.code))
-        //         },
-        //     };
-
-        //     // Get all symbols of addtional tabs
-        //     let addTabSymbols: string[] = [];
-        //     Object.keys(baseParams).map((key) => {
-        //         baseParams[+key].symbols.map((addTab) =>
-        //             addTabSymbols.push(addTab.code)
-        //         );
-        //     });
-
-        //     // Remove additional tabs
-        //     const [firstTab, ...restTabs] = tabs.filter((tab: any) => !addTabSymbols.includes(tab.code));
-
-        //     // Update form
-        //     setForm((_form) => ({
-        //         ..._form,
-        //         ...baseParams[_form.nBaseVertices].form
-        //     }));
-
-        //     // Add additional tabs
-        //     setTabs([
-        //         firstTab,
-        //         ...baseParams[form.nBaseVertices].symbols,
-        //         ...restTabs,
-        //     ]);
-        // }
     }, [form]);
 
     return (
         <main className="w-inherit h-screen bg-black">
             <ShapePreview shapeCode={shape.code} ObservationForm={form} />
-            <BottomSheet>
+            <BottomSheet className="w-inherit">
                 <div className="grid grid-cols-1 gap-4 pt-4">
                     {/* Message */}
                     <div className="flex">
@@ -251,22 +181,22 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
                         </MessageBalloon>
                     </div>
 
-                    {/* Tab #1 */}
+                    {/* Inputs */}
                     <div className="grid grid-cols-1 gap-2">
-                        {['r', 't'].map((symbolCode) => shape.vFormula.includes(symbolCode) && (
-                            <MensurationInput
-                                key={symbolCode}
-                                title={getMathSymbolTitle(symbolCode)}
-                                symbol={symbolCode}
+                        {extractMathSymbolCodes(shape.vFormula).map((mathSymbolCode) => (
+                            <ObservationInput
+                                key={mathSymbolCode}
+                                title={getMathSymbol(mathSymbolCode).title}
+                                symbol={mathSymbolCode}
                                 suffix="cm"
                                 canMeasure
-                                name={symbolCode}
-                                value={(form as { [key: string]: number })[symbolCode]}
+                                name={mathSymbolCode}
+                                value={(form as { [key: string]: number })[mathSymbolCode]}
                                 onChange={handleChange}
                             />
                         ))}
                         <hr />
-                        <MensurationInput
+                        <ObservationInput
                             title="Volume"
                             symbol="v"
                             suffix="cm²"
@@ -275,6 +205,16 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
                             disabled
                         />
                     </div>
+                </div>
+
+                <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-inherit p-4">
+                    <button
+                        type="button"
+                        className="btn btn-primary btn-block"
+                        disabled={!isFormFilled()}
+                    >
+                        Selanjutnya
+                    </button>
                 </div>
 
                 {/* Stepper */}
@@ -462,7 +402,7 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
     );
 };
 
-Mensuration.auth = true;
+ObservationStep1.auth = true;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const headers = context.req.headers;
@@ -477,4 +417,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return { props: { observation, shape } };
 };
 
-export default Mensuration;
+export default ObservationStep1;

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Navbar from '../../components/Navbar';
 
 // Utils
-import { getShapeByCode } from '../../Utils';
+import { getShape } from '../../Utils';
 
 // Types
 import type { GetServerSideProps } from 'next';
@@ -52,7 +52,7 @@ Stimulation.auth = true;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const shapeCode = context?.params?.shapeCode || null;
-    const shape = shapeCode ? getShapeByCode(shapeCode as string) : null;
+    const shape = shapeCode ? getShape(shapeCode as string) : null;
 
     return { props: { shape } };
 };

@@ -11,7 +11,7 @@ import BottomSheet from '../components/BottomSheet';
 import { MATH_SYMBOLS } from '../Constants';
 
 // Util
-import { getShapeByCode, formatFormula } from '../Utils';
+import { getShape, formatFormula } from '../Utils';
 
 // Types
 import type { ShapeCode } from '@prisma/client';
@@ -25,7 +25,7 @@ type Props = {
 };
 
 const ShapeInformation = ({ shapeCode, isShowing, setIsShowing, onHide }: Props) => {
-    const shape = getShapeByCode(shapeCode);
+    const shape = getShape(shapeCode);
 
     let vFormulaSymbols: MathSymbol[] = [];
     MATH_SYMBOLS.map((mathSymbol) => {

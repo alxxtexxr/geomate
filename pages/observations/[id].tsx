@@ -11,7 +11,7 @@ import Spinner from '../../components/Spinner';
 
 
 // Utils
-import { getShapeByCode } from '../../Utils';
+import { getShape } from '../../Utils';
 
 // Constants
 import { MATH_SYMBOLS, DEFAULT_SIZE } from '../../Constants';
@@ -21,7 +21,7 @@ import type { GetServerSideProps } from 'next';
 import type ComponentWithAuth from '../../types/ComponentWithAuth';
 import type Shape from '../../types/Shape';
 import type { Observation, Evaluation } from '@prisma/client';
-import MensurationForm from '../../types/MensurationForm';
+import ObservationForm from '../../types/ObservationForm';
 
 type Props = {
     observation: Observation,
@@ -84,7 +84,7 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
                     <div className="bg-black rounded-xl overflow-hidden">
                         <ShapePreview
                             shapeCode={shape.code}
-                            mensurationForm={observation as unknown as MensurationForm}
+                            ObservationForm={observation as unknown as ObservationForm}
                         />
                     </div>
                     <div className="pt-2 px-2">
@@ -140,7 +140,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         headers: { 'Cookie': headers.cookie as string },
     });
     const observation = await res.json();
-    const shape = getShapeByCode(observation.shapeCode);
+    const shape = getShape(observation.shapeCode);
 
     return { props: { observation, shape } };
 };

@@ -7,7 +7,7 @@ import Navbar from '../../components/Navbar';
 import Spinner from '../../components/Spinner';
 
 // Utils
-import { getShapeByCode } from '../../Utils';
+import { getShape } from '../../Utils';
 
 // Types
 import type { GetServerSideProps } from 'next';
@@ -83,7 +83,7 @@ ProblemIdentification.auth = true;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const shapeCode = context?.params?.shapeCode || null;
-    const shape = shapeCode ? getShapeByCode(shapeCode as string) : null;
+    const shape = shapeCode ? getShape(shapeCode as string) : null;
 
     return { props: { shape } };
 };

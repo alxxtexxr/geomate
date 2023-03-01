@@ -5,7 +5,7 @@ import cloudinary from 'cloudinary/lib/cloudinary';
 // Types
 import type { IncomingMessage } from 'http';
 import type { Fields, Files, File } from 'formidable';
-import type MensurationForm from './types/MensurationForm';
+import type ObservationForm from './types/ObservationForm';
 
 // Constants
 import { SHAPES, MATH_SYMBOLS } from './Constants';
@@ -35,11 +35,20 @@ export const getInitials = (name: string) => {
 };
 
 // Shape
-export const getShapeByI = (i: number) => SHAPES[i];
-export const getShapeByCode = (code: string) => SHAPES.filter((SHAPE) => SHAPE.code === code)[0];
+export const getShape = (code: string) => SHAPES.filter((SHAPE) => SHAPE.code === code)[0];
 
 // Math Symbol
-export const getMathSymbolByCode = (code: string) => MATH_SYMBOLS.filter((MATH_SYMBOL) => MATH_SYMBOL.code === code)[0];
+export const getMathSymbol = (code: string) => {
+    return MATH_SYMBOLS.filter((MATH_SYMBOL) => MATH_SYMBOL.code === code)[0];
+}
+
+export const getMathSymbolTitle = (code: string) => {
+    return getMathSymbol(code).title;
+};
+
+export const getMathSymbolDefaultValue = (code: string) => { 
+    return getMathSymbol(code).defaultValue;
+};
 
 // Base Shape Symbol
 export const getBaseShapeSymbol = (nBaseVertices: number) => {
@@ -168,7 +177,7 @@ export const formatFormula = (formula: string) => {
 
 export const getS = (r: number, t: number) => +Math.sqrt(Math.pow(r, 2) + Math.pow(t, 2)).toFixed(2);
 
-export const assignFormToFormula = (form: MensurationForm, formula: string) => {
+export const assignFormToFormula = (form: ObservationForm, formula: string) => {
     let _formula = formula.replaceAll('pi', 'PI');
     let _formulaArr = _formula.split(' ');
 

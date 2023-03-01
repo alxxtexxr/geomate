@@ -10,14 +10,14 @@ import ARLivePreview from '../components/ARLivePreview';
 
 // Types
 import type { ShapeCode } from '@prisma/client';
-import type MensurationForm from '../types/MensurationForm';
+import type ObservationForm from '../types/ObservationForm';
 
 type Props = {
     shapeCode: ShapeCode,
-    mensurationForm: MensurationForm,
+    ObservationForm: ObservationForm,
 };
 
-const ShapePreview = ({ shapeCode, mensurationForm }: Props) => {
+const ShapePreview = ({ shapeCode, ObservationForm }: Props) => {
     const [wireframe, setWireframe] = useState(false);
     const [isLivePreviewing, setIsLivePreviewing] = useState(false);
 
@@ -38,12 +38,12 @@ const ShapePreview = ({ shapeCode, mensurationForm }: Props) => {
 
                     <ShapeComponent
                         code={shapeCode}
-                        {...mensurationForm}
-                        r={mensurationForm.r}
-                        t={mensurationForm.t}
-                        baseA={mensurationForm.baseA}
-                        baseT={mensurationForm.baseT}
-                        baseS={mensurationForm.baseS}
+                        {...ObservationForm}
+                        r={ObservationForm.r}
+                        t={ObservationForm.t}
+                        baseA={ObservationForm.baseA}
+                        baseT={ObservationForm.baseT}
+                        baseS={ObservationForm.baseS}
                         wireframe={wireframe}
                     />
 
@@ -66,12 +66,12 @@ const ShapePreview = ({ shapeCode, mensurationForm }: Props) => {
                 <ARLivePreview
                     onClose={() => setIsLivePreviewing(false)}
                     shapeCode={shapeCode}
-                    {...mensurationForm}
-                    r={mensurationForm.r}
-                    t={mensurationForm.t}
-                    baseA={mensurationForm.baseA}
-                    baseT={mensurationForm.baseT}
-                    baseS={mensurationForm.baseS}
+                    {...ObservationForm}
+                    r={ObservationForm.r}
+                    t={ObservationForm.t}
+                    baseA={ObservationForm.baseA}
+                    baseT={ObservationForm.baseT}
+                    baseS={ObservationForm.baseS}
                     wireframe={wireframe}
                 />
             )}
