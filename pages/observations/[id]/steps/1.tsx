@@ -1,13 +1,14 @@
-import { FormEvent, InputHTMLAttributes, useEffect, useState } from 'react';
+import { useState, useEffect, FormEvent } from 'react';
+import Head from 'next/head'
 import Router from 'next/router';
-import { MdOutlineSwitchCamera } from 'react-icons/md';
+
 import { Parser } from 'expr-eval';
 
 // Components
 import ShapePreview from '../../../../components/ShapePreview';
-import LoaderButton from '../../../../components/LoaderButton';
-
 import BottomSheet from '../../../../components/BottomSheet';
+import ObservationInput from '../../../../components/ObservationInput';
+import LoaderButton from '../../../../components/LoaderButton';
 
 // Utils
 import {
@@ -30,58 +31,15 @@ type Props = {
     shape: Shape,
 };
 
-type ObservationInputProps = {
-    title: string,
-    symbol: string,
-    suffix: string,
-    canMeasure?: boolean,
-};
-
-const ObservationInput = ({ title, symbol, suffix, canMeasure = false, ...rest }: ObservationInputProps & InputHTMLAttributes<HTMLInputElement>) => {
-    return (
-        <div className="grid grid-cols-3">
-            <span className="label-text flex items-self-center items-center text-xs text-gray-800">
-                <div className="badge badge-primary badge-outline text-xs h-7 w-7 mr-2">
-                    {symbol}
-                </div>
-                {title}
-            </span>
-            <div className="col-span-2">
-                <div className="flex bg-gray-200 rounded-lg">
-                    <div className="relative w-full">
-                        <input
-                            type="text"
-                            className="input input-bordered text-xs w-full"
-                            {...rest}
-                        />
-                        {canMeasure && (
-                            <button className="absolute right-0 btn bg-transparent hover:bg-transparent hover:text-primary border-0 ml-2">
-                                <MdOutlineSwitchCamera className="text-2xl" />
-                            </button>
-                        )}
-                    </div>
-                    <div className="flex justify-center items-center text-xs text-gray-400 aspect-square h-12">
-                        <span className="-mt-0.5">
-                            {suffix}
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-};
-
 type MessageBalloonProps = {
     children: string,
-}
-
-const MessageBalloon = ({ children }: MessageBalloonProps) => {
-    return (
-        <div className="message-balloon message-balloon-base-100">
-            {children}
-        </div>
-    );
 };
+
+const MessageBalloon = ({ children }: MessageBalloonProps) => (
+    <div className="message-balloon message-balloon-base-100">
+        {children}
+    </div>
+);
 
 const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
     const vMathSymbolCodes = extractMathSymbolCodes(shape.vFormula);
@@ -148,6 +106,10 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
 
     return (
         <main className="w-inherit h-screen bg-black">
+            <Head>
+                <title>Observasi (1/3) | {process.env.NEXT_PUBLIC_APP_NAME}</title>
+            </Head>
+
             <ShapePreview shapeCode={shape.code} ObservationForm={form} />
             <BottomSheet className="w-inherit">
                 {/* Form */}
