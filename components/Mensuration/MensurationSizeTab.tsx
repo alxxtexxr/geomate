@@ -5,7 +5,7 @@ import ConditionalInput from '../ConditionalInput';
 import Spinner from '../Spinner';
 
 // Utils
-import { formatFormula, assignFormToFormula, inputValueToNumber, getS } from '../../Utils';
+import { formatFormulaToKatex, evaluateFormula, inputValueToNumber, getS } from '../../Utils';
 
 // Constants
 import { MATH_SYMBOLS } from '../../Constants';
@@ -55,7 +55,7 @@ const MensurationSizeTab = ({ shape, form, setForm, onSubmit, isSubmitting }: Pr
                     placeholder="0"
                     className="input input-bordered w-1 flex-grow"
                     disabled
-                    value={formatFormula((shape as { [key: string]: any })[symbol.toLowerCase() + 'Formula'])}
+                    value={formatFormulaToKatex((shape as { [key: string]: any })[symbol.toLowerCase() + 'Formula'])}
                   />
                   <span className="text-sm font-medium" style={{ width: 60 }}>
                     {symbol === 'V' ? 'cm³' : (symbol === 'LP' ? 'cm²' : 'cm')}
@@ -67,7 +67,7 @@ const MensurationSizeTab = ({ shape, form, setForm, onSubmit, isSubmitting }: Pr
                     placeholder="0"
                     className="input input-bordered w-1 flex-grow"
                     disabled
-                    value={assignFormToFormula(form, formatFormula((shape as { [key: string]: any })[symbol.toLowerCase() + 'Formula']))}
+                    value={evaluateFormula(formatFormulaToKatex((shape as { [key: string]: any })[symbol.toLowerCase() + 'Formula']), form)}
                   />
                   <span className="text-sm font-medium" style={{ width: 60 }}>
                     {symbol === 'V' ? 'cm³' : (symbol === 'LP' ? 'cm²' : 'cm')}

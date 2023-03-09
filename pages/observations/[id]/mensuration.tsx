@@ -23,8 +23,8 @@ import { MATH_SYMBOLS, DEFAULT_SIZE } from '../../../Constants';
 import {
     getShape,
     getMathSymbolTitle,
-    formatFormula,
-    assignFormToFormula,
+    formatFormulaToKatex,
+    evaluateFormula,
     inputValueToNumber,
 } from '../../../Utils';
 
@@ -321,7 +321,7 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                         <input
                                             type="text"
                                             className="input input-bordered w-full"
-                                            value={formatFormula(LA_FORMULAS[form.nBaseVertices])}
+                                            value={formatFormulaToKatex(LA_FORMULAS[form.nBaseVertices])}
                                             disabled
                                         />
                                         <span className="text-xs font-semibold">cm³</span>
@@ -330,7 +330,7 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                         <input
                                             type="text"
                                             className="input input-bordered w-full"
-                                            value={formatFormula(assignFormToFormula(form, LA_FORMULAS[form.nBaseVertices]))}
+                                            value={formatFormulaToKatex(evaluateFormula(form, LA_FORMULAS[form.nBaseVertices]))}
                                             disabled
                                         />
                                         <span className="text-xs font-semibold">cm³</span>
@@ -352,7 +352,7 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                             <input
                                                 type="text"
                                                 className="input input-bordered w-full"
-                                                value={formatFormula(shape.vFormula)}
+                                                value={formatFormulaToKatex(shape.vFormula)}
                                                 disabled
                                             />
                                             <span className="text-xs font-semibold">cm³</span>
@@ -361,7 +361,7 @@ const Mensuration: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                             <input
                                                 type="text"
                                                 className="input input-bordered w-full"
-                                                value={formatFormula(assignFormToFormula(form, shape.vFormula))}
+                                                value={formatFormulaToKatex(evaluateFormula(form, shape.vFormula))}
                                                 disabled
                                             />
                                             <span className="text-xs font-semibold">cm³</span>

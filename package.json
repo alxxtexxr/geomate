@@ -46,8 +46,10 @@
     "react-modal-sheet": "^1.5.1",
     "react-qr-code": "^2.0.7",
     "react-responsive": "^9.0.0-beta.10",
+    "react-simple-keyboard": "^3.5.31",
     "react-toastify": "^9.0.4",
     "react-webcam": "^7.0.1",
+    "simple-keyboard": "^3.5.29",
     "three": "^0.140.2"
   },
   "devDependencies": {

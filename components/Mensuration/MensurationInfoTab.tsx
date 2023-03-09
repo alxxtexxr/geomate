@@ -1,5 +1,5 @@
 // Utils
-import { formatFormula } from '../../Utils';
+import { formatFormulaToKatex } from '../../Utils';
 
 // Types
 import type Shape from '../../types/Shape';
@@ -20,13 +20,13 @@ const MensurationInfoTab = ({ shape, onSubmit }: Props) => (
                 <span>
                     Rumus Volume (V)
                 </span>
-                <span className="text-gray-800 font-medium">{formatFormula(shape.vFormula)}</span>
+                <span className="text-gray-800 font-medium">{formatFormulaToKatex(shape.vFormula)}</span>
             </li>
             <li className="flex justify-between py-4 border-t">
                 <span>
                     Rumus Luas Permukan (LP)
                 </span>
-                <span className="text-gray-800 font-medium">{formatFormula(shape.lpFormula)}</span>
+                <span className="text-gray-800 font-medium">{formatFormulaToKatex(shape.lpFormula)}</span>
             </li>
         </ul>
 

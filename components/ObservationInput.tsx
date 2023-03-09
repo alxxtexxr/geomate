@@ -2,19 +2,31 @@ import { InputHTMLAttributes } from 'react';
 import { MdOutlineSwitchCamera } from 'react-icons/md';
 
 type Props = {
-    title: string,
-    symbol: string,
-    suffix: string,
+    title?: string,
+    symbol?: string | null,
+    suffix?: string | null,
+    isCorrect?: boolean | null,
     canMeasure?: boolean,
 };
 
-const ObservationInput = ({ title, symbol, suffix, canMeasure = false, ...rest }: Props & InputHTMLAttributes<HTMLInputElement>) => {
+const ObservationInput = ({ 
+    title, 
+    symbol = null, 
+    suffix = null, 
+    isCorrect = null,
+    canMeasure = false, 
+    ...rest 
+}: Props & InputHTMLAttributes<HTMLInputElement>) => {
+    const isCorrectCx = isCorrect !== null ? (isCorrect ? '  input-primary' : ' input-error') : '';
+
     return (
         <div className="grid grid-cols-3">
             <span className="label-text flex items-self-center items-center text-xs text-gray-800">
-                <div className="badge badge-primary badge-outline text-xs h-7 w-7 mr-2">
-                    {symbol}
-                </div>
+                {symbol && (
+                    <div className="badge badge-primary badge-outline text-xs h-7 w-7 mr-2">
+                        {symbol}
+                    </div>
+                )}
                 {title}
             </span>
             <div className="col-span-2">
@@ -22,7 +34,7 @@ const ObservationInput = ({ title, symbol, suffix, canMeasure = false, ...rest }
                     <div className="relative w-full">
                         <input
                             type="text"
-                            className="input input-bordered text-xs w-full"
+                            className={'input input-bordered font-mono w-full' + isCorrectCx}
                             {...rest}
                         />
                         {canMeasure && (
@@ -31,11 +43,13 @@ const ObservationInput = ({ title, symbol, suffix, canMeasure = false, ...rest }
                             </button>
                         )}
                     </div>
-                    <div className="flex justify-center items-center text-xs text-gray-400 aspect-square h-12">
-                        <span className="-mt-0.5">
-                            {suffix}
-                        </span>
-                    </div>
+                    {suffix && (
+                        <div className="flex justify-center items-center text-xs text-gray-400 aspect-square h-12">
+                            <span className="-mt-0.5">
+                                {suffix}
+                            </span>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

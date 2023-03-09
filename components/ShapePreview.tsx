@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { PerspectiveCamera, OrbitControls, Plane } from '@react-three/drei';
 import { HiOutlineCube } from 'react-icons/hi';
@@ -14,36 +14,35 @@ import type ObservationForm from '../types/ObservationForm';
 
 type Props = {
     shapeCode: ShapeCode,
-    ObservationForm: ObservationForm,
+    r: number,
+    t: number,
+    height?: number
 };
 
-const ShapePreview = ({ shapeCode, ObservationForm }: Props) => {
+const ShapePreview = ({ shapeCode, r, t, height = 272 }: Props) => {
     const [wireframe, setWireframe] = useState(false);
     const [isLivePreviewing, setIsLivePreviewing] = useState(false);
 
     return (
         <>
             <section
-                className="sticky top-0 z-0 h-80"
-                style={{ touchAction: 'none' }}
+                className="sticky top-0 z-0"
+                style={{
+                    touchAction: 'none',
+                    height: height,
+                }}
             >
                 <Canvas camera={{}}>
                     <fog args={['#000', 2, 250]} attach="fog" />
-                    {/* <ambientLight color="#FFFFFF" /> */}
                     <ambientLight intensity={0.5} />
                     <pointLight position={[1, 3, 1]} intensity={1.0} />
-                    {/* <pointLight position={[10, 20, 0]} /> */}
-                    <PerspectiveCamera makeDefault position={[0, 50, 100]} fov={50} />
-                    <OrbitControls autoRotate target={[0, 20, 0]} />
+                    <PerspectiveCamera makeDefault position={[0, 30, 100]} fov={30} />
+                    <OrbitControls autoRotate target={[0, 8, 0]} />
 
                     <ShapeComponent
                         code={shapeCode}
-                        {...ObservationForm}
-                        r={ObservationForm.r}
-                        t={ObservationForm.t}
-                        baseA={ObservationForm.baseA}
-                        baseT={ObservationForm.baseT}
-                        baseS={ObservationForm.baseS}
+                        r={r}
+                        t={t}
                         wireframe={wireframe}
                     />
 
@@ -61,17 +60,13 @@ const ShapePreview = ({ shapeCode, ObservationForm }: Props) => {
                     </Swap>
                 </div>
             </section>
-            
+
             {isLivePreviewing && (
                 <ARLivePreview
                     onClose={() => setIsLivePreviewing(false)}
                     shapeCode={shapeCode}
-                    {...ObservationForm}
-                    r={ObservationForm.r}
-                    t={ObservationForm.t}
-                    baseA={ObservationForm.baseA}
-                    baseT={ObservationForm.baseT}
-                    baseS={ObservationForm.baseS}
+                    r={r}
+                    t={t}
                     wireframe={wireframe}
                 />
             )}

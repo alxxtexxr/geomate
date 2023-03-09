@@ -11,7 +11,7 @@ import BottomSheet from '../components/BottomSheet';
 import { MATH_SYMBOLS } from '../Constants';
 
 // Util
-import { getShape, formatFormula } from '../Utils';
+import { getShape, formatFormulaToKatex } from '../Utils';
 
 // Types
 import type { ShapeCode } from '@prisma/client';
@@ -145,7 +145,7 @@ const ShapeInformation = ({ shapeCode, isShowing, setIsShowing, onHide }: Props)
                                         <div
                                             className="text-gray-800 text-center font-medium mb-2"
                                             dangerouslySetInnerHTML={{
-                                                __html: katex.renderToString('V = ' + formatFormula(shape.vFormula), { throwOnError: false })
+                                                __html: katex.renderToString('V = ' + formatFormulaToKatex(shape.vFormula), { throwOnError: false })
                                             }}
                                         />
                                         <div className="text-xs text-center">
@@ -182,7 +182,7 @@ const ShapeInformation = ({ shapeCode, isShowing, setIsShowing, onHide }: Props)
                                         <div
                                             className="text-gray-800 text-center font-medium mb-1"
                                             dangerouslySetInnerHTML={{
-                                                __html: katex.renderToString('LP = ' + formatFormula(shape.lpFormula), { throwOnError: false })
+                                                __html: katex.renderToString('LP = ' + formatFormulaToKatex(shape.lpFormula), { throwOnError: false })
                                             }}
                                         />
                                         <div className="text-xs text-center">

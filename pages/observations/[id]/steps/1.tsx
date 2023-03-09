@@ -46,7 +46,6 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
 
     // States
     const [form, setForm] = useState<ObservationForm>({
-        PI: 3.14,
         r: getMathSymbol('r').defaultValue!,
         t: getMathSymbol('t').defaultValue!,
         s: 0,
@@ -69,8 +68,8 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     ...form,
-                    la: +form.la,
-                    v: +form.v,
+                    la: +(form.la || 0),
+                    v: +(form.v || 0),
                 }),
             });
 
@@ -107,10 +106,14 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
     return (
         <main className="w-inherit h-screen bg-black">
             <Head>
-                <title>Observasi (1/3) | {process.env.NEXT_PUBLIC_APP_NAME}</title>
+                <title>Observasi (1/4) | {process.env.NEXT_PUBLIC_APP_NAME}</title>
             </Head>
 
-            <ShapePreview shapeCode={shape.code} ObservationForm={form} />
+            <ShapePreview 
+                shapeCode={shape.code} 
+                r={form.r || 0}
+                t={form.t || 0}
+            />
             <BottomSheet className="w-inherit">
                 {/* Form */}
                 <form className="w-inherit p-4" onSubmit={handleSubmit}>

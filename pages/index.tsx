@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Head from 'next/head'
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -25,6 +26,10 @@ const Home: ComponentWithAuth = () => {
 
   return (
     <main className="bg-base-100 w-inherit min-h-screen">
+      <Head>
+        <title>Beranda | {process.env.NEXT_PUBLIC_APP_NAME}</title>
+      </Head>
+
       {/* Header */}
       <header className="flex flex-col justify-center items-center text-center bg-base-200 text-primary-content py-8 rounded-b-xl shadow">
         <Avatar

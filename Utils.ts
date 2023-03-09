@@ -10,15 +10,10 @@ import type ObservationForm from './types/ObservationForm';
 // Constants
 import { SHAPES, MATH_SYMBOLS } from './Constants';
 
-export const snakeToPascal = (string: string) => {
-    return string.split("/")
-        .map(snake => snake.split("_")
-            .map(substr => substr.charAt(0)
-                .toUpperCase() +
-                substr.slice(1))
-            .join(""))
+export const snakeToPascal = (string: string) =>
+    string.split("/").map((snake) => snake.split("_")
+        .map((substr) => substr.charAt(0).toUpperCase() + substr.slice(1)).join(""))
         .join("/");
-};
 
 export const range = (size: number, startAt: number = 0): ReadonlyArray<number> => {
     return [...Array(size).keys()].map(i => i + startAt);
@@ -39,7 +34,7 @@ export const getShape = (code: string) => SHAPES.filter((SHAPE) => SHAPE.code ==
 
 // Math Symbol
 export const getMathSymbol = (code: string) => MATH_SYMBOLS.filter((MATH_SYMBOL) => MATH_SYMBOL.code === code)[0];
-export const extractMathSymbolCodes = (formula: string) => formula.replace('PI', '').match(/\b(?<!PI )[a-zA-Z]+\b/g) || [];
+export const extractMathSymbolCodes = (formula: string) => formula.replace('PI', '').match(/\b[a-zA-Z]+\b/g) || [];
 
 // Base Shape Symbol
 export const getBaseShapeSymbol = (nBaseVertices: number) => {
@@ -132,9 +127,9 @@ export const uploadImage = (image: string) => {
 };
 
 // Mensuration
-export const formatFormula = (formula: string) => {
+export const splitFormula = (formula: string) => {
     const formulaArr = formula.split(' ');
-    let formattedFormulaArr: string[] = [];
+    let formulaArrFiltered: string[] = [];
 
     formulaArr.map((formulaArrI) => {
         let isExist = false;
@@ -143,19 +138,35 @@ export const formatFormula = (formula: string) => {
             if (!isExist) {
                 if (mathSymbol.code === formulaArrI) {
                     if (mathSymbol.symbol) {
-                        formattedFormulaArr.push(mathSymbol.symbol);
+                        formulaArrFiltered.push(mathSymbol.symbol);
                         isExist = true;
                     }
                 } else {
                     if (i + 1 === MATH_SYMBOLS.length) {
-                        formattedFormulaArr.push(formulaArrI);
+                        formulaArrFiltered.push(formulaArrI);
                     }
                 }
             }
         });
     });
 
-    return formattedFormulaArr.join(' ')
+    return formulaArrFiltered;
+}
+
+export const formatFormula = (formula: string) => 
+    splitFormula(formula).join(' ')
+        .replaceAll('( ', '(')
+        .replaceAll(' )', ')')
+        .replaceAll(' / ', '/')
+        .replaceAll('*', '×')
+        .replaceAll(' ^ 2', '²')
+        .replaceAll('PI', 'π')
+        .replaceAll('(1/3)', '⅓')
+        .replaceAll('(4/3)', '¼')
+        ;
+
+export const formatFormulaToKatex = (formula: string) => 
+    splitFormula(formula).join(' ')
         .replaceAll('( ', '(')
         .replaceAll(' )', ')')
         .replaceAll(' / ', '/')
@@ -164,11 +175,10 @@ export const formatFormula = (formula: string) => {
         .replaceAll('(1/3)', '\\frac{1}{3}')
         .replaceAll('(4/3)', '\\frac{4}{3}')
         ;
-};
 
 export const getS = (r: number, t: number) => +Math.sqrt(Math.pow(r, 2) + Math.pow(t, 2)).toFixed(2);
 
-export const assignFormToFormula = (form: ObservationForm, formula: string) => {
+export const evaluateFormula = (formula: string, form: ObservationForm) => {
     let _formula = formula.replaceAll('pi', 'PI');
     let _formulaArr = _formula.split(' ');
 
