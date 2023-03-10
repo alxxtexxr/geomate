@@ -4,7 +4,7 @@ import Router from 'next/router';
 
 // Components
 import Navbar from '../../components/Navbar';
-import Spinner from '../../components/Spinner';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 // Utils
 import { getShape } from '../../Utils';
@@ -67,7 +67,7 @@ const ProblemIdentification: ComponentWithAuth<Props> = ({ shape }) => {
             <section className="p-4">
                 {isLoading ? (
                     <button className="btn w-full" disabled>
-                        <Spinner />
+                        <LoadingSpinner />
                     </button>
                 ) : (
                     <button className="btn btn-primary w-full" onClick={startObservation}>

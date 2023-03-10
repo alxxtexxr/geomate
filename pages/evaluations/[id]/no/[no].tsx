@@ -5,7 +5,7 @@ import { Prisma } from '@prisma/client'
 // Components
 import Navbar from '../../../../components/Navbar';
 import { Pagination, AnswerChoices } from '../../../../components/EvaluationQuestion';
-import LoaderButton from '../../../../components/LoaderButton';
+import LoadingButton from '../../../../components/Loading/LoadingButton';
 
 // Types
 import type { GetServerSideProps } from 'next';
@@ -104,7 +104,7 @@ const EvaluationQuestionPage: ComponentWithAuth<Props> = ({ evaluation }) => {
             </section>
 
             <section className="fixed left-0 bottom-0 z-20 w-screen p-4">
-                {isLoading && (<LoaderButton />)}
+                {isLoading && (<LoadingButton />)}
                 {!isLoading && (
                     no < evaluation.evaluationQuestions.length ? (
                         answer ? (

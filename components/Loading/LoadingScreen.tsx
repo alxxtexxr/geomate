@@ -1,9 +1,9 @@
-import Logo from "./Logo";
+import Logo from '../Logo';
 
-const LoaderScreen = () => (
+const LoadingScreen = () => (
     <main className="bg-base-200 h-screen flex justify-center items-center">
         <Logo />
     </main>
 );
 
-export default LoaderScreen;
+export default LoadingScreen;

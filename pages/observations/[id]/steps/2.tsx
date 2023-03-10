@@ -2,25 +2,24 @@ import { useRef, useState, useEffect, FormEvent, ChangeEvent, FocusEvent } from 
 import Head from 'next/head'
 import Router from 'next/router';
 import { Parser } from 'expr-eval';
-import Keyboard, { KeyboardLayoutObject } from 'react-simple-keyboard';
-
-import 'react-simple-keyboard/build/css/index.css';
 
 // Components
 import ShapePreview from '../../../../components/ShapePreview';
 import BottomSheet from '../../../../components/BottomSheet';
 import MessageBalloon from '../../../../components/MessageBalloon';
-import ObservationInput from '../../../../components/ObservationInput';
-import LoaderButton from '../../../../components/LoaderButton';
+import { FormControl, Keyboard } from '../../../../components/Observation';
+import Loading from '../../../../components/Loading';
 
 // Utils
 import { getShape, inputValueToNumber, formatFormula } from '../../../../Utils';
 
 // Types
 import type { GetServerSideProps } from 'next';
+import type { Observation, ShapeCode } from '@prisma/client';
+import type { KeyboardLayoutObject } from 'react-simple-keyboard';
 import type ComponentWithAuth from '../../../../types/ComponentWithAuth';
 import type Shape from '../../../../types/Shape';
-import type { Observation, ShapeCode } from '@prisma/client';
+import type ObservationFormValues from '../../../../types/ObservationFormValues';
 
 type Props = {
     observation: Observation,
@@ -90,7 +89,7 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
     };
 
     // States
-    const [form, setForm] = useState({
+    const [form, setForm] = useState<ObservationFormValues>({
         formula: '',
         r: '',
         t: '',
@@ -183,7 +182,7 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
             // console.log('formula', form.formula, correctValues.formula)
             setIsInputCorrect({
                 ...isInputCorrect,
-                formula: checkFormula(form.formula, correctValues.formula),
+                formula: checkFormula('' + form.formula, correctValues.formula),
             });
         }
 
@@ -259,7 +258,7 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                         {/* Inputs */}
                         <div className="grid grid-cols-1 gap-2">
                             {/* formula Input */}
-                            <ObservationInput
+                            <FormControl
                                 title={shape.code === 'cylinder' ? 'L. Lingkaran' : (comparisonShape ? `V. ${comparisonShape.name}` : 'Volume')}
                                 symbol="v"
                                 isCorrect={isInputCorrect.formula}
@@ -314,7 +313,7 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                             )}
 
                             {/* formulaResult Input */}
-                            <ObservationInput
+                            <FormControl
                                 suffix="cm"
                                 name="v"
                                 isCorrect={isInputCorrect.v}
@@ -327,7 +326,7 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
 
                     {/* Button */}
                     <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-inherit p-4">
-                        {isSubmitting ? (<LoaderButton />) : (
+                        {isSubmitting ? (<Loading.Button />) : (
                             <button
                                 type="submit"
                                 className="btn btn-primary btn-block"
@@ -341,38 +340,14 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
             </BottomSheet>
 
             {focusedInputName && (
-                <div
-                    className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-inherit rounded-t-2xl"
-                    style={{ backgroundColor: '#ececec' }}
-                >
-                    <Keyboard
-                        keyboardRef={(r) => (keyboardRef.current = r)}
-                        layout={keyboardLayouts[focusedInputName]}
-                        display={{
-                            '{bksp}': 'Hapus ⌫',
-                            '{space}': 'Spasi',
-                        }}
-                        buttonTheme={[
-                            {
-                                class: 'w-5-important',
-                                buttons: '{bksp} .'
-                            },
-                        ]}
-                        onChange={(input) => setForm({
-                            ...form,
-                            [focusedInputName]: input,
-                        })}
-                    />
-                    <div className="px-2 pb-2">
-                        <button
-                            className="btn btn-primary btn-block shadow"
-                            type="button"
-                            onClick={() => setFocusedInputName(null)}
-                        >
-                            Simpan
-                        </button>
-                    </div>
-                </div>
+                <Keyboard
+                    keyboardRef={keyboardRef}
+                    layout={keyboardLayouts[focusedInputName]}
+                    form={form}
+                    setForm={setForm}
+                    focusedInputName={focusedInputName}
+                    setFocusedInputName={setFocusedInputName}
+                />
             )}
         </main >
     );

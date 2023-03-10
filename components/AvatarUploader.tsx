@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 
 // Components
 import Avatar from './Avatar';
-import Spinner from './Spinner';
+import LoadingSpinner from './LoadingSpinner';
 
 // Utils
 import { reloadSession } from '../Utils';
@@ -69,7 +69,7 @@ const AvatarUploader = () => {
                     <div className="absolute right-0 bottom-0 z-20 transform translate-x-1/4 translate-y-1/4">
                         {isLoading ? (
                             <button className="btn btn-circle" disabled>
-                                <Spinner />
+                                <LoadingSpinner />
                             </button>
                         ) : (
                         <button

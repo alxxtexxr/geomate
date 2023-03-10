@@ -7,7 +7,7 @@ import Router from 'next/router';
 // Components
 import Navbar from '../../components/Navbar';
 import ShapePreview from '../../components/ShapePreview';
-import Spinner from '../../components/Spinner';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 
 // Utils
@@ -118,7 +118,7 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 </Link> */}
                 {isLoading ? (
                     <button className="btn w-full" disabled>
-                        <Spinner />
+                        <LoadingSpinner />
                     </button>
                 ) : (
                     <button className="btn btn-primary w-full shadow" onClick={startEvaluation}>

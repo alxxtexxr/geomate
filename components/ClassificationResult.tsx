@@ -2,7 +2,7 @@ import Sheet from 'react-modal-sheet';
 import { HiCheck, HiX } from 'react-icons/hi';
 
 // Components
-import LoaderButton from './LoaderButton';
+import LoadingButton from './Loading/LoadingButton';
 
 // Types
 import { Dispatch, SetStateAction } from 'react';
@@ -61,7 +61,7 @@ const ClassificationResult = ({ isOpen, setIsOpen, shape, predictedShape, isSubm
                         <div>
                             {predictedShape.code === shape.code ? (
                                 isSubmitting ? (
-                                    <LoaderButton />
+                                    <LoadingButton />
                                 ) : (
                                     <button className="btn btn-primary w-full" onClick={onSubmit}>
                                         Observasi

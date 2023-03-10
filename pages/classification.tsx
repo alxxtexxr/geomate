@@ -4,7 +4,7 @@ import { HiCamera } from 'react-icons/hi';
 import * as tmImage from '@teachablemachine/image';
 
 // Components
-import Spinner from '../components/Spinner';
+import LoadingSpinner from '../components/LoadingSpinner';
 import ShapeInformation from '../components/ShapeInformation';
 
 // Utils
@@ -55,7 +55,7 @@ const Classification: ComponentWithAuth = () => {
         <main className="relative bg-black h-screen">
             {model === null && (
                 <div className="fixed z-10 flex justify-center items-center bg-black bg-opacity-95 text-white h-screen w-screen ">
-                    <Spinner />
+                    <LoadingSpinner />
                 </div>
             )}
 
@@ -79,7 +79,7 @@ const Classification: ComponentWithAuth = () => {
                             className="btn btn-lg btn-circle"
                             disabled
                         >
-                            <Spinner />
+                            <LoadingSpinner />
                         </button>
                     </div>
                 ) : (

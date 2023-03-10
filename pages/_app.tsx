@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react';
+// import { useEffect, useState } from 'react';
 import { SessionProvider, useSession } from 'next-auth/react';
 import { ToastContainer } from 'react-toastify';
-import { useMediaQuery } from 'react-responsive';
+// import { useMediaQuery } from 'react-responsive';
 
 // Styles
 import 'react-toastify/dist/ReactToastify.css';
 import '../styles/globals.css';
 
 // Components
-import LoaderScreen from '../components/LoaderScreen';
+import Loading from '../components/Loading';
 // import BetterExperienceScreen from '../components/BetterExperienceScreen';
 import Wrapper from '../components/Wrapper';
 
@@ -62,7 +62,7 @@ const Auth = ({ children }: AuthProps) => {
     // if `{ required: true }` is supplied, `status` can only be "loading" or "authenticated"
     const { status } = useSession({ required: true });
 
-    return (status === 'loading') ? (<LoaderScreen />) : children;
+    return (status === 'loading') ? (<Loading.Screen />) : children;
 };
 
 export default MyApp;

@@ -132,5 +132,9 @@
 
 /* Keyboard */
 .hg-theme-default {
-    @apply p-2 !important
+    @apply bg-transparent p-2 !important
+}
+
+.hg-theme-default .hg-button {
+    @apply font-mono rounded-lg border-none shadow !important
 }

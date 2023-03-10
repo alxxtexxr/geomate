@@ -4,7 +4,7 @@ import Sheet from 'react-modal-sheet';
 import { toast } from 'react-toastify';
 
 // Components
-import LoaderButton from './LoaderButton';
+import LoadingButton from './Loading/LoadingButton';
 
 // Utils
 import { reloadSession } from '../Utils';
@@ -76,7 +76,7 @@ const ProfileNameEditForm = ({ isOpen, setIsOpen }: Props) => {
                             />
                         </div>
                         {isLoading ? (
-                            <LoaderButton />
+                            <LoadingButton />
                         ) : (
                             name === '' || name === session?.user.name ? (
                                 <button className="btn w-full" disabled>

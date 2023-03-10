@@ -9,7 +9,7 @@ type Props = {
     canMeasure?: boolean,
 };
 
-const ObservationInput = ({ 
+const ObservationFormControl = ({ 
     title, 
     symbol = null, 
     suffix = null, 
@@ -56,4 +56,4 @@ const ObservationInput = ({
     );
 };
 
-export default ObservationInput;
+export default ObservationFormControl;
