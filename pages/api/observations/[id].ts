@@ -20,13 +20,13 @@ const handle = async (req: NextApiRequest, res: NextApiResponse) => {
                 break;
             case 'PUT':
                 const {
-                    nVertices,
-                    nEdges,
-                    nFaces,
-                    nBaseVertices,
-                    baseA,
-                    baseT,
-                    baseS,
+                    // nVertices,
+                    // nEdges,
+                    // nFaces,
+                    // nBaseVertices,
+                    // baseA,
+                    // baseT,
+                    // baseS,
                     r,
                     t,
                     s,
@@ -34,19 +34,21 @@ const handle = async (req: NextApiRequest, res: NextApiResponse) => {
                     lst,
                     ka,
                     v,
-                    lp
+                    lp,
+                    // v2.x
+                    comparisonV,
                 } = req.body;
 
                 const result = await prisma.observation.update({
                     where: { id: id as string },
                     data: {
-                        nVertices: nVertices,
-                        nEdges: nEdges,
-                        nFaces: nFaces,
-                        nBaseVertices: nBaseVertices,
-                        baseA: baseA,
-                        baseT: baseT,
-                        baseS: baseS,
+                        // nVertices: nVertices,
+                        // nEdges: nEdges,
+                        // nFaces: nFaces,
+                        // nBaseVertices: nBaseVertices,
+                        // baseA: baseA,
+                        // baseT: baseT,
+                        // baseS: baseS,
                         r: r,
                         t: t,
                         s: s,
@@ -55,6 +57,8 @@ const handle = async (req: NextApiRequest, res: NextApiResponse) => {
                         ka: ka,
                         v: v,
                         lp: lp,
+                        // v2.x
+                        comparisonV: comparisonV,
                     },
                 });
 

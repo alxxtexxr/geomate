@@ -126,13 +126,13 @@ model Observation {
   id            String    @id @default(cuid())
   shapeCode     ShapeCode
   image         String?
-  nVertices     Int?
-  nEdges        Int?
-  nFaces        Int?
-  nBaseVertices Int?
-  baseA         Float?
-  baseT         Float?
-  baseS         Float?
+  // nVertices     Int?
+  // nEdges        Int?
+  // nFaces        Int?
+  // nBaseVertices Int?
+  // baseA         Float?
+  // baseT         Float?
+  // baseS         Float?
   r             Float?
   t             Float?
   s             Float?
@@ -141,6 +141,7 @@ model Observation {
   ka            Float?
   v             Float?
   lp            Float?
+  comparisonV   Float?
   isCompleted   Boolean   @default(false)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt

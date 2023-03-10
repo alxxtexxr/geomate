@@ -34,7 +34,7 @@ export const getShape = (code: string) => SHAPES.filter((SHAPE) => SHAPE.code ==
 
 // Math Symbol
 export const getMathSymbol = (code: string) => MATH_SYMBOLS.filter((MATH_SYMBOL) => MATH_SYMBOL.code === code)[0];
-export const extractMathSymbolCodes = (formula: string) => formula.replace('PI', '').match(/\b[a-zA-Z]+\b/g) || [];
+export const extractMathSymbolCodes = (formula: string) => formula.replace('pi', '').match(/\b[a-zA-Z]+\b/g) || [];
 
 // Base Shape Symbol
 export const getBaseShapeSymbol = (nBaseVertices: number) => {
@@ -159,10 +159,8 @@ export const formatFormula = (formula: string) =>
         .replaceAll(' )', ')')
         .replaceAll(' / ', '/')
         .replaceAll('*', '×')
-        .replaceAll(' ^ 2', '²')
-        .replaceAll('PI', 'π')
-        .replaceAll('(1/3)', '⅓')
-        .replaceAll('(4/3)', '¼')
+        .replaceAll('^2', '²')
+        .replaceAll('pi', 'π')
         ;
 
 export const formatFormulaToKatex = (formula: string) => 
@@ -171,15 +169,15 @@ export const formatFormulaToKatex = (formula: string) =>
         .replaceAll(' )', ')')
         .replaceAll(' / ', '/')
         .replaceAll('*', '\\times')
-        .replaceAll('PI', '\\pi')
-        .replaceAll('(1/3)', '\\frac{1}{3}')
-        .replaceAll('(4/3)', '\\frac{4}{3}')
+        .replaceAll('pi', '\\pi')
+        .replaceAll('1/3', '\\frac{1}{3}')
+        .replaceAll('4/3', '\\frac{4}{3}')
         ;
 
 export const getS = (r: number, t: number) => +Math.sqrt(Math.pow(r, 2) + Math.pow(t, 2)).toFixed(2);
 
 export const evaluateFormula = (formula: string, form: ObservationForm) => {
-    let _formula = formula.replaceAll('pi', 'PI');
+    let _formula = formula;
     let _formulaArr = _formula.split(' ');
 
     _formulaArr = _formulaArr.map((_formulaArrI) => form.hasOwnProperty(_formulaArrI) ? (form as { [key: string]: any })[_formulaArrI] : _formulaArrI);

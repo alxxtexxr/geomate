@@ -129,3 +129,8 @@
 .message-balloon-base-100::before {
     @apply border-r-base-100
 }
+
+/* Keyboard */
+.hg-theme-default {
+    @apply p-2 !important
+}

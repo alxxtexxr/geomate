@@ -38,36 +38,52 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
     };
     const comparisonShapeCode = comparisonShapeCodes[shape.code];
     const comparisonShape = comparisonShapeCode && getShape(comparisonShapeCode);
+    const comparisonShapeFormula = shape.code === 'cylinder'
+        ? 'pi*r^2' // The formula of area of a circle
+        : (comparisonShape && comparisonShape.vFormula)
 
     // Define correct values
     const correctValues = {
-        formula: comparisonShape && formatFormula(comparisonShape.vFormula),
+        formula: comparisonShapeFormula && formatFormula(comparisonShapeFormula),
         r: observation.r,
         t: observation.t,
-        v: +Parser.evaluate(shape.vFormula, {
-            PI: 3.14,
+        v: comparisonShapeFormula && +Parser.evaluate(comparisonShapeFormula, {
+            pi: 3.14,
             r: observation.r || 0,
-            t: observation.t || 0,
+            t: shape.code === 'sphere' ? observation.r || 0 : observation.t || 0,
         }).toFixed(1),
     };
 
     // Configure keyboard
     const keyboardRef = useRef(null);
+    const formulaKeyboardLayouts: { [key: string]: KeyboardLayoutObject } = {
+        cylinder: {
+            default: [
+                '+ - ÷ × ² {bksp}',
+                'π r',
+            ],
+        },
+        cone: {
+            default: [
+                '+ - ÷ × ² {bksp}',
+                'π r t',
+            ],
+        },
+        sphere: {
+            default: [
+                '+ - ÷ × ² {bksp}',
+                '1/3 π r t',
+            ],
+        },
+    };
     const numericKeyboardLayout = {
         default: [
             '1 2 3 4 5 {bksp}',
             '6 7 8 9 0 .',
-            '{enter}',
         ],
     };
     const keyboardLayouts: { [key: string]: KeyboardLayoutObject } = {
-        formula: {
-            default: [
-                '+ - ÷ × ² {bksp}',
-                'π r t',
-                '{enter}',
-            ],
-        },
+        formula: formulaKeyboardLayouts[shape.code],
         r: numericKeyboardLayout,
         t: numericKeyboardLayout,
         v: numericKeyboardLayout,
@@ -99,11 +115,11 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    comparisonV: form.v,
+                    comparisonV: +form.v,
                 }),
             });
 
-            await Router.push(`/observations/${observation.id}/steps/2`);
+            await Router.push(`/observations/${observation.id}/steps/3`);
         } catch (error) {
             setIsSubmitting(false);
             console.error(error);
@@ -112,7 +128,8 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
-        const updatedValue = name === 'formula' ? value : inputValueToNumber(value);
+
+        let updatedValue = name === 'formula' ? value : inputValueToNumber(value);
 
         setForm({
             ...form,
@@ -145,12 +162,25 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
         return formulaArr.every((mathSymbol, i) => mathSymbol === correctFormulaArr[i]);
     };
 
-    const isAllInputCorrect = () => Object.values(isInputCorrect).every((v) => v)
+    const isAllInputCorrect = () => {
+        let filteredFormula = `v = ${comparisonShapeFormula}`;
+        filteredFormula = filteredFormula?.replaceAll('pi', '')
+        if (shape.code === 'sphere') { filteredFormula = filteredFormula?.replaceAll('t', '') }
+
+        const abcMathSymbols = filteredFormula?.match(/[a-zA-Z]+/g);
+
+        const filteredIsInputCorrect = Object.fromEntries(
+            Object.entries(isInputCorrect).filter(([key]) => abcMathSymbols?.includes(key))
+        );
+
+        return Object.values(filteredIsInputCorrect).every((v) => v);
+    };
 
     // Effects
     useEffect(() => {
         // Check if formula is correct
         if (form.formula && correctValues.formula) {
+            // console.log('formula', form.formula, correctValues.formula)
             setIsInputCorrect({
                 ...isInputCorrect,
                 formula: checkFormula(form.formula, correctValues.formula),
@@ -159,7 +189,7 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
 
         // Check if r (radius) is correct
         if (form.r) {
-            console.log('r', form.r, observation.r)
+            // console.log('r', form.r, correctValues.r)
             setIsInputCorrect({
                 ...isInputCorrect,
                 r: +form.r === observation.r,
@@ -191,20 +221,24 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 <title>Observasi (2/4) | {process.env.NEXT_PUBLIC_APP_NAME}</title>
             </Head>
 
-            <ShapePreview
-                height={136}
-                shapeCode={shape.code}
-                r={observation.r || 0}
-                t={observation.t || 0}
-            />
             {comparisonShapeCode && (
                 <ShapePreview
                     height={136}
-                    shapeCode={comparisonShapeCode}
-                    r={+form.r || 0}
-                    t={+form.t || 0}
+                    shapeCode={shape.code}
+                    r={observation.r || 0}
+                    t={observation.t || 0}
                 />
             )}
+
+            <ShapePreview
+                // Kek, this one is horrifying
+                // It will multiply 136 by 2 if 'comparisonShapeCode' is null
+                // Else it will multiply 136 by 1
+                height={136 * -(+!!comparisonShapeCode - 2)}
+                shapeCode={comparisonShapeCode || shape.code}
+                r={+form.r || 0}
+                t={shape.code === 'sphere' ? +form.r : +form.t || 0}
+            />
 
             <BottomSheet className="w-inherit">
                 {/* Form */}
@@ -226,41 +260,54 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                         <div className="grid grid-cols-1 gap-2">
                             {/* formula Input */}
                             <ObservationInput
-                                title="Vol. Tabung"
+                                title={shape.code === 'cylinder' ? 'L. Lingkaran' : (comparisonShape ? `V. ${comparisonShape.name}` : 'Volume')}
                                 symbol="v"
                                 isCorrect={isInputCorrect.formula}
                                 name="formula"
                                 value={form.formula}
                                 onChange={handleChange}
                                 onFocus={handleFocus}
-                            // onBlur={() => setFocusedInputName(null)}
                             />
 
                             {isInputCorrect.formula && (
                                 <div className="grid grid-cols-3">
                                     <div className="col-start-2 col-span-2">
                                         <div className="flex items-center font-mono text-base">
-                                            {correctValues.formula?.split('').map((mathSymbol, i) => {
-                                                if (/[a-zA-Z]/.test(mathSymbol)) {
-                                                    const isCorrect = (isInputCorrect as { [key: string]: boolean })[mathSymbol]
-                                                    const isCorrectCx = isCorrect ? 'input-primary' : 'input-error';
-                                                    const mrCx = correctValues.formula !== null && i + 1 < correctValues.formula.length ? 'mr-2' : '';
+                                            {comparisonShapeFormula && comparisonShapeFormula
+                                                .replaceAll(' ', '')
+                                                .replaceAll('*', ' * ')
+                                                .replaceAll('^', ' ^').split(' ')
+                                                .map((mathSymbol, i) => {
+                                                    const formattedMathSymbol = formatFormula(mathSymbol);
+                                                    if (/[a-zA-Z]/.test(formattedMathSymbol)) {
+                                                        const name = shape.code === 'sphere' && formattedMathSymbol === 't' ? 'r' : formattedMathSymbol;
 
-                                                    return (
-                                                        <input
-                                                            key={i}
-                                                            className={`input input-bordered flex-grow w-0 ml-2 ${mrCx} ${isCorrectCx}`}
-                                                            placeholder={mathSymbol}
-                                                            name={mathSymbol}
-                                                            value={(form as FormValues)[mathSymbol] || ''}
-                                                            onChange={handleChange}
-                                                            onFocus={handleFocus}
-                                                        />
-                                                    );
-                                                } else {
-                                                    return mathSymbol;
-                                                }
-                                            })}
+                                                        const isCorrect = (isInputCorrect as { [key: string]: boolean })[name]
+                                                        const isCorrectCx = isCorrect ? 'input-primary' : 'input-error';
+
+
+                                                        return (
+                                                            <input
+                                                                key={i}
+                                                                className={`input input-bordered flex-grow w-16 mx-0.5 ${isCorrectCx}`}
+                                                                placeholder={formattedMathSymbol}
+                                                                name={name}
+                                                                value={(form as FormValues)[name] || ''}
+                                                                onChange={handleChange}
+                                                                onFocus={handleFocus}
+                                                            />
+                                                        );
+                                                    } else {
+                                                        return (
+                                                            <div
+                                                                key={i}
+                                                                className="mx-0.5"
+                                                            >
+                                                                {formattedMathSymbol}
+                                                            </div>
+                                                        )
+                                                    }
+                                                })}
                                         </div>
                                     </div>
                                 </div>
@@ -274,7 +321,6 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                 value={form.v || ''}
                                 onChange={handleChange}
                                 onFocus={handleFocus}
-                            // onBlur={() => setFocusedInputName(null)}
                             />
                         </div>
                     </div>
@@ -295,31 +341,37 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
             </BottomSheet>
 
             {focusedInputName && (
-                <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-inherit">
+                <div
+                    className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-inherit rounded-t-2xl"
+                    style={{ backgroundColor: '#ececec' }}
+                >
                     <Keyboard
                         keyboardRef={(r) => (keyboardRef.current = r)}
                         layout={keyboardLayouts[focusedInputName]}
                         display={{
                             '{bksp}': 'Hapus ⌫',
                             '{space}': 'Spasi',
-                            '{enter}': 'OK',
                         }}
                         buttonTheme={[
                             {
                                 class: 'w-5-important',
                                 buttons: '{bksp} .'
                             },
-                            // {
-                            //     class: '',
-                            //     buttons: '{enter}'
-                            // },
                         ]}
                         onChange={(input) => setForm({
                             ...form,
                             [focusedInputName]: input,
                         })}
-                        onKeyPress={(button) => button === '{enter}' && setFocusedInputName(null)}
                     />
+                    <div className="px-2 pb-2">
+                        <button
+                            className="btn btn-primary btn-block shadow"
+                            type="button"
+                            onClick={() => setFocusedInputName(null)}
+                        >
+                            Simpan
+                        </button>
+                    </div>
                 </div>
             )}
         </main >
