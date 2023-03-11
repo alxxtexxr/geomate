@@ -1,16 +1,20 @@
 import { useRef, useState, useEffect, FormEvent, ChangeEvent, FocusEvent } from 'react';
 import Head from 'next/head'
 import Router from 'next/router';
+import { Parser } from 'expr-eval';
 
 // Components
 import ShapePreview from '../../../../components/ShapePreview';
 import BottomSheet from '../../../../components/BottomSheet';
 import MessageBalloon from '../../../../components/MessageBalloon';
-import { FormControl, Spinner, Keyboard } from '../../../../components/Observation';
+import { FormControl, Keyboard } from '../../../../components/Observation';
 import Loading from '../../../../components/Loading';
 
+// Constants
+import { KEYBOARD_LAYOUTS } from '../../../../Constants';
+
 // Utils
-import { getShape } from '../../../../Utils';
+import { getShape, inputValueToNumber, formatFormula, checkFormula } from '../../../../Utils';
 
 // Types
 import type { GetServerSideProps } from 'next';
@@ -25,7 +29,7 @@ type Props = {
     shape: Shape,
 };
 
-const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
+const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
     // Define comparisonShape
     const comparisonShapeCodes: { [key: string]: ShapeCode | null } = {
         cylinder: null,
@@ -34,52 +38,46 @@ const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
     };
     const comparisonShapeCode = comparisonShapeCodes[shape.code];
     const comparisonShape = comparisonShapeCode && getShape(comparisonShapeCode);
+    const comparisonShapeFormula = shape.code === 'cylinder'
+        ? 'pi*r^2' // The formula of area of a circle
+        : (comparisonShape && comparisonShape.vFormula)
 
     // Configure keyboard
     const keyboardRef = useRef(null);
-    const numericKeyboardLayout = {
-        default: [
-            '1 2 3 4 5 {bksp}',
-            '6 7 8 9 0 .',
-        ],
-    };
     const keyboardLayouts: { [key: string]: KeyboardLayoutObject } = {
-        n: numericKeyboardLayout,
+        comparisonVFormula: KEYBOARD_LAYOUTS.formula,
+        n: KEYBOARD_LAYOUTS.numeric,
+        vFormula: KEYBOARD_LAYOUTS.formula,
+    };
+
+    // Define correct values
+    const correctNs: { [key: string]: number } = {
+        cylinder: observation.t || 0,
+        cone: 3,
+        sphere: 4,
+    };
+    const correctValues = {
+        comparisonVFormula: comparisonShapeFormula && formatFormula(comparisonShapeFormula),
+        n: correctNs[shape.code],
+        vFormula: shape.vFormula && formatFormula(shape.vFormula),
     };
 
     // States
     const [form, setForm] = useState<ObservationFormValues>({
-        n: '1',
+        comparisonVFormula: '',
+        n: '',
+        vFormula: '',
     });
     const [focusedInputName, setFocusedInputName] = useState<string | null>(null);
+    const [isInputCorrect, setIsInputCorrect] = useState({
+        comparisonVFormula: false,
+        n: false,
+        vFormula: false,
+    });
     const [isSubmitting, setIsSubmitting] = useState(false);
-
-    const setN = (n: number) => {
-        setForm({
-            ...form,
-            n: '' + n,
-        });
-
-        if (keyboardRef.current) {
-            (keyboardRef.current as any).setInput('' + n);
-        }
-    }
 
     // Define n variables
     const nOp = shape.code === 'cone' ? '× 1/' : '×';
-    const nComparisonV = observation.comparisonV
-        ? (shape.code === 'cone'
-            ? (observation.comparisonV / +form.n).toFixed(1)
-            : (observation.comparisonV * +form.n).toFixed(1))
-        : '';
-    const isNComparisonVCorrect = +nComparisonV === observation.v;
-
-    // Define shape height
-    const shapeTs: { [key: string]: number } = {
-        cylinder: observation.t ? observation.t * +form.n : 0,
-        cone: observation.t ? observation.t / +form.n : 0,
-        sphere: observation.t || 0,
-    };
 
     // Functions
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -122,6 +120,38 @@ const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
         }
     };
 
+    const isAllInputCorrect = () => Object.values(isInputCorrect).every((v) => v);
+
+    // Effects
+    useEffect(() => {
+        // Check if comparisonVFormula is correct
+        if (form.comparisonVFormula && correctValues.comparisonVFormula) {
+            // console.log('comparisonVFormula', form.comparisonVFormula, correctValues.comparisonVFormula)
+            setIsInputCorrect({
+                ...isInputCorrect,
+                comparisonVFormula: checkFormula('' + form.comparisonVFormula, correctValues.comparisonVFormula),
+            });
+        }
+
+        // Check if n is correct
+        if (form.n) {
+            // console.log('n', +form.n === correctValues.n)
+            setIsInputCorrect({
+                ...isInputCorrect,
+                n: +form.n === correctValues.n,
+            });
+        }
+
+        // Check if vFormula is correct
+        if (form.vFormula && correctValues.vFormula) {
+            // console.log('vFormula', form.vFormula, correctValues.vFormula)
+            setIsInputCorrect({
+                ...isInputCorrect,
+                vFormula: checkFormula('' + form.vFormula, correctValues.vFormula),
+            });
+        }
+    }, [form]);
+
     return (
         <main className="w-inherit h-screen bg-white">
             <Head>
@@ -130,24 +160,14 @@ const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
 
             <div className="sticky top-0 z-10 rounded-b-2xl border-shadow-b overflow-hidden">
                 <div className="rounded-b-2xl shadow overflow-hidden">
-                    {comparisonShapeCode && (
-                        <ShapePreview
-                            height={136}
-                            shapeCode={shape.code}
-                            r={observation.r || 0}
-                            t={observation.t || 0}
-                        />
-                    )}
                     <ShapePreview
-                        // Kek, this one is horrifying
-                        // It will multiply 136 by 2 if 'comparisonShapeCode' is null
-                        // Else it will multiply 136 by 1
-                        height={136 * -(+!!comparisonShapeCode - 2)}
-                        shapeCode={comparisonShapeCode || shape.code}
+                        height={272}
+                        shapeCode={shape.code}
                         r={observation.r || 0}
-                        t={shapeTs[shape.code]}
+                        t={observation.t || 0}
                     />
                 </div>
+
                 {/* Message */}
                 <div className="flex bg-white bg-opacity-90 p-4">
                     <div className="avatar">
@@ -163,19 +183,38 @@ const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
 
             <BottomSheet className="w-inherit">
                 {/* Form */}
-                <form className="w-inherit p-4" onSubmit={handleSubmit}>
+                <form className="w-inherit pt-4 px-4 pb-space-for-keyboard" onSubmit={handleSubmit}>
                     <div className="grid grid-cols-1 gap-4">
                         {/* Inputs */}
                         <div className="grid grid-cols-1 gap-2">
-                            {/* comparisonV Input */}
+                            {/* comparisonVFormula Input */}
                             <FormControl
-                                title={comparisonShape ? `V. ${comparisonShape.name}` : ''}
-                                symbol="v2"
-                                suffix="cm³"
-                                name="comparisonV"
-                                value={observation.comparisonV || ''}
-                                disabled
+                                title={`V. ${shape.name}`}
+                                symbol="v"
+                                isCorrect={isInputCorrect.comparisonVFormula}
+                                name="comparisonVFormula"
+                                placeholder={comparisonShape ? `Rumus V. ${comparisonShape.name}` : ''}
+                                value={form.comparisonVFormula}
+                                onChange={handleChange}
+                                onFocus={handleFocus}
                             />
+
+                            {isInputCorrect.comparisonVFormula && shape.code === 'sphere' && (
+                                <>
+                                    <FormControl
+                                        name="correctedFormula"
+                                        placeholder={comparisonShape ? `Rumus V. ${comparisonShape.name}` : ''}
+                                        value="1/3×π×r²×(r)"
+                                        disabled
+                                    />
+                                    <FormControl
+                                        name="correctedFormula"
+                                        placeholder={comparisonShape ? `Rumus V. ${comparisonShape.name}` : ''}
+                                        value="1/3×π×r³"
+                                        disabled
+                                    />
+                                </>
+                            )}
 
                             {/* n input */}
                             <div className="grid grid-cols-3">
@@ -186,10 +225,11 @@ const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                                 {c}
                                             </div>
                                         ))}
-                                        <Spinner
+                                        <input
+                                            className={`input input-bordered flex-grow w-16 mx-0.5 ${isInputCorrect.n ? 'input-primary' : 'input-error'}`}
                                             name="n"
+                                            placeholder="?"
                                             value={form.n}
-                                            setValue={setN}
                                             onChange={handleChange}
                                             onFocus={handleFocus}
                                         />
@@ -197,36 +237,25 @@ const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                 </div>
                             </div>
 
-                            {/* nComparisonV Input */}
+                            {/* vFormula Input */}
                             <FormControl
-                                suffix="cm³"
-                                name="nComparisonV"
-                                value={nComparisonV}
-                                isCorrect={isNComparisonVCorrect}
-                                disabled
-                            />
-
-                            <hr />
-                            {/* formulaResult Input */}
-                            <FormControl
-                                title={`V. ${shape.name}`}
-                                symbol="v1"
-                                suffix="cm³"
-                                isCorrect={isNComparisonVCorrect}
-                                name="v"
-                                value={observation.v || 0}
-                                disabled
+                                name="vFormula"
+                                isCorrect={isInputCorrect.vFormula}
+                                placeholder={`Rumus V. ${shape.name}`}
+                                value={form.vFormula}
+                                onChange={handleChange}
+                                onFocus={handleFocus}
                             />
                         </div>
                     </div>
 
                     {/* Button */}
-                    <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-inherit p-4">
+                    <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 bg-white bg-opacity-90 w-inherit p-4 rounded-t-2xl">
                         {isSubmitting ? (<Loading.Button />) : (
                             <button
                                 type="submit"
                                 className="btn btn-primary btn-block"
-                                disabled={!isNComparisonVCorrect}
+                                disabled={!isAllInputCorrect()}
                             >
                                 Selanjutnya
                             </button>
@@ -249,7 +278,7 @@ const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
     );
 };
 
-ObservationStep3.auth = true;
+ObservationStep4.auth = true;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const headers = context.req.headers;
@@ -264,4 +293,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return { props: { observation, shape } };
 };
 
-export default ObservationStep3;
+export default ObservationStep4;

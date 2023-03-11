@@ -11,6 +11,9 @@ module.exports = {
       height: {
         'inherit': 'inherit',
       },
+      padding: {
+        'space-for-keyboard': '263px',
+      },
       borderWidth: {
         '6': '6px',
       },

@@ -11,19 +11,18 @@ type ObservationKeyboardProps = {
     keyboardRef: MutableRefObject<null>,
     layout: KeyboardLayoutObject,
     form: ObservationFormValues,
-    setForm: Dispatch<SetStateAction<ObservationFormValues>>,
     focusedInputName: string | null,
     setFocusedInputName: Dispatch<SetStateAction<string | null>>,
+    onChange: ((input: string, e?: MouseEvent | undefined) => any),
 };
 
-const ObservationKeyboard = ({ keyboardRef, layout, form, setForm, focusedInputName, setFocusedInputName }: ObservationKeyboardProps) => (
+const ObservationKeyboard = ({ keyboardRef, layout, form, focusedInputName, setFocusedInputName, onChange }: ObservationKeyboardProps) => (
     <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 bg-gray-200 bg-opacity-90 w-inherit rounded-t-lg shadow">
         <Keyboard
             keyboardRef={(r) => (keyboardRef.current = r)}
             layout={layout}
             display={{
                 '{bksp}': 'Hapus',
-                '{space}': 'Spasi',
             }}
             buttonTheme={[
                 {
@@ -31,14 +30,7 @@ const ObservationKeyboard = ({ keyboardRef, layout, form, setForm, focusedInputN
                     buttons: '{bksp} .'
                 },
             ]}
-            onChange={(input) => {
-                if (focusedInputName) {
-                    setForm({
-                        ...form,
-                        [focusedInputName]: input,
-                    });
-                }
-            }}
+            onChange={onChange}
             onRender={(r) => {
                 if (focusedInputName) {
                     const focusedInputValue = (form as ObservationFormValues)[focusedInputName];
@@ -52,7 +44,7 @@ const ObservationKeyboard = ({ keyboardRef, layout, form, setForm, focusedInputN
                 type="button"
                 onClick={() => setFocusedInputName(null)}
             >
-                Simpan
+                Tutup
             </button>
         </div>
     </div>

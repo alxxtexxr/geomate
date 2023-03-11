@@ -6,7 +6,7 @@ import * as tmImage from '@teachablemachine/image';
 
 // Components
 import ClassificationResult from '../../../components/ClassificationResult';
-import LoadingSpinner from '../../../components/LoadingSpinner';
+import Loading from '../../../components/Loading';
 
 // Utils
 import { createImgElemement, dataURItoBlob, getShape } from '../../../Utils';
@@ -97,7 +97,7 @@ const Classification: ComponentWithAuth<Props> = ({ observation, shape }) => {
         <main className="relative bg-black h-screen">
             {model === null && (
                 <div className="fixed z-10 flex justify-center items-center bg-black bg-opacity-95 text-white h-screen w-screen ">
-                    <LoadingSpinner />
+                    <Loading.Spinner />
                 </div>
             )}
 
@@ -121,7 +121,7 @@ const Classification: ComponentWithAuth<Props> = ({ observation, shape }) => {
                             className="btn btn-lg btn-circle"
                             disabled
                         >
-                            <LoadingSpinner />
+                            <Loading.Spinner />
                         </button>
                     </div>
                 ) : (

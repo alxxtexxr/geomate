@@ -1,3 +1,3 @@
-type ObservationFormValues = { [key: string]: string | number };
+type ObservationFormValues = { [key: string]: string };
 
 export default ObservationFormValues

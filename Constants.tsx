@@ -4,6 +4,7 @@ import { AiOutlineScan } from 'react-icons/ai'
 // Types
 import Shape from './types/Shape';
 import MathSymbol from './types/MathSymbol';
+import { KeyboardLayoutObject } from 'react-simple-keyboard';
 
 // Shape descriptions is from mathway.com
 export const SHAPES: Shape[] = [
@@ -291,3 +292,23 @@ export const INTROS = [
     ],
   }
 ];
+
+export const KEYBOARD_LAYOUTS: {[key: string]: KeyboardLayoutObject} = {
+  numeric: {
+    default: [
+      '1 2 3 4 5 {bksp}',
+      '6 7 8 9 0 .',
+    ],
+  },
+  formula: {
+    default: [
+      '1 2 3 4 5',
+      '6 7 8 9 0',
+      'π r t {bksp}',
+      '+ - / × ² ³',
+
+    ],
+  },
+};
+
+export const SHAPE_PREVIEW_DEFAULT_HEIGHT = 272;

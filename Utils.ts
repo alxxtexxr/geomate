@@ -153,17 +153,18 @@ export const splitFormula = (formula: string) => {
     return formulaArrFiltered;
 }
 
-export const formatFormula = (formula: string) => 
+export const formatFormula = (formula: string) =>
     splitFormula(formula).join(' ')
         .replaceAll('( ', '(')
         .replaceAll(' )', ')')
         .replaceAll(' / ', '/')
         .replaceAll('*', '×')
         .replaceAll('^2', '²')
+        .replaceAll('^3', '³')
         .replaceAll('pi', 'π')
-        ;
+    ;
 
-export const formatFormulaToKatex = (formula: string) => 
+export const formatFormulaToKatex = (formula: string) =>
     splitFormula(formula).join(' ')
         .replaceAll('( ', '(')
         .replaceAll(' )', ')')
@@ -172,7 +173,7 @@ export const formatFormulaToKatex = (formula: string) =>
         .replaceAll('pi', '\\pi')
         .replaceAll('1/3', '\\frac{1}{3}')
         .replaceAll('4/3', '\\frac{4}{3}')
-        ;
+    ;
 
 export const getS = (r: number, t: number) => +Math.sqrt(Math.pow(r, 2) + Math.pow(t, 2)).toFixed(2);
 
@@ -184,6 +185,17 @@ export const evaluateFormula = (formula: string, form: ObservationForm) => {
     _formula = _formulaArr.join(' ');
 
     return _formula;
+};
+
+export const checkFormula = (formula: string, correctFormula: string) => {
+    const formulaArr = formula.replaceAll(' ', '').split('×').sort();
+    const correctFormulaArr = correctFormula.replaceAll(' ', '').split('×').sort();
+
+    if (formulaArr.length !== correctFormulaArr.length) {
+        return false;
+    }
+
+    return formulaArr.every((mathSymbol, i) => mathSymbol === correctFormulaArr[i]);
 };
 
 export const inputValueToNumber = (inputValue: string) => {

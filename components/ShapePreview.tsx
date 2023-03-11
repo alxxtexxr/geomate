@@ -26,7 +26,7 @@ const ShapePreview = ({ shapeCode, r, t, height = 272 }: Props) => {
     return (
         <>
             <section
-                className="sticky top-0 z-0"
+                className="sticky top-0 z-0 bg-black"
                 style={{
                     touchAction: 'none',
                     height: height,

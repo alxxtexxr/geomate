@@ -138,3 +138,12 @@
 .hg-theme-default .hg-button {
     @apply font-mono rounded-lg border-none shadow !important
 }
+
+/* Border Shadow */
+.border-shadow-t {
+    box-shadow: 0 -1px 0 #e5e7eb;
+}
+
+.border-shadow-b {
+    box-shadow: 0 1px 0 #e5e7eb;
+}

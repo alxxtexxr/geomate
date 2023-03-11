@@ -7,14 +7,14 @@ import Router from 'next/router';
 // Components
 import Navbar from '../../components/Navbar';
 import ShapePreview from '../../components/ShapePreview';
-import LoadingSpinner from '../../components/LoadingSpinner';
+import Loading from '../../components/Loading';
 
 
 // Utils
 import { getShape } from '../../Utils';
 
 // Constants
-import { MATH_SYMBOLS, DEFAULT_SIZE } from '../../Constants';
+import { MATH_SYMBOLS } from '../../Constants';
 
 // Types
 import type { GetServerSideProps } from 'next';
@@ -118,7 +118,7 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 </Link> */}
                 {isLoading ? (
                     <button className="btn w-full" disabled>
-                        <LoadingSpinner />
+                        <Loading.Spinner />
                     </button>
                 ) : (
                     <button className="btn btn-primary w-full shadow" onClick={startEvaluation}>

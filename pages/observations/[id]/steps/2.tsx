@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, FormEvent, ChangeEvent, FocusEvent } from 'react';
+import { useRef, useState, FormEvent, ChangeEvent, FocusEvent, useEffect } from 'react';
 import Head from 'next/head'
 import Router from 'next/router';
 import { Parser } from 'expr-eval';
@@ -10,8 +10,11 @@ import MessageBalloon from '../../../../components/MessageBalloon';
 import { FormControl, Keyboard } from '../../../../components/Observation';
 import Loading from '../../../../components/Loading';
 
+// Constants
+import { KEYBOARD_LAYOUTS, SHAPE_PREVIEW_DEFAULT_HEIGHT } from '../../../../Constants';
+
 // Utils
-import { getShape, inputValueToNumber, formatFormula } from '../../../../Utils';
+import { getShape, formatFormula, checkFormula } from '../../../../Utils';
 
 // Types
 import type { GetServerSideProps } from 'next';
@@ -40,6 +43,9 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
     const comparisonShapeFormula = shape.code === 'cylinder'
         ? 'pi*r^2' // The formula of area of a circle
         : (comparisonShape && comparisonShape.vFormula)
+    const comparisonShapeFormulaToFormat = shape.code === 'sphere'
+        ? '1/3*pi*r^3'
+        : comparisonShapeFormula
 
     // Define correct values
     const correctValues = {
@@ -55,37 +61,11 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
 
     // Configure keyboard
     const keyboardRef = useRef(null);
-    const formulaKeyboardLayouts: { [key: string]: KeyboardLayoutObject } = {
-        cylinder: {
-            default: [
-                '+ - ÷ × ² {bksp}',
-                'π r',
-            ],
-        },
-        cone: {
-            default: [
-                '+ - ÷ × ² {bksp}',
-                'π r t',
-            ],
-        },
-        sphere: {
-            default: [
-                '+ - ÷ × ² {bksp}',
-                '1/3 π r t',
-            ],
-        },
-    };
-    const numericKeyboardLayout = {
-        default: [
-            '1 2 3 4 5 {bksp}',
-            '6 7 8 9 0 .',
-        ],
-    };
     const keyboardLayouts: { [key: string]: KeyboardLayoutObject } = {
-        formula: formulaKeyboardLayouts[shape.code],
-        r: numericKeyboardLayout,
-        t: numericKeyboardLayout,
-        v: numericKeyboardLayout,
+        formula: KEYBOARD_LAYOUTS.formula,
+        r: KEYBOARD_LAYOUTS.numeric,
+        t: KEYBOARD_LAYOUTS.numeric,
+        v: KEYBOARD_LAYOUTS.numeric,
     };
 
     // States
@@ -125,18 +105,41 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
         }
     };
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-
-        let updatedValue = name === 'formula' ? value : inputValueToNumber(value);
+    const updateForm = (name: string, value: string) => {
+        // Check if formula is correct
+        if (correctValues.formula && name === 'formula') {
+            // console.log(name, value, '=', correctValues.formula)
+            setIsInputCorrect({
+                ...isInputCorrect,
+                formula: checkFormula(value, correctValues.formula),
+            });
+        } else {
+            // console.log(name, value, '=', (correctValues as { [key: string]: string | number })[name])
+            setIsInputCorrect({
+                ...isInputCorrect,
+                [name]: +value === (correctValues as { [key: string]: string | number })[name],
+            });
+        }
 
         setForm({
             ...form,
-            [name]: updatedValue,
+            [name]: value,
         });
+    };
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+
+        updateForm(name, value);
 
         if (keyboardRef.current) {
             (keyboardRef.current as any).setInput(value);
+        }
+    };
+
+    const handleKeyboardChange = (input: string) => {
+        if (focusedInputName) {
+            updateForm(focusedInputName, input);
         }
     };
 
@@ -150,20 +153,8 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
         }
     };
 
-    const checkFormula = (formula: string, correctFormula: string) => {
-        const formulaArr = formula.replaceAll(' ', '').split('×').sort();
-        const correctFormulaArr = correctFormula.replaceAll(' ', '').split('×').sort();
-
-        if (formulaArr.length !== correctFormulaArr.length) {
-            return false;
-        }
-
-        return formulaArr.every((mathSymbol, i) => mathSymbol === correctFormulaArr[i]);
-    };
-
-    const isAllInputCorrect = () => {
-        let filteredFormula = `v = ${comparisonShapeFormula}`;
-        filteredFormula = filteredFormula?.replaceAll('pi', '')
+    const isFormulaFilled = (formula: string) => {
+        let filteredFormula = formula?.replaceAll('pi', '')
         if (shape.code === 'sphere') { filteredFormula = filteredFormula?.replaceAll('t', '') }
 
         const abcMathSymbols = filteredFormula?.match(/[a-zA-Z]+/g);
@@ -173,106 +164,96 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
         );
 
         return Object.values(filteredIsInputCorrect).every((v) => v);
-    };
+    }
 
-    // Effects
+    const isAllInputCorrect = () => isFormulaFilled(`v = ${comparisonShapeFormula}`);
+
     useEffect(() => {
-        // Check if formula is correct
-        if (form.formula && correctValues.formula) {
-            // console.log('formula', form.formula, correctValues.formula)
-            setIsInputCorrect({
-                ...isInputCorrect,
-                formula: checkFormula('' + form.formula, correctValues.formula),
-            });
-        }
 
-        // Check if r (radius) is correct
-        if (form.r) {
-            // console.log('r', form.r, correctValues.r)
-            setIsInputCorrect({
-                ...isInputCorrect,
-                r: +form.r === observation.r,
-            });
-        }
-
-        // Check if t (tinggi/height) is correct
-        if (form.t) {
-            // console.log('t', form.t, correctValues.t)
-            setIsInputCorrect({
-                ...isInputCorrect,
-                t: +form.t === observation.t,
-            });
-        }
-
-        // Check if v (volume) is correct
-        if (form.v) {
-            // console.log('v', form.v, correctValues.v)
-            setIsInputCorrect({
-                ...isInputCorrect,
-                v: +form.v === correctValues.v,
-            });
-        }
-    }, [form]);
+    }, []);
 
     return (
-        <main className="w-inherit h-screen bg-black">
+        <main className="w-inherit h-screen bg-white">
             <Head>
                 <title>Observasi (2/4) | {process.env.NEXT_PUBLIC_APP_NAME}</title>
             </Head>
 
-            {comparisonShapeCode && (
-                <ShapePreview
-                    height={136}
-                    shapeCode={shape.code}
-                    r={observation.r || 0}
-                    t={observation.t || 0}
-                />
-            )}
+            <div className="sticky top-0 z-10 rounded-b-2xl border-shadow-b overflow-hidden">
+                <div className="rounded-b-2xl shadow overflow-hidden">
+                    {comparisonShapeCode && (
+                        <ShapePreview
+                            height={SHAPE_PREVIEW_DEFAULT_HEIGHT / 2}
+                            shapeCode={shape.code}
+                            r={observation.r || 0}
+                            t={observation.t || 0}
+                        />
+                    )}
 
-            <ShapePreview
-                // Kek, this one is horrifying
-                // It will multiply 136 by 2 if 'comparisonShapeCode' is null
-                // Else it will multiply 136 by 1
-                height={136 * -(+!!comparisonShapeCode - 2)}
-                shapeCode={comparisonShapeCode || shape.code}
-                r={+form.r || 0}
-                t={shape.code === 'sphere' ? +form.r : +form.t || 0}
-            />
+                    <ShapePreview
+                        // Kek, this one is horrifying
+                        // It will multiply 136 by 2 if 'comparisonShapeCode' is null
+                        // Else it will multiply 136 by 1
+                        height={SHAPE_PREVIEW_DEFAULT_HEIGHT / 2 * -(+!!comparisonShapeCode - 2)}
+                        shapeCode={comparisonShapeCode || shape.code}
+                        r={+form.r || 0}
+                        t={shape.code === 'sphere' ? +form.r : +form.t || 0}
+                    />
+                </div>
+
+                {/* Message */}
+                <div className="flex bg-white bg-opacity-90 p-4">
+                    <div className="avatar">
+                        <div className="w-20 rounded-full">
+                            <img src="https://faces-img.xcdn.link/image-lorem-face-891.jpg" />
+                        </div>
+                    </div>
+                    <MessageBalloon>
+                        That sounds like a great idea. I was actually planning on going for a run on Saturday morning.
+                    </MessageBalloon>
+                </div>
+            </div>
 
             <BottomSheet className="w-inherit">
                 {/* Form */}
-                <form className="w-inherit p-4" onSubmit={handleSubmit}>
+                <form className="w-inherit pt-4 px-4 pb-space-for-keyboard" onSubmit={handleSubmit}>
                     <div className="grid grid-cols-1 gap-4">
-                        {/* Message */}
-                        <div className="flex">
-                            <div className="avatar">
-                                <div className="w-20 rounded-full">
-                                    <img src="https://faces-img.xcdn.link/image-lorem-face-891.jpg" />
-                                </div>
-                            </div>
-                            <MessageBalloon>
-                                That sounds like a great idea. I was actually planning on going for a run on Saturday morning.
-                            </MessageBalloon>
-                        </div>
 
                         {/* Inputs */}
                         <div className="grid grid-cols-1 gap-2">
                             {/* formula Input */}
                             <FormControl
                                 title={shape.code === 'cylinder' ? 'L. Lingkaran' : (comparisonShape ? `V. ${comparisonShape.name}` : 'Volume')}
-                                symbol="v"
+                                symbol="v2"
                                 isCorrect={isInputCorrect.formula}
                                 name="formula"
+                                placeholder={comparisonShape ? `Rumus V. ${comparisonShape.name}` : ''}
                                 value={form.formula}
                                 onChange={handleChange}
                                 onFocus={handleFocus}
                             />
 
+                            {isInputCorrect.formula && shape.code === 'sphere' && (
+                                <>
+                                    <FormControl
+                                        name="correctedFormula"
+                                        placeholder={comparisonShape ? `Rumus V. ${comparisonShape.name}` : ''}
+                                        value="1/3×π×r²×(r)"
+                                        disabled
+                                    />
+                                    <FormControl
+                                        name="correctedFormula"
+                                        placeholder={comparisonShape ? `Rumus V. ${comparisonShape.name}` : ''}
+                                        value="1/3×π×r³"
+                                        disabled
+                                    />
+                                </>
+                            )}
+
                             {isInputCorrect.formula && (
                                 <div className="grid grid-cols-3">
                                     <div className="col-start-2 col-span-2">
                                         <div className="flex items-center font-mono text-base">
-                                            {comparisonShapeFormula && comparisonShapeFormula
+                                            {comparisonShapeFormulaToFormat && comparisonShapeFormulaToFormat
                                                 .replaceAll(' ', '')
                                                 .replaceAll('*', ' * ')
                                                 .replaceAll('^', ' ^').split(' ')
@@ -289,7 +270,7 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                                             <input
                                                                 key={i}
                                                                 className={`input input-bordered flex-grow w-16 mx-0.5 ${isCorrectCx}`}
-                                                                placeholder={formattedMathSymbol}
+                                                                placeholder={shape.code === 'sphere' && formattedMathSymbol === 't' ? '(r)' : formattedMathSymbol}
                                                                 name={name}
                                                                 value={(form as FormValues)[name] || ''}
                                                                 onChange={handleChange}
@@ -313,19 +294,22 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                             )}
 
                             {/* formulaResult Input */}
-                            <FormControl
-                                suffix="cm"
-                                name="v"
-                                isCorrect={isInputCorrect.v}
-                                value={form.v || ''}
-                                onChange={handleChange}
-                                onFocus={handleFocus}
-                            />
+                            {comparisonShape && isFormulaFilled(comparisonShape.vFormula) && (
+                                <FormControl
+                                    suffix="cm"
+                                    name="v"
+                                    isCorrect={isInputCorrect.v}
+                                    placeholder="?"
+                                    value={form.v || ''}
+                                    onChange={handleChange}
+                                    onFocus={handleFocus}
+                                />
+                            )}
                         </div>
                     </div>
 
                     {/* Button */}
-                    <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-inherit p-4">
+                    <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 bg-white bg-opacity-90 w-inherit p-4 rounded-t-2xl">
                         {isSubmitting ? (<Loading.Button />) : (
                             <button
                                 type="submit"
@@ -344,9 +328,9 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                     keyboardRef={keyboardRef}
                     layout={keyboardLayouts[focusedInputName]}
                     form={form}
-                    setForm={setForm}
                     focusedInputName={focusedInputName}
                     setFocusedInputName={setFocusedInputName}
+                    onChange={handleKeyboardChange}
                 />
             )}
         </main >

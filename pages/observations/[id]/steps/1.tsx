@@ -1,4 +1,4 @@
-import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import { useRef, useState, useEffect, FormEvent, ChangeEvent, FocusEvent } from 'react';
 import Head from 'next/head'
 import Router from 'next/router';
 import { Parser } from 'expr-eval';
@@ -7,11 +7,14 @@ import { Parser } from 'expr-eval';
 import ShapePreview from '../../../../components/ShapePreview';
 import BottomSheet from '../../../../components/BottomSheet';
 import MessageBalloon from '../../../../components/MessageBalloon';
-import { FormControl } from '../../../../components/Observation';
+import { FormControl, Keyboard } from '../../../../components/Observation';
 import Loading from '../../../../components/Loading';
 
+// Constants
+import { KEYBOARD_LAYOUTS } from '../../../../Constants';
+
 // Utils
-import { getShape, getMathSymbol, extractMathSymbolCodes, inputValueToNumber } from '../../../../Utils';
+import { getShape, getMathSymbol, extractMathSymbolCodes } from '../../../../Utils';
 
 // Types
 import type { GetServerSideProps } from 'next';
@@ -27,13 +30,15 @@ type Props = {
 
 const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
     const vMathSymbolCodes = extractMathSymbolCodes(shape.vFormula);
+    const keyboardRef = useRef(null);
 
     // States
     const [form, setForm] = useState<ObservationFormValues>({
-        r: getMathSymbol('r').defaultValue!,
-        t: getMathSymbol('t').defaultValue!,
+        r: '' + getMathSymbol('r').defaultValue,
+        t: '' + getMathSymbol('t').defaultValue,
         v: '',
     });
+    const [focusedInputName, setFocusedInputName] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     // Functions
@@ -46,8 +51,8 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    ...form,
-                    la: +(form.la || 0),
+                    r: +(form.r || 0),
+                    t: +(form.t || 0),
                     v: +(form.v || 0),
                 }),
             });
@@ -59,20 +64,47 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
         }
     };
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
+    const updateForm = (name: string, value: string) => {
         setForm({
             ...form,
-            [e.target.name]: inputValueToNumber(e.target.value),
+            [name]: value,
         });
+    };
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+
+        updateForm(name, value);
+
+        if (keyboardRef.current) {
+            (keyboardRef.current as any).setInput(value);
+        }
+    };
+
+    const handleKeyboardChange = (input: string) => {
+        if (focusedInputName) {
+            updateForm(focusedInputName, input);
+        }
+    };
+
+    const handleFocus = (e: FocusEvent<HTMLInputElement>) => {
+        const { name } = e.target
+
+        setFocusedInputName(name);
+
+        if (keyboardRef.current) {
+            (keyboardRef.current as any).setInput((form as ObservationFormValues)[name]);
+        }
+    };
 
     const isFormFilled = () =>
-        vMathSymbolCodes.every((mathSymbolCode) => (form as { [key: string]: number })[mathSymbolCode] > 0);
+        vMathSymbolCodes.every((mathSymbolCode) => +(form as ObservationFormValues)[mathSymbolCode] > 0);
 
     // Effects
     useEffect(() => {
         // Calculate the volume
         const previousV = form.v;
-        const newV = +Parser.evaluate(shape.vFormula, {
+        const newV = Parser.evaluate(shape.vFormula, {
             ...form,
             pi: 3.14,
         }).toFixed(1);
@@ -86,32 +118,37 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
     }, [form]);
 
     return (
-        <main className="w-inherit h-screen bg-black">
+        <main className="w-inherit h-screen bg-white">
             <Head>
                 <title>Observasi (1/4) | {process.env.NEXT_PUBLIC_APP_NAME}</title>
             </Head>
 
-            <ShapePreview
-                shapeCode={shape.code}
-                r={+form.r || 0}
-                t={+form.t || 0}
-            />
+            <div className="sticky top-0 z-10 rounded-b-2xl border-shadow-b overflow-hidden">
+                <div className="rounded-b-2xl shadow overflow-hidden">
+                    <ShapePreview
+                        shapeCode={shape.code}
+                        r={+form.r || 0}
+                        t={+form.t || 0}
+                    />
+                </div>
+
+                {/* Message */}
+                <div className="flex bg-white bg-opacity-90 p-4">
+                    <div className="avatar">
+                        <div className="w-20 rounded-full">
+                            <img src="https://faces-img.xcdn.link/image-lorem-face-891.jpg" />
+                        </div>
+                    </div>
+                    <MessageBalloon>
+                        That sounds like a great idea. I was actually planning on going for a run on Saturday morning.
+                    </MessageBalloon>
+                </div>
+            </div>
+
             <BottomSheet className="w-inherit">
                 {/* Form */}
                 <form className="w-inherit p-4" onSubmit={handleSubmit}>
                     <div className="grid grid-cols-1 gap-4">
-                        {/* Message */}
-                        <div className="flex">
-                            <div className="avatar">
-                                <div className="w-20 rounded-full">
-                                    <img src="https://faces-img.xcdn.link/image-lorem-face-891.jpg" />
-                                </div>
-                            </div>
-                            <MessageBalloon>
-                                That sounds like a great idea. I was actually planning on going for a run on Saturday morning.
-                            </MessageBalloon>
-                        </div>
-
                         {/* Inputs */}
                         <div className="grid grid-cols-1 gap-2">
                             {vMathSymbolCodes.map((mathSymbolCode) => (
@@ -122,8 +159,9 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                     suffix="cm"
                                     canMeasure
                                     name={mathSymbolCode}
-                                    value={(form as { [key: string]: number })[mathSymbolCode]}
+                                    value={(form as ObservationFormValues)[mathSymbolCode]}
                                     onChange={handleChange}
+                                    onFocus={handleFocus}
                                 />
                             ))}
                             <hr />
@@ -138,7 +176,7 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
                     </div>
 
                     {/* Button */}
-                    <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-inherit p-4">
+                    <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 bg-white bg-opacity-90 w-inherit p-4 rounded-t-2xl">
                         {isSubmitting ? (<Loading.Button />) : (
                             <button
                                 type="submit"
@@ -151,6 +189,17 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
                     </div>
                 </form>
             </BottomSheet>
+
+            {focusedInputName && (
+                <Keyboard
+                    keyboardRef={keyboardRef}
+                    layout={KEYBOARD_LAYOUTS.numeric}
+                    form={form}
+                    focusedInputName={focusedInputName}
+                    setFocusedInputName={setFocusedInputName}
+                    onChange={handleKeyboardChange}
+                />
+            )}
         </main >
     );
 };
