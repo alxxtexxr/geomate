@@ -114,7 +114,7 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 formula: checkFormula(value, correctValues.formula),
             });
         } else {
-            // console.log(name, value, '=', (correctValues as { [key: string]: string | number })[name])
+            console.log(name, value, '=', (correctValues as { [key: string]: string | number })[name])
             setIsInputCorrect({
                 ...isInputCorrect,
                 [name]: +value === (correctValues as { [key: string]: string | number })[name],

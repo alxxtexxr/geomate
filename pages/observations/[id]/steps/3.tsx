@@ -78,7 +78,7 @@ const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
     const shapeTs: { [key: string]: number } = {
         cylinder: observation.t ? observation.t * +form.n : 0,
         cone: observation.t ? observation.t / +form.n : 0,
-        sphere: observation.t || 0,
+        sphere: observation.r || 0,
     };
 
     // Functions
@@ -146,6 +146,7 @@ const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
                         shapeCode={comparisonShapeCode || shape.code}
                         r={observation.r || 0}
                         t={shapeTs[shape.code]}
+                        n={shape.code === 'sphere' ? +form.n : 1}
                     />
                 </div>
                 {/* Message */}

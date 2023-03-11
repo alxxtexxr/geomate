@@ -16,10 +16,11 @@ type Props = {
     shapeCode: ShapeCode,
     r: number,
     t: number,
+    n?: number,
     height?: number
 };
 
-const ShapePreview = ({ shapeCode, r, t, height = 272 }: Props) => {
+const ShapePreview = ({ shapeCode, r, t, n = 1, height = 272 }: Props) => {
     const [wireframe, setWireframe] = useState(false);
     const [isLivePreviewing, setIsLivePreviewing] = useState(false);
 
@@ -39,12 +40,26 @@ const ShapePreview = ({ shapeCode, r, t, height = 272 }: Props) => {
                     <PerspectiveCamera makeDefault position={[0, 30, 100]} fov={30} />
                     <OrbitControls autoRotate target={[0, 8, 0]} />
 
-                    <ShapeComponent
-                        code={shapeCode}
-                        r={r}
-                        t={t}
-                        wireframe={wireframe}
-                    />
+                    {[...Array(n).keys()].map((i) => {
+                        const GAP_SIZE = 1;
+                        const isEven = n % 2 === 0;
+                        const halfN = n / 2;
+
+                        let x = i - Math.floor(halfN);
+                        x += isEven ? 0.5 : 0;
+                        x *= (r + GAP_SIZE / 2) * 2
+
+                        return (
+                            <ShapeComponent
+                                key={i}
+                                code={shapeCode}
+                                r={r}
+                                t={t}
+                                x={x}
+                                wireframe={wireframe}
+                            />
+                        )
+                    })}
 
                     <Plane args={[250, 250, 10, 10]} rotation={[-Math.PI / 2, 0, 0]}>
                         <meshStandardMaterial color="#FFFFFF" wireframe />

@@ -175,7 +175,7 @@ export const formatFormulaToKatex = (formula: string) =>
         .replaceAll('4/3', '\\frac{4}{3}')
     ;
 
-export const getS = (r: number, t: number) => +Math.sqrt(Math.pow(r, 2) + Math.pow(t, 2)).toFixed(2);
+export const getS = (r: number, t: number) => +Math.sqrt(Math.pow(r, 2) + Math.pow(t, 2)).toFixed(1);
 
 export const evaluateFormula = (formula: string, form: ObservationForm) => {
     let _formula = formula;
