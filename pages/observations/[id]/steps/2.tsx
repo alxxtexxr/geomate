@@ -14,7 +14,7 @@ import Loading from '../../../../components/Loading';
 import { KEYBOARD_LAYOUTS, SHAPE_PREVIEW_DEFAULT_HEIGHT } from '../../../../Constants';
 
 // Utils
-import { getShape, formatFormula, checkFormula } from '../../../../Utils';
+import { getShape, formatFormula, checkFormula, roundToNearest } from '../../../../Utils';
 
 // Types
 import type { GetServerSideProps } from 'next';
@@ -52,11 +52,11 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
         formula: comparisonShapeFormula && formatFormula(comparisonShapeFormula),
         r: observation.r,
         t: observation.t,
-        v: comparisonShapeFormula && +Parser.evaluate(comparisonShapeFormula, {
+        v: comparisonShapeFormula && roundToNearest(+Parser.evaluate(comparisonShapeFormula, {
             pi: 3.14,
             r: observation.r || 0,
             t: shape.code === 'sphere' ? observation.r || 0 : observation.t || 0,
-        }).toFixed(1),
+        }), 0.05),
     };
 
     // Configure keyboard

@@ -10,7 +10,7 @@ import { FormControl, Spinner, Keyboard } from '../../../../components/Observati
 import Loading from '../../../../components/Loading';
 
 // Utils
-import { getShape } from '../../../../Utils';
+import { getShape, roundToNearest } from '../../../../Utils';
 
 // Types
 import type { GetServerSideProps } from 'next';
@@ -69,8 +69,8 @@ const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
     const nOp = shape.code === 'cone' ? '× 1/' : '×';
     const nComparisonV = observation.comparisonV
         ? (shape.code === 'cone'
-            ? (observation.comparisonV / +form.n).toFixed(1)
-            : (observation.comparisonV * +form.n).toFixed(1))
+            ? roundToNearest(observation.comparisonV / +form.n, 0.05)
+            : roundToNearest(observation.comparisonV * +form.n, 0.05))
         : '';
     const isNComparisonVCorrect = +nComparisonV === observation.v;
 

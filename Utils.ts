@@ -213,4 +213,7 @@ export const getLevel = (xp: number) => xp < initXpLimit ? 1 : Math.floor((Math.
 export const getXpLimit = (level: number) => Math.floor(1.5 ** (level - 1) * initXpLimit);
 export const getXpPct = (xp: number) => xp / getXpLimit(getLevel(xp)) * 100;
 
-
+//
+export const roundToNearest = (num: number, increment: number) => {
+    return Math.round(num / increment) * increment;
+};
