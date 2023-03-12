@@ -38,7 +38,7 @@ const ShapePreview = ({ shapeCode, r, t, n = 1, height = 272 }: Props) => {
                     <ambientLight intensity={0.5} />
                     <pointLight position={[1, 3, 1]} intensity={1.0} />
                     <PerspectiveCamera makeDefault position={[0, 30, 100]} fov={30} />
-                    <OrbitControls autoRotate target={[0, 8, 0]} />
+                    <OrbitControls autoRotate target={[0, 14, 0]} />
 
                     {[...Array(n).keys()].map((i) => {
                         const GAP_SIZE = 1;
@@ -67,9 +67,9 @@ const ShapePreview = ({ shapeCode, r, t, n = 1, height = 272 }: Props) => {
                 </Canvas>
 
                 <div className="absolute bottom-0 right-0 grid grid-cols-1 gap-2 p-4">
-                    <Swap isActive={wireframe} onClick={() => setWireframe(!wireframe)}>
+                    {/* <Swap isActive={wireframe} onClick={() => setWireframe(!wireframe)}>
                         <HiOutlineCube className="text-2xl" />
-                    </Swap>
+                    </Swap> */}
                     <Swap isActive={isLivePreviewing} onClick={() => setIsLivePreviewing(true)}>
                         AR
                     </Swap>

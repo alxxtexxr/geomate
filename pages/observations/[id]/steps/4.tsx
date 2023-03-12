@@ -1,20 +1,18 @@
 import { useRef, useState, useEffect, FormEvent, ChangeEvent, FocusEvent } from 'react';
 import Head from 'next/head'
 import Router from 'next/router';
-import { Parser } from 'expr-eval';
 
 // Components
 import ShapePreview from '../../../../components/ShapePreview';
 import BottomSheet from '../../../../components/BottomSheet';
-import MessageBalloon from '../../../../components/MessageBalloon';
-import { FormControl, Keyboard } from '../../../../components/Observation';
+import { Message, FormControl, Keyboard } from '../../../../components/Observation';
 import Loading from '../../../../components/Loading';
 
 // Constants
 import { KEYBOARD_LAYOUTS } from '../../../../Constants';
 
 // Utils
-import { getShape, inputValueToNumber, formatFormula, checkFormula } from '../../../../Utils';
+import { getShape, formatFormula, checkFormula } from '../../../../Utils';
 
 // Types
 import type { GetServerSideProps } from 'next';
@@ -77,7 +75,11 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     // Define n variables
-    const nOp = shape.code === 'cone' ? '× 1/' : '×';
+    const nOps: { [key: string]: string } = {
+        cylinder: '× t',
+        cone: '× 1/',
+        sphere: '×',
+    }
 
     // Functions
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -155,7 +157,7 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
     return (
         <main className="w-inherit h-screen bg-white">
             <Head>
-                <title>Observasi (3/4) | {process.env.NEXT_PUBLIC_APP_NAME}</title>
+                <title>Observasi (4/4) | {process.env.NEXT_PUBLIC_APP_NAME}</title>
             </Head>
 
             <div className="sticky top-0 z-10 rounded-b-2xl border-shadow-b overflow-hidden">
@@ -170,14 +172,9 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
 
                 {/* Message */}
                 <div className="flex bg-white bg-opacity-90 p-4">
-                    <div className="avatar">
-                        <div className="w-20 rounded-full">
-                            <img src="https://faces-img.xcdn.link/image-lorem-face-891.jpg" />
-                        </div>
-                    </div>
-                    <MessageBalloon>
-                        That sounds like a great idea. I was actually planning on going for a run on Saturday morning.
-                    </MessageBalloon>
+                    <Message>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac ante eu nulla accumsan eleifend.
+                    </Message>
                 </div>
             </div>
 
@@ -188,54 +185,84 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
                         {/* Inputs */}
                         <div className="grid grid-cols-1 gap-2">
                             {/* comparisonVFormula Input */}
-                            <FormControl
-                                title={`V. ${shape.name}`}
-                                symbol="v"
-                                isCorrect={isInputCorrect.comparisonVFormula}
-                                name="comparisonVFormula"
-                                placeholder={comparisonShape ? `Rumus V. ${comparisonShape.name}` : ''}
-                                value={form.comparisonVFormula}
-                                onChange={handleChange}
-                                onFocus={handleFocus}
-                            />
-
-                            {isInputCorrect.comparisonVFormula && shape.code === 'sphere' && (
-                                <>
-                                    <FormControl
-                                        name="correctedFormula"
-                                        placeholder={comparisonShape ? `Rumus V. ${comparisonShape.name}` : ''}
-                                        value="1/3×π×r²×(r)"
-                                        disabled
-                                    />
-                                    <FormControl
-                                        name="correctedFormula"
-                                        placeholder={comparisonShape ? `Rumus V. ${comparisonShape.name}` : ''}
-                                        value="1/3×π×r³"
-                                        disabled
-                                    />
-                                </>
-                            )}
-
-                            {/* n input */}
-                            <div className="grid grid-cols-3">
-                                <div className="col-start-2 col-span-2">
-                                    <div className="flex items-center font-mono text-base">
-                                        {nOp.split('').map((c, i) => (
-                                            <div className="mx-0.5" key={i}>
-                                                {c}
-                                            </div>
-                                        ))}
-                                        <input
-                                            className={`input input-bordered flex-grow w-16 mx-0.5 ${isInputCorrect.n ? 'input-primary' : 'input-error'}`}
-                                            name="n"
-                                            placeholder="?"
-                                            value={form.n}
-                                            onChange={handleChange}
-                                            onFocus={handleFocus}
-                                        />
+                            {shape.code === 'cylinder' ? (
+                                <div className="grid grid-cols-3">
+                                    <span className="label-text flex items-self-center items-center text-xs text-gray-800">
+                                        <div className="badge badge-primary badge-outline text-xs h-7 w-7 mr-2">
+                                            v
+                                        </div>
+                                        V. {shape.name}
+                                    </span>
+                                    <div className="col-span-2">
+                                        <div className="flex items-center font-mono text-base">
+                                            <input
+                                                className={`input input-bordered flex-grow w-16 mx-0.5 ${isInputCorrect.comparisonVFormula ? 'input-primary' : 'input-error'}`}
+                                                name="comparisonVFormula"
+                                                placeholder="Rumus L. Lingkaran"
+                                                value={form.comparisonVFormula}
+                                                onChange={handleChange}
+                                                onFocus={handleFocus}
+                                            />
+                                            {(nOps[shape.code]).split('').map((c, i) => (
+                                                <div className="mx-0.5" key={i}>
+                                                    {c}
+                                                </div>
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            ) : (
+                                <>
+                                    <FormControl
+                                        title={`V. ${shape.name}`}
+                                        symbol="v"
+                                        isCorrect={isInputCorrect.comparisonVFormula}
+                                        name="comparisonVFormula"
+                                        placeholder={comparisonShape ? `Rumus V. ${comparisonShape.name}` : ''}
+                                        value={form.comparisonVFormula}
+                                        onChange={handleChange}
+                                        onFocus={handleFocus}
+                                    />
+
+                                    {isInputCorrect.comparisonVFormula && shape.code === 'sphere' && (
+                                        <>
+                                            <FormControl
+                                                name="correctedFormula"
+                                                placeholder={comparisonShape ? `Rumus V. ${comparisonShape.name}` : ''}
+                                                value="1/3×π×r²×(r)"
+                                                disabled
+                                            />
+                                            <FormControl
+                                                name="correctedFormula"
+                                                placeholder={comparisonShape ? `Rumus V. ${comparisonShape.name}` : ''}
+                                                value="1/3×π×r³"
+                                                disabled
+                                            />
+                                        </>
+                                    )}
+
+                                    {/* n input */}
+                                    <div className="grid grid-cols-3">
+                                        <div className="col-start-2 col-span-2">
+                                            <div className="flex items-center font-mono text-base">
+                                                {nOps[shape.code].split('').map((c, i) => (
+                                                    <div className="mx-0.5" key={i}>
+                                                        {c}
+                                                    </div>
+                                                ))}
+                                                <input
+                                                    className={`input input-bordered flex-grow w-16 mx-0.5 ${isInputCorrect.n ? 'input-primary' : 'input-error'}`}
+                                                    name="n"
+                                                    placeholder="?"
+                                                    value={form.n}
+                                                    onChange={handleChange}
+                                                    onFocus={handleFocus}
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
 
                             {/* vFormula Input */}
                             <FormControl

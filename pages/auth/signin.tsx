@@ -1,4 +1,5 @@
 import { getProviders } from 'next-auth/react';
+import Head from 'next/head';
 
 // Components
 import Logo from '../../components/Logo';
@@ -10,6 +11,7 @@ import type { ClientSafeProvider, LiteralUnion } from 'next-auth/react';
 import type { BuiltInProviderType } from 'next-auth/providers';
 import type ComponentWithAuth from '../../types/ComponentWithAuth';
 
+
 type Props = {
     providers: Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider> | null
 };
@@ -17,6 +19,9 @@ type Props = {
 const SignIn: ComponentWithAuth<Props> = ({ providers }) => {
     return (
         <main className="bg-base-100 texture-base min-h-screen">
+            <Head>
+                <title>Masuk | {process.env.NEXT_PUBLIC_APP_NAME}</title>
+            </Head>
             <header className="flex justify-center bg-base-200 py-8 mb-8 rounded-b-xl">
                 <Logo />
             </header>

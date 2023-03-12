@@ -6,8 +6,7 @@ import { Parser } from 'expr-eval';
 // Components
 import ShapePreview from '../../../../components/ShapePreview';
 import BottomSheet from '../../../../components/BottomSheet';
-import MessageBalloon from '../../../../components/MessageBalloon';
-import { FormControl, Keyboard } from '../../../../components/Observation';
+import { Message, FormControl, Keyboard } from '../../../../components/Observation';
 import Loading from '../../../../components/Loading';
 
 // Constants
@@ -56,7 +55,7 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
             pi: 3.14,
             r: observation.r || 0,
             t: shape.code === 'sphere' ? observation.r || 0 : observation.t || 0,
-        }), 0.05),
+        }), 0.005),
     };
 
     // Configure keyboard
@@ -159,6 +158,8 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
 
         const abcMathSymbols = filteredFormula?.match(/[a-zA-Z]+/g);
 
+        console.log(abcMathSymbols);
+
         const filteredIsInputCorrect = Object.fromEntries(
             Object.entries(isInputCorrect).filter(([key]) => abcMathSymbols?.includes(key))
         );
@@ -202,14 +203,9 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
 
                 {/* Message */}
                 <div className="flex bg-white bg-opacity-90 p-4">
-                    <div className="avatar">
-                        <div className="w-20 rounded-full">
-                            <img src="https://faces-img.xcdn.link/image-lorem-face-891.jpg" />
-                        </div>
-                    </div>
-                    <MessageBalloon>
-                        That sounds like a great idea. I was actually planning on going for a run on Saturday morning.
-                    </MessageBalloon>
+                    <Message>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac ante eu nulla accumsan eleifend.
+                    </Message>
                 </div>
             </div>
 
@@ -223,7 +219,7 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                             {/* formula Input */}
                             <FormControl
                                 title={shape.code === 'cylinder' ? 'L. Lingkaran' : (comparisonShape ? `V. ${comparisonShape.name}` : 'Volume')}
-                                symbol="v2"
+                                symbol={shape.code === 'cylinder' ? 'a' : 'v2'}
                                 isCorrect={isInputCorrect.formula}
                                 name="formula"
                                 placeholder={comparisonShape ? `Rumus V. ${comparisonShape.name}` : ''}
@@ -294,9 +290,9 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                             )}
 
                             {/* formulaResult Input */}
-                            {comparisonShape && isFormulaFilled(comparisonShape.vFormula) && (
+                            {comparisonShapeFormulaToFormat && isFormulaFilled(comparisonShapeFormulaToFormat) && (
                                 <FormControl
-                                    suffix="cm"
+                                    suffix={`cm${shape.code === 'cylinder' ? '²' : '³'}`}
                                     name="v"
                                     isCorrect={isInputCorrect.v}
                                     placeholder="?"

@@ -1,12 +1,11 @@
-import { useRef, useState, useEffect, FormEvent, ChangeEvent, FocusEvent } from 'react';
+import { useRef, useState, FormEvent, ChangeEvent, FocusEvent } from 'react';
 import Head from 'next/head'
 import Router from 'next/router';
 
 // Components
 import ShapePreview from '../../../../components/ShapePreview';
 import BottomSheet from '../../../../components/BottomSheet';
-import MessageBalloon from '../../../../components/MessageBalloon';
-import { FormControl, Spinner, Keyboard } from '../../../../components/Observation';
+import { Message, FormControl, Spinner, Keyboard } from '../../../../components/Observation';
 import Loading from '../../../../components/Loading';
 
 // Utils
@@ -69,14 +68,14 @@ const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
     const nOp = shape.code === 'cone' ? '× 1/' : '×';
     const nComparisonV = observation.comparisonV
         ? (shape.code === 'cone'
-            ? roundToNearest(observation.comparisonV / +form.n, 0.05)
-            : roundToNearest(observation.comparisonV * +form.n, 0.05))
+            ? roundToNearest(observation.comparisonV / +form.n, 0.005).toFixed(1)
+            : roundToNearest(observation.comparisonV * +form.n, 0.005).toFixed(1))
         : '';
     const isNComparisonVCorrect = +nComparisonV === observation.v;
 
     // Define shape height
     const shapeTs: { [key: string]: number } = {
-        cylinder: observation.t ? observation.t * +form.n : 0,
+        cylinder: +form.n,
         cone: observation.t ? observation.t / +form.n : 0,
         sphere: observation.r || 0,
     };
@@ -151,27 +150,22 @@ const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 </div>
                 {/* Message */}
                 <div className="flex bg-white bg-opacity-90 p-4">
-                    <div className="avatar">
-                        <div className="w-20 rounded-full">
-                            <img src="https://faces-img.xcdn.link/image-lorem-face-891.jpg" />
-                        </div>
-                    </div>
-                    <MessageBalloon>
-                        That sounds like a great idea. I was actually planning on going for a run on Saturday morning.
-                    </MessageBalloon>
+                    <Message>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac ante eu nulla accumsan eleifend.
+                    </Message>
                 </div>
             </div>
 
             <BottomSheet className="w-inherit">
                 {/* Form */}
-                <form className="w-inherit p-4" onSubmit={handleSubmit}>
+                <form className="w-inherit pt-4 px-4 pb-space-for-keyboard" onSubmit={handleSubmit}>
                     <div className="grid grid-cols-1 gap-4">
                         {/* Inputs */}
                         <div className="grid grid-cols-1 gap-2">
                             {/* comparisonV Input */}
                             <FormControl
-                                title={comparisonShape ? `V. ${comparisonShape.name}` : ''}
-                                symbol="v2"
+                                title={shape.code === 'cylinder' ? 'L. Lingkaran' : (comparisonShape ? `V. ${comparisonShape.name}` : '')}
+                                symbol={shape.code === 'cylinder' ? 'a' : 'v2'}
                                 suffix="cm³"
                                 name="comparisonV"
                                 value={observation.comparisonV || ''}

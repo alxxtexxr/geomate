@@ -1,15 +1,18 @@
+import Head from 'next/head';
+
+// Constants
+import { NAVBAR_BOTTOM_MENU } from '../Constants';
+
 // Components
 import Navbar from '../components/Navbar';
 import Podium from '../components/LeaderboardPodium';
 import Avatar from '../components/Avatar';
 
-// Constants
-import { NAVBAR_BOTTOM_MENU } from '../Constants';
-
 // Types
 import type { GetServerSideProps } from 'next';
 import type ComponentWithAuth from '../types/ComponentWithAuth';
 import type { User } from '@prisma/client';
+
 
 type Props = {
     users: User[],
@@ -17,6 +20,10 @@ type Props = {
 
 const Leaderboard: ComponentWithAuth<Props> = ({ users }) => (
     <main className="bg-base-100 w-inherit min-h-screen">
+        <Head>
+            <title>Peringkat | {process.env.NEXT_PUBLIC_APP_NAME}</title>
+        </Head>
+        
         <Podium users={users.slice(0, 3)} />
 
         <section className="p-4">

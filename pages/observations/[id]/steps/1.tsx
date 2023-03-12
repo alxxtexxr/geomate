@@ -6,8 +6,7 @@ import { Parser } from 'expr-eval';
 // Components
 import ShapePreview from '../../../../components/ShapePreview';
 import BottomSheet from '../../../../components/BottomSheet';
-import MessageBalloon from '../../../../components/MessageBalloon';
-import { FormControl, Keyboard } from '../../../../components/Observation';
+import { Message, FormControl, Keyboard } from '../../../../components/Observation';
 import Loading from '../../../../components/Loading';
 
 // Constants
@@ -104,10 +103,10 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
     useEffect(() => {
         // Calculate the volume
         const previousV = form.v;
-        const newV = '' + roundToNearest(Parser.evaluate(shape.vFormula, {
+        const newV = roundToNearest(Parser.evaluate(shape.vFormula, {
             ...form,
             pi: 3.14,
-        }), 0.05);
+        }), 0.005).toFixed(1);
 
         if (newV !== previousV) {
             setForm({
@@ -134,14 +133,9 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
 
                 {/* Message */}
                 <div className="flex bg-white bg-opacity-90 p-4">
-                    <div className="avatar">
-                        <div className="w-20 rounded-full">
-                            <img src="https://faces-img.xcdn.link/image-lorem-face-891.jpg" />
-                        </div>
-                    </div>
-                    <MessageBalloon>
-                        That sounds like a great idea. I was actually planning on going for a run on Saturday morning.
-                    </MessageBalloon>
+                    <Message>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac ante eu nulla accumsan eleifend.
+                    </Message>
                 </div>
             </div>
 

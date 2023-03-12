@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import Image from 'next/image';
 
 // Components
@@ -11,6 +12,10 @@ import type ComponentWithAuth from '../types/ComponentWithAuth';
 
 const Intro: ComponentWithAuth = () => (
     <main className="bg-base-100 w-inherit min-h-screen">
+        <Head>
+            <title>Pengantar | {process.env.NEXT_PUBLIC_APP_NAME}</title>
+        </Head>
+
         <Navbar.Top title="Pendahuluan" backHref="/" />
 
         <section className="grid grid-cols-1 gap-4 p-4">
