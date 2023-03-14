@@ -128,7 +128,7 @@ const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
             </Head>
 
             <div className="sticky top-0 z-10 rounded-b-2xl border-shadow-b overflow-hidden">
-                <div className="rounded-b-2xl shadow overflow-hidden">
+                <div className="rounded-b-2xl overflow-hidden">
                     {comparisonShapeCode && (
                         <ShapePreview
                             height={136}
@@ -149,7 +149,7 @@ const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
                     />
                 </div>
                 {/* Message */}
-                <div className="flex bg-white bg-opacity-90 p-4">
+                <div className="flex bg-white bg-opacity-95 p-4">
                     <Message>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac ante eu nulla accumsan eleifend.
                     </Message>

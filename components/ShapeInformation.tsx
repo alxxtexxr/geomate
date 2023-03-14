@@ -168,7 +168,7 @@ const ShapeInformation = ({ shapeCode, isShowing, setIsShowing, onHide }: Props)
                             </tr>
 
                             {/* LP Formula Row */}
-                            <tr className="border-t">
+                            {/* <tr className="border-t">
                                 <td colSpan={2} className="py-2">
                                     <h2 className="mb-8">
                                         <div className="badge badge-primary badge-outline text-xs font-medium w-8 mr-2 -mt-0.5">
@@ -177,7 +177,6 @@ const ShapeInformation = ({ shapeCode, isShowing, setIsShowing, onHide }: Props)
                                         Rumus Luas Permukaan
                                     </h2>
 
-                                    {/* LP Formula */}
                                     <div className="px-8 mb-8">
                                         <div
                                             className="text-gray-800 text-center font-medium mb-1"
@@ -202,7 +201,7 @@ const ShapeInformation = ({ shapeCode, isShowing, setIsShowing, onHide }: Props)
                                         </button>
                                     </Link>
                                 </td>
-                            </tr>
+                            </tr> */}
                         </tbody>
                     </table>
                 </BottomSheet>

@@ -152,7 +152,7 @@ const EvaluationPage: ComponentWithAuth<Props> = ({ evaluation, notifications })
 
             <section className="fixed left-0 bottom-0 z-20 w-screen p-4">
                 <Link href="/">
-                    <button className="btn btn-primary w-full shadow">
+                    <button className="btn btn-primary w-full">
                         Selesai
                     </button>
                 </Link>

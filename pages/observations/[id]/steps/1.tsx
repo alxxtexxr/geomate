@@ -123,7 +123,7 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
             </Head>
 
             <div className="sticky top-0 z-10 rounded-b-2xl border-shadow-b overflow-hidden">
-                <div className="rounded-b-2xl shadow overflow-hidden">
+                <div className="rounded-b-2xl overflow-hidden">
                     <ShapePreview
                         shapeCode={shape.code}
                         r={+form.r || 0}
@@ -132,7 +132,7 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 </div>
 
                 {/* Message */}
-                <div className="flex bg-white bg-opacity-90 p-4">
+                <div className="flex bg-white bg-opacity-95 p-4">
                     <Message>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac ante eu nulla accumsan eleifend.
                     </Message>
@@ -170,7 +170,7 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
                     </div>
 
                     {/* Button */}
-                    <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 bg-white bg-opacity-90 w-inherit p-4 rounded-t-2xl">
+                    <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 bg-white bg-opacity-95 w-inherit p-4 rounded-t-2xl">
                         {isSubmitting ? (<Loading.Button />) : (
                             <button
                                 type="submit"

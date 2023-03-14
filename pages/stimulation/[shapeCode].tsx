@@ -22,7 +22,7 @@ const Stimulation: ComponentWithAuth<Props> = ({ shape }) => {
             <Navbar.Top title="Stimulus" backHref="/" />
 
             <section className="flex flex-col flex-grow justify-center items-center text-center px-8">
-                <div className="bg-white p-2 mb-6 rounded-2xl shadow">
+                <div className="bg-white p-2 mb-6 rounded-2xl">
                     <div className="relative w-72 h-48">
                         <Image
                             src={shape.stimulationImage}

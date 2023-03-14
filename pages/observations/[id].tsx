@@ -80,7 +80,7 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
                     </p>
                 </div>
 
-                <div className="bg-white p-2 shadow rounded-2xl overflow-hidden">
+                <div className="bg-white p-2 rounded-2xl overflow-hidden">
                     <div className="bg-black rounded-xl overflow-hidden">
                         <ShapePreview
                             shapeCode={shape.code}
@@ -121,7 +121,7 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
                         <Loading.Spinner />
                     </button>
                 ) : (
-                    <button className="btn btn-primary w-full shadow" onClick={startEvaluation}>
+                    <button className="btn btn-primary w-full" onClick={startEvaluation}>
                         Evaluasi
                     </button>
                 )}

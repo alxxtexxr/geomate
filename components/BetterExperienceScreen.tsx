@@ -11,7 +11,7 @@ type Props = {
 const BetterExperienceScreen = ({ onClose }: Props) => (
     <Overlay.Primary>
         <div className="w-96">
-            <div className="inline-flex bg-white p-4 mb-4 rounded-xl shadow">
+            <div className="inline-flex bg-white p-4 mb-4 rounded-xl">
                 <QRCode value={window.location.href} size={176} />
             </div>
             <div className="text-xs mb-4">Bukalah di smartphone untuk pengalaman yang lebih baik. Cukup dengan menge-scan QR code di atas.</div>

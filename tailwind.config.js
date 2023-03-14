@@ -11,11 +11,17 @@ module.exports = {
       height: {
         'inherit': 'inherit',
       },
+      aspectRatio: {
+        '4/3': '4 / 3',
+      },
       padding: {
         'space-for-keyboard': '263px',
       },
       borderWidth: {
+        '3': '3px',
         '6': '6px',
+        '12': '12px',
+        '16': '16px',
       },
       colors: {
         'google': '#EA5843',

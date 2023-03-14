@@ -17,7 +17,7 @@ type ObservationKeyboardProps = {
 };
 
 const ObservationKeyboard = ({ keyboardRef, layout, form, focusedInputName, setFocusedInputName, onChange }: ObservationKeyboardProps) => (
-    <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 bg-gray-200 bg-opacity-90 w-inherit rounded-t-lg shadow">
+    <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 bg-gray-200 bg-opacity-95 w-inherit rounded-t-lg">
         <Keyboard
             keyboardRef={(r) => (keyboardRef.current = r)}
             layout={layout}
@@ -40,7 +40,7 @@ const ObservationKeyboard = ({ keyboardRef, layout, form, focusedInputName, setF
         />
         <div className="px-2 pb-2">
             <button
-                className="btn btn-primary btn-block min-h-10 h-10 shadow animate-none"
+                className="btn btn-primary btn-block min-h-10 h-10 animate-none"
                 type="button"
                 onClick={() => setFocusedInputName(null)}
             >

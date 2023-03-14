@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { MdEdit } from 'react-icons/md';
 
@@ -39,10 +39,8 @@ const Profile: ComponentWithAuth<Props> = ({ achievements }) => {
     return (
         <main className="bg-base-100 w-inherit min-h-screen pb-20">
             {/* Header */}
-            <header className="flex flex-col justify-center items-center text-center bg-base-200 text-primary-content pt-8 pb-8 rounded-b-xl shadow">
-                <AvatarUploader
-
-                />
+            <header className="flex flex-col justify-center items-center text-center bg-base-200 text-primary-content pt-8 pb-14">
+                <AvatarUploader />
                 <div className="mt-4">
                     <a className="link link-hover" onClick={() => setIsOpen(!isOpen)}>
                         <h1 className="inline-flex items-center font-medium">
@@ -50,26 +48,14 @@ const Profile: ComponentWithAuth<Props> = ({ achievements }) => {
                             <MdEdit className="text-lg ml-1" />
                         </h1>
                     </a>
-                    <p className="text-sm">Mau belajar apa hari ini?</p>
+                    <p className="text-sm">
+                        Pencapaian kamu: <span className="font-semibold">0</span> dari <span className="font-semibold">{achievements.length}</span>
+                    </p>
                 </div>
             </header>
 
             {/* Achievements */}
-            <section className="grid grid-cols-3 gap-4 p-4">
-            {achievements.map((achievement) => (
-                    <Achievement
-                        title={achievement.title}
-                        isLocked={!!!achievement.userAchievements.length}
-                        key={achievement.id}
-                    />
-                ))}
-                {achievements.map((achievement) => (
-                    <Achievement
-                        title={achievement.title}
-                        isLocked={!!!achievement.userAchievements.length}
-                        key={achievement.id}
-                    />
-                ))}
+            <section className="grid grid-cols-3 gap-4 -mt-12 p-4">
                 {achievements.map((achievement) => (
                     <Achievement
                         title={achievement.title}

@@ -73,7 +73,7 @@ const AvatarUploader = () => {
                             </button>
                         ) : (
                         <button
-                            className="btn btn-circle bg-white hover:bg-white text-primary hover:text-primary border-white hover:border-white shadow"
+                            className="btn btn-circle bg-white hover:bg-white text-primary hover:text-primary border-white hover:border-white"
                             {...(imageList.length ? {
                                 onClick: () => onImageUpdate(0),
                             } : {

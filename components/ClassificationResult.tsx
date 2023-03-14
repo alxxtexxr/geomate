@@ -28,7 +28,7 @@ const ClassificationResult = ({ isOpen, setIsOpen, shape, predictedShape, isSubm
         >
             <Sheet.Container>
                 <Sheet.Header>
-                    <div className="absolute top-0 left-1/2 transform -translate-y-1/2 -translate-x-1/2 w-16 h-16 flex justify-center items-center bg-white rounded-full shadow">
+                    <div className="absolute top-0 left-1/2 transform -translate-y-1/2 -translate-x-1/2 w-16 h-16 flex justify-center items-center bg-white rounded-full">
                         {isCorrect ? (
                             <HiCheck className="text-primary text-3xl" />
                         ) : (

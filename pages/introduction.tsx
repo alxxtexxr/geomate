@@ -16,11 +16,11 @@ const Intro: ComponentWithAuth = () => (
             <title>Pengantar | {process.env.NEXT_PUBLIC_APP_NAME}</title>
         </Head>
 
-        <Navbar.Top title="Pendahuluan" backHref="/" />
+        <Navbar.Top title="Pengantar" backHref="/" />
 
         <section className="grid grid-cols-1 gap-4 p-4">
             {INTROS.map((intro) => (
-                <div className="collapse collapse-arrow bg-white rounded-xl shadow" key={intro.title}>
+                <div className="collapse collapse-arrow bg-white rounded-xl" key={intro.title}>
                     <input type="checkbox" />
                     <div className="collapse-title flex justify-start items-center">
                         <div className="relative h-10 w-10 mr-4">
