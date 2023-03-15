@@ -186,11 +186,11 @@ const main = async () => {
 
     const createdAchievements = await prisma.achievement.createMany({
         data: [
-            { code: 'sphere_evaluation', title: 'Si Paham Bola' },
-            { code: 'cylinder_evaluation', title: 'Si Paham Tabung' },
-            { code: 'prism_evaluation', title: 'Si Paham Prisma' },
-            { code: 'cone_evaluation', title: 'Si Paham Kerucut' },
-            { code: 'pyramid_evaluation', title: 'Si Paham Limas' },
+            { code: 'sphere_evaluation', title: 'Jenius Bola' },
+            { code: 'cylinder_evaluation', title: 'Jenius Tabung' },
+            // { code: 'prism_evaluation', title: 'Jenius Prisma' },
+            { code: 'cone_evaluation', title: 'Jenius Kerucut' },
+            // { code: 'pyramid_evaluation', title: 'Jenius Limas' },
         ],
     });
 

@@ -11,30 +11,18 @@
     }
 }
 
-:root, [data-theme] {
-    @apply bg-white
-}
+/* Override DaisyUI styles */
+:root, [data-theme] { @apply bg-white }
 
-.btn {
-    @apply rounded-full;
-}
-
-
-.w-5-important {
-    @apply w-16 !important
-}
-
-.texture-base {
-    background-image: url("data:image/svg+xml,%3Csvg width='64' height='64' viewBox='0 0 64 64' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8 16c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8zm0-2c3.314 0 6-2.686 6-6s-2.686-6-6-6-6 2.686-6 6 2.686 6 6 6zm33.414-6l5.95-5.95L45.95.636 40 6.586 34.05.636 32.636 2.05 38.586 8l-5.95 5.95 1.414 1.414L40 9.414l5.95 5.95 1.414-1.414L41.414 8zM40 48c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8zm0-2c3.314 0 6-2.686 6-6s-2.686-6-6-6-6 2.686-6 6 2.686 6 6 6zM9.414 40l5.95-5.95-1.414-1.414L8 38.586l-5.95-5.95L.636 34.05 6.586 40l-5.95 5.95 1.414 1.414L8 41.414l5.95 5.95 1.414-1.414L9.414 40z' fill='%23b6c2fc' fill-opacity='0.25' fill-rule='evenodd'/%3E%3C/svg%3E");
-}
-
-.rating input:checked~input {
-    --tw-bg-opacity: 0.36;
-}
+.btn { @apply rounded-full }
 
 .btn-disabled, .btn-disabled:hover, .btn[disabled], .btn[disabled]:hover,
 .input-group :where(span) {
     @apply bg-gray-200 text-gray-600 border-gray-200
+}
+
+.btn-ghost:hover, .btn-ghost.btn-active {
+    --tw-bg-opacity: 0.05;
 }
 
 .input-bordered,
@@ -65,6 +53,48 @@
     @apply z-10
 }
 
+.rating input:checked~input { --tw-bg-opacity: 0.36 }
+
+/* Override React Toastify styles */
+.Toastify__toast-container {
+    @apply grid grid-cols-1 gap-2 p-2
+}
+
+.Toastify__toast {
+    font-family: Poppins, system-ui, sans-serif;
+}
+
+.Toastify__toast {
+    @apply p-4 rounded-lg text-gray-800 font-medium text-sm leading-normal
+}
+
+.Toastify__toast-body {
+    @apply m-0 p-0 pr-4
+}
+
+.Toastify__toast-icon {
+    @apply w-6 mr-4
+}
+
+.Toastify__close-button {
+    @apply self-center -mb-0.5
+}
+
+/* Override Simple Keyboard styles */
+.hg-theme-default {
+    @apply bg-transparent p-2 !important
+}
+
+.hg-theme-default .hg-button {
+    /* shadow */
+    @apply font-mono rounded-lg border-none !important 
+}
+
+/* Custom Styles */
+.texture-base {
+    background-image: url("data:image/svg+xml,%3Csvg width='64' height='64' viewBox='0 0 64 64' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8 16c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8zm0-2c3.314 0 6-2.686 6-6s-2.686-6-6-6-6 2.686-6 6 2.686 6 6 6zm33.414-6l5.95-5.95L45.95.636 40 6.586 34.05.636 32.636 2.05 38.586 8l-5.95 5.95 1.414 1.414L40 9.414l5.95 5.95 1.414-1.414L41.414 8zM40 48c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8zm0-2c3.314 0 6-2.686 6-6s-2.686-6-6-6-6 2.686-6 6 2.686 6 6 6zM9.414 40l5.95-5.95-1.414-1.414L8 38.586l-5.95-5.95L.636 34.05 6.586 40l-5.95 5.95 1.414 1.414L8 41.414l5.95 5.95 1.414-1.414L9.414 40z' fill='%23b6c2fc' fill-opacity='0.25' fill-rule='evenodd'/%3E%3C/svg%3E");
+}
+
 .collapse-arrow .collapse-title:after {
     top: 2.25rem;
     right: 2rem;
@@ -87,32 +117,6 @@
 .divider-white:before,
 .divider-white:after {
     @apply bg-white bg-opacity-40
-}
-
-/* React Toastify */
-.Toastify__toast-container {
-    @apply grid grid-cols-1 gap-2 p-2
-}
-
-.Toastify__toast {
-    font-family: Poppins, system-ui, sans-serif;
-}
-
-.Toastify__toast {
-    @apply p-4 rounded-lg text-gray-800 font-medium text-sm leading-normal
-}
-
-
-.Toastify__toast-body {
-    @apply m-0 p-0 pr-4
-}
-
-.Toastify__toast-icon {
-    @apply w-6 mr-4
-}
-
-.Toastify__close-button {
-    @apply self-center -mb-0.5
 }
 
 /* AR */
@@ -163,16 +167,6 @@
 
 .message-balloon-bl.message-balloon-white::before {
     @apply border-t-white
-}
-
-/* Keyboard */
-.hg-theme-default {
-    @apply bg-transparent p-2 !important
-}
-
-.hg-theme-default .hg-button {
-    /* shadow */
-    @apply font-mono rounded-lg border-none !important 
 }
 
 /* Border Shadow */

@@ -17,12 +17,11 @@ type CanvasInnerProps = {
     shapeCode: ShapeCode,
     r: number,
     t: number,
-    wireframe: boolean,
 };
 
 const SIZE_DIVIDER = 100;
 
-const CanvasInner = ({ shapeCode, r, t, wireframe }: CanvasInnerProps) => {
+const CanvasInner = ({ shapeCode, r, t }: CanvasInnerProps) => {
     const childrenRef = useRef<THREE.Mesh<THREE.BufferGeometry, THREE.Material | THREE.Material[]> | null>(null);
 
     useHitTest((hit) => {
@@ -47,7 +46,6 @@ const CanvasInner = ({ shapeCode, r, t, wireframe }: CanvasInnerProps) => {
                 code={shapeCode}
                 r={r / SIZE_DIVIDER}
                 t={t / SIZE_DIVIDER}
-                wireframe={wireframe}
             />
         </>
     );

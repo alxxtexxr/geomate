@@ -1,6 +1,6 @@
 import type { HTMLAttributes } from 'react';
 type Props = {
-    children: JSX.Element[],
+    children: JSX.Element[] | JSX.Element | string,
     color: string,
     position: 'l' | 'b' | 'bl',
     size?: 'sm' | 'md' | 'lg',

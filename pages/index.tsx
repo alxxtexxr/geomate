@@ -50,21 +50,25 @@ const Home: ComponentWithAuth = () => {
       <section className="p-4">
         <div className="grid grid-cols-2 gap-4 -mt-12">
           {SHAPES.map((shape) => (
-            <div
-              className="flex flex-col justify-center items-center bg-white py-8 rounded-2xl"
-              onClick={() => {
-                setSetectedShapeCode(shape.code);
-                setIsShapeInformationShowing(true);
-              }}
+            <Link
+              href={`/initiation/${shape.code}`}
               key={shape.code}
             >
-              <div className="relative h-20 w-20 mb-4">
-                <Image src={`/images/${shape.code}.png`} alt={shape.name} layout="fill" />
+              <div
+                className="flex flex-col justify-center items-center bg-white py-8 rounded-2xl"
+                onClick={() => {
+                  setSetectedShapeCode(shape.code);
+                  // setIsShapeInformationShowing(true);
+                }}
+              >
+                <div className="relative h-20 w-20 mb-4">
+                  <Image src={`/images/${shape.code}.png`} alt={shape.name} layout="fill" />
+                </div>
+                <h2 className="font-medium text-gray-800 -mb-1">
+                  {shape.name}
+                </h2>
               </div>
-              <h2 className="font-medium text-gray-800 -mb-1">
-                {shape.name}
-              </h2>
-            </div>
+            </Link>
           ))}
         </div>
       </section>

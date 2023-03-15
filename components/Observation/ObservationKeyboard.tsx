@@ -14,9 +14,10 @@ type ObservationKeyboardProps = {
     focusedInputName: string | null,
     setFocusedInputName: Dispatch<SetStateAction<string | null>>,
     onChange: ((input: string, e?: MouseEvent | undefined) => any),
+    onHide?: () => void,
 };
 
-const ObservationKeyboard = ({ keyboardRef, layout, form, focusedInputName, setFocusedInputName, onChange }: ObservationKeyboardProps) => (
+const ObservationKeyboard = ({ keyboardRef, layout, form, focusedInputName, setFocusedInputName, onChange, onHide }: ObservationKeyboardProps) => (
     <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 bg-gray-200 bg-opacity-95 w-inherit rounded-t-lg">
         <Keyboard
             keyboardRef={(r) => (keyboardRef.current = r)}
@@ -42,7 +43,13 @@ const ObservationKeyboard = ({ keyboardRef, layout, form, focusedInputName, setF
             <button
                 className="btn btn-primary btn-block min-h-10 h-10 animate-none"
                 type="button"
-                onClick={() => setFocusedInputName(null)}
+                onClick={() => {
+                    setFocusedInputName(null);
+
+                    if (onHide) {
+                        onHide();
+                    }
+                }}
             >
                 Tutup
             </button>

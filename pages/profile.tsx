@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
+import Head from 'next/head';
 import { MdEdit } from 'react-icons/md';
 
 // Components
@@ -38,6 +39,10 @@ const Profile: ComponentWithAuth<Props> = ({ achievements }) => {
 
     return (
         <main className="bg-base-100 w-inherit min-h-screen pb-20">
+            <Head>
+                <title>Profil | {process.env.NEXT_PUBLIC_APP_NAME}</title>
+            </Head>
+
             {/* Header */}
             <header className="flex flex-col justify-center items-center text-center bg-base-200 text-primary-content pt-8 pb-14">
                 <AvatarUploader />

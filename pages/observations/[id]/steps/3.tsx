@@ -2,6 +2,12 @@ import { useRef, useState, FormEvent, ChangeEvent, FocusEvent } from 'react';
 import Head from 'next/head'
 import Router from 'next/router';
 
+// Tailwind Config
+import resolveConfig from 'tailwindcss/resolveConfig';
+import tailwindConfig from '../../../../tailwind.config';
+
+const fullConfig = resolveConfig(tailwindConfig)
+
 // Components
 import ShapePreview from '../../../../components/ShapePreview';
 import BottomSheet from '../../../../components/BottomSheet';
@@ -128,7 +134,7 @@ const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
             </Head>
 
             <div className="sticky top-0 z-10 rounded-b-2xl border-shadow-b overflow-hidden">
-                <div className="rounded-b-2xl overflow-hidden">
+                <div className="bg-black rounded-b-2xl overflow-hidden">
                     {comparisonShapeCode && (
                         <ShapePreview
                             height={136}
@@ -146,12 +152,13 @@ const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
                         r={observation.r || 0}
                         t={shapeTs[shape.code]}
                         n={shape.code === 'sphere' ? +form.n : 1}
+                        {...(!isNComparisonVCorrect && { color: fullConfig.theme.colors.red[500] })}
                     />
                 </div>
                 {/* Message */}
                 <div className="flex bg-white bg-opacity-95 p-4">
                     <Message>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac ante eu nulla accumsan eleifend.
+                        Lorem ipsum dolor sit amet lorem, consectetur adipiscing elit. Nullam ac ante eu nulla accumsan.
                     </Message>
                 </div>
             </div>

@@ -82,6 +82,7 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
         v: false,
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [highlight, setHighlight] = useState<string>();
 
     // Functions
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -169,10 +170,6 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
 
     const isAllInputCorrect = () => isFormulaFilled(`v = ${comparisonShapeFormula}`);
 
-    useEffect(() => {
-
-    }, []);
-
     return (
         <main className="w-inherit h-screen bg-white">
             <Head>
@@ -180,13 +177,14 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
             </Head>
 
             <div className="sticky top-0 z-10 rounded-b-2xl border-shadow-b overflow-hidden">
-                <div className="rounded-b-2xl overflow-hidden">
+                <div className="bg-black rounded-b-2xl overflow-hidden">
                     {comparisonShapeCode && (
                         <ShapePreview
                             height={SHAPE_PREVIEW_DEFAULT_HEIGHT / 2}
                             shapeCode={shape.code}
                             r={observation.r || 0}
                             t={observation.t || 0}
+                            highlight={highlight}
                         />
                     )}
 
@@ -198,13 +196,14 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                         shapeCode={comparisonShapeCode || shape.code}
                         r={+form.r || 0}
                         t={shape.code === 'sphere' ? +form.r : +form.t || 0}
+                        highlight={highlight}
                     />
                 </div>
 
                 {/* Message */}
                 <div className="flex bg-white bg-opacity-95 p-4">
                     <Message>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac ante eu nulla accumsan eleifend.
+                        Lorem ipsum dolor sit amet lorem, consectetur adipiscing elit. Nullam ac ante eu nulla accumsan.
                     </Message>
                 </div>
             </div>
@@ -270,7 +269,12 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                                                 name={name}
                                                                 value={(form as FormValues)[name] || ''}
                                                                 onChange={handleChange}
-                                                                onFocus={handleFocus}
+                                                                onFocus={(e) => {
+                                                                    handleFocus(e);
+                                                                    if (e.target.name) {
+                                                                        setHighlight(e.target.name);
+                                                                    }
+                                                                }}
                                                             />
                                                         );
                                                     } else {
@@ -327,6 +331,7 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                     focusedInputName={focusedInputName}
                     setFocusedInputName={setFocusedInputName}
                     onChange={handleKeyboardChange}
+                    onHide={() => setHighlight(undefined)}
                 />
             )}
         </main >
