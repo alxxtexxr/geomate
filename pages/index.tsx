@@ -2,7 +2,6 @@ import { useState } from 'react';
 import Head from 'next/head';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
-import Link from 'next/link';
 
 // Components
 import Navbar from '../components/Navbar';
@@ -22,7 +21,9 @@ const Home: ComponentWithAuth = () => {
 
   // State
   const [selectedShapeCode, setSetectedShapeCode] = useState<ShapeCode>();
-  const [isShapeInformationShowing, setIsShapeInformationShowing] = useState(false);
+
+  // Function
+  const hideShapeInformation = () => setSetectedShapeCode(undefined);
 
   return (
     <main className="bg-base-100 w-inherit min-h-screen">
@@ -50,25 +51,18 @@ const Home: ComponentWithAuth = () => {
       <section className="p-4">
         <div className="grid grid-cols-2 gap-4 -mt-12">
           {SHAPES.map((shape) => (
-            <Link
-              href={`/initiation/${shape.code}`}
+            <div
+              className="flex flex-col justify-center items-center bg-white py-8 rounded-2xl shadow-sm shadow-blue-800/20 cursor-pointer"
+              onClick={() => setSetectedShapeCode(shape.code)}
               key={shape.code}
             >
-              <div
-                className="flex flex-col justify-center items-center bg-white py-8 rounded-2xl"
-                onClick={() => {
-                  setSetectedShapeCode(shape.code);
-                  // setIsShapeInformationShowing(true);
-                }}
-              >
-                <div className="relative h-20 w-20 mb-4">
-                  <Image src={`/images/${shape.code}.png`} alt={shape.name} layout="fill" />
-                </div>
-                <h2 className="font-medium text-gray-800 -mb-1">
-                  {shape.name}
-                </h2>
+              <div className="relative h-20 w-20 mb-4">
+                <Image src={`/images/${shape.code}.png`} alt={shape.name} layout="fill" />
               </div>
-            </Link>
+              <h2 className="font-medium text-gray-800 -mb-1">
+                {shape.name}
+              </h2>
+            </div>
           ))}
         </div>
       </section>
@@ -77,13 +71,10 @@ const Home: ComponentWithAuth = () => {
       <Navbar.Bottom menu={NAVBAR_BOTTOM_MENU} />
 
       {/* Shape Information */}
-      {selectedShapeCode && (
-        <ShapeInformation
-          shapeCode={selectedShapeCode}
-          isShowing={isShapeInformationShowing}
-          setIsShowing={setIsShapeInformationShowing}
-        />
-      )}
+      <ShapeInformation
+        shapeCode={selectedShapeCode}
+        onHide={hideShapeInformation}
+      />
     </main>
   );
 };

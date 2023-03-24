@@ -158,7 +158,7 @@ const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 {/* Message */}
                 <div className="flex bg-white bg-opacity-95 p-4">
                     <Message>
-                        Lorem ipsum dolor sit amet lorem, consectetur adipiscing elit. Nullam ac ante eu nulla accumsan.
+                        Maecenas cursus venenatis suscipit. Nullam diam nisl.
                     </Message>
                 </div>
             </div>

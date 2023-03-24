@@ -18,7 +18,7 @@ const sizeCx: {[key: string]: string} = {
 const Avatar = ({ src, alt, size = 'md', className: cx, ...rest }: Props & HTMLAttributes<HTMLElement>) => (
     <div className="avatar" {...rest}>
         <div
-            className={`relative rounded-full border-3 border-white ${size ? sizeCx[size] : ''} ${cx}`}
+            className={`relative rounded-full border-3 border-white  shadow-sm shadow-blue-800/20 ${size ? sizeCx[size] : ''} ${cx}`}
             style={{ backgroundColor: '#C4C5C9' }}
         >
             <Image

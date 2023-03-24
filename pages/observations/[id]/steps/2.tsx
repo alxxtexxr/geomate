@@ -55,7 +55,7 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
             pi: 3.14,
             r: observation.r || 0,
             t: shape.code === 'sphere' ? observation.r || 0 : observation.t || 0,
-        }), 0.005),
+        }), 0.005).toFixed(2),
     };
 
     // Configure keyboard
@@ -117,7 +117,7 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
             console.log(name, value, '=', (correctValues as { [key: string]: string | number })[name])
             setIsInputCorrect({
                 ...isInputCorrect,
-                [name]: +value === (correctValues as { [key: string]: string | number })[name],
+                [name]: +value === +(correctValues as { [key: string]: string | number })[name],
             });
         }
 
@@ -203,7 +203,7 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 {/* Message */}
                 <div className="flex bg-white bg-opacity-95 p-4">
                     <Message>
-                        Lorem ipsum dolor sit amet lorem, consectetur adipiscing elit. Nullam ac ante eu nulla accumsan.
+                        Maecenas cursus venenatis suscipit. Nullam diam nisl.
                     </Message>
                 </div>
             </div>

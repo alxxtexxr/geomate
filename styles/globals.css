@@ -25,6 +25,22 @@
     --tw-bg-opacity: 0.05;
 }
 
+.btn-ghost-light {
+    @apply btn-ghost text-white
+}
+
+.btn-ghost-light:hover, .btn-ghost-light.btn-active {
+    background-color: hsl(0 0% 100% / var(--tw-bg-opacity));
+}
+
+.btn-ghost-primary {
+    @apply btn-ghost text-primary
+}
+
+.btn-ghost-primary:hover, .btn-ghost-primary.btn-active {
+    background-color: hsl(var(--p) / var(--tw-bg-opacity));
+}
+
 .input-bordered,
 .select {
     @apply bg-white font-normal
@@ -126,7 +142,7 @@
 
 /* Message Balloon */
 .message-balloon {
-    @apply relative text-xs p-4 rounded-xl
+    @apply relative text-sm p-4 rounded-xl
 }
 
 .message-balloon::before {

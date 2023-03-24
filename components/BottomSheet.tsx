@@ -1,13 +1,18 @@
+import type { HTMLAttributes } from 'react';
+
 type Props = {
-    children: JSX.Element | JSX.Element[],
+    children: JSX.Element | JSX.Element[] | string,
     className?: string,
 };
 
-const BottomSheet = ({ children, className }: Props) => (
-    <div className={
-        'relative z-90 flex flex-col flex-grow bg-white text-gray-600 text-sm rounded-tl-2xl rounded-tr-2xl' +
-        (className ? ' ' + className : '')
-    }>
+const BottomSheet = ({ children, className, ...rest }: Props & HTMLAttributes<HTMLElement>) => (
+    <div
+        className={
+            'relative z-90 flex flex-col flex-grow bg-white text-gray-600' +
+            (className ? ' ' + className : '')
+        }
+        {...rest}
+    >
         {children}
     </div>
 );

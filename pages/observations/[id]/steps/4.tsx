@@ -122,7 +122,9 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
         }
     };
 
-    const isAllInputCorrect = () => Object.values(isInputCorrect).every((v) => v);
+    const isAllInputCorrect = () =>
+                                                      // Don't check 'n' if the shape is cylinder
+        Object.entries(isInputCorrect).every(([k, v]) => shape.code === 'cylinder' && k === 'n' || v);
 
     // Effects
     useEffect(() => {
@@ -146,7 +148,7 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
 
         // Check if vFormula is correct
         if (form.vFormula && correctValues.vFormula) {
-            // console.log('vFormula', form.vFormula, correctValues.vFormula)
+            console.log('vFormula', form.vFormula, correctValues.vFormula, checkFormula('' + form.vFormula, correctValues.vFormula))
             setIsInputCorrect({
                 ...isInputCorrect,
                 vFormula: checkFormula('' + form.vFormula, correctValues.vFormula),
@@ -173,7 +175,7 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 {/* Message */}
                 <div className="flex bg-white bg-opacity-95 p-4">
                     <Message>
-                        Lorem ipsum dolor sit amet lorem, consectetur adipiscing elit. Nullam ac ante eu nulla accumsan.
+                        Maecenas cursus venenatis suscipit. Nullam diam nisl.
                     </Message>
                 </div>
             </div>

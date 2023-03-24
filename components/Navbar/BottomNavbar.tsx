@@ -16,15 +16,15 @@ const BottomNavbar = ({ menu }: Props) => {
     const midI = Math.round(menu.length / 2);
 
     return (
+        // Wrapper
         <nav className="fixed z-90 left-1/2 transform -translate-x-1/2 bottom-0 w-inherit overflow-hidden pt-8">
-            <div className="bg-white bg-opacity-95 rounded-t-2xl">
+            {/* Navbar */}
+            <div className="bg-white bg-opacity-95 rounded-t-2xl shadow-sm shadow-blue-800/20">
                 <ul className="flex text-center px-2">
                     {menu.map((menuI, i) => i + 1 === midI ? (
                         <li key={menuI.href} className="flex-none -mt-8 -mx-2">
                             <Link href={menuI.href}>
-                                <a className={
-                                    'btn btn-primary btn-circle btn-lg'
-                                }>
+                                <a className="btn btn-primary btn-circle btn-lg shadow-sm shadow-blue-800/20">
                                     {menuI.icon}
                                 </a>
                             </Link>

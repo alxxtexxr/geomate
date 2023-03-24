@@ -20,7 +20,7 @@ const Intro: ComponentWithAuth = () => (
 
         <section className="grid grid-cols-1 gap-4 p-4">
             {INTROS.map((intro) => (
-                <div className="collapse collapse-arrow bg-white rounded-xl" key={intro.title}>
+                <div className="collapse collapse-arrow bg-white rounded-xl shadow-sm shadow-blue-800/20" key={intro.title}>
                     <input type="checkbox" />
                     <div className="collapse-title flex justify-start items-center">
                         <div className="relative h-10 w-10 mr-4">

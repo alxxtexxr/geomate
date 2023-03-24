@@ -33,8 +33,11 @@ export const getInitials = (name: string) => {
 export const getShape = (code: string) => SHAPES.filter((SHAPE) => SHAPE.code === code)[0];
 
 // Math Symbol
-export const getMathSymbol = (code: string) => MATH_SYMBOLS.filter((MATH_SYMBOL) => MATH_SYMBOL.code === code)[0];
-export const extractMathSymbolCodes = (formula: string) => formula.replace('pi', '').match(/\b[a-zA-Z]+\b/g) || [];
+export const getMathSymbol = (code: string) => 
+    MATH_SYMBOLS.filter((MATH_SYMBOL) => MATH_SYMBOL.code === code)[0];
+    
+export const extractMathSymbolCodes = (formula: string, includePi = false) => 
+    (includePi ? formula : formula.replace('pi', '')).match(/\b[a-zA-Z]+\b/g) || [];
 
 // Base Shape Symbol
 export const getBaseShapeSymbol = (nBaseVertices: number) => {

@@ -9,32 +9,70 @@ import { KeyboardLayoutObject } from 'react-simple-keyboard';
 // Shape descriptions is from mathway.com
 export const SHAPES: Shape[] = [
   {
-    name: 'Bola',
-    code: 'sphere',
-    stimulation: 'Ut Consequat Semper Viverra Nam?',
-    stimulationImage: '/images/placeholder-image.jpeg',
-    problemIdentification: 'Aliquam Faucibus Purus in Massa?',
-    problemIdentificationImage: '/images/placeholder-image.jpeg',
-    description: 'Bangun tiga dimensi dengan semua titik dalam ruang berjarak tetap dari titik tertentu, yang disebut pusat.',
-    vFormula: '4/3*pi*r^3',
-    lpFormula: '4*pi*r^2',
-    nVertices: 0,
-    nEdges: 0,
-    nFaces: 1,
-  },
-  {
     name: 'Tabung',
     code: 'cylinder',
-    stimulation: 'Jika memelihara ikan hias pastinya kita membutuhkan sebuah wadah untuk menampung ikan tersebut. Dan salah satu wadah yang mudah didapat dan bisa digunakan ialah toples.  ',
-    stimulationImage: '/images/cylinder-stimulation.jpeg',
-    problemIdentification: 'Cobalah amati toples yang kamu miliki yang sekiranya dapat digunakan sebagai wadah ikan hias. Lalu hitunglah volume air yang diperlukan untuk memenuhi toples tersebut.',
-    problemIdentificationImage: '/images/cylinder-stimulation.jpeg',
-    description: 'Bangun tiga-dimensi mempunyai dua alas sejajar dan keduanya lingkaran yang kongruen.',
+    description: 'Bangun tiga-dimensi yang mempunyai dua alas sejajar dan keduanya lingkaran yang kongruen.',
     vFormula: 'pi*r^2*t',
-    lpFormula: '2*pi*r*(r+t)',
-    nVertices: 0,
-    nEdges: 2,
-    nFaces: 3,
+
+    // v2.x
+    initiation: [
+      { content: 'Ut gravida nunc nec dignissim laoreet. Nunc consectetur porta mollis. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed vestibulum porta nulla. Nulla maximus neque non dolor vulputate auctor.' },
+      { content: 'Proin sed ante volutpat, porttitor nulla nec, dictum nulla. Pellentesque sed fermentum purus, in rhoncus lacus.' },
+      { content: 'Praesent vulputate, turpis a sollicitudin dictum, risus velit mollis purus, ut interdum magna libero vitae velit. Maecenas nec bibendum nulla.' },
+    ],
+
+    // stimulation: 'Jika memelihara ikan hias pastinya kita membutuhkan sebuah wadah untuk menampung ikan tersebut. Dan salah satu wadah yang mudah didapat dan bisa digunakan ialah toples.  ',
+    // stimulationImage: '/images/cylinder-stimulation.jpeg',
+    // problemIdentification: 'Cobalah amati toples yang kamu miliki yang sekiranya dapat digunakan sebagai wadah ikan hias. Lalu hitunglah volume air yang diperlukan untuk memenuhi toples tersebut.',
+    // problemIdentificationImage: '/images/cylinder-stimulation.jpeg',
+    // lpFormula: '2*pi*r*(r+t)',
+    // nVertices: 0,
+    // nEdges: 2,
+    // nFaces: 3,
+  },
+  {
+    name: 'Kerucut',
+    code: 'cone',
+    description: 'Bangun tiga-dimensi dengan alas lingkaran dan satu verteks.',
+    vFormula: '1/3*pi*r^2*t',
+
+    // v2.x
+    initiation: [
+      { content: 'Ut gravida nunc nec dignissim laoreet. Nunc consectetur porta mollis. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed vestibulum porta nulla. Nulla maximus neque non dolor vulputate auctor.' },
+      { content: 'Proin sed ante volutpat, porttitor nulla nec, dictum nulla. Pellentesque sed fermentum purus, in rhoncus lacus.' },
+      { content: 'Praesent vulputate, turpis a sollicitudin dictum, risus velit mollis purus, ut interdum magna libero vitae velit. Maecenas nec bibendum nulla.' },
+    ],
+
+    // stimulation: 'Ut Consequat Semper Viverra Nam?',
+    // stimulationImage: '/images/placeholder-image.jpeg',
+    // problemIdentification: 'Aliquam Faucibus Purus in Massa?',
+    // problemIdentificationImage: '/images/placeholder-image.jpeg',
+    // lpFormula: 'pi*r*(r+s)',
+    // nVertices: 1,
+    // nEdges: 1,
+    // nFaces: 2,
+  },
+  {
+    name: 'Bola',
+    code: 'sphere',
+    description: 'Bangun tiga dimensi dengan semua titik dalam ruang berjarak tetap dari titik tertentu, yang disebut pusat.',
+    vFormula: '4/3*pi*r^3',
+
+    // v2.x
+    initiation: [
+      { content: 'Ut gravida nunc nec dignissim laoreet. Nunc consectetur porta mollis. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed vestibulum porta nulla. Nulla maximus neque non dolor vulputate auctor.' },
+      { content: 'Proin sed ante volutpat, porttitor nulla nec, dictum nulla. Pellentesque sed fermentum purus, in rhoncus lacus.' },
+      { content: 'Praesent vulputate, turpis a sollicitudin dictum, risus velit mollis purus, ut interdum magna libero vitae velit. Maecenas nec bibendum nulla.' },
+    ],
+
+    // stimulation: 'Ut Consequat Semper Viverra Nam?',
+    // stimulationImage: '/images/placeholder-image.jpeg',
+    // problemIdentification: 'Aliquam Faucibus Purus in Massa?',
+    // problemIdentificationImage: '/images/placeholder-image.jpeg',
+    // lpFormula: '4*pi*r^2',
+    // nVertices: 0,
+    // nEdges: 0,
+    // nFaces: 1,
   },
   // {
   //   name: 'Prisma',
@@ -50,20 +88,6 @@ export const SHAPES: Shape[] = [
   //   nEdges: 'n × 3',
   //   nFaces: 'n + 2',
   // },
-  {
-    name: 'Kerucut',
-    code: 'cone',
-    stimulation: 'Ut Consequat Semper Viverra Nam?',
-    stimulationImage: '/images/placeholder-image.jpeg',
-    problemIdentification: 'Aliquam Faucibus Purus in Massa?',
-    problemIdentificationImage: '/images/placeholder-image.jpeg',
-    description: 'Bangun tiga-dimensi dengan alas lingkaran dan satu verteks.',
-    vFormula: '1/3*pi*r^2*t',
-    lpFormula: 'pi*r*(r+s)',
-    nVertices: 1,
-    nEdges: 1,
-    nFaces: 2,
-  },
   // {
   //   name: 'Limas',
   //   code: 'pyramid',
@@ -81,6 +105,11 @@ export const SHAPES: Shape[] = [
 ];
 
 export const MATH_SYMBOLS: MathSymbol[] = [
+  {
+    symbol: 'π',
+    code: 'pi',
+    title: 'Pi',
+  },
   {
     symbol: 'a△',
     code: 'baseA',
@@ -293,7 +322,7 @@ export const INTROS = [
   }
 ];
 
-export const KEYBOARD_LAYOUTS: {[key: string]: KeyboardLayoutObject} = {
+export const KEYBOARD_LAYOUTS: { [key: string]: KeyboardLayoutObject } = {
   numeric: {
     default: [
       '1 2 3 4 5 {bksp}',

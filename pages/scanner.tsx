@@ -52,9 +52,9 @@ const Classification: ComponentWithAuth = () => {
     }, [webcamRef, model]);
 
     return (
-        <main className="relative bg-black h-screen">
+        <main className="relative bg-black w-inherit h-screen">
             {model === null && (
-                <div className="fixed z-10 flex justify-center items-center bg-black bg-opacity-95 text-white h-screen w-screen ">
+                <div className="fixed z-10 flex justify-center items-center bg-black bg-opacity-95 text-white h-screen w-inherit">
                     <Loading.Spinner />
                 </div>
             )}
@@ -69,10 +69,10 @@ const Classification: ComponentWithAuth = () => {
                     facingMode: 'environment',
                     aspectRatio: 0.5,
                 }}
-                className="w-screen h-screen"
+                className="w-inherit h-screen"
             />
 
-            <section className="fixed bottom-0 w-screen text-center p-8">
+            <section className="fixed bottom-0 w-inherit text-center p-8">
                 {isLoading ? (
                     <div className="inline-flex bg-white rounded-full">
                         <button
