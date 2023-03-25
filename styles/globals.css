@@ -142,7 +142,7 @@
 
 /* Message Balloon */
 .message-balloon {
-    @apply relative text-sm p-4 rounded-xl
+    @apply relative p-4 rounded-xl
 }
 
 .message-balloon::before {
@@ -171,9 +171,17 @@
     @apply border-r-base-100
 }
 
+.message-balloon-b::before,
+.message-balloon-bl::before {
+    @apply bottom-0
+}
+
+.message-balloon-b::before {
+    @apply left-1/2 transform -translate-x-1/2
+}
+
 .message-balloon-bl::before {
     left: 80px;
-    @apply bottom-0
 }
 
 .message-balloon-b.message-balloon-lg::before,
@@ -181,6 +189,7 @@
     @apply transform translate-y-8 border-x-12 border-y-16
 }
 
+.message-balloon-b.message-balloon-white::before,
 .message-balloon-bl.message-balloon-white::before {
     @apply border-t-white
 }

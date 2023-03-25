@@ -16,9 +16,10 @@ export const SHAPES: Shape[] = [
 
     // v2.x
     initiation: [
-      { content: 'Ut gravida nunc nec dignissim laoreet. Nunc consectetur porta mollis. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed vestibulum porta nulla. Nulla maximus neque non dolor vulputate auctor.' },
-      { content: 'Proin sed ante volutpat, porttitor nulla nec, dictum nulla. Pellentesque sed fermentum purus, in rhoncus lacus.' },
-      { content: 'Praesent vulputate, turpis a sollicitudin dictum, risus velit mollis purus, ut interdum magna libero vitae velit. Maecenas nec bibendum nulla.' },
+      { content: 'Pernahkah kamu bertanya-tanya, bagaimana sih menghitung volume benda tabung?' },
+      { content: 'Jika kamu ingin tahu, kita dapat mempelajarinya!' },
+      { content: 'Carilah benda tabung di sekitarmu seperti kaleng, toples, atau botol'},
+      { content: 'Lalu, kita akan melakukan observasi dan mencari tahu bagaimana sih volume benda tersebut dihitung'},
     ],
 
     // stimulation: 'Jika memelihara ikan hias pastinya kita membutuhkan sebuah wadah untuk menampung ikan tersebut. Dan salah satu wadah yang mudah didapat dan bisa digunakan ialah toples.  ',
@@ -38,9 +39,10 @@ export const SHAPES: Shape[] = [
 
     // v2.x
     initiation: [
-      { content: 'Ut gravida nunc nec dignissim laoreet. Nunc consectetur porta mollis. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed vestibulum porta nulla. Nulla maximus neque non dolor vulputate auctor.' },
-      { content: 'Proin sed ante volutpat, porttitor nulla nec, dictum nulla. Pellentesque sed fermentum purus, in rhoncus lacus.' },
-      { content: 'Praesent vulputate, turpis a sollicitudin dictum, risus velit mollis purus, ut interdum magna libero vitae velit. Maecenas nec bibendum nulla.' },
+      { content: 'Pernahkah kamu bertanya-tanya, bagaimana sih menghitung volume benda kerucut?' },
+      { content: 'Jika kamu ingin tahu, kita dapat mempelajarinya!' },
+      { content: 'Carilah benda kerucut di sekitarmu seperti topi ulang tahun, tutup saji, atau cone es krim'},
+      { content: 'Lalu, kita akan melakukan observasi dan mencari tahu bagaimana sih volume benda tersebut dihitung'},
     ],
 
     // stimulation: 'Ut Consequat Semper Viverra Nam?',
@@ -60,9 +62,10 @@ export const SHAPES: Shape[] = [
 
     // v2.x
     initiation: [
-      { content: 'Ut gravida nunc nec dignissim laoreet. Nunc consectetur porta mollis. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed vestibulum porta nulla. Nulla maximus neque non dolor vulputate auctor.' },
-      { content: 'Proin sed ante volutpat, porttitor nulla nec, dictum nulla. Pellentesque sed fermentum purus, in rhoncus lacus.' },
-      { content: 'Praesent vulputate, turpis a sollicitudin dictum, risus velit mollis purus, ut interdum magna libero vitae velit. Maecenas nec bibendum nulla.' },
+      { content: 'Pernahkah kamu bertanya-tanya, bagaimana sih menghitung volume benda bola?' },
+      { content: 'Jika kamu ingin tahu, kita dapat mempelajarinya!' },
+      { content: 'Carilah benda bola di sekitarmu seperti bola sepak, kelereng, atau balon'},
+      { content: 'Lalu, kita akan melakukan observasi dan mencari tahu bagaimana sih volume benda tersebut dihitung'},
     ],
 
     // stimulation: 'Ut Consequat Semper Viverra Nam?',
@@ -222,11 +225,11 @@ export const INTROS = [
     contents: [
       {
         no: '3',
-        content: 'Membandingkan prisma, tabung, limas, kerucut, dan bola.',
+        content: 'Membandingkan prisma, tabung, limas, kerucut, dan bulat.',
       },
       {
         no: '4',
-        content: 'Mengidentifikasi prisma, tabung,limas, kerucut, dan bola.',
+        content: 'Mengidentifikasi prisma, tabung,limas, kerucut, dan bulat.',
       },
     ],
   },
@@ -251,7 +254,7 @@ export const INTROS = [
       },
       {
         no: '3.6.5',
-        content: 'Mengetahui bangun ruang bola.',
+        content: 'Mengetahui bangun ruang bulat.',
       },
       {
         no: '4.6.1',
@@ -271,7 +274,7 @@ export const INTROS = [
       },
       {
         no: '4.6.5',
-        content: 'Menentukan bangun ruang bola.',
+        content: 'Menentukan bangun ruang bulat.',
       },
     ],
   },
@@ -296,7 +299,7 @@ export const INTROS = [
       },
       {
         no: '3.6.5',
-        content: 'Mengetahui bangun ruang bola.',
+        content: 'Mengetahui bangun ruang bulat.',
       },
       {
         no: '4.6.1',
@@ -316,7 +319,7 @@ export const INTROS = [
       },
       {
         no: '4.6.5',
-        content: 'Menentukan bangun ruang bola.',
+        content: 'Menentukan bangun ruang bulat.',
       },
     ],
   }

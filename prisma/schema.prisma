@@ -125,7 +125,7 @@ model Evaluation {
 model Observation {
   id            String    @id @default(cuid())
   shapeCode     ShapeCode
-  image         String?
+  // image         String?
   // nVertices     Int?
   // nEdges        Int?
   // nFaces        Int?
@@ -135,12 +135,12 @@ model Observation {
   // baseS         Float?
   r             Float?
   t             Float?
-  s             Float?
-  la            Float?
-  lst           Float?
-  ka            Float?
+  // s             Float?
+  // la            Float?
+  // lst           Float?
+  // ka            Float?
   v             Float?
-  lp            Float?
+  // lp            Float?
   comparisonV   Float?
   isCompleted   Boolean   @default(false)
   createdAt     DateTime  @default(now())

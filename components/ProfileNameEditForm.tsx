@@ -63,9 +63,9 @@ const ProfileNameEditForm = ({ isOpen, setIsOpen }: Props) => {
                         <div className="form-control w-full mb-4">
                             <label className="label text-gray-800 text-sm">
                                 <span className="label-text">Nama Lengkap</span>
-                                <span className="label-text-alt">
+                                {/* <span className="label-text-alt">
                                     (NB: Ubah untuk edit)
-                                </span>
+                                </span> */}
                             </label>
                             <input
                                 type="text"

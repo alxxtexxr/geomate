@@ -29,14 +29,16 @@ const handle = async (req: NextApiRequest, res: NextApiResponse) => {
                     // baseS,
                     r,
                     t,
-                    s,
-                    la,
-                    lst,
-                    ka,
+                    // s,
+                    // la,
+                    // lst,
+                    // ka,
                     v,
-                    lp,
+                    // lp,
+                    
                     // v2.x
                     comparisonV,
+                    isCompleted,
                 } = req.body;
 
                 const result = await prisma.observation.update({
@@ -51,14 +53,16 @@ const handle = async (req: NextApiRequest, res: NextApiResponse) => {
                         // baseS: baseS,
                         r: r,
                         t: t,
-                        s: s,
-                        la: la,
-                        lst: lst,
-                        ka: ka,
+                        // s: s,
+                        // la: la,
+                        // lst: lst,
+                        // ka: ka,
                         v: v,
-                        lp: lp,
+                        // lp: lp,
+
                         // v2.x
                         comparisonV: comparisonV,
+                        isCompleted: isCompleted,
                     },
                 });
 

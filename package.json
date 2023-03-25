@@ -42,6 +42,7 @@
     "react-dom": "18.1.0",
     "react-icons": "^4.4.0",
     "react-images-uploading": "^3.1.6",
+    "react-modal-sheet": "^1.10.2",
     "react-qr-code": "^2.0.7",
     "react-responsive": "^9.0.0-beta.10",
     "react-simple-keyboard": "^3.5.31",

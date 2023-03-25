@@ -5,23 +5,23 @@ import Router from 'next/router';
 // import Link from 'next/link';
 
 // Components
-import Navbar from '../../components/Navbar';
-import ShapePreview from '../../components/ShapePreview';
-import Loading from '../../components/Loading';
+import Navbar from '../../../components/Navbar';
+import ShapePreview from '../../../components/ShapePreview';
+import Loading from '../../../components/Loading';
 
 
 // Utils
-import { getShape } from '../../Utils';
+import { getShape } from '../../../Utils';
 
 // Constants
-import { MATH_SYMBOLS } from '../../Constants';
+import { MATH_SYMBOLS } from '../../../Constants';
 
 // Types
 import type { GetServerSideProps } from 'next';
-import type ComponentWithAuth from '../../types/ComponentWithAuth';
-import type Shape from '../../types/Shape';
+import type ComponentWithAuth from '../../../types/ComponentWithAuth';
+import type Shape from '../../../types/Shape';
 import type { Observation, Evaluation } from '@prisma/client';
-import ObservationForm from '../../types/ObservationForm';
+import ObservationForm from '../../../types/ObservationForm';
 
 type Props = {
     observation: Observation,
@@ -34,7 +34,7 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
         4: ['baseS'],
     };
     const mathSymbolCodes = [
-        ...(observation.nBaseVertices ? baseParams[observation.nBaseVertices] : []),
+        // ...(observation.nBaseVertices ? baseParams[observation.nBaseVertices] : []),
         ...shape.vFormula.split(' '),
         'v'
     ];
@@ -82,10 +82,10 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
 
                 <div className="bg-white p-2 rounded-2xl overflow-hidden">
                     <div className="bg-black rounded-xl overflow-hidden">
-                        <ShapePreview
+                        {/* <ShapePreview
                             shapeCode={shape.code}
                             ObservationForm={observation as unknown as ObservationForm}
-                        />
+                        /> */}
                     </div>
                     <div className="pt-2 px-2">
                         {_mathSymbols.map((mathSymbol, i) => (

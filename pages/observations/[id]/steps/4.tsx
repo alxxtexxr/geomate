@@ -86,7 +86,20 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
         e.preventDefault();
         setIsSubmitting(true);
 
-        await Router.push(`/observations/${observation.id}/steps/4`);
+        try {
+            await fetch(`/api/observations/${observation.id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    isCompleted: true,
+                }),
+            });
+
+            await Router.push(`/observations/${observation.id}/result`);
+        } catch (error) {
+            setIsSubmitting(false);
+            console.error(error);
+        }
     };
 
     const updateForm = (name: string, value: string) => {

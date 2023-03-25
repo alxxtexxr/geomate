@@ -1,7 +1,7 @@
 import { default as Spinner } from './LoadingSpinner';
 
 const LoadingButton = () => (
-    <button className="btn w-full" disabled>
+    <button type="button" className="btn btn-block shadow-sm shadow-blue-800/10" disabled>
         <Spinner />
     </button>
 );

@@ -24,7 +24,7 @@ const ObservationMessage = ({ children }: Props) => (
         <MessageBalloon
             color="base-100"
             position="l"
-            className="ml-4"
+            className="text-sm ml-4"
         >
             {children}
         </MessageBalloon>
