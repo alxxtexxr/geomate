@@ -1,27 +1,22 @@
 import { useState } from 'react';
+import Head from 'next/head';
+import Image from 'next/image';
 import Router from 'next/router';
-// import Image from 'next/image';
-// import { Canvas } from '@react-three/fiber';
-// import Link from 'next/link';
 
 // Components
 import Navbar from '../../../components/Navbar';
-import ShapePreview from '../../../components/ShapePreview';
+import MessageBalloon from '../../../components/MessageBalloon';
+import Formula from '../../../components/Formula';
 import Loading from '../../../components/Loading';
 
-
 // Utils
-import { getShape } from '../../../Utils';
-
-// Constants
-import { MATH_SYMBOLS } from '../../../Constants';
+import { getShape, formatFormula } from '../../../Utils';
 
 // Types
 import type { GetServerSideProps } from 'next';
 import type ComponentWithAuth from '../../../types/ComponentWithAuth';
 import type Shape from '../../../types/Shape';
 import type { Observation, Evaluation } from '@prisma/client';
-import ObservationForm from '../../../types/ObservationForm';
 
 type Props = {
     observation: Observation,
@@ -29,19 +24,10 @@ type Props = {
 };
 
 const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
-    const baseParams: { [key: number]: string[] } = {
-        3: ['baseA', 'baseT'],
-        4: ['baseS'],
-    };
-    const mathSymbolCodes = [
-        // ...(observation.nBaseVertices ? baseParams[observation.nBaseVertices] : []),
-        ...shape.vFormula.split(' '),
-        'v'
-    ];
-    const _mathSymbols = MATH_SYMBOLS.filter((mathSymbol) => mathSymbolCodes.includes(mathSymbol.code));
+    // State
+    const [isLoading, setIsLoading] = useState(false);
 
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-
+    // Function
     const startEvaluation = async () => {
         setIsLoading(true);
 
@@ -65,67 +51,65 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
     };
 
     return (
-        <main className="relative flex flex-col bg-base-100 texture-base h-screen pb-20">
-            {/* <Navbar.Top title="Hasil Observasi" /> */}
+        <main className="relative flex flex-col bg-base-100 h-screen">
+            <Head>
+                <title>Hasil Observasi | {process.env.NEXT_PUBLIC_APP_NAME}</title>
+            </Head>
 
-            
+            <Navbar.Top title="Hasil Observasi" />
 
-            <section className="flex flex-col justify-center flex-grow px-4 text-sm">
-                <div className="text-center px-4 mb-6">
-                    <h1 className="font-semibold text-gray-800 text-lg mb-1">
-                        Pengamatan Selesai!
-                    </h1>
-                    <p className="text-sm text-gray-600">
-                        Dari pengamatan yang telah dilakukan, diketahui volume air yang diperlukan untuk memenuhi toples yaitu <span className="font-medium text-gray-800">1178.1 cm3</span>
-                    </p>
-                </div>
-
-                <div className="bg-white p-2 rounded-2xl overflow-hidden">
-                    <div className="bg-black rounded-xl overflow-hidden">
-                        {/* <ShapePreview
-                            shapeCode={shape.code}
-                            ObservationForm={observation as unknown as ObservationForm}
-                        /> */}
-                    </div>
-                    <div className="pt-2 px-2">
-                        {_mathSymbols.map((mathSymbol, i) => (
-                            <div className={
-                                'flex justify-between items-center py-2 border-gray-100' +
-                                (i + 1 < _mathSymbols.length ? '  border-b' : '')
-                            } key={mathSymbol.code}>
-                                <div className="w-7/12">
-                                    <div className="badge badge-primary badge-outline text-xs font-semibold w-8 mr-2 -mt-0.5">
-                                        {mathSymbol.symbol}
-                                    </div>
-                                    {mathSymbol.title}
+            <div className="flex flex-col h-inherit px-4">
+                <section className="flex-grow pb-8">
+                    <MessageBalloon
+                        color="white"
+                        position="b"
+                        size="lg"
+                        className="h-full shadow-sm shadow-blue-800/10"
+                    >
+                        <div className="flex flex-col h-full">
+                            <div className="flex flex-grow flex-col items-center text-center px-4">
+                                <div className="relative w-40 h-40 mt-10 mb-12">
+                                    <img
+                                        src="https://cdn-icons-png.flaticon.com/512/9436/9436103.png"
+                                    />
                                 </div>
-
-                                <span className="font-medium text-gray-800">
-                                    {(observation as { [key: string]: any })[mathSymbol.code] || 0} {mathSymbol.code === 'v' ? 'cm³' : (mathSymbol.code === 'la' ? 'cm²' : 'cm')}
-                                </span>
+                                <h2 className="text-gray-800 font-medium mb-2">
+                                    Observasi Selesai!
+                                </h2>
+                                <p className="text-gray-600 text-sm mb-6">
+                                    Kamu telah berhasil mempelajari volume {shape.name.toLowerCase()}. Selanjutnya, kamu dapat menguji pengetahuannmu melalui evaluasi.
+                                </p>
+                                <Formula type="primary">
+                                    Rumus Volume = {formatFormula(shape.vFormula)}
+                                </Formula>
                             </div>
-                        ))}
-                    </div>
 
+                            {isLoading ? (
+                                <Loading.Button />
+                            ) : (
+                                <button
+                                    type="button"
+                                    className="btn btn-primary btn-block"
+                                    onClick={startEvaluation}
+                                >
+                                    Evaluasi
+                                </button>
+                            )}
+                        </div>
+                    </MessageBalloon>
+                </section>
+
+                <div className="overflow-hidden">
+                    <div className="relative h-48 -mb-6 filter drop-shadow-sm">
+                        <Image
+                            src="/images/geo.svg"
+                            alt="Geo"
+                            layout="fill"
+                            objectFit="contain"
+                        />
+                    </div>
                 </div>
-            </section>
-            
-            <section className="fixed left-0 bottom-0 w-screen p-4">
-                {/* <Link href="/">
-                    <button className="btn btn-primary btn-outline w-full">
-                        Selesai
-                    </button>
-                </Link> */}
-                {isLoading ? (
-                    <button className="btn w-full" disabled>
-                        <Loading.Spinner />
-                    </button>
-                ) : (
-                    <button className="btn btn-primary w-full" onClick={startEvaluation}>
-                        Evaluasi
-                    </button>
-                )}
-            </section>
+            </div>
         </main>
     );
 };

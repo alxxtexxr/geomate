@@ -34,7 +34,7 @@
 }
 
 .btn-ghost-primary {
-    @apply btn-ghost text-primary
+    @apply btn-ghost text-primary outline-none
 }
 
 .btn-ghost-primary:hover, .btn-ghost-primary.btn-active {
@@ -196,9 +196,14 @@
 
 /* Border Shadow */
 .border-shadow-t {
-    box-shadow: 0 -1px 0 #e5e7eb;
+    box-shadow: 0 -1px 0 rgb(229 231 235);
 }
 
 .border-shadow-b {
-    box-shadow: 0 1px 0 #e5e7eb;
+    box-shadow: 0 1px 0 rgb(229 231 235);
+}
+
+
+.btn-toggle {
+    @apply btn-ghost bg-transparent hover:bg-transparent text-gray-300 hover:text-primary
 }

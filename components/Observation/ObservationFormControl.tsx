@@ -21,7 +21,7 @@ const ObservationFormControl = ({
 
     return (
         <div className="grid grid-cols-3">
-            <span className="label-text flex items-self-center items-center text-xs text-gray-800">
+            <span className="label-text flex items-self-center items-center text-sm text-gray-800">
                 {symbol && (
                     <div className="badge badge-primary badge-outline text-xs h-7 w-7 mr-2">
                         {symbol}
@@ -38,7 +38,7 @@ const ObservationFormControl = ({
                             {...rest}
                         />
                         {canMeasure && (
-                            <button type="button" className="absolute right-0 btn bg-transparent hover:bg-transparent hover:text-primary border-0 ml-2">
+                            <button type="button" className="absolute right-0 btn btn-toggle ml-2">
                                 <MdOutlineSwitchCamera className="text-2xl" />
                             </button>
                         )}

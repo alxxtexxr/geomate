@@ -31,7 +31,7 @@ const Leaderboard: ComponentWithAuth<Props> = ({ users }) => (
                 {users.slice(3).map((user, i) => (
                     <li
                         className={
-                            'flex items-center py-4 border-gray-300' +
+                            'flex items-center py-4 border-gray-200' +
                             (i + 1 < users.slice(3).length ? ' border-b' : '')
                         }
                         key={user.name}

@@ -217,7 +217,7 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                         <div className="grid grid-cols-1 gap-2">
                             {/* formula Input */}
                             <FormControl
-                                title={shape.code === 'cylinder' ? 'L. Lingkaran' : (comparisonShape ? `V. ${comparisonShape.name}` : 'Volume')}
+                                title={shape.code === 'cylinder' ? 'Luas Lingkaran' : (comparisonShape ? `V. ${comparisonShape.name}` : 'Volume')}
                                 symbol={shape.code === 'cylinder' ? 'a' : 'v2'}
                                 isCorrect={isInputCorrect.formula}
                                 name="formula"
@@ -251,7 +251,8 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                             {comparisonShapeFormulaToFormat && comparisonShapeFormulaToFormat
                                                 .replaceAll(' ', '')
                                                 .replaceAll('*', ' * ')
-                                                .replaceAll('^', ' ^').split(' ')
+                                                .replaceAll('^', ' ^')
+                                                .split(' ')
                                                 .map((mathSymbol, i) => {
                                                     const formattedMathSymbol = formatFormula(mathSymbol);
                                                     if (/[a-zA-Z]/.test(formattedMathSymbol)) {

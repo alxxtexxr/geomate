@@ -166,7 +166,7 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                 // onBlur
                                 />
                             ))}
-                            <hr />
+                            <hr className="border-gray-200" />
                             <FormControl
                                 title="Volume"
                                 symbol="v"

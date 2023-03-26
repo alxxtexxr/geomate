@@ -3,10 +3,10 @@ import Link from 'next/link';
 // import { Transition } from '@headlessui/react';
 import Sheet from 'react-modal-sheet';
 import { MdRemoveRedEye } from 'react-icons/md';
-import { IoClose } from 'react-icons/io5';
 
 // Component
 import ShapePreview from './ShapePreview';
+import Formula from './Formula';
 
 // Util
 import { getShape, formatFormula, extractMathSymbolCodes, getMathSymbol } from '../Utils';
@@ -25,13 +25,19 @@ const ShapeInformation = ({ shapeCode, onHide }: Props) => {
     const mathSymbolCodes = shape !== undefined ? extractMathSymbolCodes(shape.vFormula, true) : [];
 
     // State
-    const [highlight, setHighlight] = useState<string>()
+    const [highlight, setHighlight] = useState<string>();
+
+    // Function
+    const _onHide = () => {
+        onHide();
+        setHighlight(undefined);
+    };
 
     return (
         <Sheet
             snapPoints={[-1]}
             isOpen={isShowing}
-            onClose={onHide}
+            onClose={_onHide}
         >
             <Sheet.Container>
                 <Sheet.Header />
@@ -50,24 +56,20 @@ const ShapeInformation = ({ shapeCode, onHide }: Props) => {
                                 </div>
 
                                 {/* Description */}
-                                <div className="text-center mb-8 px-4">
+                                <div className="text-center mb-14 px-4">
                                     <h1 className="text-gray-800 font-medium mb-2">Apa itu {shape.name}?</h1>
                                     <p className="text-gray-600 text-sm">{shape.description}</p>
                                 </div>
 
                                 {/* Formula */}
-                                <div className="p-4 border border-gray-200 rounded-2xl shadow-sm shadow-blue-800/10">
-                                    <div className="grid grid-cols-3 items-center mb-2">
-                                        <h2 className="font-medium ml-2">Volume</h2>
-                                        <input
-                                            className="col-span-2 input input-bordered font-mono"
-                                            type="text"
-                                            value={`V = ${formatFormula(shape.vFormula)}`}
-                                            disabled
-                                        />
+                                <div className="relative border border-gray-200 rounded-2xl shadow-sm shadow-blue-800/10">
+                                    <div className="absolute flex justify-center transform -translate-y-1/2 w-full">
+                                        <Formula>
+                                            Rumus Volume = {formatFormula(shape.vFormula)}
+                                        </Formula>
                                     </div>
 
-                                    <div className="mb-2">
+                                    <div className="pt-8 px-4">
                                         {mathSymbolCodes.map((mathSymbolCode, i) => {
                                             // Filtering for every symbols, I think this code will have bad performance
                                             const mathSymbol = getMathSymbol(mathSymbolCode);
@@ -82,16 +84,16 @@ const ShapeInformation = ({ shapeCode, onHide }: Props) => {
                                                             {mathSymbol.title}
                                                         </div>
                                                         {mathSymbolCode === 'pi' ? (
-                                                            <div className="text-gray-600 text-sm my-3 mr-3 ml-auto">
+                                                            <div className="text-gray-800 font-mono my-3 mr-3 ml-auto">
                                                                 {/* The Pi value is hard-coded, maybe it can be improved */}
-                                                                3.14159...
+                                                                3.1415...
                                                             </div>
                                                         ) : (
                                                             <button
                                                                 type="button"
                                                                 className={
-                                                                    'btn btn-square text-gray-300 ml-auto ' +
-                                                                    (highlight === mathSymbolCode ? 'btn-ghost-primary' : 'btn-ghost')
+                                                                    'btn btn-square ml-auto ' +
+                                                                    (highlight === mathSymbolCode ? 'btn-ghost-primary' : 'btn-toggle')
                                                                 }
                                                                 onClick={() => setHighlight(highlight === mathSymbolCode ? undefined : mathSymbolCode)}
                                                             >
@@ -105,18 +107,20 @@ const ShapeInformation = ({ shapeCode, onHide }: Props) => {
                                         })}
                                     </div>
 
-                                    <Link href={`/initiation/${shapeCode}`}>
-                                        <button type="button" className="btn btn-primary btn-block">
-                                            Pelajari Volume
-                                        </button>
-                                    </Link>
+                                    <div className="pt-2 px-4 pb-4">
+                                        <Link href={`/initiation/${shapeCode}`}>
+                                            <button type="button" className="btn btn-primary btn-block">
+                                                Pelajari Volume
+                                            </button>
+                                        </Link>
+                                    </div>
                                 </div>
                             </>
                         ) : null}
                     </div>
                 </Sheet.Content>
             </Sheet.Container>
-            <Sheet.Backdrop onTap={onHide} />
+            <Sheet.Backdrop onTap={_onHide} />
         </Sheet >
     );
 };

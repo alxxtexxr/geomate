@@ -6,13 +6,7 @@ type Props = {
 };
 
 const ObservationMessage = ({ children }: Props) => (
-
     <>
-        {/* <div className="avatar">
-            <div className="w-20 rounded-full">
-                <img src="https://www.meme-arsenal.com/memes/ad49f5fb6248c93511637fd13463918f.jpg" />
-            </div>
-        </div> */}
         <div className="relative w-40 drop-shadow-md">
             <Image
                 src="/images/geo-head.svg"
@@ -24,7 +18,7 @@ const ObservationMessage = ({ children }: Props) => (
         <MessageBalloon
             color="base-100"
             position="l"
-            className="text-sm ml-4"
+            className="text-gray-600 text-sm ml-4"
         >
             {children}
         </MessageBalloon>

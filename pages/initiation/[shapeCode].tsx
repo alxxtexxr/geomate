@@ -80,7 +80,6 @@ const Initiation: ComponentWithAuth<Props> = ({ shape }) => {
                                     } : {
                                         onClick: () => setInitiationI(initiationI - 1)
                                     })}
-                                    
                                 >
                                     Kembali
                                 </button>
@@ -107,7 +106,7 @@ const Initiation: ComponentWithAuth<Props> = ({ shape }) => {
                     </MessageBalloon>
                 </section>
 
-                <section className="overflow-hidden">
+                <div className="overflow-hidden">
                     <div className="relative h-48 -mb-6 filter drop-shadow-sm">
                         <Image
                             src="/images/geo.svg"
@@ -116,37 +115,7 @@ const Initiation: ComponentWithAuth<Props> = ({ shape }) => {
                             objectFit="contain"
                         />
                     </div>
-                    {/* <div className="flex flex-col justify-center items-center">
-                        <div className="grid grid-cols-1 gap-2 w-full">
-                            {isLoading ? (
-                                <Loading.Button />
-                            ) : (
-                                <button
-                                    type="button"
-                                    className="btn btn-primary btn-block shadow-sm shadow-blue-800/10"
-                                    onClick={
-                                        () =>
-                                            initiationI + 1 < shape.initiation.length
-                                                ? setInitiationI(initiationI + 1)
-                                                : startObservation()
-                                    }
-                                >
-
-                                    {initiationI + 1 < shape.initiation.length ? 'Lanjut' : 'Observasi'}
-                                </button>
-                            )}
-                            {initiationI > 0 && (
-                                <button
-                                    type="button"
-                                    className="btn btn-primary btn-ghost btn-block bg-white text-primary hover:bg-primary hover:text-white shadow-sm shadow-blue-800/10"
-                                    onClick={() => setInitiationI(initiationI - 1)}
-                                >
-                                    Kembali
-                                </button>
-                            )}
-                        </div>
-                    </div> */}
-                </section>
+                </div>
             </div >
         </main >
     );

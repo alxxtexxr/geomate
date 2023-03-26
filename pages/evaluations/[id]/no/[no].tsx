@@ -30,6 +30,7 @@ type Props = {
 };
 
 const EvaluationQuestionPage: ComponentWithAuth<Props> = ({ evaluation }) => {
+    console.log({evaluation})
     // Router
     const router = useRouter();
 
