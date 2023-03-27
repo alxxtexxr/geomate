@@ -17,6 +17,7 @@ module.exports = {
       },
       padding: {
         'space-for-keyboard': '263px',
+        '21': '5.25rem',
       },
       borderWidth: {
         '3': '3px',

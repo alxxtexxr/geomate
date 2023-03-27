@@ -11,7 +11,7 @@ const Achievement = ({ title, isLocked = true, }: Props) => (
     <div
         className={
             'relative flex flex-col justify-items items-center text-center px-8 py-6 shadow-sm shadow-blue-800/20 rounded-xl overflow-hidden' +
-            (isLocked ? ' bg-white text-gray-800 text-opacity-40' : ' bg-base-200 text-white')
+            (isLocked ? ' bg-white text-gray-800 text-opacity-40' : ' bg-primary text-white')
         }
     >
         <AchievementIcon />

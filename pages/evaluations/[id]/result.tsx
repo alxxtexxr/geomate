@@ -120,11 +120,11 @@ const EvaluationPage: ComponentWithAuth<Props> = ({ evaluation, notifications })
                                 </div>
 
                                 {/* Score */}
-                                <div className="relative mb-9 px-20">
-                                    <h1 className="font-bold text-6xl text-gray-800">
+                                <div className="relative inline-flex mb-9">
+                                    <h1 className="font-bold text-6xl text-gray-800 mr-1x transform px-2">
                                         {round10(evaluation.score)}
                                     </h1>
-                                    <div className="badge absolute top-0 right-0 bg-primary text-white p-4 border-0 rounded-bl-none">
+                                    <div className="absolute right-0 transform translate-x-full badge bg-primary text-white p-4 border-0 rounded-bl-none">
                                         <span className="-mb-0.5">
                                             +{round10(evaluation.score)} XP
                                         </span>
@@ -139,7 +139,7 @@ const EvaluationPage: ComponentWithAuth<Props> = ({ evaluation, notifications })
                                     {getMessage(round10(evaluation.score)).content}
                                 </p>
 
-                                <ol className="flex flex-wrap justify-center">
+                                <ol className="flex flex-wrap justify-center mb-8">
                                     {evaluation.evaluationQuestions.map((evaluationQuestion, i) => (
                                         <li className="p-1" key={evaluationQuestion.question.id}>
                                             <EvaluationAnswer isCorrect={evaluationQuestion.isCorrect || false} no={i + 1} />

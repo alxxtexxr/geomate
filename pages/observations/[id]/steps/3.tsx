@@ -171,7 +171,7 @@ const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
                         <div className="grid grid-cols-1 gap-2">
                             {/* comparisonV Input */}
                             <FormControl
-                                title={shape.code === 'cylinder' ? 'L. Lingkaran' : (comparisonShape ? `V. ${comparisonShape.name}` : '')}
+                                title={shape.code === 'cylinder' ? 'Luas Lingkaran' : (comparisonShape ? `V. ${comparisonShape.name}` : '')}
                                 symbol={shape.code === 'cylinder' ? 'a' : 'v2'}
                                 suffix="cm³"
                                 name="comparisonV"

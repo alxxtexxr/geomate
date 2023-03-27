@@ -39,10 +39,9 @@ const Home: ComponentWithAuth = () => {
             alt={session?.user.name ? `${session?.user.name}'s Avatar` : undefined}
             size='lg'
           />
-
         </div>
         <div className="mt-4">
-          <h1 className="font-medium">Halo, {session?.user?.name || 'Geo'}!</h1>
+          <h1 className="font-medium">{session?.user.name ? `Halo, ${session.user.name}!` : 'Halo!'}</h1>
           <p className="text-sm">Mau belajar apa hari ini?</p>
         </div>
       </header>
@@ -67,7 +66,7 @@ const Home: ComponentWithAuth = () => {
         </div>
       </section>
 
-      {/* Navbar Bottom */}
+      {/* Bottom Navbar */}
       <Navbar.Bottom menu={NAVBAR_BOTTOM_MENU} />
 
       {/* Shape Information */}

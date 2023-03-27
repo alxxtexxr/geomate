@@ -213,7 +213,7 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                             <input
                                                 className={`input input-bordered flex-grow w-16 mx-0.5 ${isInputCorrect.comparisonVFormula ? 'input-primary' : 'input-error'}`}
                                                 name="comparisonVFormula"
-                                                placeholder="Rumus L. Lingkaran"
+                                                placeholder="Rumus Luas Lingkaran"
                                                 value={form.comparisonVFormula}
                                                 onChange={handleChange}
                                                 onFocus={handleFocus}

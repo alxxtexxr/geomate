@@ -51,7 +51,7 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
     };
 
     return (
-        <main className="flex flex-col bg-base-100 h-screen">
+        <main className="flex flex-col bg-base-100 min-h-screen">
             <Head>
                 <title>Hasil Observasi | {process.env.NEXT_PUBLIC_APP_NAME}</title>
             </Head>
@@ -79,7 +79,7 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                 <p className="text-gray-600 text-sm mb-6">
                                     Kamu telah berhasil mempelajari volume {shape.name.toLowerCase()}. Selanjutnya, kamu dapat menguji pengetahuannmu melalui evaluasi.
                                 </p>
-                                <Formula type="primary">
+                                <Formula type="primary" className="mb-8">
                                     Rumus Volume = {formatFormula(shape.vFormula)}
                                 </Formula>
                             </div>

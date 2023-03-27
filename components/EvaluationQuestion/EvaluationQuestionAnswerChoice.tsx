@@ -16,7 +16,7 @@ const EvaluationQuestionAnswerChoice = ({ id, answer, isAnswered, choice, onChan
             (
                 isAnswered
                     ? ' bg-primary hover:bg-primary bg-opacity-5 hover:bg-opacity-5 text-primary border-primary hover:border-primary'
-                    : ' bg-white hover:bg-white text-gray-600 border-white hover:border-primary'
+                    : ' bg-white hover:bg-white text-gray-600 border-white hover:border-primary shadow-sm shadow-blue-800/20'
             )
         }
     >

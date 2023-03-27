@@ -2,14 +2,13 @@ import { useState } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Router from 'next/router';
-// import { MdCheck, MdOutlineKeyboardBackspace } from 'react-icons/md';
 
 // Components
 import Navbar from '../../components/Navbar';
 import MessageBalloon from '../../components/MessageBalloon';
 import Loading from '../../components/Loading';
 
-// Utils
+// Util
 import { getShape } from '../../Utils';
 
 // Types
@@ -23,9 +22,11 @@ type Props = {
 };
 
 const Initiation: ComponentWithAuth<Props> = ({ shape }) => {
+    // States
     const [initiationI, setInitiationI] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
 
+    // Function
     const startObservation = async () => {
         setIsLoading(true);
 
