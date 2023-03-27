@@ -4,7 +4,7 @@ import { HiCamera } from 'react-icons/hi';
 import * as tmImage from '@teachablemachine/image';
 
 // Components
-import Loading from '../components/Loading';
+import Spinner from '../components/Spinner';
 import ShapeInformation from '../components/ShapeInformation';
 
 // Utils
@@ -25,7 +25,7 @@ const Classification: ComponentWithAuth = () => {
     // States
     const [model, setModel] = useState<tmImage.CustomMobileNet | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [predictedShapeCode, setPredictedShapeCode] = useState<ShapeCode | null>(null);
+    const [predictedShapeCode, setPredictedShapeCode] = useState<ShapeCode| null>(null);
     const [isShapeInformationShowing, setIsShapeInformationShowing] = useState(false);
 
     // Effects 
@@ -52,10 +52,10 @@ const Classification: ComponentWithAuth = () => {
     }, [webcamRef, model]);
 
     return (
-        <main className="relative bg-black w-inherit h-screen">
+        <main className="relative bg-black h-screen">
             {model === null && (
-                <div className="fixed z-10 flex justify-center items-center bg-black bg-opacity-95 text-white h-screen w-inherit">
-                    <Loading.Spinner />
+                <div className="fixed z-10 flex justify-center items-center bg-black bg-opacity-95 text-white h-screen w-screen ">
+                    <Spinner />
                 </div>
             )}
 
@@ -69,17 +69,17 @@ const Classification: ComponentWithAuth = () => {
                     facingMode: 'environment',
                     aspectRatio: 0.5,
                 }}
-                className="w-inherit h-screen"
+                className="w-screen h-screen"
             />
 
-            <section className="fixed bottom-0 w-inherit text-center p-8">
+            <section className="fixed bottom-0 w-screen text-center p-8">
                 {isLoading ? (
                     <div className="inline-flex bg-white rounded-full">
                         <button
                             className="btn btn-lg btn-circle"
                             disabled
                         >
-                            <Loading.Spinner />
+                            <Spinner />
                         </button>
                     </div>
                 ) : (
@@ -96,6 +96,8 @@ const Classification: ComponentWithAuth = () => {
             {predictedShapeCode && (
                 <ShapeInformation
                     shapeCode={predictedShapeCode}
+                    isShowing={isShapeInformationShowing}
+                    setIsShowing={setIsShapeInformationShowing}
                     onHide={() => {
                         setPredictedShapeCode(null);
                         setIsLoading(false);

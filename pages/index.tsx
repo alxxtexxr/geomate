@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import Head from 'next/head';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 // Components
 import Navbar from '../components/Navbar';
@@ -21,27 +21,19 @@ const Home: ComponentWithAuth = () => {
 
   // State
   const [selectedShapeCode, setSetectedShapeCode] = useState<ShapeCode>();
-
-  // Function
-  const hideShapeInformation = () => setSetectedShapeCode(undefined);
+  const [isShapeInformationShowing, setIsShapeInformationShowing] = useState(false);
 
   return (
-    <main className="bg-base-100 w-inherit min-h-screen">
-      <Head>
-        <title>Beranda | {process.env.NEXT_PUBLIC_APP_NAME}</title>
-      </Head>
-
+    <main className="bg-base-100 texture-base w-inherit h-inherit">
       {/* Header */}
       <header className="flex flex-col justify-center items-center text-center bg-base-200 text-primary-content pt-8 pb-14">
-        <div className="relative flex">
-          <Avatar
-            src={session?.user.image || undefined}
-            alt={session?.user.name ? `${session?.user.name}'s Avatar` : undefined}
-            size='lg'
-          />
-        </div>
+        <Avatar
+          src={session?.user.image || undefined}
+          alt={session?.user.name ? `${session?.user.name}'s Avatar` : undefined}
+          size='lg'
+        />
         <div className="mt-4">
-          <h1 className="font-medium">{session?.user.name ? `Halo, ${session.user.name}!` : 'Halo!'}</h1>
+          <h1 className="font-medium">Halo, {session?.user?.name || 'Kamu'}</h1>
           <p className="text-sm">Mau belajar apa hari ini?</p>
         </div>
       </header>
@@ -51,8 +43,11 @@ const Home: ComponentWithAuth = () => {
         <div className="grid grid-cols-2 gap-4 -mt-12">
           {SHAPES.map((shape) => (
             <div
-              className="flex flex-col justify-center items-center bg-white py-8 rounded-2xl shadow-sm shadow-blue-800/20 cursor-pointer"
-              onClick={() => setSetectedShapeCode(shape.code)}
+              className="flex flex-col justify-center items-center bg-white py-8 shadow rounded-2xl"
+              onClick={() => {
+                setSetectedShapeCode(shape.code);
+                setIsShapeInformationShowing(true);
+              }}
               key={shape.code}
             >
               <div className="relative h-20 w-20 mb-4">
@@ -66,14 +61,17 @@ const Home: ComponentWithAuth = () => {
         </div>
       </section>
 
-      {/* Bottom Navbar */}
+      {/* Navbar Bottom */}
       <Navbar.Bottom menu={NAVBAR_BOTTOM_MENU} />
 
       {/* Shape Information */}
-      <ShapeInformation
-        shapeCode={selectedShapeCode}
-        onHide={hideShapeInformation}
-      />
+      {selectedShapeCode && (
+        <ShapeInformation
+          shapeCode={selectedShapeCode}
+          isShowing={isShapeInformationShowing}
+          setIsShowing={setIsShapeInformationShowing}
+        />
+      )}
     </main>
   );
 };

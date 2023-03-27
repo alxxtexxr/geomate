@@ -1,127 +1,213 @@
-import { Fragment, useState } from 'react';
+import { Transition } from '@headlessui/react'
+import Image from 'next/image';
 import Link from 'next/link';
-// import { Transition } from '@headlessui/react';
-import Sheet from 'react-modal-sheet';
-import { MdRemoveRedEye } from 'react-icons/md';
+import katex from 'katex';
 
-// Component
-import ShapePreview from './ShapePreview';
-import Formula from './Formula';
+// Components
+import type { Dispatch, SetStateAction } from 'react';
+import BottomSheet from '../components/BottomSheet';
+
+// Constant
+import { MATH_SYMBOLS } from '../Constants';
 
 // Util
-import { getShape, formatFormula, extractMathSymbolCodes, getMathSymbol } from '../Utils';
+import { getShapeByCode, formatFormula } from '../Utils';
 
 // Types
 import type { ShapeCode } from '@prisma/client';
+import type MathSymbol from '../types/MathSymbol';
 
 type Props = {
-    shapeCode?: ShapeCode,
-    onHide: () => void,
+    shapeCode: ShapeCode,
+    isShowing: boolean,
+    setIsShowing: Dispatch<SetStateAction<boolean>>,
+    onHide?: () => void,
 };
 
-const ShapeInformation = ({ shapeCode, onHide }: Props) => {
-    const shape = shapeCode && getShape(shapeCode);
-    const isShowing = !!shapeCode;
-    const mathSymbolCodes = shape !== undefined ? extractMathSymbolCodes(shape.vFormula, true) : [];
+const ShapeInformation = ({ shapeCode, isShowing, setIsShowing, onHide }: Props) => {
+    const shape = getShapeByCode(shapeCode);
 
-    // State
-    const [highlight, setHighlight] = useState<string>();
+    let vFormulaSymbols: MathSymbol[] = [];
+    MATH_SYMBOLS.map((mathSymbol) => {
+        const i = ('v' + shape.vFormula).indexOf(mathSymbol.code);
 
-    // Function
-    const _onHide = () => {
-        onHide();
-        setHighlight(undefined);
-    };
+        if (i > -1) {
+            vFormulaSymbols[i] = mathSymbol;
+        }
+    });
+
+    let lpFormulaSymbols: MathSymbol[] = [];
+    MATH_SYMBOLS.map((mathSymbol) => {
+        const i = ('lp' + shape.lpFormula).indexOf(mathSymbol.code);
+
+        if (i > -1) {
+            lpFormulaSymbols[i] = mathSymbol;
+        }
+    });
 
     return (
-        <Sheet
-            snapPoints={[-1]}
-            isOpen={isShowing}
-            onClose={_onHide}
+        <Transition
+            appear={true}
+            show={isShowing}
+            enter="transition-opacity duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="transition-opacity duration-300"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+            className="w-inherit"
         >
-            <Sheet.Container>
-                <Sheet.Header />
-                <Sheet.Content>
-                    <div className="px-4">
-                        {shape !== undefined ? (
-                            <>
-                                {/* Preview */}
-                                <div className="bg-black rounded-2xl mb-8 overflow-hidden">
-                                    <ShapePreview
-                                        shapeCode={shape.code}
-                                        r={14}
-                                        t={20}
-                                        highlight={highlight}
-                                    />
-                                </div>
+            <div className="absolute inset-0 bg-black bg-opacity-60 w-inherit overflow-y-scroll">
+                {/* Overlay */}
+                <Transition.Child
+                    enter="transition-height duration-300"
+                    enterFrom="h-screen"
+                    enterTo="h-80"
+                    leave="transition-height duration-300"
+                    leaveFrom="h-80"
+                    leaveTo="h-screen"
+                >
+                    <div className="h-full" onClick={() => {
+                        setIsShowing(false);
+                        if (onHide) {
+                            onHide();
+                        }
+                    }} />
+                </Transition.Child>
 
-                                {/* Description */}
-                                <div className="text-center mb-14 px-4">
-                                    <h1 className="text-gray-800 font-medium mb-2">Apa itu {shape.name}?</h1>
-                                    <p className="text-gray-600 text-sm">{shape.description}</p>
-                                </div>
-
-                                {/* Formula */}
-                                <div className="relative border border-gray-200 rounded-2xl shadow-sm shadow-blue-800/10">
-                                    <div className="absolute flex justify-center transform -translate-y-1/2 w-full">
-                                        <Formula>
-                                            Rumus Volume = {formatFormula(shape.vFormula)}
-                                        </Formula>
-                                    </div>
-
-                                    <div className="pt-8 px-4">
-                                        {mathSymbolCodes.map((mathSymbolCode, i) => {
-                                            // Filtering for every symbols, I think this code will have bad performance
-                                            const mathSymbol = getMathSymbol(mathSymbolCode);
-
-                                            return (
-                                                <Fragment key={i}>
-                                                    <div className="flex items-center py-1">
-                                                        <div className="badge badge-primary badge-outline text-xs h-7 w-7 mr-2">
-                                                            {mathSymbol.symbol}
-                                                        </div>
-                                                        <div className="text-gray-600 text-sm -mb-px">
-                                                            {mathSymbol.title}
-                                                        </div>
-                                                        {mathSymbolCode === 'pi' ? (
-                                                            <div className="text-gray-800 font-mono my-3 mr-3 ml-auto">
-                                                                {/* The Pi value is hard-coded, maybe it can be improved */}
-                                                                3.1415...
-                                                            </div>
-                                                        ) : (
-                                                            <button
-                                                                type="button"
-                                                                className={
-                                                                    'btn btn-square ml-auto ' +
-                                                                    (highlight === mathSymbolCode ? 'btn-ghost-primary' : 'btn-toggle')
-                                                                }
-                                                                onClick={() => setHighlight(highlight === mathSymbolCode ? undefined : mathSymbolCode)}
-                                                            >
-                                                                <MdRemoveRedEye className="text-2xl" />
-                                                            </button>
-                                                        )}
-                                                    </div>
-                                                    {i + 1 < mathSymbolCodes.length && (<hr className="border-gray-200" />)}
-                                                </Fragment>
-                                            );
-                                        })}
-                                    </div>
-
-                                    <div className="pt-2 px-4 pb-4">
-                                        <Link href={`/initiation/${shapeCode}`}>
-                                            <button type="button" className="btn btn-primary btn-block">
-                                                Pelajari Volume
-                                            </button>
-                                        </Link>
-                                    </div>
-                                </div>
-                            </>
-                        ) : null}
+                {/* Bottom Sheet */}
+                <BottomSheet className="pt-12">
+                    <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 rounded-full">
+                        <div className="relative flex-none h-12 w-12">
+                            <Image src={`/images/${shape.code}.png`} alt={shape.name} layout="fill" />
+                        </div>
                     </div>
-                </Sheet.Content>
-            </Sheet.Container>
-            <Sheet.Backdrop onTap={_onHide} />
-        </Sheet >
+
+                    <div className="z-10 text-center mb-8 px-4">
+                        <h1 className="text-gray-800 text-lg font-semibold mb-1">{shape.name}</h1>
+                        <p className="text-sm">{shape.description}</p>
+                    </div>
+
+                    <table className="w-full mb-2">
+                        <tbody>
+                            <tr className="border-t">
+                                <td className="py-2">
+                                    <h2>
+                                        <div className="badge badge-primary badge-outline text-xs font-medium w-8 mr-2 -mt-0.5">
+                                            •
+                                        </div>
+                                        Jumlah Sudut
+                                    </h2>
+                                </td>
+                                <td className="text-gray-800 text-right font-medium py-2">
+                                    {shape.nVertices}
+                                </td>
+                            </tr>
+                            <tr className="border-t">
+                                <td className="py-2">
+                                    <h2>
+                                        <div className="badge badge-primary badge-outline text-xs font-medium w-8 mr-2 -mt-0.5">
+                                            △
+                                        </div>
+                                        Jumlah Rusuk
+                                    </h2>
+                                </td>
+                                <td className="text-gray-800 text-right font-medium py-2">
+                                    {shape.nEdges}
+                                </td>
+                            </tr>
+                            <tr className="border-t">
+                                <td className="py-2">
+                                    <h2>
+                                        <div className="badge badge-primary badge-outline text-xs font-medium w-8 mr-2 -mt-0.5">
+                                            ▲
+                                        </div>
+                                        Jumlah Sisi
+                                    </h2>
+                                </td>
+                                <td className="text-gray-800 text-right font-medium py-2">
+                                    {shape.nFaces}
+                                </td>
+                            </tr>
+
+                            {/* V Formula Row */}
+                            <tr className="border-t">
+                                <td colSpan={2} className="py-2">
+                                    <h2 className="mb-8">
+                                        <div className="badge badge-primary badge-outline text-xs font-medium w-8 mr-2 -mt-0.5">
+                                            V
+                                        </div>
+                                        Rumus Volume
+                                    </h2>
+
+                                    {/* V Formula */}
+                                    <div className="px-8 mb-8">
+                                        <div
+                                            className="text-gray-800 text-center font-medium mb-2"
+                                            dangerouslySetInnerHTML={{
+                                                __html: katex.renderToString('V = ' + formatFormula(shape.vFormula), { throwOnError: false })
+                                            }}
+                                        />
+                                        <div className="text-xs text-center">
+                                            {vFormulaSymbols.map((vFormulaSymbol, i) => (
+                                                <span key={i}>
+                                                    <span className="font-medium">{vFormulaSymbol.symbol}</span>
+                                                    = {vFormulaSymbol.title}
+                                                    {i + 1 < vFormulaSymbols.length && ', '}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    <Link href={`/stimulation/${shapeCode}`}>
+                                        <button className="btn btn-primary btn-outline w-full">
+                                            Pelajari Volume
+                                        </button>
+                                    </Link>
+                                </td>
+                            </tr>
+
+                            {/* LP Formula Row */}
+                            <tr className="border-t">
+                                <td colSpan={2} className="py-2">
+                                    <h2 className="mb-8">
+                                        <div className="badge badge-primary badge-outline text-xs font-medium w-8 mr-2 -mt-0.5">
+                                            V
+                                        </div>
+                                        Rumus Luas Permukaan
+                                    </h2>
+
+                                    {/* LP Formula */}
+                                    <div className="px-8 mb-8">
+                                        <div
+                                            className="text-gray-800 text-center font-medium mb-1"
+                                            dangerouslySetInnerHTML={{
+                                                __html: katex.renderToString('LP = ' + formatFormula(shape.lpFormula), { throwOnError: false })
+                                            }}
+                                        />
+                                        <div className="text-xs text-center">
+                                            {lpFormulaSymbols.map((lpFormulaSymbol, i) => (
+                                                <span key={i}>
+                                                    <span className="font-medium">{lpFormulaSymbol.symbol}</span>
+                                                    = {lpFormulaSymbol.title}
+                                                    {i + 1 < lpFormulaSymbols.length && ', '}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    <Link href={`/stimulation/${shapeCode}`}>
+                                        <button className="btn btn-primary btn-outline w-full">
+                                            Pelajari Luas Permukaan
+                                        </button>
+                                    </Link>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </BottomSheet>
+            </div>
+        </Transition>
     );
 };
 

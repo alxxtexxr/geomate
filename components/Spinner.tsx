@@ -3,7 +3,7 @@ type Props = {
     size?: string,
 };
 
-const LoadingSpinner = ({ color, size = 'md' }: Props) => {
+const Spinner = ({ color, size = 'md' }: Props) => {
     const sizeCx: { [key: string]: string } = {
         md: 'h-6 w-6',
     };
@@ -24,4 +24,4 @@ const LoadingSpinner = ({ color, size = 'md' }: Props) => {
     );
 }
 
-export default LoadingSpinner;
+export default Spinner;

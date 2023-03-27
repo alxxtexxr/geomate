@@ -19,7 +19,7 @@ const clipPaths = [
 ];
 
 const LeaderboardPodium = ({ users }: Props) => (
-    <section className="flex justify-center items-end bg-base-200 text-primary-content px-4 pt-8 rounded-b-2xl">
+    <section className="flex justify-center items-end bg-base-200 text-primary-content px-4 pt-8 rounded-b-xl">
         {[2, 1, 3].map((rank) => {
             const user = users[rank - 1];
 

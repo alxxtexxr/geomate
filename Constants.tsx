@@ -4,78 +4,36 @@ import { AiOutlineScan } from 'react-icons/ai'
 // Types
 import Shape from './types/Shape';
 import MathSymbol from './types/MathSymbol';
-import { KeyboardLayoutObject } from 'react-simple-keyboard';
 
 // Shape descriptions is from mathway.com
 export const SHAPES: Shape[] = [
   {
-    name: 'Tabung',
-    code: 'cylinder',
-    description: 'Bangun tiga-dimensi yang mempunyai dua alas sejajar dan keduanya lingkaran yang kongruen.',
-    vFormula: 'pi*r^2*t',
-
-    // v2.x
-    initiation: [
-      { content: 'Pernahkah kamu bertanya-tanya, bagaimana sih menghitung volume benda tabung?' },
-      { content: 'Jika kamu ingin tahu, kita dapat mempelajarinya!' },
-      { content: 'Carilah benda tabung di sekitarmu seperti kaleng, toples, atau botol'},
-      { content: 'Lalu, kita akan melakukan observasi dan mencari tahu bagaimana sih volume benda tersebut dihitung'},
-    ],
-
-    // stimulation: 'Jika memelihara ikan hias pastinya kita membutuhkan sebuah wadah untuk menampung ikan tersebut. Dan salah satu wadah yang mudah didapat dan bisa digunakan ialah toples.  ',
-    // stimulationImage: '/images/cylinder-stimulation.jpeg',
-    // problemIdentification: 'Cobalah amati toples yang kamu miliki yang sekiranya dapat digunakan sebagai wadah ikan hias. Lalu hitunglah volume air yang diperlukan untuk memenuhi toples tersebut.',
-    // problemIdentificationImage: '/images/cylinder-stimulation.jpeg',
-    // lpFormula: '2*pi*r*(r+t)',
-    // nVertices: 0,
-    // nEdges: 2,
-    // nFaces: 3,
-  },
-  {
-    name: 'Kerucut',
-    code: 'cone',
-    description: 'Bangun tiga-dimensi dengan alas lingkaran dan satu verteks.',
-    vFormula: '1/3*pi*r^2*t',
-
-    // v2.x
-    initiation: [
-      { content: 'Pernahkah kamu bertanya-tanya, bagaimana sih menghitung volume benda kerucut?' },
-      { content: 'Jika kamu ingin tahu, kita dapat mempelajarinya!' },
-      { content: 'Carilah benda kerucut di sekitarmu seperti topi ulang tahun, tutup saji, atau cone es krim'},
-      { content: 'Lalu, kita akan melakukan observasi dan mencari tahu bagaimana sih volume benda tersebut dihitung'},
-    ],
-
-    // stimulation: 'Ut Consequat Semper Viverra Nam?',
-    // stimulationImage: '/images/placeholder-image.jpeg',
-    // problemIdentification: 'Aliquam Faucibus Purus in Massa?',
-    // problemIdentificationImage: '/images/placeholder-image.jpeg',
-    // lpFormula: 'pi*r*(r+s)',
-    // nVertices: 1,
-    // nEdges: 1,
-    // nFaces: 2,
-  },
-  {
     name: 'Bola',
     code: 'sphere',
+    stimulation: 'Ut Consequat Semper Viverra Nam?',
+    stimulationImage: '/images/placeholder-image.jpeg',
+    problemIdentification: 'Aliquam Faucibus Purus in Massa?',
+    problemIdentificationImage: '/images/placeholder-image.jpeg',
     description: 'Bangun tiga dimensi dengan semua titik dalam ruang berjarak tetap dari titik tertentu, yang disebut pusat.',
-    vFormula: '4/3*pi*r^3',
-
-    // v2.x
-    initiation: [
-      { content: 'Pernahkah kamu bertanya-tanya, bagaimana sih menghitung volume benda bola?' },
-      { content: 'Jika kamu ingin tahu, kita dapat mempelajarinya!' },
-      { content: 'Carilah benda bola di sekitarmu seperti bola sepak, kelereng, atau balon'},
-      { content: 'Lalu, kita akan melakukan observasi dan mencari tahu bagaimana sih volume benda tersebut dihitung'},
-    ],
-
-    // stimulation: 'Ut Consequat Semper Viverra Nam?',
-    // stimulationImage: '/images/placeholder-image.jpeg',
-    // problemIdentification: 'Aliquam Faucibus Purus in Massa?',
-    // problemIdentificationImage: '/images/placeholder-image.jpeg',
-    // lpFormula: '4*pi*r^2',
-    // nVertices: 0,
-    // nEdges: 0,
-    // nFaces: 1,
+    vFormula: '( 4 / 3 ) * PI * r ^ 3',
+    lpFormula: '4 * PI * r ^ 2',
+    nVertices: 0,
+    nEdges: 0,
+    nFaces: 1,
+  },
+  {
+    name: 'Tabung',
+    code: 'cylinder',
+    stimulation: 'Jika memelihara ikan hias pastinya kita membutuhkan sebuah wadah untuk menampung ikan tersebut. Dan salah satu wadah yang mudah didapat dan bisa digunakan ialah toples.  ',
+    stimulationImage: '/images/cylinder-stimulation.jpeg',
+    problemIdentification: 'Cobalah amati toples yang kamu miliki yang sekiranya dapat digunakan sebagai wadah ikan hias. Lalu hitunglah volume air yang diperlukan untuk memenuhi toples tersebut.',
+    problemIdentificationImage: '/images/cylinder-stimulation.jpeg',
+    description: 'Bangun tiga-dimensi mempunyai dua alas sejajar dan keduanya lingkaran yang kongruen.',
+    vFormula: 'PI * r ^ 2 * t',
+    lpFormula: '2 * PI * r * ( r + t )',
+    nVertices: 0,
+    nEdges: 2,
+    nFaces: 3,
   },
   // {
   //   name: 'Prisma',
@@ -91,6 +49,20 @@ export const SHAPES: Shape[] = [
   //   nEdges: 'n × 3',
   //   nFaces: 'n + 2',
   // },
+  {
+    name: 'Kerucut',
+    code: 'cone',
+    stimulation: 'Ut Consequat Semper Viverra Nam?',
+    stimulationImage: '/images/placeholder-image.jpeg',
+    problemIdentification: 'Aliquam Faucibus Purus in Massa?',
+    problemIdentificationImage: '/images/placeholder-image.jpeg',
+    description: 'Bangun tiga-dimensi dengan alas lingkaran dan satu verteks.',
+    vFormula: '( 1 / 3 ) * PI * r ^ 2 * t',
+    lpFormula: 'PI * r * ( r + s )',
+    nVertices: 1,
+    nEdges: 1,
+    nFaces: 2,
+  },
   // {
   //   name: 'Limas',
   //   code: 'pyramid',
@@ -108,11 +80,6 @@ export const SHAPES: Shape[] = [
 ];
 
 export const MATH_SYMBOLS: MathSymbol[] = [
-  {
-    symbol: 'π',
-    code: 'pi',
-    title: 'Pi',
-  },
   {
     symbol: 'a△',
     code: 'baseA',
@@ -137,13 +104,11 @@ export const MATH_SYMBOLS: MathSymbol[] = [
     symbol: 'r',
     code: 'r',
     title: 'Radius',
-    defaultValue: 14,
   },
   {
     symbol: 't',
     code: 't',
     title: 'Tinggi',
-    defaultValue: 20,
   },
   {
     symbol: 's',
@@ -184,7 +149,7 @@ export const NAVBAR_BOTTOM_MENU = [
     icon: (<MdInfoOutline className="text-2xl" />),
     activeIcon: (<MdInfo className="text-2xl" />),
     title: 'Pengantar',
-    href: '/introduction',
+    href: '/intro',
   },
   {
     icon: (<AiOutlineScan className="text-3xl" />),
@@ -225,11 +190,11 @@ export const INTROS = [
     contents: [
       {
         no: '3',
-        content: 'Membandingkan prisma, tabung, limas, kerucut, dan bulat.',
+        content: 'Membandingkan prisma, tabung, limas, kerucut, dan bola.',
       },
       {
         no: '4',
-        content: 'Mengidentifikasi prisma, tabung,limas, kerucut, dan bulat.',
+        content: 'Mengidentifikasi prisma, tabung,limas, kerucut, dan bola.',
       },
     ],
   },
@@ -254,7 +219,7 @@ export const INTROS = [
       },
       {
         no: '3.6.5',
-        content: 'Mengetahui bangun ruang bulat.',
+        content: 'Mengetahui bangun ruang bola.',
       },
       {
         no: '4.6.1',
@@ -274,7 +239,7 @@ export const INTROS = [
       },
       {
         no: '4.6.5',
-        content: 'Menentukan bangun ruang bulat.',
+        content: 'Menentukan bangun ruang bola.',
       },
     ],
   },
@@ -299,7 +264,7 @@ export const INTROS = [
       },
       {
         no: '3.6.5',
-        content: 'Mengetahui bangun ruang bulat.',
+        content: 'Mengetahui bangun ruang bola.',
       },
       {
         no: '4.6.1',
@@ -319,28 +284,11 @@ export const INTROS = [
       },
       {
         no: '4.6.5',
-        content: 'Menentukan bangun ruang bulat.',
+        content: 'Menentukan bangun ruang bola.',
       },
     ],
   }
 ];
 
-export const KEYBOARD_LAYOUTS: { [key: string]: KeyboardLayoutObject } = {
-  numeric: {
-    default: [
-      '1 2 3 4 5 {bksp}',
-      '6 7 8 9 0 .',
-    ],
-  },
-  formula: {
-    default: [
-      '1 2 3 4 5',
-      '6 7 8 9 0',
-      'π r t {bksp}',
-      '+ - / × ² ³',
-
-    ],
-  },
-};
-
-export const SHAPE_PREVIEW_DEFAULT_HEIGHT = 272;
+export const DEFAULT_SIZE = 20;
+// export const DEFAULT_SIZE_DIVIDER = 15

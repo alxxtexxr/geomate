@@ -6,18 +6,16 @@ export type Props = {
     r: number,
     t: number,
     nBaseVertices: number,
-    color: string,
-    opacity?: number,
+    wireframe: boolean,
 };
 
-const Cylinder = forwardRef<THREE.Mesh<THREE.BufferGeometry, THREE.Material | THREE.Material[]>, Props>(({ r, t, color, opacity }, ref) => (
+const Cylinder = forwardRef<THREE.Mesh<THREE.BufferGeometry, THREE.Material | THREE.Material[]>, Props>(({ r, t, wireframe }, ref) => (
     <Prism
         ref={ref}
         r={r}
         t={t}
         nBaseVertices={64}
-        color={color}
-        opacity={opacity}
+        wireframe={wireframe}
     />
 ));
 Cylinder.displayName = 'Cylinder';
