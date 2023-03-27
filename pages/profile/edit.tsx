@@ -53,7 +53,7 @@ const EditProfile: ComponentWithAuth = () => {
                         <div className="upload__image-wrapper relative inline-flex mb-4">
                             <div className="absolute right-0 bottom-0 z-20 transform translate-x-1/4 translate-y-1/4">
                                 <button
-                                    className="btn btn-circle bg-white hover:bg-white text-primary hover:text-primary border-white hover:border-white shadow"
+                                    className="btn btn-circle bg-white hover:bg-white text-primary hover:text-primary border-white hover:border-white"
                                     {...(imageList.length ? {
                                         onClick: () => onImageUpdate(0),
                                     } : {
@@ -84,7 +84,7 @@ const EditProfile: ComponentWithAuth = () => {
                         name="name"
                         value={form.name}
                         onChange={(e) => handleChange(e)}
-                        className="input input-bordered w-full shadow"
+                        className="input input-bordered w-full"
                     />
                 </div>
             </section>

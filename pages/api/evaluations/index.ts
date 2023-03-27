@@ -20,7 +20,7 @@ const handle = async (req: NextApiRequest, res: NextApiResponse) => {
                     },
                 });
 
-                console.log({questions});
+                // console.log({questions});
 
                 const evaluation = await prisma.evaluation.create({
                     data: {
