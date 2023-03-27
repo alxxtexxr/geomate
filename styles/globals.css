@@ -142,7 +142,15 @@
 
 /* Message Balloon */
 .message-balloon {
-    @apply relative p-4 rounded-xl
+    @apply relative p-4
+}
+
+.message-balloon-md {
+    @apply rounded-xl
+}
+
+.message-balloon-lg {
+    @apply rounded-2xl
 }
 
 .message-balloon::before {

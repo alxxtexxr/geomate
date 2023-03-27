@@ -84,7 +84,7 @@ const EvaluationQuestionPage: ComponentWithAuth<Props> = ({ evaluation }) => {
     };
 
     return (
-        <main className="texture-base h-screen">
+        <main className="bg-base-100 h-screen">
             <Navbar.Top title="Evaluasi" />
 
             <Pagination

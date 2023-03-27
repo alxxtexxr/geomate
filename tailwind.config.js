@@ -38,6 +38,9 @@ module.exports = {
         'height': 'height',
         'spacing': 'margin, padding',
       },
+      translate: {
+        '4/10': '40%',
+      }
     },
   },
   daisyui: {
