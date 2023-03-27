@@ -7,14 +7,18 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    
     "dev-prisma-studio": "dotenv -e .env.development.local prisma studio",
     "dev-prisma-db-push": "dotenv -e .env.development.local prisma db push",
     "dev-prisma-db-seed": "dotenv -e .env.development.local prisma db seed",
     "dev-prisma-generate": "dotenv -e .env.development.local prisma generate",
-    "prd-prisma-studio": "dotenv -e .env.production.local prisma studio",
-    "prd-prisma-db-push": "dotenv -e .env.production.local prisma db push",
-    "prd-prisma-db-seed": "dotenv -e .env.production.local prisma db seed",
-    "prd-prisma-generate": "dotenv -e .env.production.local prisma generate"
+
+    "stg-prisma-studio": "dotenv -e .env.stage.local prisma studio",
+    "stg-prisma-db-push": "dotenv -e .env.stage.local prisma db push",
+    "stg-prisma-db-seed": "dotenv -e .env.stage.local prisma db seed",
+    "stg-prisma-generate": "dotenv -e .env.stage.local prisma generate",
+
+    "prd-prisma-db-seed": "dotenv -e .env.production.local prisma db seed"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.13",
@@ -52,13 +56,10 @@
   },
   "devDependencies": {
     "@types/formidable": "^1.2.2",
-    "@types/katex": "^0.14.0",
     "@types/node": "^17.0.38",
     "@types/qs": "^6.9.7",
     "@types/react": "18.0.10",
     "@types/react-dom": "18.0.5",
-    "@types/react-transition-group": "^4.4.5",
-    "@types/tailwindcss": "^3.1.0",
     "@types/three": "^0.141.0",
     "autoprefixer": "^10.4.7",
     "eslint": "8.16.0",

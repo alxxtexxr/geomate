@@ -202,18 +202,18 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
                             {/* comparisonVFormula Input */}
                             {shape.code === 'cylinder' ? (
                                 <div className="grid grid-cols-3">
-                                    <span className="label-text flex items-self-center items-center text-xs text-gray-800">
+                                    <span className="label-text flex items-self-center items-center text-sm text-gray-800">
                                         <div className="badge badge-primary badge-outline text-xs h-7 w-7 mr-2">
                                             v
                                         </div>
-                                        V. {shape.name}
+                                        Volume {shape.name}
                                     </span>
                                     <div className="col-span-2">
                                         <div className="flex items-center font-mono text-base">
                                             <input
                                                 className={`input input-bordered flex-grow w-16 mx-0.5 ${isInputCorrect.comparisonVFormula ? 'input-primary' : 'input-error'}`}
                                                 name="comparisonVFormula"
-                                                placeholder="Rumus Luas Lingkaran"
+                                                placeholder="Rumus L. Lingkaran"
                                                 value={form.comparisonVFormula}
                                                 onChange={handleChange}
                                                 onFocus={handleFocus}
@@ -299,7 +299,7 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                 className="btn btn-primary btn-block"
                                 disabled={!isAllInputCorrect()}
                             >
-                                Selanjutnya
+                                Selesai
                             </button>
                         )}
                     </div>

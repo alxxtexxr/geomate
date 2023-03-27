@@ -146,6 +146,7 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
     const handleFocus = (e: FocusEvent<HTMLInputElement>) => {
         const { name } = e.target
 
+        setHighlight(name === 'formula' || name === 'v' ? undefined : name);
         setFocusedInputName(name);
 
         if (keyboardRef.current) {
@@ -217,11 +218,11 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                         <div className="grid grid-cols-1 gap-2">
                             {/* formula Input */}
                             <FormControl
-                                title={shape.code === 'cylinder' ? 'Luas Lingkaran' : (comparisonShape ? `V. ${comparisonShape.name}` : 'Volume')}
+                                title={shape.code === 'cylinder' ? 'Luas Lingkaran' : (comparisonShape ? `Volume ${comparisonShape.name}` : 'Volume')}
                                 symbol={shape.code === 'cylinder' ? 'a' : 'v2'}
                                 isCorrect={isInputCorrect.formula}
                                 name="formula"
-                                placeholder={comparisonShape ? `Rumus V. ${comparisonShape.name}` : ''}
+                                placeholder={shape.code === 'cylinder' ? 'Rumus L. Lingkaran' : (comparisonShape ? `Rumus V. ${comparisonShape.name}` : '')}
                                 value={form.formula}
                                 onChange={handleChange}
                                 onFocus={handleFocus}
@@ -270,12 +271,7 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                                                 name={name}
                                                                 value={(form as FormValues)[name] || ''}
                                                                 onChange={handleChange}
-                                                                onFocus={(e) => {
-                                                                    handleFocus(e);
-                                                                    if (e.target.name) {
-                                                                        setHighlight(e.target.name);
-                                                                    }
-                                                                }}
+                                                                onFocus={handleFocus}
                                                             />
                                                         );
                                                     } else {

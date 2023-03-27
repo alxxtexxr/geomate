@@ -25,7 +25,7 @@ const Classification: ComponentWithAuth = () => {
     // States
     const [model, setModel] = useState<tmImage.CustomMobileNet | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [predictedShapeCode, setPredictedShapeCode] = useState<ShapeCode| null>(null);
+    const [predictedShapeCode, setPredictedShapeCode] = useState<ShapeCode | null>(null);
     const [isShapeInformationShowing, setIsShapeInformationShowing] = useState(false);
 
     // Effects 
@@ -96,8 +96,6 @@ const Classification: ComponentWithAuth = () => {
             {predictedShapeCode && (
                 <ShapeInformation
                     shapeCode={predictedShapeCode}
-                    isShowing={isShapeInformationShowing}
-                    setIsShowing={setIsShapeInformationShowing}
                     onHide={() => {
                         setPredictedShapeCode(null);
                         setIsLoading(false);

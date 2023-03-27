@@ -171,7 +171,7 @@ const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
                         <div className="grid grid-cols-1 gap-2">
                             {/* comparisonV Input */}
                             <FormControl
-                                title={shape.code === 'cylinder' ? 'Luas Lingkaran' : (comparisonShape ? `V. ${comparisonShape.name}` : '')}
+                                title={shape.code === 'cylinder' ? 'Luas Lingkaran' : (comparisonShape ? `Volume ${comparisonShape.name}` : '')}
                                 symbol={shape.code === 'cylinder' ? 'a' : 'v2'}
                                 suffix="cm³"
                                 name="comparisonV"
@@ -211,8 +211,8 @@ const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
                             <hr />
                             {/* formulaResult Input */}
                             <FormControl
-                                title={`V. ${shape.name}`}
-                                symbol="v1"
+                                title={`Volume ${shape.name}`}
+                                symbol="v"
                                 suffix="cm³"
                                 isCorrect={isNComparisonVCorrect}
                                 name="v"

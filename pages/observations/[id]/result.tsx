@@ -58,13 +58,13 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
 
             <Navbar.Top title="Hasil Observasi" />
 
-            <div className="flex flex-col h-inherit px-4">
-                <section className="flex-grow pb-8">
+            <div className="flex flex-grow flex-col px-4">
+                <section className="flex flex-grow pb-8">
                     <MessageBalloon
                         color="white"
                         position="b"
                         size="lg"
-                        className="h-full shadow-sm shadow-blue-800/10"
+                        className="flex-grow shadow-sm shadow-blue-800/10"
                     >
                         <div className="flex flex-col h-full">
                             <div className="flex flex-grow flex-col items-center text-center px-4">
@@ -80,7 +80,7 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                     Kamu telah berhasil mempelajari volume {shape.name.toLowerCase()}. Selanjutnya, kamu dapat menguji pengetahuannmu melalui evaluasi.
                                 </p>
                                 <Formula type="primary" className="mb-8">
-                                    Rumus Volume = {formatFormula(shape.vFormula)}
+                                    Volume = {formatFormula(shape.vFormula)}
                                 </Formula>
                             </div>
 
@@ -100,7 +100,7 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 </section>
 
                 <div className="overflow-hidden">
-                    <div className="relative h-48 -mb-6 filter drop-shadow-sm">
+                    <div className="relative h-48 -mb-6 filter drop-shadow-md">
                         <Image
                             src="/images/geo.svg"
                             alt="Geo"

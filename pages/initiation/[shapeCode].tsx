@@ -108,7 +108,7 @@ const Initiation: ComponentWithAuth<Props> = ({ shape }) => {
                 </section>
 
                 <div className="overflow-hidden">
-                    <div className="relative h-48 -mb-6 filter drop-shadow-sm">
+                    <div className="relative h-48 -mb-6 filter drop-shadow-md">
                         <Image
                             src="/images/geo.svg"
                             alt="Geo"

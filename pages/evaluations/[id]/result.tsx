@@ -84,20 +84,20 @@ const EvaluationPage: ComponentWithAuth<Props> = ({ evaluation, notifications })
     };
 
     return (
-        <main className="flex flex-col bg-base-100 h-screen">
+        <main className="flex flex-col bg-base-100 min-h-screen">
             <Head>
                 <title>{PAGE_TITLE} | {process.env.NEXT_PUBLIC_APP_NAME}</title>
             </Head>
 
             <Navbar.Top title={PAGE_TITLE} />
 
-            <div className="flex flex-col h-inherit px-4">
-                <section className="flex-grow pb-8">
+            <div className="flex flex-grow flex-col px-4">
+                <section className="flex flex-grow pb-8">
                     <MessageBalloon
                         color="white"
                         position="b"
                         size="lg"
-                        className="h-full shadow-sm shadow-blue-800/10"
+                        className="flex-grow shadow-sm shadow-blue-800/10"
                     >
                         <div className="flex flex-col h-full">
                             {/* Stars */}
@@ -163,7 +163,7 @@ const EvaluationPage: ComponentWithAuth<Props> = ({ evaluation, notifications })
                 </section>
 
                 <div className="overflow-hidden">
-                    <div className="relative h-48 -mb-6 filter drop-shadow-sm">
+                    <div className="relative h-48 -mb-6 filter drop-shadow-md">
                         <Image
                             src="/images/geo.svg"
                             alt="Geo"
