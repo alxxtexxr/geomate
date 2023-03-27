@@ -3,8 +3,8 @@ type Props = {
 };
 
 const Wrapper = ({ children }: Props) => (
-    <div className="bg-white flex justify-center">
-        <div className="relative w-96 h-screen overflow-hidden">
+    <div className="flex justify-center">
+        <div className="relative w-full sm:w-96 min-h-screen">
             {children}
         </div>
     </div>

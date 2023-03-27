@@ -4,7 +4,7 @@ import Sheet from 'react-modal-sheet';
 import { toast } from 'react-toastify';
 
 // Components
-import LoaderButton from './LoaderButton';
+import LoadingButton from './Loading/LoadingButton';
 
 // Utils
 import { reloadSession } from '../Utils';
@@ -63,9 +63,9 @@ const ProfileNameEditForm = ({ isOpen, setIsOpen }: Props) => {
                         <div className="form-control w-full mb-4">
                             <label className="label text-gray-800 text-sm">
                                 <span className="label-text">Nama Lengkap</span>
-                                <span className="label-text-alt">
+                                {/* <span className="label-text-alt">
                                     (NB: Ubah untuk edit)
-                                </span>
+                                </span> */}
                             </label>
                             <input
                                 type="text"
@@ -76,7 +76,7 @@ const ProfileNameEditForm = ({ isOpen, setIsOpen }: Props) => {
                             />
                         </div>
                         {isLoading ? (
-                            <LoaderButton />
+                            <LoadingButton />
                         ) : (
                             name === '' || name === session?.user.name ? (
                                 <button className="btn w-full" disabled>
