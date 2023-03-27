@@ -10,7 +10,7 @@ const EvaluationQuestionPaginationButton = ({ isActive, isAnswered, children }: 
         className={
             'btn btn-circle hover:bg-primary hover:border-primary hover:text-primary-content border-primary' +
             (isActive
-                ? '  bg-primary text-primary-content'
+                ? '  bg-primary text-primary-content shadow'
                 : (isAnswered
                     ? ' bg-primary bg-opacity-5 text-primary'
                     : ' text-primary'))

@@ -5,15 +5,20 @@ import cloudinary from 'cloudinary/lib/cloudinary';
 // Types
 import type { IncomingMessage } from 'http';
 import type { Fields, Files, File } from 'formidable';
-import type ObservationForm from './types/ObservationForm';
+import type MensurationForm from './types/MensurationForm';
 
 // Constants
 import { SHAPES, MATH_SYMBOLS } from './Constants';
 
-export const snakeToPascal = (string: string) =>
-    string.split("/").map((snake) => snake.split("_")
-        .map((substr) => substr.charAt(0).toUpperCase() + substr.slice(1)).join(""))
+export const snakeToPascal = (string: string) => {
+    return string.split("/")
+        .map(snake => snake.split("_")
+            .map(substr => substr.charAt(0)
+                .toUpperCase() +
+                substr.slice(1))
+            .join(""))
         .join("/");
+};
 
 export const range = (size: number, startAt: number = 0): ReadonlyArray<number> => {
     return [...Array(size).keys()].map(i => i + startAt);
@@ -30,14 +35,11 @@ export const getInitials = (name: string) => {
 };
 
 // Shape
-export const getShape = (code: string) => SHAPES.filter((SHAPE) => SHAPE.code === code)[0];
+export const getShapeByI = (i: number) => SHAPES[i];
+export const getShapeByCode = (code: string) => SHAPES.filter((SHAPE) => SHAPE.code === code)[0];
 
 // Math Symbol
-export const getMathSymbol = (code: string) => 
-    MATH_SYMBOLS.filter((MATH_SYMBOL) => MATH_SYMBOL.code === code)[0];
-    
-export const extractMathSymbolCodes = (formula: string, includePi = false) => 
-    (includePi ? formula : formula.replace('pi', '')).match(/\b[a-zA-Z]+\b/g) || [];
+export const getMathSymbolByCode = (code: string) => MATH_SYMBOLS.filter((MATH_SYMBOL) => MATH_SYMBOL.code === code)[0];
 
 // Base Shape Symbol
 export const getBaseShapeSymbol = (nBaseVertices: number) => {
@@ -130,9 +132,9 @@ export const uploadImage = (image: string) => {
 };
 
 // Mensuration
-export const splitFormula = (formula: string) => {
+export const formatFormula = (formula: string) => {
     const formulaArr = formula.split(' ');
-    let formulaArrFiltered: string[] = [];
+    let formattedFormulaArr: string[] = [];
 
     formulaArr.map((formulaArrI) => {
         let isExist = false;
@@ -141,64 +143,39 @@ export const splitFormula = (formula: string) => {
             if (!isExist) {
                 if (mathSymbol.code === formulaArrI) {
                     if (mathSymbol.symbol) {
-                        formulaArrFiltered.push(mathSymbol.symbol);
+                        formattedFormulaArr.push(mathSymbol.symbol);
                         isExist = true;
                     }
                 } else {
                     if (i + 1 === MATH_SYMBOLS.length) {
-                        formulaArrFiltered.push(formulaArrI);
+                        formattedFormulaArr.push(formulaArrI);
                     }
                 }
             }
         });
     });
 
-    return formulaArrFiltered;
-}
-
-export const formatFormula = (formula: string) =>
-    splitFormula(formula).join(' ')
-        .replaceAll('( ', '(')
-        .replaceAll(' )', ')')
-        .replaceAll(' / ', '/')
-        .replaceAll('*', '×')
-        .replaceAll('^2', '²')
-        .replaceAll('^3', '³')
-        .replaceAll('pi', 'π')
-    ;
-
-export const formatFormulaToKatex = (formula: string) =>
-    splitFormula(formula).join(' ')
+    return formattedFormulaArr.join(' ')
         .replaceAll('( ', '(')
         .replaceAll(' )', ')')
         .replaceAll(' / ', '/')
         .replaceAll('*', '\\times')
-        .replaceAll('pi', '\\pi')
-        .replaceAll('1/3', '\\frac{1}{3}')
-        .replaceAll('4/3', '\\frac{4}{3}')
-    ;
+        .replaceAll('PI', '\\pi')
+        .replaceAll('(1/3)', '\\frac{1}{3}')
+        .replaceAll('(4/3)', '\\frac{4}{3}')
+        ;
+};
 
-export const getS = (r: number, t: number) => +Math.sqrt(Math.pow(r, 2) + Math.pow(t, 2)).toFixed(1);
+export const getS = (r: number, t: number) => +Math.sqrt(Math.pow(r, 2) + Math.pow(t, 2)).toFixed(2);
 
-export const evaluateFormula = (formula: string, form: ObservationForm) => {
-    let _formula = formula;
+export const assignFormToFormula = (form: MensurationForm, formula: string) => {
+    let _formula = formula.replaceAll('pi', 'PI');
     let _formulaArr = _formula.split(' ');
 
     _formulaArr = _formulaArr.map((_formulaArrI) => form.hasOwnProperty(_formulaArrI) ? (form as { [key: string]: any })[_formulaArrI] : _formulaArrI);
     _formula = _formulaArr.join(' ');
 
     return _formula;
-};
-
-export const checkFormula = (formula: string, correctFormula: string) => {
-    const formulaArr = formula.replaceAll(' ', '').split('×').sort();
-    const correctFormulaArr = correctFormula.replaceAll(' ', '').split('×').sort();
-
-    if (formulaArr.length !== correctFormulaArr.length) {
-        return false;
-    }
-
-    return formulaArr.every((mathSymbol, i) => mathSymbol === correctFormulaArr[i]);
 };
 
 export const inputValueToNumber = (inputValue: string) => {
@@ -215,8 +192,3 @@ const initXpLimit = 100;
 export const getLevel = (xp: number) => xp < initXpLimit ? 1 : Math.floor((Math.log((xp - 1) / initXpLimit) / Math.log(1.5))) + 2;
 export const getXpLimit = (level: number) => Math.floor(1.5 ** (level - 1) * initXpLimit);
 export const getXpPct = (xp: number) => xp / getXpLimit(getLevel(xp)) * 100;
-
-//
-export const roundToNearest = (num: number, increment: number) => {
-    return Math.round(num / increment) * increment;
-};

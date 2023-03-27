@@ -5,7 +5,7 @@ import { Prisma } from '@prisma/client'
 // Components
 import Navbar from '../../../../components/Navbar';
 import { Pagination, AnswerChoices } from '../../../../components/EvaluationQuestion';
-import LoadingButton from '../../../../components/Loading/LoadingButton';
+import LoaderButton from '../../../../components/LoaderButton';
 
 // Types
 import type { GetServerSideProps } from 'next';
@@ -30,7 +30,6 @@ type Props = {
 };
 
 const EvaluationQuestionPage: ComponentWithAuth<Props> = ({ evaluation }) => {
-    console.log({ evaluation })
     // Router
     const router = useRouter();
 
@@ -73,7 +72,7 @@ const EvaluationQuestionPage: ComponentWithAuth<Props> = ({ evaluation }) => {
                 });
 
                 await router.push({
-                    pathname: '/evaluations/[id]/result',
+                    pathname: '/evaluations/[id]',
                     query: { id: evaluation.id },
                 });
             }
@@ -84,58 +83,55 @@ const EvaluationQuestionPage: ComponentWithAuth<Props> = ({ evaluation }) => {
     };
 
     return (
-        <main className="flex flex-col bg-base-100 h-screen">
+        <main className="texture-base h-screen">
             <Navbar.Top title="Evaluasi" />
 
-            <div className="flex-grow">
-                <Pagination
-                    evaluationQuestions={evaluation.evaluationQuestions}
-                    no={no}
+            <Pagination
+                evaluationQuestions={evaluation.evaluationQuestions}
+                no={no}
+            />
+
+            <section className="px-4">
+                <p className="text-gray-600 text-sm mb-6">
+                    {activeQuestion.question}
+                </p>
+
+                <AnswerChoices
+                    answerChoices={activeQuestion.answerChoices}
+                    answer={answer}
+                    setAnswer={setAnswer}
                 />
+            </section>
 
-                <section className="px-4">
-                    <p className="text-gray-600 text-sm mb-6">
-                        {activeQuestion.question}
-                    </p>
-
-                    <AnswerChoices
-                        answerChoices={activeQuestion.answerChoices}
-                        answer={answer}
-                        setAnswer={setAnswer}
-                    />
-                </section>
-            </div>
-
-            <div className="left-0 bottom-0 z-20 w-inherit p-4">
-                {isLoading && (<LoadingButton />)}
+            <section className="fixed left-0 bottom-0 z-20 w-screen p-4">
+                {isLoading && (<LoaderButton />)}
                 {!isLoading && (
                     no < evaluation.evaluationQuestions.length ? (
                         answer ? (
-                            <button className="btn btn-primary w-full shadow-sm shadow-blue-800/20" onClick={answerQuestion}>
+                            <button className="btn btn-primary w-full shadow" onClick={answerQuestion}>
                                 Jawab
                             </button>
                         ) : (
-                            <button className="btn w-full shadow-sm shadow-blue-800/20" disabled>
+                            <button className="btn w-full" disabled>
                                 Jawab
                             </button>
                         )
                     ) : (
                         // Check whether every evaluation question (except the last one) is answered or not
                         answer && evaluation.evaluationQuestions.slice(0, 1).every((evaluationQuestion) => evaluationQuestion.answer) ? (
-                            <button className="btn btn-primary w-full shadow-sm shadow-blue-800/20" onClick={answerQuestion}>
-                                {/* Kumpulkan Jawaban */}
-                                Selesai
+                            <button className="btn btn-primary w-full shadow" onClick={answerQuestion}>
+                                Kumpulkan Jawaban
                             </button>
                         ) : (
-                            <button className="btn w-full shadow-sm shadow-blue-800/20" disabled>
-                                {answer ? 'Selesai' : 'Jawab'}
+                            <button className="btn w-full" disabled>
+                                {answer ? 'Kumpulkan Jawaban' : 'Jawab'} 
                             </button>
                         )
                     )
                 )}
 
 
-            </div>
+            </section>
         </main >
     );
 };

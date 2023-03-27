@@ -20,49 +20,41 @@ const handle = async (req: NextApiRequest, res: NextApiResponse) => {
                 break;
             case 'PUT':
                 const {
-                    // nVertices,
-                    // nEdges,
-                    // nFaces,
-                    // nBaseVertices,
-                    // baseA,
-                    // baseT,
-                    // baseS,
+                    nVertices,
+                    nEdges,
+                    nFaces,
+                    nBaseVertices,
+                    baseA,
+                    baseT,
+                    baseS,
                     r,
                     t,
-                    // s,
-                    // la,
-                    // lst,
-                    // ka,
+                    s,
+                    la,
+                    lst,
+                    ka,
                     v,
-                    // lp,
-                    
-                    // v2.x
-                    comparisonV,
-                    isCompleted,
+                    lp
                 } = req.body;
 
                 const result = await prisma.observation.update({
                     where: { id: id as string },
                     data: {
-                        // nVertices: nVertices,
-                        // nEdges: nEdges,
-                        // nFaces: nFaces,
-                        // nBaseVertices: nBaseVertices,
-                        // baseA: baseA,
-                        // baseT: baseT,
-                        // baseS: baseS,
+                        nVertices: nVertices,
+                        nEdges: nEdges,
+                        nFaces: nFaces,
+                        nBaseVertices: nBaseVertices,
+                        baseA: baseA,
+                        baseT: baseT,
+                        baseS: baseS,
                         r: r,
                         t: t,
-                        // s: s,
-                        // la: la,
-                        // lst: lst,
-                        // ka: ka,
+                        s: s,
+                        la: la,
+                        lst: lst,
+                        ka: ka,
                         v: v,
-                        // lp: lp,
-
-                        // v2.x
-                        comparisonV: comparisonV,
-                        isCompleted: isCompleted,
+                        lp: lp,
                     },
                 });
 

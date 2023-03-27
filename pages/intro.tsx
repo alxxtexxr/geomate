@@ -1,4 +1,3 @@
-import Head from 'next/head';
 import Image from 'next/image';
 
 // Components
@@ -11,16 +10,12 @@ import { INTROS, NAVBAR_BOTTOM_MENU } from '../Constants';
 import type ComponentWithAuth from '../types/ComponentWithAuth';
 
 const Intro: ComponentWithAuth = () => (
-    <main className="bg-base-100 w-inherit min-h-screen">
-        <Head>
-            <title>Pengantar | {process.env.NEXT_PUBLIC_APP_NAME}</title>
-        </Head>
-
-        <Navbar.Top title="Pengantar" backHref="/" />
+    <main>
+        <Navbar.Top title="Pendahuluan" backHref="/" />
 
         <section className="grid grid-cols-1 gap-4 p-4">
             {INTROS.map((intro) => (
-                <div className="collapse collapse-arrow bg-white rounded-xl shadow-sm shadow-blue-800/20" key={intro.title}>
+                <div className="collapse collapse-arrow bg-white rounded-xl shadow" key={intro.title}>
                     <input type="checkbox" />
                     <div className="collapse-title flex justify-start items-center">
                         <div className="relative h-10 w-10 mr-4">
