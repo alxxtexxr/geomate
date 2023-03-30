@@ -1,16 +1,16 @@
 import { useState } from 'react';
 import Head from 'next/head';
 import { useSession } from 'next-auth/react';
-import Image from 'next/image';
 
 // Components
 import Navbar from '../components/Navbar';
 import Avatar from '../components/Avatar';
-import HomeMenuItem from '../components/HomeMenuItem';
+import LevelIndicator from '../components/LevelIndicator';
+import HomeMenu from '../components/HomeMenu';
 import ShapeInformation from '../components/ShapeInformation';
 
 // Constants
-import { SHAPES, NAVBAR_BOTTOM_MENU } from '../Constants';
+import { NAVBAR_BOTTOM_MENU } from '../Constants';
 
 // Types
 import type { GetServerSideProps } from 'next';
@@ -29,8 +29,9 @@ const Home: ComponentWithAuth<Props> = ({ menu }) => {
 	// State
 	const [selectedShapeCode, setSetectedShapeCode] = useState<ShapeCode>();
 
-	// Function
+	// Functions
 	const hideShapeInformation = () => setSetectedShapeCode(undefined);
+	const selectShapeCode = (menuItem: HomeMenuItemT) => setSetectedShapeCode(menuItem.code);
 
 	return (
 		<main className="bg-base-100 w-inherit min-h-screen">
@@ -38,8 +39,7 @@ const Home: ComponentWithAuth<Props> = ({ menu }) => {
 				<title>Beranda | {process.env.NEXT_PUBLIC_APP_NAME}</title>
 			</Head>
 
-			{/* Header */}
-			<header className="flex flex-col justify-center items-center text-center bg-base-200 text-primary-content pt-8 pb-14">
+			<header className="flex items-center bg-base-200 text-primary-content pt-8 px-8 pb-16">
 				<div className="relative flex">
 					<Avatar
 						src={session?.user.image || undefined}
@@ -47,33 +47,19 @@ const Home: ComponentWithAuth<Props> = ({ menu }) => {
 						size='lg'
 					/>
 				</div>
-				<div className="mt-4">
-					<h1 className="font-medium">{session?.user.name ? `Halo, ${session.user.name}!` : 'Halo!'}</h1>
+				<div className="ml-4">
+					<h1 className="text-xl font-medium">{session?.user.name ? `Halo, ${session.user.name.split(' ')[0]}!` : 'Halo!'}</h1>
 					<p className="text-sm">Mau belajar apa hari ini?</p>
 				</div>
 			</header>
 
-			{/* Menu */}
-			<section className="p-4">
-				<div className="grid grid-cols-2 gap-4 -mt-12">
-					{menu.map((menuItem) => (
-						<HomeMenuItem
-							key={menuItem.code}
-							{...menuItem}
-							onClick={() => setSetectedShapeCode(menuItem.code)}
-						/>
-					))}
-				</div>
+			<section className="grid grid-cols-1 gap-4 p-4 -mt-12">
+				<LevelIndicator xp={session?.user.xp || 0} />
+				<HomeMenu menu={menu} onItemClick={selectShapeCode} />
 			</section>
 
-			{/* Bottom Navbar */}
 			<Navbar.Bottom menu={NAVBAR_BOTTOM_MENU} />
-
-			{/* Shape Information */}
-			<ShapeInformation
-				shapeCode={selectedShapeCode}
-				onHide={hideShapeInformation}
-			/>
+			<ShapeInformation shapeCode={selectedShapeCode} onHide={hideShapeInformation} />
 		</main>
 	);
 };

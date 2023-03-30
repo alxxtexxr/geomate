@@ -111,23 +111,23 @@ const EvaluationQuestionPage: ComponentWithAuth<Props> = ({ evaluation }) => {
                 {!isLoading && (
                     no < evaluation.evaluationQuestions.length ? (
                         answer ? (
-                            <button className="btn btn-primary w-full shadow-sm shadow-blue-800/20" onClick={answerQuestion}>
+                            <button className="btn btn-primary w-full" onClick={answerQuestion}>
                                 Jawab
                             </button>
                         ) : (
-                            <button className="btn w-full shadow-sm shadow-blue-800/20" disabled>
+                            <button className="btn w-full" disabled>
                                 Jawab
                             </button>
                         )
                     ) : (
                         // Check whether every evaluation question (except the last one) is answered or not
                         answer && evaluation.evaluationQuestions.slice(0, 1).every((evaluationQuestion) => evaluationQuestion.answer) ? (
-                            <button className="btn btn-primary w-full shadow-sm shadow-blue-800/20" onClick={answerQuestion}>
+                            <button className="btn btn-primary w-full" onClick={answerQuestion}>
                                 {/* Kumpulkan Jawaban */}
                                 Selesai
                             </button>
                         ) : (
-                            <button className="btn w-full shadow-sm shadow-blue-800/20" disabled>
+                            <button className="btn w-full" disabled>
                                 {answer ? 'Selesai' : 'Jawab'}
                             </button>
                         )
