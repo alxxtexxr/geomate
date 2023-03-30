@@ -16,7 +16,7 @@ const SignInButton = ({ provider }: Props) => {
         facebook: 'bg-facebook hover:bg-facebook-focus border-facebook hover:border-facebook-focus',
     };
     const cx =
-        'btn w-full text-white shadow-sm shadow-blue-800/20 ' +
+        'btn w-full text-white ' +
         (provider.name ? ` ${providerNameCx[provider.name.toLowerCase()]}` : '');
 
     return (

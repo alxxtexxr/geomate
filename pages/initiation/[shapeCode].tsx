@@ -57,7 +57,7 @@ const Initiation: ComponentWithAuth<Props> = ({ shape }) => {
             <Navbar.Top title={shape.name} backHref="/" />
 
             <div className="flex flex-col h-inherit px-4">
-                <section className="flex-grow pb-8">
+                {/* <section className="flex-grow pb-8">
                     <MessageBalloon
                         color="white"
                         position="b"
@@ -108,9 +108,9 @@ const Initiation: ComponentWithAuth<Props> = ({ shape }) => {
                             </div>
                         </div>
                     </MessageBalloon>
-                </section>
+                </section> */}
 
-                <div className="overflow-hidden">
+                {/* <div className="overflow-hidden">
                     <div className="relative h-48 -mb-6 filter drop-shadow-md">
                         <Image
                             src="/images/geo.svg"
@@ -119,7 +119,7 @@ const Initiation: ComponentWithAuth<Props> = ({ shape }) => {
                             objectFit="contain"
                         />
                     </div>
-                </div>
+                </div> */}
             </div >
         </main >
     );
