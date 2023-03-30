@@ -48,7 +48,7 @@
 
 .input-bordered,
 .input-group :last-child {
-    @apply border-gray-200
+    @apply border-gray-300
 }
 
 .input-error {
@@ -104,6 +104,11 @@
 .hg-theme-default .hg-button {
     /* shadow */
     @apply font-mono rounded-lg border-none !important 
+}
+
+/* Override React Modal Sheet styles */
+.react-modal-sheet-container {
+    @apply rounded-t-2xl !important
 }
 
 /* Custom Styles */
@@ -204,11 +209,12 @@
 
 /* Border Shadow */
 .border-shadow-t {
-    box-shadow: 0 -1px 0 rgb(229 231 235);
+    /* box-shadow: 0 -1px 0 rgb(229 231 235); */
+    box-shadow: 0 -1px 0 rgb(209 213 219);    
 }
 
 .border-shadow-b {
-    box-shadow: 0 1px 0 rgb(229 231 235);
+    box-shadow: 0 1px 0 rgb(209 213 219);
 }
 
 

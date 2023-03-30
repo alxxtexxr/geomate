@@ -13,7 +13,6 @@ import type { GetServerSideProps } from 'next';
 import type ComponentWithAuth from '../types/ComponentWithAuth';
 import type { User } from '@prisma/client';
 
-
 type Props = {
     users: User[],
 };

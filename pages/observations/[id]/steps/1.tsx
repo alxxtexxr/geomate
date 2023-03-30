@@ -136,7 +136,7 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 {/* Message */}
                 <div className="flex bg-white bg-opacity-95 p-4">
                     <Message>
-                        Maecenas cursus venenatis suscipit. Nullam diam nisl.
+                        Catatlah hasil observasimu pada form di bawah ini!
                     </Message>
                 </div>
             </div>
@@ -166,7 +166,7 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                 // onBlur
                                 />
                             ))}
-                            <hr className="border-gray-200" />
+                            <hr className="border-gray-300" />
                             <FormControl
                                 title="Volume"
                                 symbol="v"

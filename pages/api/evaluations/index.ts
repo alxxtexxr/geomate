@@ -25,6 +25,7 @@ const handle = async (req: NextApiRequest, res: NextApiResponse) => {
                 const evaluation = await prisma.evaluation.create({
                     data: {
                         user: { connect: { email: session.user?.email as string } },
+                        shapeCode: shapeCode,
                         evaluationQuestions: {
                             create: questions.map((question) => ({
                                 question: {

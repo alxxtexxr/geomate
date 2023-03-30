@@ -89,7 +89,7 @@ const ShapePreview = ({
                     })}
 
                     <Plane args={[250, 250, 10, 10]} rotation={[-Math.PI / 2, 0, 0]}>
-                        <meshStandardMaterial color="#666666" wireframe />
+                        <meshStandardMaterial color="#888888" wireframe />
                     </Plane>
                 </Canvas>
 

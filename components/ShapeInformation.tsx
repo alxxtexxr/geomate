@@ -62,7 +62,7 @@ const ShapeInformation = ({ shapeCode, onHide }: Props) => {
                                 </div>
 
                                 {/* Formula */}
-                                <div className="relative border border-gray-200 rounded-2xl shadow-sm shadow-blue-800/10">
+                                <div className="relative border border-gray-300 rounded-2xl shadow-sm shadow-blue-800/10">
                                     <div className="absolute flex justify-center transform -translate-y-1/2 w-full">
                                         <Formula>
                                             Rumus Volume = {formatFormula(shape.vFormula)}
@@ -101,18 +101,24 @@ const ShapeInformation = ({ shapeCode, onHide }: Props) => {
                                                             </button>
                                                         )}
                                                     </div>
-                                                    {i + 1 < mathSymbolCodes.length && (<hr className="border-gray-200" />)}
+                                                    {i + 1 < mathSymbolCodes.length && (<hr className="border-gray-300" />)}
                                                 </Fragment>
                                             );
                                         })}
                                     </div>
 
                                     <div className="pt-2 px-4 pb-4">
-                                        <Link href={`/initiation/${shapeCode}`}>
-                                            <button type="button" className="btn btn-primary btn-block">
+                                        {shape.initiation ? (
+                                            <Link href={`/initiation/${shapeCode}`}>
+                                                <button type="button" className="btn btn-primary btn-block">
+                                                    Pelajari Volume
+                                                </button>
+                                            </Link>
+                                        ) : (
+                                            <button type="button" className="btn btn-disabled btn-block">
                                                 Pelajari Volume
                                             </button>
-                                        </Link>
+                                        )}
                                     </div>
                                 </div>
                             </>

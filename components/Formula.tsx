@@ -9,7 +9,7 @@ type Props = {
 const Formula = ({ children, type = 'DEFAULT', className: cx, ...rest }: Props & HTMLAttributes<HTMLElement>) => {
     // Constant
     const TYPE_CX_LIST = {
-        'DEFAULT': 'bg-white text-gray-800 border-gray-200',
+        'DEFAULT': 'bg-white text-gray-800 border-gray-300',
         'primary': 'bg-primary bg-opacity-5 text-primary border-primary',
     };
 
@@ -17,7 +17,7 @@ const Formula = ({ children, type = 'DEFAULT', className: cx, ...rest }: Props &
 
     return (
         <div
-            className={`inline-flex font-mono py-4 px-8 border rounded-full ${typeCx} ${cx}`}
+            className={`inline-flex font-mono py-4 px-6 border rounded-full ${typeCx} ${cx}`}
             {...rest}
         >
             {children}
