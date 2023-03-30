@@ -75,7 +75,7 @@ const EvaluationPage: ComponentWithAuth<Props> = ({ evaluation, notifications })
         if (score >= 100) {
             return { title: 'Sangat Bagus!', content: 'Kamu sudah sangat paham dengan apa yang telah dipelajari.' };
         } else if (score >= 80) {
-            return { title: 'Bagus!', content: 'Kamu sudah paham dengan apa yang telah dipelajari.' };
+            return { title: 'Bagus!', content: 'Kamu sudah cukup paham dengan apa yang telah kamu pelajari.' };
         } else if (score >= 60) {
             return { title: 'Sedikit Lagi!', content: 'Tingkatkan lagi pemahamanmu.' };
         } else {
@@ -149,7 +149,7 @@ const EvaluationPage: ComponentWithAuth<Props> = ({ evaluation, notifications })
                             </div>
 
                             <div className="grid grid-cols-2 gap-2">
-                                <button type="button" className="btn btn-primary btn-block" disabled>
+                                <button type="button" className="btn btn-primary btn-block">
                                     Coba Lagi
                                 </button>
                                 <Link href="/">

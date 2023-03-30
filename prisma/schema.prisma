@@ -27,11 +27,11 @@ enum AchievementCode {
 }
 
 enum ShapeCode {
-  sphere
   cylinder
-  prism
   cone
-  pyramid
+  sphere
+  // prism
+  // pyramid
 }
 
 enum QuestionType {
@@ -110,6 +110,7 @@ model EvaluationQuestion {
 
 model Evaluation {
   id          String   @id @default(cuid())
+  shapeCode     ShapeCode
   score       Int      @default(0)
   isCompleted Boolean  @default(false)
   createdAt   DateTime @default(now())

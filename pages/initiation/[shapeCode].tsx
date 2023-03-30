@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Router from 'next/router';
+import { IoImage } from 'react-icons/io5';
 
 // Components
 import Navbar from '../../components/Navbar';
@@ -64,11 +65,13 @@ const Initiation: ComponentWithAuth<Props> = ({ shape }) => {
                         className="h-full shadow-sm shadow-blue-800/10"
                     >
                         <div className="flex flex-col h-full">
-                            <div className="relative bg-gray-200 w-full aspect-4/3 rounded-lg" />
+                            <div className="flex justify-center items-center bg-gray-200 w-full aspect-4/3 rounded-lg">
+                                <IoImage className="text-gray-500 text-6xl" />
+                            </div>
 
                             <div className="flex flex-grow justify-center items-center text-center px-4">
                                 <p className="text-gray-800 font-medium">
-                                    {shape.initiation[initiationI].content}
+                                    {shape.initiation![initiationI].content}
                                 </p>
                             </div>
 
@@ -93,13 +96,13 @@ const Initiation: ComponentWithAuth<Props> = ({ shape }) => {
                                         className="btn btn-primary btn-block"
                                         onClick={
                                             () =>
-                                                initiationI + 1 < shape.initiation.length
+                                                initiationI + 1 < shape.initiation!.length
                                                     ? setInitiationI(initiationI + 1)
                                                     : startObservation()
                                         }
                                     >
 
-                                        {initiationI + 1 < shape.initiation.length ? 'Lanjut' : 'Observasi'}
+                                        {initiationI + 1 < shape.initiation!.length ? 'Lanjut' : 'Observasi'}
                                     </button>
                                 )}
                             </div>

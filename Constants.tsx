@@ -7,6 +7,17 @@ import MathSymbol from './types/MathSymbol';
 import { KeyboardLayoutObject } from 'react-simple-keyboard';
 
 // Shape descriptions is from mathway.com
+export const NEXT_SHAPE_CODE_MAP: { [key: string]: string } = {
+  cylinder: 'cone',
+  cone: 'sphere',
+};
+
+export const SHAPE_NAME_MAP: { [key: string]: string } = {
+  cylinder: 'Tabung',
+  cone: 'Kerucut',
+  sphere: 'Bola',
+};
+
 export const SHAPES: Shape[] = [
   {
     name: 'Tabung',
@@ -18,8 +29,8 @@ export const SHAPES: Shape[] = [
     initiation: [
       { content: 'Pernahkah kamu bertanya-tanya, bagaimana sih menghitung volume benda tabung?' },
       { content: 'Jika kamu ingin tahu, kita dapat mempelajarinya!' },
-      { content: 'Carilah benda tabung di sekitarmu seperti kaleng, toples, atau botol'},
-      { content: 'Lalu, kita akan melakukan observasi dan mencari tahu bagaimana sih volume benda tersebut dihitung'},
+      { content: 'Carilah benda tabung di sekitarmu seperti kaleng, toples, atau botol' },
+      { content: 'Lalu, kita akan melakukan observasi dan mencari tahu bagaimana sih volume benda tersebut dihitung' },
     ],
 
     // stimulation: 'Jika memelihara ikan hias pastinya kita membutuhkan sebuah wadah untuk menampung ikan tersebut. Dan salah satu wadah yang mudah didapat dan bisa digunakan ialah toples.  ',
@@ -41,8 +52,8 @@ export const SHAPES: Shape[] = [
     initiation: [
       { content: 'Pernahkah kamu bertanya-tanya, bagaimana sih menghitung volume benda kerucut?' },
       { content: 'Jika kamu ingin tahu, kita dapat mempelajarinya!' },
-      { content: 'Carilah benda kerucut di sekitarmu seperti topi ulang tahun, tutup saji, atau cone es krim'},
-      { content: 'Lalu, kita akan melakukan observasi dan mencari tahu bagaimana sih volume benda tersebut dihitung'},
+      { content: 'Carilah benda kerucut di sekitarmu seperti topi ulang tahun, tutup saji, atau cone es krim' },
+      { content: 'Lalu, kita akan melakukan observasi dan mencari tahu bagaimana sih volume benda tersebut dihitung' },
     ],
 
     // stimulation: 'Ut Consequat Semper Viverra Nam?',
@@ -64,46 +75,44 @@ export const SHAPES: Shape[] = [
     initiation: [
       { content: 'Pernahkah kamu bertanya-tanya, bagaimana sih menghitung volume benda bola?' },
       { content: 'Jika kamu ingin tahu, kita dapat mempelajarinya!' },
-      { content: 'Carilah benda bola di sekitarmu seperti bola sepak, kelereng, atau balon'},
-      { content: 'Lalu, kita akan melakukan observasi dan mencari tahu bagaimana sih volume benda tersebut dihitung'},
+      { content: 'Carilah benda bola di sekitarmu seperti bola sepak, kelereng, atau balon' },
+      { content: 'Lalu, kita akan melakukan observasi dan mencari tahu bagaimana sih volume benda tersebut dihitung' },
     ],
 
-    // stimulation: 'Ut Consequat Semper Viverra Nam?',
-    // stimulationImage: '/images/placeholder-image.jpeg',
-    // problemIdentification: 'Aliquam Faucibus Purus in Massa?',
-    // problemIdentificationImage: '/images/placeholder-image.jpeg',
-    // lpFormula: '4*pi*r^2',
-    // nVertices: 0,
-    // nEdges: 0,
-    // nFaces: 1,
   },
   // {
   //   name: 'Prisma',
   //   code: 'prism',
-  //   stimulation: 'Ut Consequat Semper Viverra Nam?',
-  //   stimulationImage: '/images/placeholder-image.jpeg',
-  //   problemIdentification: 'Aliquam Faucibus Purus in Massa?',
-  //   problemIdentificationImage: '/images/placeholder-image.jpeg',
+  //   // stimulation: 'Ut Consequat Semper Viverra Nam?',
+  //   // stimulationImage: '/images/placeholder-image.jpeg',
+  //   // problemIdentification: 'Aliquam Faucibus Purus in Massa?',
+  //   // problemIdentificationImage: '/images/placeholder-image.jpeg',
   //   description: 'Bangun geometri dengan dua alas yang kongruen, segi banyak yang sejajar, dan semua permukaannya merupakan jajaran genjang.',
-  //   vFormula: 'la * t',
-  //   lpFormula: '( 2 * la ) + ( ka * t )',
-  //   nVertices: 'n × 2',
-  //   nEdges: 'n × 3',
-  //   nFaces: 'n + 2',
+  //   vFormula: 'la*t',
+  //   // lpFormula: '( 2 * la ) + ( ka * t )',
+  //   // nVertices: 'n × 2',
+  //   // nEdges: 'n × 3',
+  //   // nFaces: 'n + 2',
+
+  //   // v2.x
+  //   // initiation: [],
   // },
   // {
   //   name: 'Limas',
   //   code: 'pyramid',
-  //   stimulation: 'Ut Consequat Semper Viverra Nam?',
-  //   stimulationImage: '/images/placeholder-image.jpeg',
-  //   problemIdentification: 'Aliquam Faucibus Purus in Massa?',
-  //   problemIdentificationImage: '/images/placeholder-image.jpeg',
+  //   // stimulation: 'Ut Consequat Semper Viverra Nam?',
+  //   // stimulationImage: '/images/placeholder-image.jpeg',
+  //   // problemIdentification: 'Aliquam Faucibus Purus in Massa?',
+  //   // problemIdentificationImage: '/images/placeholder-image.jpeg',
   //   description: 'Bangun tiga-dimensi yang mempunyai segi banyak sebagai alas dan semua sisinya segitiga dengan verteks yang saling bertemu.',
-  //   vFormula: '( 1 / 3 ) * la * t',
-  //   lpFormula: 'la + lst',
-  //   nVertices: 'n + 1',
-  //   nEdges: 'n × 2',
-  //   nFaces: 'n + 1',
+  //   vFormula: '(1/3)*la*t',
+  //   // lpFormula: 'la + lst',
+  //   // nVertices: 'n + 1',
+  //   // nEdges: 'n × 2',
+  //   // nFaces: 'n + 1',
+
+  //   // v2.x
+  //   // initiation: [],
   // },
 ];
 

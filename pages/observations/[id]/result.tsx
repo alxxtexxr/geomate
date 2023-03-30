@@ -80,7 +80,7 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                     Kamu telah berhasil mempelajari volume {shape.name.toLowerCase()}. Selanjutnya, kamu dapat menguji pengetahuannmu melalui evaluasi.
                                 </p>
                                 <Formula type="primary" className="mb-8">
-                                    Volume = {formatFormula(shape.vFormula)}
+                                    Rumus Volume = {formatFormula(shape.vFormula)}
                                 </Formula>
                             </div>
 
