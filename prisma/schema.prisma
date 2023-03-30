@@ -110,7 +110,7 @@ model EvaluationQuestion {
 
 model Evaluation {
   id          String   @id @default(cuid())
-  shapeCode     ShapeCode
+  shapeCode    ShapeCode
   score       Int      @default(0)
   isCompleted Boolean  @default(false)
   createdAt   DateTime @default(now())
