@@ -18,7 +18,6 @@ import type ComponentWithAuth from '../types/ComponentWithAuth';
 import type { ShapeCode } from '@prisma/client';
 import type HomeMenuItemT from '../types/HomeMenuItem';
 
-
 type Props = {
 	menu: HomeMenuItemT[],
 };
@@ -40,7 +39,6 @@ const Home: ComponentWithAuth<Props> = ({ menu }) => {
 				<title>Beranda | {process.env.NEXT_PUBLIC_APP_NAME}</title>
 			</Head>
 
-			{/* Header */}
 			<header className="flex items-center bg-base-200 text-primary-content pt-8 px-8 pb-16">
 				<div className="relative flex">
 					<Avatar
@@ -59,7 +57,6 @@ const Home: ComponentWithAuth<Props> = ({ menu }) => {
 				<LevelIndicator xp={session?.user.xp || 0} />
 				<HomeMenu menu={menu} onItemClick={selectShapeCode} />
 			</section>
-
 
 			<Navbar.Bottom menu={NAVBAR_BOTTOM_MENU} />
 			<ShapeInformation shapeCode={selectedShapeCode} onHide={hideShapeInformation} />
