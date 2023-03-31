@@ -6,7 +6,7 @@ import type HomeMenu from '../../types/HomeMenuItem';
 type Props = HomeMenu & { onClick: () => void };
 
 const HomeMenuItem = ({ code, name, isLocked, onClick }: Props) => {
-    const isLockedCx = isLocked ? 'grayscale' : 'cursor-pointer';
+    const isLockedCx = isLocked ? 'grayscale' : 'cursor-pointer transform active:scale-95 duration-200';
 
     // I think it's better if there's alert if the menu item is locked
     return (

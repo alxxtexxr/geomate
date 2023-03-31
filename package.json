@@ -17,7 +17,8 @@
     "stg-prisma-db-seed": "dotenv -e .env.stage.local prisma db seed",
     "stg-prisma-generate": "dotenv -e .env.stage.local prisma generate",
     "prd-prisma-db-push": "dotenv -e .env.production.local prisma db push",
-    "prd-prisma-db-seed": "dotenv -e .env.production.local prisma db seed"
+    "prd-prisma-db-seed": "dotenv -e .env.production.local prisma db seed",
+    "prd-prisma-generate": "dotenv -e .env.production.local prisma generate"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.13",
@@ -51,7 +52,8 @@
     "react-simple-keyboard": "^3.5.31",
     "react-toastify": "^9.0.4",
     "react-webcam": "^7.0.1",
-    "three": "^0.140.2"
+    "three": "^0.140.2",
+    "typewriter-effect": "^2.19.0"
   },
   "devDependencies": {
     "@tailwindcss/line-clamp": "^0.4.2",

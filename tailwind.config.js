@@ -11,6 +11,7 @@ module.exports = {
       },
       height: {
         'inherit': 'inherit',
+        '26': '6.5rem',
       },
       aspectRatio: {
         '4/3': '4 / 3',
@@ -18,6 +19,7 @@ module.exports = {
       padding: {
         'space-for-keyboard': '263px',
         '21': '5.25rem',
+        '38': '9.5rem',
       },
       borderWidth: {
         '3': '3px',
@@ -41,6 +43,9 @@ module.exports = {
       },
       translate: {
         '4/10': '40%',
+      },
+      dropShadow: {
+        'md-blue-800': '0 4px 3px rgba(30, 64, 175, 0.1)',
       }
     },
   },

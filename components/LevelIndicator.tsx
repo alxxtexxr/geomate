@@ -25,7 +25,7 @@ const LevelIndicator = ({xp}: Props) => (
             <div className="text-yellow-500 text-xl font-semibold">Level {getLevel(xp)}</div>
             <div className="text-sm text-gray-500">{xp}/{getXpLimit(getLevel(xp))}</div>
             <div className="-mt-1">
-                <progress className="progress progress-warning bg-gray-200" value={getXpPct(xp)} max="100" />
+                <progress className="progress progress-warning bg-gray-200" value={getXpPct(xp) || 1} max="100" />
             </div>
         </div>
     </div>

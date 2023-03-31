@@ -18,7 +18,7 @@ const TopNavbar = ({ backHref, title }: Props) => (
             <div className="h-12 w-12" />
         )}
         {title && (
-            <h1 className="font-medium text-gray-800">{title}</h1>
+            <h1 className="font-semibold text-gray-800">{title}</h1>
         )}
         <div className="h-12 w-12" />
     </nav>

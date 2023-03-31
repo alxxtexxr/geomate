@@ -111,6 +111,11 @@
     @apply rounded-t-2xl !important
 }
 
+/* Override Typewriter styles */
+.Typewriter__cursor {
+    @apply hidden
+}
+
 /* Custom Styles */
 .texture-base {
     background-image: url("data:image/svg+xml,%3Csvg width='64' height='64' viewBox='0 0 64 64' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8 16c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8zm0-2c3.314 0 6-2.686 6-6s-2.686-6-6-6-6 2.686-6 6 2.686 6 6 6zm33.414-6l5.95-5.95L45.95.636 40 6.586 34.05.636 32.636 2.05 38.586 8l-5.95 5.95 1.414 1.414L40 9.414l5.95 5.95 1.414-1.414L41.414 8zM40 48c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8zm0-2c3.314 0 6-2.686 6-6s-2.686-6-6-6-6 2.686-6 6 2.686 6 6 6zM9.414 40l5.95-5.95-1.414-1.414L8 38.586l-5.95-5.95L.636 34.05 6.586 40l-5.95 5.95 1.414 1.414L8 41.414l5.95 5.95 1.414-1.414L9.414 40z' fill='%23b6c2fc' fill-opacity='0.25' fill-rule='evenodd'/%3E%3C/svg%3E");
@@ -150,61 +155,79 @@
     @apply relative p-4
 }
 
-.message-balloon-md {
-    @apply rounded-xl
-}
-
-.message-balloon-lg {
-    @apply rounded-2xl
-}
-
 .message-balloon::before {
     content: "";
 
-    @apply absolute inline-flex border-transparent
+    @apply absolute inline-flex transform border-transparent
 }
 
-.message-balloon-base-100 {
-    @apply bg-base-100
-}
+/* Size */
+.message-balloon-md { @apply rounded-xl }
+.message-balloon-lg { @apply rounded-2xl }
 
-.message-balloon-white {
-    @apply bg-white
-}
-
-.message-balloon-l::before {
-    @apply top-1/2 transform -translate-y-1/2
-}
-
-.message-balloon-l.message-balloon-md::before {
-    @apply -left-4 border-x-8 border-y-6
-}
-
-.message-balloon-l.message-balloon-base-100::before {
-    @apply border-r-base-100
-}
-
-.message-balloon-b::before,
-.message-balloon-bl::before {
-    @apply bottom-0
-}
-
-.message-balloon-b::before {
-    @apply left-1/2 transform -translate-x-1/2
-}
-
-.message-balloon-bl::before {
-    left: 80px;
-}
+.message-balloon-l.message-balloon-md::before,
+.message-balloon-tl.message-balloon-md::before,
+.message-balloon-tr.message-balloon-md::before { @apply border-x-8 border-y-6 }
 
 .message-balloon-b.message-balloon-lg::before,
-.message-balloon-bl.message-balloon-lg::before {
-    @apply transform translate-y-8 border-x-12 border-y-16
-}
+.message-balloon-bl.message-balloon-lg::before,
+.message-balloon-br.message-balloon-lg::before { @apply translate-y-8 border-x-12 border-y-16 }
+
+/* Color */
+.message-balloon-white { @apply bg-white }
+.message-balloon-primary { @apply bg-primary text-white }
+.message-balloon-base-100 { @apply bg-base-100 }
+.message-balloon-base-200 { @apply bg-base-200 text-white }
+
+.message-balloon-l.message-balloon-base-100::before,
+.message-balloon-tl.message-balloon-base-100::before { @apply border-r-base-100 }
+
+.message-balloon-l.message-balloon-white::before,
+.message-balloon-tl.message-balloon-white::before { @apply border-r-white }
+
+.message-balloon-r.message-balloon-white::before,
+.message-balloon-tr.message-balloon-white::before { @apply border-l-white }
+
+
 
 .message-balloon-b.message-balloon-white::before,
 .message-balloon-bl.message-balloon-white::before {
     @apply border-t-white
+}
+
+.message-balloon-r.message-balloon-primary::before,
+.message-balloon-tr.message-balloon-primary::before { @apply border-l-primary }
+
+.message-balloon-r.message-balloon-base-200::before,
+.message-balloon-tr.message-balloon-base-200::before { @apply border-l-base-200 }
+
+/* Position */
+.message-balloon-l::before,
+.message-balloon-r::before { @apply top-1/2 }
+
+.message-balloon-tl::before,
+.message-balloon-tr::before { @apply top-4 }
+
+.message-balloon-l.message-balloon-md::before,
+.message-balloon-tl.message-balloon-md::before { @apply -left-4 }
+
+.message-balloon-bl::before { left: 80px; }
+
+.message-balloon-r.message-balloon-md::before, 
+.message-balloon-tr.message-balloon-md::before { @apply -right-4 }
+
+.message-balloon-b::before,
+.message-balloon-bl::before,
+.message-balloon-br::before { @apply bottom-0 }
+
+.message-balloon-l::before,
+.message-balloon-r::before,
+.message-balloon-tl::before, 
+.message-balloon-tr::before { @apply -translate-y-1/2 }
+
+.message-balloon-t, 
+.message-balloon-b::before {
+    @apply left-1/2 -translate-x-1/2
 }
 
 /* Border Shadow */
@@ -216,7 +239,6 @@
 .border-shadow-b {
     box-shadow: 0 1px 0 rgb(209 213 219);
 }
-
 
 .btn-toggle {
     @apply btn-ghost bg-transparent hover:bg-transparent text-gray-300 hover:text-primary

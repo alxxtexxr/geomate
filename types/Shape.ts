@@ -7,7 +7,11 @@ type Shape = {
     vFormula: string,
 
     // v2.x 
-    initiation?: { image?: string, content: string }[],
+    introductionMessages: { 
+        image?: string, 
+        message: string,
+        reply: string,
+    }[],
 
     // stimulation: string,
     // stimulationImage: string,
