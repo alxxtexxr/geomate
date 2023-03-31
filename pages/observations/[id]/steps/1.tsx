@@ -2,12 +2,14 @@ import { useRef, useState, useEffect, FormEvent, ChangeEvent, FocusEvent } from 
 import Head from 'next/head'
 import Router from 'next/router';
 import { Parser } from 'expr-eval';
+import { MdOutlineSwitchCamera } from 'react-icons/md';
 
 // Components
 import ShapePreview from '../../../../components/ShapePreview';
 import BottomSheet from '../../../../components/BottomSheet';
 import { Message, FormControl, Keyboard } from '../../../../components/Observation';
 import Loading from '../../../../components/Loading';
+import Note from '../../../../components/Note';
 
 // Constants
 import { KEYBOARD_LAYOUTS } from '../../../../Constants';
@@ -20,7 +22,7 @@ import type { GetServerSideProps } from 'next';
 import type { Observation } from '@prisma/client';
 import type ComponentWithAuth from '../../../../types/ComponentWithAuth';
 import type Shape from '../../../../types/Shape';
-import ObservationFormValues from '../../../../types/ObservationFormValues';
+import type ObservationFormValues from '../../../../types/ObservationFormValues';
 
 type Props = {
     observation: Observation,
@@ -136,7 +138,7 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 {/* Message */}
                 <div className="flex bg-white bg-opacity-95 p-4">
                     <Message>
-                        Catatlah hasil observasimu pada isian di bawah ini!
+                        Ukurlah objek yang kamu amati dan catat hasil pengukuranmu!
                     </Message>
                 </div>
             </div>
@@ -147,6 +149,12 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
                     <div className="grid grid-cols-1 gap-4">
                         {/* Inputs */}
                         <div className="grid grid-cols-1 gap-2">
+                            <Note color="yellow-500">
+                                <span>
+                                    Klik ikon <MdOutlineSwitchCamera className="inline-flex text-base -mt-px" /> untuk mengukur menggunakan kamera.
+                                </span>
+                            </Note>
+
                             {vMathSymbolCodes.map((mathSymbolCode) => (
                                 <FormControl
                                     key={mathSymbolCode}

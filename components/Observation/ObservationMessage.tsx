@@ -10,20 +10,23 @@ const TYPEWRITER_DELAY = 25;
 
 const ObservationMessage = ({ children }: Props) => (
     <div className="grid grid-cols-4 gap-4 w-full">
-        <div className="relative col-span-1 w-full aspect-square drop-shadow-md-blue-800">
-            <Image
-                src="/images/geo-head.svg"
-                alt="Geo"
-                layout="fill"
-                objectFit="contain"
-            />
+        <div className="col-span-1 flex justify-center items-center">
+            <div className="relative w-full aspect-square drop-shadow-md-blue-800">
+                <Image
+                    src="/images/geo-head.svg"
+                    alt="Geo"
+                    layout="fill"
+                    objectFit="contain"
+                />
+            </div>
         </div>
         <div className="col-span-3 flex justify-center items-center">
             <MessageBalloon
-                color="base-100"
+                color="white-outline"
                 position="l"
                 className="flex-grow text-sm"
             >
+               <div className="font-semibold mb-2">Geo</div>
                 <Typewriter
                     options={{
                         delay: TYPEWRITER_DELAY,

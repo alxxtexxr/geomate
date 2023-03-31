@@ -102,7 +102,6 @@ const Introduction: ComponentWithAuth<Props> = ({ shape }) => {
             <div className="fixed z-10 w-inherit bg-base-100 bg-opacity-95">
                 <Navbar.Top
                     title={shape.name}
-                    // backHref="/"
                     leftButton={(
                         <Link href="/">
                             <button className="btn btn-circle btn-ghost">

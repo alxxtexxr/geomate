@@ -219,7 +219,7 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                             {/* formula Input */}
                             <FormControl
                                 title={shape.code === 'cylinder' ? 'Luas Lingkaran' : (comparisonShape ? `Volume ${comparisonShape.name}` : 'Volume')}
-                                symbol={shape.code === 'cylinder' ? 'a' : 'v2'}
+                                symbol={shape.code === 'cylinder' ? 'LA' : 'v2'}
                                 isCorrect={isInputCorrect.formula}
                                 name="formula"
                                 placeholder={shape.code === 'cylinder' ? 'Rumus L. Lingkaran' : (comparisonShape ? `Rumus V. ${comparisonShape.name}` : '')}
