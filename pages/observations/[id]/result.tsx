@@ -69,9 +69,7 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
                         <div className="flex flex-col h-full">
                             <div className="flex flex-grow flex-col items-center text-center px-4">
                                 <div className="relative w-36 h-36 mt-10 mb-10">
-                                    <img
-                                        src="https://cdn-icons-png.flaticon.com/512/9436/9436122.png"
-                                    />
+                                    <img src="https://cdn-icons-png.flaticon.com/512/9436/9436122.png" />
                                 </div>
                                 <h2 className="text-gray-800 text-lg font-semibold mb-2">
                                     Observasi Selesai!

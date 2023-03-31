@@ -108,17 +108,11 @@ const ShapeInformation = ({ shapeCode, onHide }: Props) => {
                                     </div>
 
                                     <div className="pt-2 px-4 pb-4">
-                                        {shape.initiation ? (
-                                            <Link href={`/initiation/${shapeCode}`}>
-                                                <button type="button" className="btn btn-primary btn-block">
-                                                    Pelajari Volume
-                                                </button>
-                                            </Link>
-                                        ) : (
-                                            <button type="button" className="btn btn-disabled btn-block">
+                                        <Link href={`/introduction/${shapeCode}`}>
+                                            <button type="button" className="btn btn-primary btn-block">
                                                 Pelajari Volume
                                             </button>
-                                        )}
+                                        </Link>
                                     </div>
                                 </div>
                             </>

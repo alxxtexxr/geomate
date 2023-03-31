@@ -26,11 +26,24 @@ export const SHAPES: Shape[] = [
     vFormula: 'pi*r^2*t',
 
     // v2.x
-    initiation: [
-      { content: 'Pernahkah kamu bertanya-tanya, bagaimana sih menghitung volume benda tabung?' },
-      { content: 'Jika kamu ingin tahu, kita dapat mempelajarinya!' },
-      { content: 'Carilah benda tabung di sekitarmu seperti kaleng, toples, atau botol' },
-      { content: 'Lalu, kita akan melakukan observasi dan mencari tahu bagaimana sih volume benda tersebut dihitung' },
+    introductionMessages: [
+      {
+        message: 'Pernahkah kamu bertanya-tanya, bagaimana sih cara menghitung volume benda tabung?',
+        reply: 'Memang bagaimana?',
+        image: 'https://paragram.id/upload/media/entries/2020-05/26/15702-2-ed79a264a10471ecff72dfd215f8f91f.jpg',
+      },
+      {
+        message: 'Jika kamu ingin tahu, kita dapat mempelajarinya!',
+        reply: 'Baiklah.',
+      },
+      {
+        message: 'Carilah benda tabung di sekitarmu seperti kaleng, toples, atau botol.',
+        reply: 'OK, sudah.',
+      },
+      {
+        message: 'Langkah selanjutnya, kita akan melakukan observasi dan mencari tahu bagaimana sih volume benda tersebut dihitung.',
+        reply: 'OK, mulai saja!',
+      },
     ],
 
     // stimulation: 'Jika memelihara ikan hias pastinya kita membutuhkan sebuah wadah untuk menampung ikan tersebut. Dan salah satu wadah yang mudah didapat dan bisa digunakan ialah toples.  ',
@@ -49,11 +62,23 @@ export const SHAPES: Shape[] = [
     vFormula: '1/3*pi*r^2*t',
 
     // v2.x
-    initiation: [
-      { content: 'Pernahkah kamu bertanya-tanya, bagaimana sih menghitung volume benda kerucut?' },
-      { content: 'Jika kamu ingin tahu, kita dapat mempelajarinya!' },
-      { content: 'Carilah benda kerucut di sekitarmu seperti topi ulang tahun, tutup saji, atau cone es krim' },
-      { content: 'Lalu, kita akan melakukan observasi dan mencari tahu bagaimana sih volume benda tersebut dihitung' },
+    introductionMessages: [
+      {
+        message: 'Pernahkah kamu bertanya-tanya, bagaimana sih menghitung volume benda kerucut?',
+        reply: 'Memang bagaimana?',
+      },
+      {
+        message: 'Jika kamu ingin tahu, kita dapat mempelajarinya!',
+        reply: 'Baiklah.',
+      },
+      {
+        message: 'Carilah benda kerucut di sekitarmu seperti topi ulang tahun, tutup saji, atau cone es krim.',
+        reply: 'Baik, sudah.',
+      },
+      {
+        message: 'Langkah selanjutnya, kita akan melakukan observasi dan mencari tahu bagaimana sih volume benda tersebut dihitung.',
+        reply: 'OK, Mumai saja!',
+      },
     ],
 
     // stimulation: 'Ut Consequat Semper Viverra Nam?',
@@ -72,11 +97,23 @@ export const SHAPES: Shape[] = [
     vFormula: '4/3*pi*r^3',
 
     // v2.x
-    initiation: [
-      { content: 'Pernahkah kamu bertanya-tanya, bagaimana sih menghitung volume benda bola?' },
-      { content: 'Jika kamu ingin tahu, kita dapat mempelajarinya!' },
-      { content: 'Carilah benda bola di sekitarmu seperti bola sepak, kelereng, atau balon' },
-      { content: 'Lalu, kita akan melakukan observasi dan mencari tahu bagaimana sih volume benda tersebut dihitung' },
+    introductionMessages: [
+      {
+        message: 'Pernahkah kamu bertanya-tanya, bagaimana sih menghitung volume benda bola?',
+        reply: 'Memang bagaimana?',
+      },
+      {
+        message: 'Jika kamu ingin tahu, kita dapat mempelajarinya!',
+        reply: 'Baiklah.',
+      },
+      {
+        message: 'Carilah benda bola di sekitarmu seperti bola sepak, kelereng, atau balon.',
+        reply: 'Baik, sudah.',
+      },
+      {
+        message: 'Langkah selanjutnya, kita akan melakukan observasi dan mencari tahu bagaimana sih volume benda tersebut dihitung.',
+        reply: 'OK, Mumai saja!',
+      },
     ],
 
   },
@@ -95,7 +132,7 @@ export const SHAPES: Shape[] = [
   //   // nFaces: 'n + 2',
 
   //   // v2.x
-  //   // initiation: [],
+  //   // introductionMessages: [],
   // },
   // {
   //   name: 'Limas',
@@ -112,7 +149,7 @@ export const SHAPES: Shape[] = [
   //   // nFaces: 'n + 1',
 
   //   // v2.x
-  //   // initiation: [],
+  //   // introductionMessages: [],
   // },
 ];
 
@@ -193,7 +230,7 @@ export const NAVBAR_BOTTOM_MENU = [
     icon: (<MdInfoOutline className="text-2xl" />),
     activeIcon: (<MdInfo className="text-2xl" />),
     title: 'Pengantar',
-    href: '/introduction',
+    href: '/guides',
   },
   {
     icon: (<AiOutlineScan className="text-3xl" />),
