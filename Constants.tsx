@@ -34,14 +34,14 @@ export const SHAPES: Shape[] = [
       },
       {
         message: 'Jika kamu ingin tahu, kita dapat mempelajarinya!',
-        reply: 'Baiklah.',
+        reply: 'Baiklah',
       },
       {
         message: 'Carilah benda tabung di sekitarmu seperti kaleng, toples, atau botol.',
-        reply: 'OK, sudah.',
+        reply: 'OK, sudah',
       },
       {
-        message: 'Langkah selanjutnya, kita akan melakukan observasi dan mencari tahu bagaimana sih volume benda tersebut dihitung.',
+        message: 'Langkah selanjutnya, kita akan melakukan observasi dan mencari tahu bagaimana sih volume benda tersebut dihitung',
         reply: 'OK, mulai saja!',
       },
     ],
@@ -69,14 +69,14 @@ export const SHAPES: Shape[] = [
       },
       {
         message: 'Jika kamu ingin tahu, kita dapat mempelajarinya!',
-        reply: 'Baiklah.',
+        reply: 'Baiklah',
       },
       {
-        message: 'Carilah benda kerucut di sekitarmu seperti topi ulang tahun, tutup saji, atau cone es krim.',
-        reply: 'Baik, sudah.',
+        message: 'Carilah benda kerucut di sekitarmu seperti topi ulang tahun, tutup saji, atau cone es krim',
+        reply: 'Baik, sudah',
       },
       {
-        message: 'Langkah selanjutnya, kita akan melakukan observasi dan mencari tahu bagaimana sih volume benda tersebut dihitung.',
+        message: 'Langkah selanjutnya, kita akan melakukan observasi dan mencari tahu bagaimana sih volume benda tersebut dihitung',
         reply: 'OK, Mumai saja!',
       },
     ],
@@ -104,14 +104,14 @@ export const SHAPES: Shape[] = [
       },
       {
         message: 'Jika kamu ingin tahu, kita dapat mempelajarinya!',
-        reply: 'Baiklah.',
+        reply: 'Baiklah',
       },
       {
         message: 'Carilah benda bola di sekitarmu seperti bola sepak, kelereng, atau balon.',
-        reply: 'Baik, sudah.',
+        reply: 'Baik, sudah',
       },
       {
-        message: 'Langkah selanjutnya, kita akan melakukan observasi dan mencari tahu bagaimana sih volume benda tersebut dihitung.',
+        message: 'Langkah selanjutnya, kita akan melakukan observasi dan mencari tahu bagaimana sih volume benda tersebut dihitung',
         reply: 'OK, Mumai saja!',
       },
     ],

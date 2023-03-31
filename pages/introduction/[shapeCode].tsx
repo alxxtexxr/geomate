@@ -29,9 +29,9 @@ type Message = {
     image?: string,
 };
 
-const Introduction: ComponentWithAuth<Props> = ({ shape }) => {
-    const TYPING_DELAY = 25;
+const TYPEWRITER_DELAY = 25;
 
+const Introduction: ComponentWithAuth<Props> = ({ shape }) => {
     // Session
     const { data: session } = useSession();
 
@@ -70,7 +70,7 @@ const Introduction: ComponentWithAuth<Props> = ({ shape }) => {
                 if (messagesSubWrapperRef.current && messagesWrapperRef.current) {
                     setShouldReverse(messagesSubWrapperRef.current.offsetHeight > messagesWrapperRef.current.offsetHeight)
                 }
-            }, TYPING_DELAY * 4);
+            }, TYPEWRITER_DELAY * 4);
         }
 
         return () => {
@@ -115,13 +115,11 @@ const Introduction: ComponentWithAuth<Props> = ({ shape }) => {
             >
                 <div ref={messagesSubWrapperRef} className="grid grid-cols-1 gap-2 px-4 pt-16 pb-38">
                     {messages.map((message, i) => {
-                        // const messageColorBalloon = message.sender === 'mascot' ? 'white' : 'base-200';
                         const isMascot = message.sender === 'mascot';
                         const isUser = message.sender === 'user';
 
                         return (
                             <div className="grid grid-cols-12 gap-4" key={i}>
-
                                 <div className="relative col-span-3 w-full aspect-square drop-shadow-md-blue-800">
                                     {isMascot && (
                                         <Image
@@ -143,39 +141,40 @@ const Introduction: ComponentWithAuth<Props> = ({ shape }) => {
                                     </div>
                                     <Typewriter
                                         options={{
-                                            delay: TYPING_DELAY,
+                                            delay: TYPEWRITER_DELAY,
                                             cursor: '',
                                         }}
                                         onInit={(typewriter) => {
                                             let _typewriter = typewriter.typeString(message.message)
 
-                                            console.log({ message });
+                                            // If the message has image, add the image
                                             if (message.image) {
                                                 _typewriter = _typewriter.typeString(`<img class="mt-4 rounded-md" src="${message.image}" />`);
                                             }
 
-                                            _typewriter.callFunction(() => {
-                                                if (isUser) {
-                                                    setIsTyping(true);
+                                            _typewriter
+                                                .callFunction(() => {
+                                                    if (isUser) {
+                                                        setIsTyping(true);
 
-                                                    // If messages are not completed
-                                                    if (Math.ceil(messages.length / 2) < shape.introductionMessages.length) {
-                                                        setMessages([
-                                                            ...messages,
-                                                            {
-                                                                sender: 'mascot',
-                                                                message: shape.introductionMessages[Math.ceil(messages.length / 2)].message,
-                                                            },
-                                                        ]);
-                                                    } else {
-                                                        startObservation();
+                                                        // If messages are not completed
+                                                        if (Math.ceil(messages.length / 2) < shape.introductionMessages.length) {
+                                                            setMessages([
+                                                                ...messages,
+                                                                {
+                                                                    sender: 'mascot',
+                                                                    message: shape.introductionMessages[Math.ceil(messages.length / 2)].message,
+                                                                },
+                                                            ]);
+                                                        } else {
+                                                            startObservation();
+                                                        }
                                                     }
-                                                }
 
-                                                if (isMascot) {
-                                                    setIsTyping(false);
-                                                }
-                                            })
+                                                    if (isMascot) {
+                                                        setIsTyping(false);
+                                                    }
+                                                })
                                                 .start();
                                         }}
                                     />

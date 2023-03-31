@@ -174,9 +174,9 @@
 .message-balloon-br.message-balloon-lg::before { @apply translate-y-8 border-x-12 border-y-16 }
 
 /* Color */
-.message-balloon-white { @apply bg-white }
+.message-balloon-white { @apply bg-white text-gray-600 }
 .message-balloon-primary { @apply bg-primary text-white }
-.message-balloon-base-100 { @apply bg-base-100 }
+.message-balloon-base-100 { @apply bg-base-100 text-gray-600 }
 .message-balloon-base-200 { @apply bg-base-200 text-white }
 
 .message-balloon-l.message-balloon-base-100::before,
@@ -187,7 +187,6 @@
 
 .message-balloon-r.message-balloon-white::before,
 .message-balloon-tr.message-balloon-white::before { @apply border-l-white }
-
 
 
 .message-balloon-b.message-balloon-white::before,
