@@ -4,6 +4,10 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Router from 'next/router';
 import Typewriter from 'typewriter-effect';
+// import { IoHomeSharp, IoChatboxEllipses } from 'react-icons/io5';
+import { MdOutlineHome, MdInfoOutline, MdOutlineLeaderboard, MdOutlinePersonOutline, MdHome, MdChat, MdPerson, MdInfo } from 'react-icons/md';
+import Link from 'next/link';
+import { FaHome, FaCommentDots } from 'react-icons/fa';
 
 // Components
 import Navbar from '../../components/Navbar';
@@ -40,8 +44,6 @@ const Introduction: ComponentWithAuth<Props> = ({ shape }) => {
     const messagesSubWrapperRef = useRef<HTMLDivElement>(null);
 
     // States
-    // const [step, setStep] = useState(0);
-    const [isLoading, setIsLoading] = useState(false);
     const [isTyping, setIsTyping] = useState(true);
     const [messages, setMessages] = useState<Message[]>([
         {
@@ -51,17 +53,12 @@ const Introduction: ComponentWithAuth<Props> = ({ shape }) => {
         },
     ]);
     const [shouldReverse, setShouldReverse] = useState(false);
+    const [isButtonGroupShowing, setIsButtonGroupShowing] = useState(false);
 
     const isReplyShowing = (messages.length % 2 !== 0 && !isTyping);
 
 
     // Effect
-    const scrollToBottom = () => {
-        if (messagesWrapperRef.current) {
-            messagesWrapperRef.current.scrollTo({ top: messagesWrapperRef.current.scrollHeight })
-        }
-    }
-
     useEffect(() => {
         let intervalId: NodeJS.Timeout;
 
@@ -80,8 +77,6 @@ const Introduction: ComponentWithAuth<Props> = ({ shape }) => {
 
     // Function
     const startObservation = async () => {
-        setIsLoading(true);
-
         try {
             const res = await fetch(`/api/observations`, {
                 method: 'POST',
@@ -94,7 +89,6 @@ const Introduction: ComponentWithAuth<Props> = ({ shape }) => {
 
             await Router.push(`/observations/${observation.id}/steps/1`);
         } catch (err) {
-            setIsLoading(false);
             console.error(err);
         }
     };
@@ -106,7 +100,17 @@ const Introduction: ComponentWithAuth<Props> = ({ shape }) => {
             </Head>
 
             <div className="fixed z-10 w-inherit bg-base-100 bg-opacity-95">
-                <Navbar.Top title={shape.name} backHref="/" />
+                <Navbar.Top
+                    title={shape.name}
+                    // backHref="/"
+                    leftButton={(
+                        <Link href="/">
+                            <button className="btn btn-circle btn-ghost">
+                                <MdHome className="text-2xl" />
+                            </button>
+                        </Link>
+                    )}
+                />
             </div>
 
             <div
@@ -185,34 +189,49 @@ const Introduction: ComponentWithAuth<Props> = ({ shape }) => {
                 </div>
             </div >
 
-            <div className="fixed bottom-0 w-inherit grid grid-cols-1 gap-2 bg-white bg-opacity-95 p-4 rounded-t-2xl shadow-md shadow-blue-800/10">
-                {isReplyShowing ? (
+            {isButtonGroupShowing ? (
+                <div className="fixed bottom-0 w-inherit grid grid-cols-1 gap-2 bg-white bg-opacity-95 p-4 rounded-t-2xl shadow-md shadow-blue-800/10">
+                    {isReplyShowing ? (
+                        <button
+                            className="btn btn-primary btn-block"
+                            onClick={() => {
+                                // Add reply to messages
+                                setIsTyping(true);
+
+                                // If messages are not completed
+                                setMessages([
+                                    ...messages,
+                                    {
+                                        sender: 'user',
+                                        message: shape.introductionMessages[Math.ceil(messages.length / 2) - 1].reply,
+                                    }
+                                ]);
+                            }}
+                        >
+                            {shape.introductionMessages[Math.ceil(messages.length / 2) - 1].reply}
+                        </button>
+                    ) : (
+                        <Loading.Button />
+                    )}
                     <button
-                        className="btn btn-primary btn-block"
-                        onClick={() => {
-                            // Add reply to messages
-                            setIsTyping(true);
-
-                            // If messages are not completed
-                            setMessages([
-                                ...messages,
-                                {
-                                    sender: 'user',
-                                    message: shape.introductionMessages[Math.ceil(messages.length / 2) - 1].reply,
-                                }
-                            ]);
-                        }}
+                        type="button"
+                        className="btn btn-ghost-primary btn-block"
+                        onClick={() => setIsButtonGroupShowing(false)}
                     >
-                        {shape.introductionMessages[Math.ceil(messages.length / 2) - 1].reply}
+                        Tutup
                     </button>
-                ) : (
-                    <Loading.Button />
-                )}
-                <button className="btn btn-ghost-primary btn-block">
-                    Tutup
-                </button>
-
-            </div>
+                </div>
+            ) : (
+                <div className="fixed bottom-0 w-inherit flex justify-center items-center py-9">
+                    <button
+                        type="button"
+                        className="btn btn-primary btn-circle btn-lg shadow-md shadow-blue-800/20"
+                        onClick={() => setIsButtonGroupShowing(true)}
+                    >
+                        <MdChat className="text-3xl" />
+                    </button>
+                </div>
+            )}
 
         </main >
     );

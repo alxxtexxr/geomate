@@ -1,22 +1,24 @@
 import Link from 'next/link';
-import { IoArrowBackOutline } from 'react-icons/io5';
+import { MdArrowBack } from 'react-icons/md';
 
 type Props = {
     backHref?: string,
     title?: string,
+    leftButton: JSX.Element,
 };
 
-const TopNavbar = ({ backHref, title }: Props) => (
+const TopNavbar = ({ backHref, title, leftButton }: Props) => (
     <nav className="flex justify-between items-center p-2">
-        {backHref ? (
+        {/* {backHref ? (
             <Link href={backHref}>
                 <button className="btn btn-circle btn-ghost">
-                    <IoArrowBackOutline className="text-2xl" />
+                    <MdArrowBack className="text-2xl" />
                 </button>
             </Link>
         ) : (
             <div className="h-12 w-12" />
-        )}
+        )} */}
+        {leftButton ? leftButton : (<div className="h-12 aspect-square" />)}
         {title && (
             <h1 className="font-semibold text-gray-800">{title}</h1>
         )}
