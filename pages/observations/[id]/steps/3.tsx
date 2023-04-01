@@ -11,7 +11,7 @@ const fullConfig = resolveConfig(tailwindConfig)
 // Components
 import ShapePreview from '../../../../components/ShapePreview';
 import BottomSheet from '../../../../components/BottomSheet';
-import { Message, FormControl, Spinner, Keyboard } from '../../../../components/Observation';
+import { Message, FormControl, Spinner, Keyboard, Note, InputOp } from '../../../../components/Observation';
 import Loading from '../../../../components/Loading';
 
 // Utils
@@ -28,6 +28,10 @@ import type ObservationFormValues from '../../../../types/ObservationFormValues'
 type Props = {
     observation: Observation,
     shape: Shape,
+};
+
+const MESSAGE_MAP: { [key: string]: string } = {
+    cylinder: 'Selanjutnya, volume tabung dapat diperoleh dengan mengalikan luas alas dengan tinggi tabung',
 };
 
 const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
@@ -133,40 +137,42 @@ const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 <title>Observasi (3/4) | {process.env.NEXT_PUBLIC_APP_NAME}</title>
             </Head>
 
-            <div className="sticky top-0 z-10 rounded-b-2xl border-shadow-b overflow-hidden">
-                <div className="bg-black rounded-b-2xl overflow-hidden">
-                    {comparisonShapeCode && (
-                        <ShapePreview
-                            height={136}
-                            shapeCode={shape.code}
-                            r={observation.r || 0}
-                            t={observation.t || 0}
-                        />
-                    )}
+            {/* <div className="sticky top-0 z-10 rounded-b-2xl border-shadow-b overflow-hidden"> */}
+            <div className="sticky top-0 z-10 bg-black rounded-b-2xl overflow-hidden">
+                {comparisonShapeCode && (
                     <ShapePreview
-                        // Kek, this one is horrifying
-                        // It will multiply 136 by 2 if 'comparisonShapeCode' is null
-                        // Else it will multiply 136 by 1
-                        height={136 * -(+!!comparisonShapeCode - 2)}
-                        shapeCode={comparisonShapeCode || shape.code}
+                        height={136}
+                        shapeCode={shape.code}
                         r={observation.r || 0}
-                        t={shapeTs[shape.code]}
-                        n={shape.code === 'sphere' ? +form.n : 1}
-                        {...(!isNComparisonVCorrect && { color: fullConfig.theme.colors.red[500] })}
+                        t={observation.t || 0}
                     />
-                </div>
-                {/* Message */}
-                <div className="flex bg-white bg-opacity-95 p-4">
-                    <Message>
-                        Catatlah hasil observasimu pada isian di bawah ini!
-                    </Message>
-                </div>
+                )}
+                <ShapePreview
+                    // Kek, this one is horrifying
+                    // It will multiply 136 by 2 if 'comparisonShapeCode' is null
+                    // Else it will multiply 136 by 1
+                    height={136 * -(+!!comparisonShapeCode - 2)}
+                    shapeCode={comparisonShapeCode || shape.code}
+                    r={observation.r || 0}
+                    t={shapeTs[shape.code]}
+                    n={shape.code === 'sphere' ? +form.n : 1}
+                    {...(!isNComparisonVCorrect && { color: fullConfig.theme.colors.red[500] })}
+                />
             </div>
+            {/* Message */}
+            {/* <div className="flex bg-white bg-opacity-95 p-4"> */}
+
+            {/* </div> */}
+            {/* </div> */}
 
             <BottomSheet className="w-inherit">
                 {/* Form */}
                 <form className="w-inherit pt-4 px-4 pb-space-for-keyboard" onSubmit={handleSubmit}>
                     <div className="grid grid-cols-1 gap-4">
+                        <Message>
+                            {MESSAGE_MAP[shape.code]}
+                        </Message>
+
                         {/* Inputs */}
                         <div className="grid grid-cols-1 gap-2">
                             {/* comparisonV Input */}
@@ -179,28 +185,41 @@ const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                 disabled
                             />
 
+
+                            <InputOp>×</InputOp>
+
                             {/* n input */}
                             <div className="grid grid-cols-3">
-                                <div className="col-start-2 col-span-2">
-                                    <div className="flex items-center font-mono text-base">
-                                        {nOp.split('').map((c, i) => (
+                                <span className="label-text flex items-self-center items-center text-sm text-gray-800 pr-2">
+                                    <div className="badge badge-primary badge-outline text-xs h-7 w-7 mr-2">
+                                        t
+                                    </div>
+                                    Tinggi
+                                </span>
+                                <div className="col-span-2">
+                                    {/* <div className="flex items-center font-mono text-base"> */}
+                                    {/* {nOp.split('').map((c, i) => (
                                             <div className="mx-0.5" key={i}>
                                                 {c}
                                             </div>
-                                        ))}
-                                        <Spinner
-                                            name="n"
-                                            value={form.n}
-                                            setValue={setN}
-                                            onChange={handleChange}
-                                            onFocus={handleFocus}
-                                        />
-                                    </div>
+                                        ))} */}
+                                    <Spinner
+                                        name="n"
+                                        value={form.n}
+                                        setValue={setN}
+                                        onChange={handleChange}
+                                        onFocus={handleFocus}
+                                    />
                                 </div>
+                                {/* </div> */}
                             </div>
+
+                            <InputOp>=</InputOp>
 
                             {/* nComparisonV Input */}
                             <FormControl
+                                title={`Volume ${shape.name}`}
+                                symbol="V"
                                 suffix="cm³"
                                 name="nComparisonV"
                                 value={nComparisonV}
@@ -208,17 +227,20 @@ const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                 disabled
                             />
 
-                            <hr />
-                            {/* formulaResult Input */}
-                            <FormControl
-                                title={`Volume ${shape.name}`}
-                                symbol="v"
-                                suffix="cm³"
-                                isCorrect={isNComparisonVCorrect}
-                                name="V"
-                                value={observation.v || 0}
-                                disabled
-                            />
+                            <div className="grid grid-cols-1 gap-4">
+                                <hr />
+                                <Note>Perhitungan awal:</Note>
+                                {/* formulaResult Input */}
+                                <FormControl
+                                    title={`Volume ${shape.name}`}
+                                    symbol="V"
+                                    suffix="cm³"
+                                    isCorrect={isNComparisonVCorrect}
+                                    name="V"
+                                    value={observation.v || 0}
+                                    disabled
+                                />
+                            </div>
                         </div>
                     </div>
 

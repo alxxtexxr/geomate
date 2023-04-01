@@ -9,6 +9,10 @@ type Props = {
     canMeasure?: boolean,
 };
 
+const BG_CX_MAP = {
+
+}
+
 const ObservationFormControl = ({
     title,
     symbol = null,
@@ -17,7 +21,9 @@ const ObservationFormControl = ({
     canMeasure = false,
     ...rest
 }: Props & InputHTMLAttributes<HTMLInputElement>) => {
-    const isCorrectCx = isCorrect !== null ? (isCorrect ? '  input-primary' : ' input-error') : '';
+    const inputCx = isCorrect !== null ? (isCorrect ? 'input-primary' : 'input-error') : '';
+    const bgColorCx = isCorrect !== null ? (isCorrect ? 'bg-primary' : 'bg-error') : 'bg-gray-200';
+    const textColorCx = isCorrect !== null ? 'text-white' : 'text-gray-400';
 
     return (
         <div className="grid grid-cols-3">
@@ -30,11 +36,11 @@ const ObservationFormControl = ({
                 {title}
             </span>
             <div className="col-span-2">
-                <div className="flex bg-gray-200 rounded-lg">
+                <div className={`flex  rounded-lg ${bgColorCx}`}>
                     <div className="relative w-full">
                         <input
                             type="text"
-                            className={'input input-bordered font-mono w-full' + isCorrectCx}
+                            className={`input input-bordered font-mono w-full ${inputCx}`}
                             {...rest}
                         />
                         {canMeasure && (
@@ -44,7 +50,7 @@ const ObservationFormControl = ({
                         )}
                     </div>
                     {suffix && (
-                        <div className="flex justify-center items-center text-xs text-gray-400 aspect-square h-12">
+                        <div className={`flex justify-center items-center text-xs aspect-square h-12 ${textColorCx}`}>
                             <span className="-mt-0.5">
                                 {suffix}
                             </span>

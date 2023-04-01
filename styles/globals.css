@@ -61,6 +61,18 @@
     border-color: hsl(var(--p) / var(--tw-border-opacity));
 }
 
+.input-disabled.input-primary, 
+.input[disabled].input-primary {
+    background-color: rgb(247 250 255) !important;
+    @apply text-primary border-primary !important
+}
+
+.input-disabled.input-error, 
+.input[disabled].input-error {
+    background-color: rgb(254 248 248) !important;
+    @apply text-error border-error !important
+}
+
 .input-disabled, .input[disabled] {
     @apply bg-gray-50 border-gray-200
 }

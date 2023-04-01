@@ -32,7 +32,7 @@ type Props = {
 type FormValues = { [key: string]: string | number | null };
 
 const MESSAGE_MAP: { [key: string]: string } = {
-    cylinder: 'Untuk memulai menghitung volume tabung, pertama kita perlu mencari luas alas tabung.',
+    cylinder: 'Untuk memulai menghitung volume tabung, pertama kita perlu mencari luas alas tabung',
 };
 
 const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
