@@ -6,15 +6,15 @@ import { Parser } from 'expr-eval';
 // Components
 import ShapePreview from '../../../../components/ShapePreview';
 import BottomSheet from '../../../../components/BottomSheet';
-import { Message, FormControl, Keyboard } from '../../../../components/Observation';
+import { Message, FormControl, Keyboard, InputOp } from '../../../../components/Observation';
 import Loading from '../../../../components/Loading';
-import Note from '../../../../components/Note';
+import Note from '../../../../components/Observation/ObservationNote';
 
 // Constants
 import { KEYBOARD_LAYOUTS, SHAPE_PREVIEW_DEFAULT_HEIGHT } from '../../../../Constants';
 
 // Utils
-import { getShape, formatFormula, checkFormula, roundToNearest } from '../../../../Utils';
+import { getShape, formatFormula, checkFormula, roundToNearest, getPiString } from '../../../../Utils';
 
 // Types
 import type { GetServerSideProps } from 'next';
@@ -31,7 +31,15 @@ type Props = {
 
 type FormValues = { [key: string]: string | number | null };
 
+const MESSAGE_MAP: { [key: string]: string } = {
+    cylinder: 'Untuk memulai menghitung volume tabung, pertama kita perlu mencari luas alas tabung.',
+};
+
 const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
+    // Define Pi value
+    const piString = getPiString(observation.r);
+    const pi = Parser.evaluate(piString)
+
     // Define comparisonShape
     const comparisonShapeCodes: { [key: string]: ShapeCode | null } = {
         cylinder: null,
@@ -49,11 +57,12 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
 
     // Define correct values
     const correctValues = {
+        baseShape: 'lingkaran',
         formula: comparisonShapeFormula && formatFormula(comparisonShapeFormula),
         r: observation.r,
         t: observation.t,
         v: comparisonShapeFormula && roundToNearest(+Parser.evaluate(comparisonShapeFormula, {
-            pi: 3.14,
+            pi: pi,
             r: observation.r || 0,
             t: shape.code === 'sphere' ? observation.r || 0 : observation.t || 0,
         }), 0.005).toFixed(2),
@@ -62,6 +71,7 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
     // Configure keyboard
     const keyboardRef = useRef(null);
     const keyboardLayouts: { [key: string]: KeyboardLayoutObject } = {
+        baseShape: KEYBOARD_LAYOUTS.alphabetic,
         formula: KEYBOARD_LAYOUTS.formula,
         r: KEYBOARD_LAYOUTS.numeric,
         t: KEYBOARD_LAYOUTS.numeric,
@@ -70,6 +80,7 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
 
     // States
     const [form, setForm] = useState<ObservationFormValues>({
+        baseShape: '',
         formula: '',
         r: '',
         t: '',
@@ -77,6 +88,7 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
     });
     const [focusedInputName, setFocusedInputName] = useState<string | null>(null);
     const [isInputCorrect, setIsInputCorrect] = useState({
+        baseShape: false,
         formula: false,
         r: false,
         t: false,
@@ -107,8 +119,13 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
     };
 
     const updateForm = (name: string, value: string) => {
-        // Check if formula is correct
-        if (correctValues.formula && name === 'formula') {
+        if (correctValues.formula && name === 'baseShape') {
+            setIsInputCorrect({
+                ...isInputCorrect,
+                baseShape: value.toLowerCase() === correctValues.baseShape,
+            });
+        } else if (correctValues.formula && name === 'formula') {
+            // Check if formula is correct
             // console.log(name, value, '=', correctValues.formula)
             setIsInputCorrect({
                 ...isInputCorrect,
@@ -178,56 +195,76 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 <title>Observasi (2/4) | {process.env.NEXT_PUBLIC_APP_NAME}</title>
             </Head>
 
-            <div className="sticky top-0 z-10 rounded-b-2xl border-shadow-b overflow-hidden">
-                <div className="bg-black rounded-b-2xl overflow-hidden">
-                    {comparisonShapeCode && (
-                        <ShapePreview
-                            height={SHAPE_PREVIEW_DEFAULT_HEIGHT / 2}
-                            shapeCode={shape.code}
-                            r={observation.r || 0}
-                            t={observation.t || 0}
-                            highlight={highlight}
-                        />
-                    )}
-
+            {/* <div className="sticky top-0 z-10 rounded-b-2xl border-shadow-b overflow-hidden"> */}
+            <div className="sticky top-0 z-10 bg-black rounded-b-2xl overflow-hidden">
+                {comparisonShapeCode && (
                     <ShapePreview
-                        // Kek, this one is horrifying
-                        // It will multiply 136 by 2 if 'comparisonShapeCode' is null
-                        // Else it will multiply 136 by 1
-                        height={SHAPE_PREVIEW_DEFAULT_HEIGHT / 2 * -(+!!comparisonShapeCode - 2)}
-                        shapeCode={comparisonShapeCode || shape.code}
-                        r={+form.r || 0}
-                        t={shape.code === 'sphere' ? +form.r : +form.t || 0}
+                        height={SHAPE_PREVIEW_DEFAULT_HEIGHT / 2}
+                        shapeCode={shape.code}
+                        r={observation.r || 0}
+                        t={observation.t || 0}
                         highlight={highlight}
                     />
-                </div>
+                )}
 
-                {/* Message */}
-                <div className="flex bg-white bg-opacity-95 p-4">
-                    <Message>
-                        Catatlah hasil observasimu pada isian di bawah ini!
-                    </Message>
-                </div>
+                <ShapePreview
+                    // Kek, this one is horrifying
+                    // It will multiply 136 by 2 if 'comparisonShapeCode' is null
+                    // Else it will multiply 136 by 1
+                    height={SHAPE_PREVIEW_DEFAULT_HEIGHT / 2 * -(+!!comparisonShapeCode - 2)}
+                    shapeCode={comparisonShapeCode || shape.code}
+                    r={+form.r || 0}
+                    t={shape.code === 'sphere' ? +form.r : +form.t || 0}
+                    highlight={highlight}
+                />
             </div>
+
+            {/* Message */}
+            {/* <div className="flex bg-white bg-opacity-95 p-4"> */}
+
+            {/* </div> */}
+            {/* </div> */}
 
             <BottomSheet className="w-inherit">
                 {/* Form */}
                 <form className="w-inherit pt-4 px-4 pb-space-for-keyboard" onSubmit={handleSubmit}>
                     <div className="grid grid-cols-1 gap-4">
+                        <Message>
+                            {MESSAGE_MAP[shape.code]}
+                        </Message>
+
+                        {isInputCorrect.formula && (
+                            <Note>
+                                <>Gunakan nilai π = <span className="font-mono">{piString}</span></>
+                            </Note>
+                        )}
 
                         {/* Inputs */}
                         <div className="grid grid-cols-1 gap-2">
-                            {/* formula Input */}
                             <FormControl
-                                title={shape.code === 'cylinder' ? 'Luas Lingkaran' : (comparisonShape ? `Volume ${comparisonShape.name}` : 'Volume')}
-                                symbol={shape.code === 'cylinder' ? 'LA' : 'v2'}
-                                isCorrect={isInputCorrect.formula}
-                                name="formula"
-                                placeholder={shape.code === 'cylinder' ? 'Rumus L. Lingkaran' : (comparisonShape ? `Rumus V. ${comparisonShape.name}` : '')}
-                                value={form.formula}
+                                title="Bentuk Alas"
+                                symbol="●"
+                                isCorrect={isInputCorrect.baseShape}
+                                name="baseShape"
+                                placeholder="?"
+                                value={form.baseShape}
                                 onChange={handleChange}
                                 onFocus={handleFocus}
                             />
+
+                            {/* formula Input */}
+                            {(isInputCorrect.baseShape || shape.code !== 'cylinder') && (
+                                <FormControl
+                                    title={shape.code === 'cylinder' ? 'Luas Lingkaran' : (comparisonShape ? `Volume ${comparisonShape.name}` : 'Volume')}
+                                    symbol={shape.code === 'cylinder' ? 'L' : 'V2'}
+                                    isCorrect={isInputCorrect.formula}
+                                    name="formula"
+                                    placeholder={shape.code === 'cylinder' ? 'Rumus L. Lingkaran' : (comparisonShape ? `Rumus V. ${comparisonShape.name}` : '')}
+                                    value={form.formula}
+                                    onChange={handleChange}
+                                    onFocus={handleFocus}
+                                />
+                            )}
 
                             {isInputCorrect.formula && shape.code === 'sphere' && (
                                 <>
@@ -247,61 +284,67 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                             )}
 
                             {isInputCorrect.formula && (
-                                <div className="grid grid-cols-3">
-                                    <div className="col-start-2 col-span-2">
-                                        <div className="flex items-center font-mono text-base">
-                                            {comparisonShapeFormulaToFormat && comparisonShapeFormulaToFormat
-                                                .replaceAll(' ', '')
-                                                .replaceAll('*', ' * ')
-                                                .replaceAll('^', ' ^')
-                                                .split(' ')
-                                                .map((mathSymbol, i) => {
-                                                    const formattedMathSymbol = formatFormula(mathSymbol);
-                                                    if (/[a-zA-Z]/.test(formattedMathSymbol)) {
-                                                        const name = shape.code === 'sphere' && formattedMathSymbol === 't' ? 'r' : formattedMathSymbol;
+                                <>
+                                    <InputOp>=</InputOp>
+                                    <div className="grid grid-cols-3">
+                                        <div className="col-start-2 col-span-2">
+                                            <div className="flex items-center font-mono text-base">
+                                                {comparisonShapeFormulaToFormat && comparisonShapeFormulaToFormat
+                                                    .replaceAll(' ', '')
+                                                    .replaceAll('*', ' * ')
+                                                    .replaceAll('^', ' ^')
+                                                    .split(' ')
+                                                    .map((mathSymbol, i) => {
+                                                        const formattedMathSymbol = formatFormula(mathSymbol);
+                                                        if (/[a-zA-Z]/.test(formattedMathSymbol)) {
+                                                            const name = shape.code === 'sphere' && formattedMathSymbol === 't' ? 'r' : formattedMathSymbol;
 
-                                                        const isCorrect = (isInputCorrect as { [key: string]: boolean })[name]
-                                                        const isCorrectCx = isCorrect ? 'input-primary' : 'input-error';
+                                                            const isCorrect = (isInputCorrect as { [key: string]: boolean })[name]
+                                                            const isCorrectCx = isCorrect ? 'input-primary' : 'input-error';
 
 
-                                                        return (
-                                                            <input
-                                                                key={i}
-                                                                className={`input input-bordered flex-grow w-16 mx-0.5 ${isCorrectCx}`}
-                                                                placeholder={shape.code === 'sphere' && formattedMathSymbol === 't' ? '(r)' : formattedMathSymbol}
-                                                                name={name}
-                                                                value={(form as FormValues)[name] || ''}
-                                                                onChange={handleChange}
-                                                                onFocus={handleFocus}
-                                                            />
-                                                        );
-                                                    } else {
-                                                        return (
-                                                            <div
-                                                                key={i}
-                                                                className="mx-0.5"
-                                                            >
-                                                                {formattedMathSymbol}
-                                                            </div>
-                                                        )
-                                                    }
-                                                })}
+                                                            return (
+                                                                <input
+                                                                    key={i}
+                                                                    className={`input input-bordered flex-grow w-16 mx-0.5 ${isCorrectCx}`}
+                                                                    placeholder={shape.code === 'sphere' && formattedMathSymbol === 't' ? '(r)' : formattedMathSymbol}
+                                                                    name={name}
+                                                                    value={(form as FormValues)[name] || ''}
+                                                                    onChange={handleChange}
+                                                                    onFocus={handleFocus}
+                                                                />
+                                                            );
+                                                        } else {
+                                                            return (
+                                                                <div
+                                                                    key={i}
+                                                                    className="mx-0.5"
+                                                                >
+                                                                    {formattedMathSymbol}
+                                                                </div>
+                                                            )
+                                                        }
+                                                    })}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                </>
                             )}
 
                             {/* formulaResult Input */}
                             {comparisonShapeFormulaToFormat && isFormulaFilled(comparisonShapeFormulaToFormat) && (
-                                <FormControl
-                                    suffix={`cm${shape.code === 'cylinder' ? '²' : '³'}`}
-                                    name="v"
-                                    isCorrect={isInputCorrect.v}
-                                    placeholder="?"
-                                    value={form.v || ''}
-                                    onChange={handleChange}
-                                    onFocus={handleFocus}
-                                />
+                                <>
+                                    <InputOp>=</InputOp>
+                                    <FormControl
+                                        suffix={`cm${shape.code === 'cylinder' ? '²' : '³'}`}
+                                        name="v"
+                                        isCorrect={isInputCorrect.v}
+                                        placeholder="?"
+                                        value={form.v || ''}
+                                        onChange={handleChange}
+                                        onFocus={handleFocus}
+                                    />
+                                </>
                             )}
                         </div>
                     </div>

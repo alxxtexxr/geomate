@@ -7,15 +7,14 @@ import { MdOutlineSwitchCamera } from 'react-icons/md';
 // Components
 import ShapePreview from '../../../../components/ShapePreview';
 import BottomSheet from '../../../../components/BottomSheet';
-import { Message, FormControl, Keyboard } from '../../../../components/Observation';
+import { Message, FormControl, Keyboard, Note } from '../../../../components/Observation';
 import Loading from '../../../../components/Loading';
-import Note from '../../../../components/Note';
 
 // Constants
 import { KEYBOARD_LAYOUTS } from '../../../../Constants';
 
 // Utils
-import { getShape, getMathSymbol, extractMathSymbolCodes, roundToNearest } from '../../../../Utils';
+import { getShape, getMathSymbol, extractMathSymbolCodes, roundToNearest, getPi } from '../../../../Utils';
 
 // Types
 import type { GetServerSideProps } from 'next';
@@ -108,7 +107,7 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
         const previousV = form.v;
         const newV = roundToNearest(Parser.evaluate(shape.vFormula, {
             ...form,
-            pi: 3.14,
+            pi: getPi(+form.r),
         }), 0.005).toFixed(1);
 
         if (newV !== previousV) {

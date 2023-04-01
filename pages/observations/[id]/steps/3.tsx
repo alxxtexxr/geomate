@@ -172,7 +172,7 @@ const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
                             {/* comparisonV Input */}
                             <FormControl
                                 title={shape.code === 'cylinder' ? 'Luas Lingkaran' : (comparisonShape ? `Volume ${comparisonShape.name}` : '')}
-                                symbol={shape.code === 'cylinder' ? 'a' : 'v2'}
+                                symbol={shape.code === 'cylinder' ? 'L' : 'V2'}
                                 suffix="cm³"
                                 name="comparisonV"
                                 value={observation.comparisonV || ''}
@@ -215,7 +215,7 @@ const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                 symbol="v"
                                 suffix="cm³"
                                 isCorrect={isNComparisonVCorrect}
-                                name="v"
+                                name="V"
                                 value={observation.v || 0}
                                 disabled
                             />

@@ -21,7 +21,7 @@ const ObservationFormControl = ({
 
     return (
         <div className="grid grid-cols-3">
-            <span className="label-text flex items-self-center items-center text-sm text-gray-800">
+            <span className="label-text flex items-self-center items-center text-sm text-gray-800 pr-2">
                 {symbol && (
                     <div className="badge badge-primary badge-outline text-xs h-7 w-7 mr-2">
                         {symbol}
@@ -32,13 +32,11 @@ const ObservationFormControl = ({
             <div className="col-span-2">
                 <div className="flex bg-gray-200 rounded-lg">
                     <div className="relative w-full">
-                        {/* <div className="tooltip tooltip-base tooltip-bottom tooltip-open w-full" data-tip="π = 3.14"> */}
-                            <input
-                                type="text"
-                                className={'input input-bordered font-mono w-full' + isCorrectCx}
-                                {...rest}
-                            />
-                        {/* </div> */}
+                        <input
+                            type="text"
+                            className={'input input-bordered font-mono w-full' + isCorrectCx}
+                            {...rest}
+                        />
                         {canMeasure && (
                             <button type="button" className="absolute right-0 btn btn-toggle ml-2">
                                 <MdOutlineSwitchCamera className="text-2xl" />

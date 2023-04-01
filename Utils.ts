@@ -1,6 +1,7 @@
 import qs from 'qs';
 import { IncomingForm } from 'formidable';
 import cloudinary from 'cloudinary/lib/cloudinary';
+import { Parser } from 'expr-eval';
 
 // Types
 import type { IncomingMessage } from 'http';
@@ -220,3 +221,6 @@ export const getXpPct = (xp: number) => xp / getXpLimit(getLevel(xp)) * 100;
 export const roundToNearest = (num: number, increment: number) => {
     return Math.round(num / increment) * increment;
 };
+
+export const getPiString = (r: number | null) => r && !(r % 7) ? '22/7' : '3.14';
+export const getPi = (r: number | null) => Parser.evaluate(getPiString(r))
