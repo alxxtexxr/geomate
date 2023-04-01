@@ -35,8 +35,8 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
 
     // States
     const [form, setForm] = useState<ObservationFormValues>({
-        r: '' + getMathSymbol('r').defaultValue,
-        t: '' + getMathSymbol('t').defaultValue,
+        r: '',
+        t: '',
         v: '',
     });
     const [focusedInputName, setFocusedInputName] = useState<string | null>(null);
@@ -125,36 +125,29 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 <title>Observasi (1/4) | {process.env.NEXT_PUBLIC_APP_NAME}</title>
             </Head>
 
-            <div className="sticky top-0 z-10 rounded-b-2xl border-shadow-b overflow-hidden">
-                <div className="bg-black rounded-b-2xl overflow-hidden">
-                    <ShapePreview
-                        shapeCode={shape.code}
-                        r={+form.r || 0}
-                        t={+form.t || 0}
-                        highlight={highlight}
-                    />
-                </div>
-
-                {/* Message */}
-                <div className="flex bg-white bg-opacity-95 p-4">
-                    <Message>
-                        Ukurlah objek yang kamu amati dan catat hasil pengukuranmu!
-                    </Message>
-                </div>
+            <div className="sticky top-0 z-10 bg-black rounded-b-2xl overflow-hidden">
+                <ShapePreview
+                    shapeCode={shape.code}
+                    r={+form.r || 0}
+                    t={+form.t || 0}
+                    highlight={highlight}
+                />
             </div>
 
             <BottomSheet className="w-inherit">
                 {/* Form */}
                 <form className="w-inherit p-4" onSubmit={handleSubmit}>
                     <div className="grid grid-cols-1 gap-4">
+                        <Message>
+                            Ukurlah objek yang kamu amati dan catat hasil pengukuranmu!
+                        </Message>
+
+                        <Note>
+                            <>Klik ikon <MdOutlineSwitchCamera className="inline-flex text-primary text-lg mx-0.5" /> untuk mengukur menggunakan kamera</>
+                        </Note>
+
                         {/* Inputs */}
                         <div className="grid grid-cols-1 gap-2">
-                            <Note color="yellow-500">
-                                <span>
-                                    Klik ikon <MdOutlineSwitchCamera className="inline-flex text-base -mt-px" /> untuk mengukur menggunakan kamera.
-                                </span>
-                            </Note>
-
                             {vMathSymbolCodes.map((mathSymbolCode) => (
                                 <FormControl
                                     key={mathSymbolCode}
@@ -163,6 +156,7 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                     suffix="cm"
                                     canMeasure
                                     name={mathSymbolCode}
+                                    placeholder="?"
                                     value={(form as ObservationFormValues)[mathSymbolCode]}
                                     onChange={handleChange}
                                     onFocus={(e) => {
@@ -174,27 +168,32 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                 // onBlur
                                 />
                             ))}
-                            <hr className="border-gray-300" />
-                            <FormControl
-                                title="Volume"
-                                symbol="v"
-                                suffix="cm²"
-                                value={form.v}
-                                disabled
-                            />
+                            <div className="grid grid-cols-1 gap-4">
+                                <hr className="border-gray-300" />
+                                <Note>
+                                    Berdasarkan hasil pengukuranmu, diperoleh:
+                                </Note>
+                                <FormControl
+                                    title="Volume"
+                                    symbol="V"
+                                    suffix="cm²"
+                                    value={form.v}
+                                    disabled
+                                />
+                            </div>
                         </div>
-                    </div>
-
-                    {/* Button */}
-                    <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 bg-white bg-opacity-95 w-inherit p-4 rounded-t-2xl">
-                        {isSubmitting ? (<Loading.Button />) : (
-                            <button
-                                type="submit"
-                                className="btn btn-primary btn-block"
-                                disabled={!isFormFilled()}
-                            >
-                                Selanjutnya
-                            </button>
+                        {isFormFilled() && (
+                            <Message button={isSubmitting ? (<Loading.Button />) : (
+                                <button
+                                    type="submit"
+                                    className="btn btn-primary btn-block"
+                                    disabled={!isFormFilled()}
+                                >
+                                    Selanjutnya
+                                </button>
+                            )}>
+                                Dari volume yang sudah ada, yuk temukan bagaimana cara menghitung volume tersebut.
+                            </Message>
                         )}
                     </div>
                 </form>

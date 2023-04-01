@@ -12,7 +12,7 @@
 }
 
 /* Override DaisyUI styles */
-:root, [data-theme] { @apply bg-white }
+:root, [data-theme] { @apply bg-gray-100 }
 
 .btn { @apply rounded-full }
 
