@@ -5,7 +5,7 @@ import Router from 'next/router';
 // Components
 import ShapePreview from '../../../../components/ShapePreview';
 import BottomSheet from '../../../../components/BottomSheet';
-import { Message, FormControl, Keyboard } from '../../../../components/Observation';
+import { Message, FormControl, Keyboard, InputOp } from '../../../../components/Observation';
 import Loading from '../../../../components/Loading';
 
 // Constants
@@ -136,7 +136,7 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
     };
 
     const isAllInputCorrect = () =>
-                                                      // Don't check 'n' if the shape is cylinder
+        // Don't check 'n' if the shape is cylinder
         Object.entries(isInputCorrect).every(([k, v]) => shape.code === 'cylinder' && k === 'n' || v);
 
     // Effects
@@ -175,28 +175,30 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 <title>Observasi (4/4) | {process.env.NEXT_PUBLIC_APP_NAME}</title>
             </Head>
 
-            <div className="sticky top-0 z-10 rounded-b-2xl border-shadow-b overflow-hidden">
-                <div className="bg-black rounded-b-2xl overflow-hidden">
-                    <ShapePreview
-                        height={272}
-                        shapeCode={shape.code}
-                        r={observation.r || 0}
-                        t={observation.t || 0}
-                    />
-                </div>
-
-                {/* Message */}
-                <div className="flex bg-white bg-opacity-95 p-4">
-                    <Message>
-                        Catatlah hasil observasimu pada isian di bawah ini!
-                    </Message>
-                </div>
+            {/* <div className="sticky top-0 z-10 rounded-b-2xl border-shadow-b overflow-hidden"> */}
+            <div className="sticky top-0 z-10 bg-black rounded-b-2xl overflow-hidden">
+                <ShapePreview
+                    height={272}
+                    shapeCode={shape.code}
+                    r={observation.r || 0}
+                    t={observation.t || 0}
+                />
             </div>
+
+            {/* Message */}
+            {/* <div className="flex bg-white bg-opacity-95 p-4"> */}
+
+            {/* </div> */}
+            {/* </div> */}
 
             <BottomSheet className="w-inherit">
                 {/* Form */}
                 <form className="w-inherit pt-4 px-4 pb-space-for-keyboard" onSubmit={handleSubmit}>
                     <div className="grid grid-cols-1 gap-4">
+                        <Message>
+                            {`Dari hasil observasimu, dapat disimpulkan bahwa rumus volume ${shape.name.toLowerCase()} adalah:`}
+                        </Message>
+
                         {/* Inputs */}
                         <div className="grid grid-cols-1 gap-2">
                             {/* comparisonVFormula Input */}
@@ -204,7 +206,7 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                 <div className="grid grid-cols-3">
                                     <span className="label-text flex items-self-center items-center text-sm text-gray-800">
                                         <div className="badge badge-primary badge-outline text-xs h-7 w-7 mr-2">
-                                            v
+                                            V
                                         </div>
                                         Volume {shape.name}
                                     </span>
@@ -278,6 +280,8 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                     </div>
                                 </>
                             )}
+
+                            <InputOp>=</InputOp>
 
                             {/* vFormula Input */}
                             <FormControl

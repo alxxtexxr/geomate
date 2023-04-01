@@ -233,7 +233,7 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                             {MESSAGE_MAP[shape.code]}
                         </Message>
 
-                        {isInputCorrect.formula && (
+                        {comparisonShapeFormulaToFormat && isFormulaFilled(comparisonShapeFormulaToFormat) && (
                             <Note>
                                 <>Gunakan nilai π = <span className="font-mono">{piString}</span></>
                             </Note>
