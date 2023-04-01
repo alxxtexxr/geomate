@@ -252,7 +252,7 @@ export const NAVBAR_BOTTOM_MENU = [
   },
 ];
 
-export const INTROS = [
+export const GUIDES = [
   {
     title: 'Kompetensi Inti',
     contents: [

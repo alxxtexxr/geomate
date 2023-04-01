@@ -1,59 +1,76 @@
 import Head from 'next/head';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { MdArrowBack } from 'react-icons/md';
 
 // Components
 import Navbar from '../components/Navbar';
 
 // Constants
-import { INTROS, NAVBAR_BOTTOM_MENU } from '../Constants';
+import { GUIDES, NAVBAR_BOTTOM_MENU } from '../Constants';
 
 // Types
 import type ComponentWithAuth from '../types/ComponentWithAuth';
 
-const Intro: ComponentWithAuth = () => (
-    <main className="bg-base-100 w-inherit min-h-screen">
-        <Head>
-            <title>Pengantar | {process.env.NEXT_PUBLIC_APP_NAME}</title>
-        </Head>
+const Guides: ComponentWithAuth = () => {
+    const router = useRouter();
 
-        <Navbar.Top title="Pengantar" backHref="/" />
+    return (
+        <main className="bg-base-100 w-inherit min-h-screen">
+            <Head>
+                <title>Pengantar | {process.env.NEXT_PUBLIC_APP_NAME}</title>
+            </Head>
 
-        <section className="grid grid-cols-1 gap-4 p-4">
-            {INTROS.map((intro) => (
-                <div className="collapse collapse-arrow bg-white rounded-xl shadow-sm shadow-blue-800/20" key={intro.title}>
-                    <input type="checkbox" />
-                    <div className="collapse-title flex justify-start items-center">
-                        <div className="relative h-10 w-10 mr-4">
-                            <Image src="/images/intro.png" alt="KI/KD" layout="fill" />
+            <Navbar.Top
+                title="Pengantar"
+                leftButton={(
+                    <button type="button" className="btn btn-circle btn-ghost" onClick={router.back}>
+                        <MdArrowBack className="text-2xl" />
+                    </button>
+                )}
+            />
+
+            <section className="grid grid-cols-1 gap-4 p-4">
+                {GUIDES.map((guide) => (
+                    <div className="collapse collapse-arrow bg-white rounded-xl shadow-sm shadow-blue-800/20" key={guide.title}>
+                        <input type="checkbox" />
+                        <div className="collapse-title flex justify-start items-center">
+                            <div className="relative h-10 w-10 mr-4">
+                                <Image src="/images/guide.png" alt="KI/KD" layout="fill" />
+                            </div>
+                            <h2 className="font-medium text-gray-800">
+                                {guide.title}
+                            </h2>
                         </div>
-                        <h2 className="font-medium text-gray-800">
-                            {intro.title}
-                        </h2>
+                        <div className="collapse-content">
+                            <table className="text-gray-600 text-sm mx-2">
+                                <tbody>
+                                    {guide.contents.map((content) => (
+                                        <tr className="align-top" key={content.no}>
+                                            <td className="pr-4">
+                                                {content.no}
+                                            </td>
+                                            <td>
+                                                {content.content}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    <div className="collapse-content">
-                        <table className="text-gray-600 text-sm mx-2">
-                            <tbody>
-                                {intro.contents.map((content) => (
-                                    <tr className="align-top" key={content.no}>
-                                        <td className="pr-4">
-                                            {content.no}
-                                        </td>
-                                        <td>
-                                            {content.content}
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            ))}
-        </section>
+                ))}
+            </section>
 
-        <Navbar.Bottom menu={NAVBAR_BOTTOM_MENU} />
-    </main>
-);
+            <Navbar.Bottom menu={NAVBAR_BOTTOM_MENU} />
+        </main>
+    );
+};
 
-Intro.auth = true;
+Guides.auth = true;
 
-export default Intro;
+export default Guides;
+
+function useNavigate(arg0: number): void {
+    throw new Error('Function not implemented.');
+}

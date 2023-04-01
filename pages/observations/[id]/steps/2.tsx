@@ -8,6 +8,7 @@ import ShapePreview from '../../../../components/ShapePreview';
 import BottomSheet from '../../../../components/BottomSheet';
 import { Message, FormControl, Keyboard } from '../../../../components/Observation';
 import Loading from '../../../../components/Loading';
+import Note from '../../../../components/Note';
 
 // Constants
 import { KEYBOARD_LAYOUTS, SHAPE_PREVIEW_DEFAULT_HEIGHT } from '../../../../Constants';

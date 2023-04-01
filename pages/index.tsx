@@ -39,15 +39,15 @@ const Home: ComponentWithAuth<Props> = ({ menu }) => {
 				<title>Beranda | {process.env.NEXT_PUBLIC_APP_NAME}</title>
 			</Head>
 
-			<header className="flex items-center bg-base-200 text-primary-content pt-8 px-8 pb-16">
-				<div className="relative flex">
+			<header className="flex items-center bg-base-200 text-primary-content pt-8 px-10 pb-16">
+				<div className="flex mr-4">
 					<Avatar
 						src={session?.user.image || undefined}
 						alt={session?.user.name ? `${session?.user.name}'s Avatar` : undefined}
 						size='lg'
 					/>
 				</div>
-				<div className="ml-4">
+				<div className="-mt-px">
 					<h1 className="text-xl font-medium">{session?.user.name ? `Halo, ${session.user.name.split(' ')[0]}!` : 'Halo!'}</h1>
 					<p className="text-sm">Mau belajar apa hari ini?</p>
 				</div>

@@ -65,7 +65,7 @@ const ShapeInformation = ({ shapeCode, onHide }: Props) => {
                                 <div className="relative border border-gray-300 rounded-2xl shadow-sm shadow-blue-800/10">
                                     <div className="absolute flex justify-center transform -translate-y-1/2 w-full">
                                         <Formula>
-                                            Rumus Volume = {formatFormula(shape.vFormula)}
+                                            Volume {shape.name} = {formatFormula(shape.vFormula)}
                                         </Formula>
                                     </div>
 

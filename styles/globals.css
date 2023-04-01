@@ -71,6 +71,16 @@
 
 .rating input:checked~input { --tw-bg-opacity: 0.36 }
 
+.tooltip {
+    --tooltip-tail: 5px;
+    --tooltip-offset: calc(100% + 6px + var(--tooltip-tail, 0px));
+    --tooltip-tail-offset: calc(100% + 6px - var(--tooltip-tail));
+}
+.tooltip-base {
+    --tooltip-color: hsla(220deg 13.04% 90.98%);
+    --tooltip-text-color: hsl(215deg 13.79% 34.12%);
+}
+
 /* Override React Toastify styles */
 .Toastify__toast-container {
     @apply grid grid-cols-1 gap-2 p-2

@@ -9,13 +9,13 @@ type Props = {
     canMeasure?: boolean,
 };
 
-const ObservationFormControl = ({ 
-    title, 
-    symbol = null, 
-    suffix = null, 
+const ObservationFormControl = ({
+    title,
+    symbol = null,
+    suffix = null,
     isCorrect = null,
-    canMeasure = false, 
-    ...rest 
+    canMeasure = false,
+    ...rest
 }: Props & InputHTMLAttributes<HTMLInputElement>) => {
     const isCorrectCx = isCorrect !== null ? (isCorrect ? '  input-primary' : ' input-error') : '';
 
@@ -32,11 +32,13 @@ const ObservationFormControl = ({
             <div className="col-span-2">
                 <div className="flex bg-gray-200 rounded-lg">
                     <div className="relative w-full">
-                        <input
-                            type="text"
-                            className={'input input-bordered font-mono w-full' + isCorrectCx}
-                            {...rest}
-                        />
+                        {/* <div className="tooltip tooltip-base tooltip-bottom tooltip-open w-full" data-tip="π = 3.14"> */}
+                            <input
+                                type="text"
+                                className={'input input-bordered font-mono w-full' + isCorrectCx}
+                                {...rest}
+                            />
+                        {/* </div> */}
                         {canMeasure && (
                             <button type="button" className="absolute right-0 btn btn-toggle ml-2">
                                 <MdOutlineSwitchCamera className="text-2xl" />

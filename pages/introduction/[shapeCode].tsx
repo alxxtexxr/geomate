@@ -3,11 +3,9 @@ import { useSession } from 'next-auth/react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Router from 'next/router';
-import Typewriter from 'typewriter-effect';
-// import { IoHomeSharp, IoChatboxEllipses } from 'react-icons/io5';
-import { MdOutlineHome, MdInfoOutline, MdOutlineLeaderboard, MdOutlinePersonOutline, MdHome, MdChat, MdPerson, MdInfo } from 'react-icons/md';
 import Link from 'next/link';
-import { FaHome, FaCommentDots } from 'react-icons/fa';
+import Typewriter from 'typewriter-effect';
+import { MdHome, MdChat } from 'react-icons/md';
 
 // Components
 import Navbar from '../../components/Navbar';
