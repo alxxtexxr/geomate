@@ -5,7 +5,7 @@ import Router from 'next/router';
 // Components
 import ShapePreview from '../../../../components/ShapePreview';
 import BottomSheet from '../../../../components/BottomSheet';
-import { Message, FormControl, Keyboard, InputOp } from '../../../../components/Observation';
+import { Message, FormControl, Label, InputOp, Keyboard } from '../../../../components/Observation';
 import Loading from '../../../../components/Loading';
 
 // Constants
@@ -204,12 +204,7 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
                             {/* comparisonVFormula Input */}
                             {shape.code === 'cylinder' ? (
                                 <div className="grid grid-cols-3">
-                                    <span className="label-text flex items-self-center items-center text-sm text-gray-800">
-                                        <div className="badge badge-primary badge-outline text-xs h-7 w-7 mr-2">
-                                            V
-                                        </div>
-                                        Volume {shape.name}
-                                    </span>
+                                    <Label symbol="V">{`Volume ${shape.name}`}</Label>
                                     <div className="col-span-2">
                                         <div className="flex items-center font-mono text-base">
                                             <input
@@ -231,7 +226,7 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
                             ) : (
                                 <>
                                     <FormControl
-                                        title={`V. ${shape.name}`}
+                                        label={`V. ${shape.name}`}
                                         symbol="v"
                                         isCorrect={isInputCorrect.comparisonVFormula}
                                         name="comparisonVFormula"

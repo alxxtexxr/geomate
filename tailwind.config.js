@@ -60,6 +60,7 @@ module.exports = {
           'secondary': '#C8DFEC',
           'base-100': '#E9EDFE',
           'base-200': '#83B1FE',
+          'error': '#ef4444',
         },
       },
     ],

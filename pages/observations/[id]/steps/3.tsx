@@ -11,7 +11,7 @@ const fullConfig = resolveConfig(tailwindConfig)
 // Components
 import ShapePreview from '../../../../components/ShapePreview';
 import BottomSheet from '../../../../components/BottomSheet';
-import { Message, FormControl, Spinner, Keyboard, Note, InputOp } from '../../../../components/Observation';
+import { Message, FormControl, Label, Spinner, InputOp, Keyboard, Note } from '../../../../components/Observation';
 import Loading from '../../../../components/Loading';
 
 // Utils
@@ -137,7 +137,6 @@ const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 <title>Observasi (3/4) | {process.env.NEXT_PUBLIC_APP_NAME}</title>
             </Head>
 
-            {/* <div className="sticky top-0 z-10 rounded-b-2xl border-shadow-b overflow-hidden"> */}
             <div className="sticky top-0 z-10 bg-black rounded-b-2xl overflow-hidden">
                 {comparisonShapeCode && (
                     <ShapePreview
@@ -156,14 +155,9 @@ const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
                     r={observation.r || 0}
                     t={shapeTs[shape.code]}
                     n={shape.code === 'sphere' ? +form.n : 1}
-                    {...(!isNComparisonVCorrect && { color: fullConfig.theme.colors.red[500] })}
+                    {...(!isNComparisonVCorrect && { color: fullConfig.daisyui.themes[0].mytheme.error })}
                 />
             </div>
-            {/* Message */}
-            {/* <div className="flex bg-white bg-opacity-95 p-4"> */}
-
-            {/* </div> */}
-            {/* </div> */}
 
             <BottomSheet className="w-inherit">
                 {/* Form */}
@@ -177,7 +171,7 @@ const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
                         <div className="grid grid-cols-1 gap-2">
                             {/* comparisonV Input */}
                             <FormControl
-                                title={shape.code === 'cylinder' ? 'Luas Lingkaran' : (comparisonShape ? `Volume ${comparisonShape.name}` : '')}
+                                label={shape.code === 'cylinder' ? 'Luas Lingkaran' : (comparisonShape ? `Volume ${comparisonShape.name}` : '')}
                                 symbol={shape.code === 'cylinder' ? 'L' : 'V2'}
                                 suffix="cm³"
                                 name="comparisonV"
@@ -190,19 +184,8 @@ const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
 
                             {/* n input */}
                             <div className="grid grid-cols-3">
-                                <span className="label-text flex items-self-center items-center text-sm text-gray-800 pr-2">
-                                    <div className="badge badge-primary badge-outline text-xs h-7 w-7 mr-2">
-                                        t
-                                    </div>
-                                    Tinggi
-                                </span>
+                                <Label symbol="t">Tinggi</Label>
                                 <div className="col-span-2">
-                                    {/* <div className="flex items-center font-mono text-base"> */}
-                                    {/* {nOp.split('').map((c, i) => (
-                                            <div className="mx-0.5" key={i}>
-                                                {c}
-                                            </div>
-                                        ))} */}
                                     <Spinner
                                         name="n"
                                         value={form.n}
@@ -211,14 +194,13 @@ const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                         onFocus={handleFocus}
                                     />
                                 </div>
-                                {/* </div> */}
                             </div>
 
                             <InputOp>=</InputOp>
 
                             {/* nComparisonV Input */}
                             <FormControl
-                                title={`Volume ${shape.name}`}
+                                label={`Volume ${shape.name}`}
                                 symbol="V"
                                 suffix="cm³"
                                 name="nComparisonV"
@@ -230,9 +212,10 @@ const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
                             <div className="grid grid-cols-1 gap-4">
                                 <hr />
                                 <Note>Perhitungan awal:</Note>
+
                                 {/* formulaResult Input */}
                                 <FormControl
-                                    title={`Volume ${shape.name}`}
+                                    label={`Volume ${shape.name}`}
                                     symbol="V"
                                     suffix="cm³"
                                     isCorrect={isNComparisonVCorrect}

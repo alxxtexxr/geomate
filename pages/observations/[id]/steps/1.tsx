@@ -150,7 +150,7 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
                             {vMathSymbolCodes.map((mathSymbolCode) => (
                                 <FormControl
                                     key={mathSymbolCode}
-                                    title={getMathSymbol(mathSymbolCode).title}
+                                    label={getMathSymbol(mathSymbolCode).title}
                                     symbol={mathSymbolCode}
                                     suffix="cm"
                                     canMeasure
@@ -173,7 +173,7 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                     Berdasarkan hasil pengukuranmu, diperoleh:
                                 </Note>
                                 <FormControl
-                                    title="Volume"
+                                    label="Volume"
                                     symbol="V"
                                     suffix="cm²"
                                     value={form.v}

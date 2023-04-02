@@ -239,7 +239,7 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                             {/* baseShape Input */}
                             {shape.code === 'cylinder' && (
                                 <FormControl
-                                    title="Bentuk Alas"
+                                    label="Bentuk Alas"
                                     symbol="●"
                                     isCorrect={isInputCorrect.baseShape}
                                     name="baseShape"
@@ -253,7 +253,7 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                             {/* formula Input */}
                             {(isInputCorrect.baseShape || shape.code !== 'cylinder') && (
                                 <FormControl
-                                    title={shape.code === 'cylinder' ? 'Luas Lingkaran' : (comparisonShape ? `Volume ${comparisonShape.name}` : 'Volume')}
+                                    label={shape.code === 'cylinder' ? 'Luas Lingkaran' : (comparisonShape ? `Volume ${comparisonShape.name}` : 'Volume')}
                                     symbol={shape.code === 'cylinder' ? 'L' : 'V2'}
                                     isCorrect={isInputCorrect.formula}
                                     name="formula"
@@ -333,6 +333,7 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                             {comparisonShapeFormulaToFormat && isFormulaFilled(comparisonShapeFormulaToFormat) && (
                                 <>
                                     <InputOp>=</InputOp>
+                                    
                                     <div className="grid grid-cols-3">
                                         <div className="flex items-center">
                                             <Note>

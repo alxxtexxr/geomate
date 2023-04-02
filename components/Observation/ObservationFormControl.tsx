@@ -1,11 +1,12 @@
 import { InputHTMLAttributes } from 'react';
 
 // Component
+import Label from './ObservationLabel';
 import Input from './ObservationInput';
 
-// Types
+// Type
 type Props = {
-    title?: string,
+    label?: string,
     symbol?: string | null,
     suffix?: string | null,
     isCorrect?: boolean | null,
@@ -13,7 +14,7 @@ type Props = {
 };
 
 const ObservationFormControl = ({
-    title,
+    label,
     symbol = null,
     suffix = null,
     isCorrect = null,
@@ -21,14 +22,9 @@ const ObservationFormControl = ({
     ...rest
 }: Props & InputHTMLAttributes<HTMLInputElement>) => (
     <div className="grid grid-cols-3">
-        <span className="label-text flex items-center text-sm text-gray-800 pr-2">
-            {symbol && (
-                <div className="badge badge-primary badge-outline text-xs h-7 w-7 mr-2">
-                    {symbol}
-                </div>
-            )}
-            {title}
-        </span>
+        <Label symbol={symbol}>
+            {label}
+        </Label>
         <div className="col-span-2">
             <Input
                 suffix={suffix}
