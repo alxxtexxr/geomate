@@ -6,7 +6,7 @@ import { Parser } from 'expr-eval';
 // Components
 import ShapePreview from '../../../../components/ShapePreview';
 import BottomSheet from '../../../../components/BottomSheet';
-import { Message, FormControl, Keyboard, InputOp } from '../../../../components/Observation';
+import { Message, FormControl, Input, InputOp, Keyboard } from '../../../../components/Observation';
 import Loading from '../../../../components/Loading';
 import Note from '../../../../components/Observation/ObservationNote';
 
@@ -33,6 +33,7 @@ type FormValues = { [key: string]: string | number | null };
 
 const MESSAGE_MAP: { [key: string]: string } = {
     cylinder: 'Untuk memulai menghitung volume tabung, pertama kita perlu mencari luas alas tabung',
+    cone: 'Untuk menemukan rumus volume kerucut, kita dapat memanfaatkan rumus volume tabung yang sudah kamu dapatkan sebelumnya!',
 };
 
 const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
@@ -233,24 +234,21 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                             {MESSAGE_MAP[shape.code]}
                         </Message>
 
-                        {comparisonShapeFormulaToFormat && isFormulaFilled(comparisonShapeFormulaToFormat) && (
-                            <Note>
-                                <>Gunakan nilai π = <span className="font-mono">{piString}</span></>
-                            </Note>
-                        )}
-
                         {/* Inputs */}
                         <div className="grid grid-cols-1 gap-2">
-                            <FormControl
-                                title="Bentuk Alas"
-                                symbol="●"
-                                isCorrect={isInputCorrect.baseShape}
-                                name="baseShape"
-                                placeholder="?"
-                                value={form.baseShape}
-                                onChange={handleChange}
-                                onFocus={handleFocus}
-                            />
+                            {/* baseShape Input */}
+                            {shape.code === 'cylinder' && (
+                                <FormControl
+                                    title="Bentuk Alas"
+                                    symbol="●"
+                                    isCorrect={isInputCorrect.baseShape}
+                                    name="baseShape"
+                                    placeholder="?"
+                                    value={form.baseShape}
+                                    onChange={handleChange}
+                                    onFocus={handleFocus}
+                                />
+                            )}
 
                             {/* formula Input */}
                             {(isInputCorrect.baseShape || shape.code !== 'cylinder') && (
@@ -335,15 +333,24 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                             {comparisonShapeFormulaToFormat && isFormulaFilled(comparisonShapeFormulaToFormat) && (
                                 <>
                                     <InputOp>=</InputOp>
-                                    <FormControl
-                                        suffix={`cm${shape.code === 'cylinder' ? '²' : '³'}`}
-                                        name="v"
-                                        isCorrect={isInputCorrect.v}
-                                        placeholder="?"
-                                        value={form.v || ''}
-                                        onChange={handleChange}
-                                        onFocus={handleFocus}
-                                    />
+                                    <div className="grid grid-cols-3">
+                                        <div className="flex items-center">
+                                            <Note>
+                                                <>Nilai π = <span className="font-mono">{piString}</span></>
+                                            </Note>
+                                        </div>
+                                        <div className="col-span-2">
+                                            <Input
+                                                suffix={`cm${shape.code === 'cylinder' ? '²' : '³'}`}
+                                                name="v"
+                                                isCorrect={isInputCorrect.v}
+                                                placeholder="?"
+                                                value={form.v || ''}
+                                                onChange={handleChange}
+                                                onFocus={handleFocus}
+                                            />
+                                        </div>
+                                    </div>
                                 </>
                             )}
                         </div>
