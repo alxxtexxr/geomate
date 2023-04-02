@@ -2,6 +2,7 @@ import { useRef, useState, FormEvent, ChangeEvent, FocusEvent, useEffect } from 
 import Head from 'next/head'
 import Router from 'next/router';
 import { Parser } from 'expr-eval';
+import katex from 'katex';
 
 // Components
 import ShapePreview from '../../../../components/ShapePreview';
@@ -333,11 +334,19 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                             {comparisonShapeFormulaToFormat && isFormulaFilled(comparisonShapeFormulaToFormat) && (
                                 <>
                                     <InputOp>=</InputOp>
-                                    
+
                                     <div className="grid grid-cols-3">
                                         <div className="flex items-center">
                                             <Note>
-                                                <>Nilai π = <span className="font-mono">{piString}</span></>
+                                                <>
+                                                    Nilai π =
+                                                    <div
+                                                        className="inline-flex text-lg mx-0.5 font-mono"
+                                                        dangerouslySetInnerHTML={{
+                                                            __html: katex.renderToString(piString.replaceAll('22/7', '\\frac{22}{7}'), { throwOnError: false })
+                                                        }}
+                                                    />
+                                                </>
                                             </Note>
                                         </div>
                                         <div className="col-span-2">
