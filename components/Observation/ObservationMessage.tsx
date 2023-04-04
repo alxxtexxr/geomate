@@ -3,13 +3,13 @@ import Image from 'next/image';
 import Typewriter from 'typewriter-effect';
 
 type Props = {
-    children: string,
+    messages: string[],
     button?: JSX.Element,
 };
 
 const TYPEWRITER_DELAY = 25;
 
-const ObservationMessage = ({ children, button }: Props) => (
+const ObservationMessage = ({ messages, button }: Props) => (
     <div className="grid grid-cols-4 gap-4 w-full">
         <div className="col-span-1 flex justify-center items-center">
             <div className="relative w-full aspect-square drop-shadow-md-blue-800">
@@ -27,14 +27,20 @@ const ObservationMessage = ({ children, button }: Props) => (
                 position="l"
                 className="flex-grow text-sm"
             >
-                <div className="font-semibold mb-2">Geo</div>
+                <div className="font-semibold mb-1">Geo</div>
                 <Typewriter
                     options={{
                         delay: TYPEWRITER_DELAY,
                         cursor: '',
                     }}
                     onInit={(typewriter) => {
-                        typewriter.typeString(children).start();
+                        let _typewriter = typewriter.typeString(messages[0]);
+
+                        messages.slice(1).map((message) => {
+                            _typewriter = _typewriter.pauseFor(1000).deleteAll(TYPEWRITER_DELAY).typeString(message)
+                        })
+
+                        _typewriter.start()
                     }}
                 />
                 {button ? (

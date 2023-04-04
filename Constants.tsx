@@ -20,8 +20,8 @@ export const SHAPE_NAME_MAP: { [key: string]: string } = {
 
 export const SHAPES: Shape[] = [
   {
-    name: 'Tabung',
     code: 'cylinder',
+    name: SHAPE_NAME_MAP['cylinder'],
     description: 'Bangun tiga-dimensi yang mempunyai dua alas sejajar dan keduanya lingkaran yang kongruen.',
     vFormula: 'pi*r^2*t',
 
@@ -56,10 +56,10 @@ export const SHAPES: Shape[] = [
     // nFaces: 3,
   },
   {
-    name: 'Kerucut',
     code: 'cone',
+    name: SHAPE_NAME_MAP['cone'],
     description: 'Bangun tiga-dimensi dengan alas lingkaran dan satu verteks.',
-    vFormula: '1/3*pi*r^2*t',
+    vFormula: '(pi*r^2*t)/3',
 
     // v2.x
     introductionMessages: [
@@ -77,7 +77,7 @@ export const SHAPES: Shape[] = [
       },
       {
         message: 'Langkah selanjutnya, kita akan melakukan observasi dan mencari tahu bagaimana sih volume benda tersebut dihitung',
-        reply: 'OK, Mumai saja!',
+        reply: 'OK, Mulai saja!',
       },
     ],
 
@@ -91,8 +91,8 @@ export const SHAPES: Shape[] = [
     // nFaces: 2,
   },
   {
-    name: 'Bola',
     code: 'sphere',
+    name: SHAPE_NAME_MAP['sphere'],
     description: 'Bangun tiga dimensi dengan semua titik dalam ruang berjarak tetap dari titik tertentu, yang disebut pusat.',
     vFormula: '4/3*pi*r^3',
 

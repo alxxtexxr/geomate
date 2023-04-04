@@ -30,8 +30,19 @@ type Props = {
     shape: Shape,
 };
 
-const MESSAGE_MAP: { [key: string]: string } = {
-    cylinder: 'Selanjutnya, volume tabung dapat diperoleh dengan mengalikan luas alas dengan tinggi tabung',
+const MESSAGES_MAP: { [key: string]: string[] } = {
+    cylinder: [
+        'Selanjutnya, volume tabung dapat diperoleh dengan mengalikan luas alas dengan tinggi tabung',
+    ],
+    cone: [
+        'Dibagi berapakah volume tabung tadi (bawah) agar hasilnya sama dengan volume kerucut di perhitungan awal (atas)?',
+    ],
+};
+
+const INPUT_OP_MAP: { [key: string]: string } = {
+    cylinder: '×',
+    cone: '÷',
+    sphere: '×',
 };
 
 const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
@@ -144,6 +155,7 @@ const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
                         shapeCode={shape.code}
                         r={observation.r || 0}
                         t={observation.t || 0}
+                        {...(!isNComparisonVCorrect && { color: fullConfig.daisyui.themes[0].mytheme.error })}
                     />
                 )}
                 <ShapePreview
@@ -163,9 +175,7 @@ const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 {/* Form */}
                 <form className="w-inherit pt-4 px-4 pb-space-for-keyboard" onSubmit={handleSubmit}>
                     <div className="grid grid-cols-1 gap-4">
-                        <Message>
-                            {MESSAGE_MAP[shape.code]}
-                        </Message>
+                        <Message messages={MESSAGES_MAP[shape.code]} />
 
                         {/* Inputs */}
                         <div className="grid grid-cols-1 gap-2">
@@ -179,12 +189,14 @@ const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                 disabled
                             />
 
-
-                            <InputOp>×</InputOp>
+                            <InputOp>{INPUT_OP_MAP[shape.code]}</InputOp>
 
                             {/* n input */}
                             <div className="grid grid-cols-3">
-                                <Label symbol="t">Tinggi</Label>
+                                {shape.code === 'cylinder' ? (
+                                    <Label symbol="t">Tinggi</Label>
+                                ) : <div></div>}
+
                                 <div className="col-span-2">
                                     <Spinner
                                         name="n"

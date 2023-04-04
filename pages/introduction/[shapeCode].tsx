@@ -137,7 +137,7 @@ const Introduction: ComponentWithAuth<Props> = ({ shape }) => {
                                     position={isMascot ? 'tl' : 'tr'}
                                     className="col-span-8 flex-grow text-gray-600 text-sm shadow-sm shadow-blue-800/10"
                                 >
-                                    <div className="font-semibold mb-2">
+                                    <div className="font-semibold mb-1">
                                         {isMascot ? 'Geo' : session?.user.name}
                                     </div>
                                     <Typewriter

@@ -127,8 +127,8 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
             <div className="sticky top-0 z-10 bg-black rounded-b-2xl overflow-hidden">
                 <ShapePreview
                     shapeCode={shape.code}
-                    r={+form.r || 0}
-                    t={+form.t || 0}
+                    r={+form.r || 1}
+                    t={+form.t || 1}
                     highlight={highlight}
                 />
             </div>
@@ -137,9 +137,7 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 {/* Form */}
                 <form className="w-inherit p-4" onSubmit={handleSubmit}>
                     <div className="grid grid-cols-1 gap-4">
-                        <Message>
-                            Ukurlah objek yang kamu amati dan catat hasil pengukuranmu!
-                        </Message>
+                        <Message messages={['Sebelumnya, ukurlah objek yang kamu amati kemudian catatlah hasil pengukuranmu!']} />
 
                         <Note>
                             <>Klik ikon <MdOutlineSwitchCamera className="inline-flex text-primary text-lg mx-0.5" /> untuk mengukur menggunakan kamera</>
@@ -173,7 +171,7 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                     Berdasarkan hasil pengukuranmu, diperoleh:
                                 </Note>
                                 <FormControl
-                                    label="Volume"
+                                    label={`Volume ${shape.name}`}
                                     symbol="V"
                                     suffix="cm²"
                                     value={form.v}
@@ -182,17 +180,19 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
                             </div>
                         </div>
                         {isFormFilled() && (
-                            <Message button={isSubmitting ? (<Loading.Button />) : (
-                                <button
-                                    type="submit"
-                                    className="btn btn-primary btn-block"
-                                    disabled={!isFormFilled()}
-                                >
-                                    Selanjutnya
-                                </button>
-                            )}>
-                                Dari volume yang sudah ada, yuk temukan bagaimana cara menghitung volume tersebut.
-                            </Message>
+                            <Message
+                                messages={[
+                                    `Dari volume ${shape.name.toLowerCase()} yang diperoleh, yuk kita temukan bagaimana cara menghitung volume tersebut!`,
+                                ]}
+                                button={isSubmitting ? (<Loading.Button />) : (
+                                    <button
+                                        type="submit"
+                                        className="btn btn-primary btn-block"
+                                        disabled={!isFormFilled()}
+                                    >
+                                        Selanjutnya
+                                    </button>
+                                )} />
                         )}
                     </div>
                 </form>

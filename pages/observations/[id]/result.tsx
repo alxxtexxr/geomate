@@ -68,14 +68,14 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
                     >
                         <div className="flex flex-col h-full">
                             <div className="flex flex-grow flex-col items-center text-center px-4">
-                                <div className="relative w-36 h-36 mt-10 mb-10">
+                                <div className="relative w-40 h-40 mt-10 mb-10">
                                     <img src="https://cdn-icons-png.flaticon.com/512/9436/9436122.png" />
                                 </div>
                                 <h2 className="text-gray-800 text-lg font-semibold mb-2">
                                     Observasi Selesai!
                                 </h2>
                                 <p className="text-gray-600 text-sm mb-6">
-                                    Kamu telah berhasil mempelajari volume {shape.name.toLowerCase()}. Selanjutnya, kamu dapat menguji pengetahuannmu melalui evaluasi.
+                                    Kamu telah berhasil mempelajari volume {shape.name.toLowerCase()}. Selanjutnya, kamu dapat menguji pengetahuannmu melalui latihan.
                                 </p>
                                 <Formula type="primary" className="mb-8">
                                     Volume {shape.name} = {formatFormula(shape.vFormula)}
@@ -90,7 +90,7 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                     className="btn btn-primary btn-block"
                                     onClick={startEvaluation}
                                 >
-                                    Evaluasi
+                                    Latihan
                                 </button>
                             )}
                         </div>
@@ -98,7 +98,7 @@ const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 </section>
 
                 <div className="overflow-hidden">
-                    <div className="relative h-48 -mb-6 filter drop-shadow-md">
+                    <div className="relative h-48 -mb-6 filter drop-shadow-md-blue-800">
                         <Image
                             src="/images/geo.svg"
                             alt="Geo"

@@ -5,7 +5,7 @@ import Router from 'next/router';
 // Components
 import ShapePreview from '../../../../components/ShapePreview';
 import BottomSheet from '../../../../components/BottomSheet';
-import { Message, FormControl, Label, InputOp, Keyboard } from '../../../../components/Observation';
+import { Message, FormControl, Input, Label, InputOp, Keyboard } from '../../../../components/Observation';
 import Loading from '../../../../components/Loading';
 
 // Constants
@@ -27,6 +27,12 @@ type Props = {
     shape: Shape,
 };
 
+const INPUT_OP_MAP: { [key: string]: string } = {
+    cylinder: '×',
+    cone: '÷',
+    sphere: '×',
+};
+
 const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
     // Define comparisonShape
     const comparisonShapeCodes: { [key: string]: ShapeCode | null } = {
@@ -46,6 +52,8 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
         comparisonVFormula: KEYBOARD_LAYOUTS.formula,
         n: KEYBOARD_LAYOUTS.numeric,
         vFormula: KEYBOARD_LAYOUTS.formula,
+        vFormulaA: KEYBOARD_LAYOUTS.formula,
+        vFormulaB: KEYBOARD_LAYOUTS.formula,
     };
 
     // Define correct values
@@ -58,6 +66,8 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
         comparisonVFormula: comparisonShapeFormula && formatFormula(comparisonShapeFormula),
         n: correctNs[shape.code],
         vFormula: shape.vFormula && formatFormula(shape.vFormula),
+        vFormulaA: comparisonShapeFormula && formatFormula(comparisonShapeFormula),
+        vFormulaB: correctNs[shape.code],
     };
 
     // States
@@ -65,12 +75,16 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
         comparisonVFormula: '',
         n: '',
         vFormula: '',
+        vFormulaA: '',
+        vFormulaB: '',
     });
     const [focusedInputName, setFocusedInputName] = useState<string | null>(null);
     const [isInputCorrect, setIsInputCorrect] = useState({
         comparisonVFormula: false,
         n: false,
         vFormula: false,
+        vFormulaA: false,
+        vFormulaB: false,
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -135,9 +149,14 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
         }
     };
 
-    const isAllInputCorrect = () =>
-        // Don't check 'n' if the shape is cylinder
-        Object.entries(isInputCorrect).every(([k, v]) => shape.code === 'cylinder' && k === 'n' || v);
+    const isAllInputCorrect = () =>         
+        Object.entries(isInputCorrect).every(([name, value]) => 
+            // Don't check 'n' if the shape is cylinder
+            shape.code === 'cylinder' && name === 'n' || 
+            // Don't check 'vFormula' if the shape is cone
+            shape.code === 'cone' && name === 'vFormula' || 
+            value
+        );
 
     // Effects
     useEffect(() => {
@@ -151,22 +170,34 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
         }
 
         // Check if n is correct
-        if (form.n) {
-            // console.log('n', +form.n === correctValues.n)
-            setIsInputCorrect({
-                ...isInputCorrect,
-                n: +form.n === correctValues.n,
-            });
-        }
+        setIsInputCorrect((prevIsInputCorrect) => ({
+            ...prevIsInputCorrect,
+            n: +form.n === correctValues.n,
+        }));
 
         // Check if vFormula is correct
         if (form.vFormula && correctValues.vFormula) {
-            console.log('vFormula', form.vFormula, correctValues.vFormula, checkFormula('' + form.vFormula, correctValues.vFormula))
+            // console.log('vFormula', form.vFormula, correctValues.vFormula, checkFormula('' + form.vFormula, correctValues.vFormula))
             setIsInputCorrect({
                 ...isInputCorrect,
                 vFormula: checkFormula('' + form.vFormula, correctValues.vFormula),
             });
         }
+
+        // Check if vFormulaA is correct
+        if (form.vFormulaA && correctValues.vFormulaA) {
+            console.log('vFormulaA', form.vFormulaA, correctValues.vFormulaA, checkFormula('' + form.vFormulaA, correctValues.vFormulaA))
+            setIsInputCorrect({
+                ...isInputCorrect,
+                vFormulaA: checkFormula('' + form.vFormulaA, correctValues.vFormulaA),
+            });
+        }
+
+        // Check if vFormulaB is correct
+        setIsInputCorrect((prevIsInputCorrect) => ({
+            ...prevIsInputCorrect,
+            vFormulaB: +form.vFormulaB === correctValues.vFormulaB,
+        }));
     }, [form]);
 
     return (
@@ -175,7 +206,6 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 <title>Observasi (4/4) | {process.env.NEXT_PUBLIC_APP_NAME}</title>
             </Head>
 
-            {/* <div className="sticky top-0 z-10 rounded-b-2xl border-shadow-b overflow-hidden"> */}
             <div className="sticky top-0 z-10 bg-black rounded-b-2xl overflow-hidden">
                 <ShapePreview
                     height={272}
@@ -185,19 +215,11 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 />
             </div>
 
-            {/* Message */}
-            {/* <div className="flex bg-white bg-opacity-95 p-4"> */}
-
-            {/* </div> */}
-            {/* </div> */}
-
             <BottomSheet className="w-inherit">
                 {/* Form */}
                 <form className="w-inherit pt-4 px-4 pb-space-for-keyboard" onSubmit={handleSubmit}>
                     <div className="grid grid-cols-1 gap-4">
-                        <Message>
-                            {`Dari hasil observasimu, dapat disimpulkan bahwa rumus volume ${shape.name.toLowerCase()} adalah:`}
-                        </Message>
+                        <Message messages={[`Dari observasi yang telah dilakukan, dapat disimpulkan bahwa rumus volume ${shape.name.toLowerCase()} adalah:`]} />
 
                         {/* Inputs */}
                         <div className="grid grid-cols-1 gap-2">
@@ -226,8 +248,8 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
                             ) : (
                                 <>
                                     <FormControl
-                                        label={`V. ${shape.name}`}
-                                        symbol="v"
+                                        label={`Rumus V. ${shape.name}`}
+                                        symbol="V"
                                         isCorrect={isInputCorrect.comparisonVFormula}
                                         name="comparisonVFormula"
                                         placeholder={comparisonShape ? `Rumus V. ${comparisonShape.name}` : ''}
@@ -253,24 +275,19 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                         </>
                                     )}
 
+                                    <InputOp>{INPUT_OP_MAP[shape.code]}</InputOp>
+
                                     {/* n input */}
                                     <div className="grid grid-cols-3">
                                         <div className="col-start-2 col-span-2">
-                                            <div className="flex items-center font-mono text-base">
-                                                {nOps[shape.code].split('').map((c, i) => (
-                                                    <div className="mx-0.5" key={i}>
-                                                        {c}
-                                                    </div>
-                                                ))}
-                                                <input
-                                                    className={`input input-bordered flex-grow w-16 mx-0.5 ${isInputCorrect.n ? 'input-primary' : 'input-error'}`}
-                                                    name="n"
-                                                    placeholder="?"
-                                                    value={form.n}
-                                                    onChange={handleChange}
-                                                    onFocus={handleFocus}
-                                                />
-                                            </div>
+                                            <Input
+                                                name="n"
+                                                isCorrect={isInputCorrect.n}
+                                                placeholder="?"
+                                                value={form.n}
+                                                onChange={handleChange}
+                                                onFocus={handleFocus}
+                                            />
                                         </div>
                                     </div>
                                 </>
@@ -279,14 +296,43 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
                             <InputOp>=</InputOp>
 
                             {/* vFormula Input */}
-                            <FormControl
-                                name="vFormula"
-                                isCorrect={isInputCorrect.vFormula}
-                                placeholder={`Rumus V. ${shape.name}`}
-                                value={form.vFormula}
-                                onChange={handleChange}
-                                onFocus={handleFocus}
-                            />
+                            {shape.code === 'cylinder' && (
+                                <FormControl
+                                    name="vFormula"
+                                    isCorrect={isInputCorrect.vFormula}
+                                    placeholder={`Rumus V. ${shape.name}`}
+                                    value={form.vFormula}
+                                    onChange={handleChange}
+                                    onFocus={handleFocus}
+                                />
+                            )}
+                            {shape.code === 'cone' && (
+                                <div className="grid grid-cols-3">
+                                    <div className="grid grid-cols-12 gap-2 col-start-2 col-span-2 border border-dashed border-gray-400 p-2 rounded-xl">
+                                        <div className="col-start-2 col-span-10">
+                                            <Input
+                                                name="vFormulaA"
+                                                isCorrect={isInputCorrect.vFormulaA}
+                                                placeholder={`Rumus V. ${comparisonShape?.name}`}
+                                                value={form.vFormulaA}
+                                                onChange={handleChange}
+                                                onFocus={handleFocus}
+                                            />
+                                        </div>
+                                        <hr className="border-gray-800 col-span-12" />
+                                        <div className="col-start-2 col-span-10">
+                                            <Input
+                                                name="vFormulaB"
+                                                isCorrect={isInputCorrect.vFormulaB}
+                                                placeholder={`?`}
+                                                value={form.vFormulaB}
+                                                onChange={handleChange}
+                                                onFocus={handleFocus}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
 

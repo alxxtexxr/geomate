@@ -32,9 +32,14 @@ type Props = {
 
 type FormValues = { [key: string]: string | number | null };
 
-const MESSAGE_MAP: { [key: string]: string } = {
-    cylinder: 'Untuk memulai menghitung volume tabung, pertama kita perlu mencari luas alas tabung',
-    cone: 'Untuk menemukan rumus volume kerucut, kita dapat memanfaatkan rumus volume tabung yang sudah kamu dapatkan sebelumnya!',
+const MESSAGES_MAP: { [key: string]: string[] } = {
+    cylinder: [
+        'Untuk menghitung volume tabung, pertama kita perlu mencari luas alas tabung terlebih dahulu',
+    ],
+    cone: [
+        'Untuk menghitung volume kerucut, kita bisa memanfaatkan rumus volume tabung yang telah kamu pelajari.',
+        'Dengan rumus yang telah kamu pelajari, yuk kita hitung terlebih dahulu volume tabung dengan radius dan tinggi yang sama dengan kerucut sebelumnya',
+    ],
 };
 
 const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
@@ -197,7 +202,6 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 <title>Observasi (2/4) | {process.env.NEXT_PUBLIC_APP_NAME}</title>
             </Head>
 
-            {/* <div className="sticky top-0 z-10 rounded-b-2xl border-shadow-b overflow-hidden"> */}
             <div className="sticky top-0 z-10 bg-black rounded-b-2xl overflow-hidden">
                 {comparisonShapeCode && (
                     <ShapePreview
@@ -208,7 +212,6 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                         highlight={highlight}
                     />
                 )}
-
                 <ShapePreview
                     // Kek, this one is horrifying
                     // It will multiply 136 by 2 if 'comparisonShapeCode' is null
@@ -221,19 +224,11 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 />
             </div>
 
-            {/* Message */}
-            {/* <div className="flex bg-white bg-opacity-95 p-4"> */}
-
-            {/* </div> */}
-            {/* </div> */}
-
             <BottomSheet className="w-inherit">
                 {/* Form */}
                 <form className="w-inherit pt-4 px-4 pb-space-for-keyboard" onSubmit={handleSubmit}>
                     <div className="grid grid-cols-1 gap-4">
-                        <Message>
-                            {MESSAGE_MAP[shape.code]}
-                        </Message>
+                        <Message messages={MESSAGES_MAP[shape.code]} />
 
                         {/* Inputs */}
                         <div className="grid grid-cols-1 gap-2">
@@ -340,12 +335,14 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                             <Note>
                                                 <>
                                                     Nilai π =
-                                                    <div
-                                                        className="inline-flex text-lg mx-0.5 font-mono"
-                                                        dangerouslySetInnerHTML={{
-                                                            __html: katex.renderToString(piString.replaceAll('22/7', '\\frac{22}{7}'), { throwOnError: false })
-                                                        }}
-                                                    />
+                                                    {piString === '22/7' ? (
+                                                        <div
+                                                            className="inline-flex text-lg mx-0.5 font-mono"
+                                                            dangerouslySetInnerHTML={{
+                                                                __html: katex.renderToString(piString.replaceAll('22/7', '\\frac{22}{7}'), { throwOnError: false })
+                                                            }}
+                                                        />
+                                                    ) : ' ' + piString}
                                                 </>
                                             </Note>
                                         </div>
