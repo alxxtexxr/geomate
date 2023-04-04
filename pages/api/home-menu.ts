@@ -22,20 +22,21 @@ const handle = async (req: NextApiRequest, res: NextApiResponse) => {
                     isLocked: !(shapeCode === 'cylinder'),
                 }));
 
-                const completedEvaluations = await prisma.evaluation.findMany({
+                const completedObservations = await prisma.observation.findMany({
                     where: {
                         user: { email: session.user?.email },
                         isCompleted: true,
+                        isPostTestCorrect: true,
                     },
                     select: { shapeCode: true },
                 });
 
-                // If evaluation in a specific shape is completed, unlock the next shape
-                completedEvaluations.map((evaluation) => {
+                // If observation in a specific shape is completed, unlock the next shape
+                completedObservations.map((observation) => {
                     // Find the menu item status of the next shape 
                     const menuItemToUpdate = menu.find((itemStatus) =>
                         NEXT_SHAPE_CODE_MAP[itemStatus.code] &&
-                        itemStatus.code === NEXT_SHAPE_CODE_MAP[evaluation.shapeCode]
+                        itemStatus.code === NEXT_SHAPE_CODE_MAP[observation.shapeCode]
                     );
 
                     // Unlock the found menu item status
