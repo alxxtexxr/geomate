@@ -35,7 +35,7 @@ const handle = async (req: NextApiRequest, res: NextApiResponse) => {
                 completedObservations.map((observation) => {
                     // Find the menu item status of the next shape 
                     const menuItemToUpdate = menu.find((itemStatus) =>
-                        NEXT_SHAPE_CODE_MAP[itemStatus.code] &&
+                        NEXT_SHAPE_CODE_MAP[observation.shapeCode] &&
                         itemStatus.code === NEXT_SHAPE_CODE_MAP[observation.shapeCode]
                     );
 

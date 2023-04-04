@@ -57,7 +57,7 @@ const main = async () => {
                 id: '2',
                 shapeCode: 'cone',
                 question: 'Sebuah tumpeng dengan diameter 20 cm dan tinggi 18 cm. Berapakah volume nasi untuk membuat tumpeng tersebut?',
-                correctAnswer: '103',
+                correctAnswer: '203',
                 type: 'post_test_mcq',
             },
             {

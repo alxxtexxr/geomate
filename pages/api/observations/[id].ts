@@ -54,9 +54,12 @@ const handle = async (req: NextApiRequest, res: NextApiResponse) => {
                     });
 
                     // Throw error if observation doesn't exist
-                    if (!observation) { throw new Error('No observation found.'); }
+                    if (!observation) { 
+                        throw new Error('No observation found.'); 
+                    }
 
                     // Check if post-test correct
+                    console.log(postTestAnswer, observation.postTestQuestion.correctAnswer)
                     isPostTestCorrect = postTestAnswer === observation.postTestQuestion.correctAnswer;
                 }
 
