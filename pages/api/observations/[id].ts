@@ -14,6 +14,15 @@ const handle = async (req: NextApiRequest, res: NextApiResponse) => {
             case 'GET':
                 const observation = await prisma.observation.findUnique({
                     where: { id: id as string },
+                    include: {
+                        postTestQuestion: {
+                            select: {
+                                question: true,
+                                image: true,
+                                answerChoices: true,
+                            },
+                        },
+                    },
                 });
 
                 res.json(observation);

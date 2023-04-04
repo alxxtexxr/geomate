@@ -149,12 +149,12 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
         }
     };
 
-    const isAllInputCorrect = () =>         
-        Object.entries(isInputCorrect).every(([name, value]) => 
-            // Don't check 'n' if the shape is cylinder
-            shape.code === 'cylinder' && name === 'n' || 
-            // Don't check 'vFormula' if the shape is cone
-            shape.code === 'cone' && name === 'vFormula' || 
+    const isAllInputCorrect = () => 
+        Object.entries(isInputCorrect).every(([input, value]) => 
+            // Don't check 'n', 'vFormulaA', and 'vFormulaB' if the shape is cylinder
+            shape.code === 'cylinder' && (input === 'n' || input === 'vFormulaA' || input === 'vFormulaB') || 
+            // Don't check 'vFormula' if the shape is cylinder
+            shape.code === 'cone' && input === 'vFormula' || 
             value
         );
 
