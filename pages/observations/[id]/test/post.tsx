@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import { useState } from 'react';
+import Router from 'next/router';
 import { Prisma } from '@prisma/client'
 
 // Components
@@ -27,57 +27,29 @@ type Props = {
     observation: Observation,
 };
 
+// The page should check if 'isPostTestCorrect' column is filled or not
+// If it's filled, then it should be redirected to post-test result page
 const PostTest: ComponentWithAuth<Props> = ({ observation }) => {
-    // Router
-    const router = useRouter();
-
-    // const no = router.query.no ? +router.query.no : 1;
-    // const activeEvaluationQuestion = evaluation.evaluationQuestions[no - 1];
-    // const activeQuestion = activeEvaluationQuestion.question;
-
     // States
     const [answer, setAnswer] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    // Effects
-    // useEffect(() => setAnswer(activeEvaluationQuestion.answer), [activeEvaluationQuestion.answer]);
-
-    // Functions
+    // Function
     const answerQuestion = async () => {
         setIsLoading(true)
 
-        // try {
-        //     await fetch(`/api/evaluation-questions/${evaluation.id}/${activeQuestion.id}`, {
-        //         method: 'PUT',
-        //         headers: { 'Content-Type': 'application/json' },
-        //         body: JSON.stringify({ answer: answer }),
-        //     });
+        try {
+            await fetch(`/api/observations/${observation.id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ postTestAnswer: answer }),
+            });
 
-        //     if (no < evaluation.evaluationQuestions.length) {
-        //         setIsLoading(false);
-        //         setAnswer(null);
-
-        //         await router.push({
-        //             pathname: '/evaluations/[id]/no/[no]',
-        //             query: { id: evaluation.id, no: no + 1 },
-        //         });
-        //     } else {
-        //         // If last question
-        //         await fetch(`/api/evaluations/${evaluation.id}`, {
-        //             method: 'PUT',
-        //             headers: { 'Content-Type': 'application/json' },
-        //             body: JSON.stringify({ isCompleted: true }),
-        //         });
-
-        //         await router.push({
-        //             pathname: '/evaluations/[id]/result',
-        //             query: { id: evaluation.id },
-        //         });
-        //     }
-        // } catch (err) {
-        //     setIsLoading(false);
-        //     console.error(err);
-        // }
+            await Router.push(`/observations/${observation.id}/test/post/result`);
+        } catch (err) {
+            setIsLoading(false);
+            console.error(err);
+        }
     };
 
     return (

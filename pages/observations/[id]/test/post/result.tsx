@@ -4,17 +4,17 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 // Components
-import Navbar from '../../../components/Navbar';
-import MessageBalloon from '../../../components/MessageBalloon';
-import Formula from '../../../components/Formula';
+import Navbar from '../../../../../components/Navbar';
+import MessageBalloon from '../../../../../components/MessageBalloon';
+import Formula from '../../../../../components/Formula';
 
 // Utils
-import { getShape, formatFormula } from '../../../Utils';
+import { getShape, formatFormula } from '../../../../../Utils';
 
 // Types
 import type { GetServerSideProps } from 'next';
-import type ComponentWithAuth from '../../../types/ComponentWithAuth';
-import type Shape from '../../../types/Shape';
+import type ComponentWithAuth from '../../../../../types/ComponentWithAuth';
+import type Shape from '../../../../../types/Shape';
 import type { Observation } from '@prisma/client';
 
 type Props = {
@@ -22,13 +22,13 @@ type Props = {
     shape: Shape,
 };
 
-const ObservationResult: ComponentWithAuth<Props> = ({ observation, shape }) => (
+const PostTestResult: ComponentWithAuth<Props> = ({ observation, shape }) => (
     <main className="flex flex-col bg-base-100 min-h-screen">
         <Head>
-            <title>Hasil Observasi | {process.env.NEXT_PUBLIC_APP_NAME}</title>
+            <title>Hasil Latihan | {process.env.NEXT_PUBLIC_APP_NAME}</title>
         </Head>
 
-        <Navbar.Top title="Hasil Observasi" />
+        <Navbar.Top title="Hasil Latihan" />
 
         <div className="flex flex-grow flex-col px-4">
             <section className="flex flex-grow pb-8">
@@ -40,25 +40,34 @@ const ObservationResult: ComponentWithAuth<Props> = ({ observation, shape }) => 
                 >
                     <div className="flex flex-col h-full">
                         <div className="flex flex-grow flex-col justify-center items-center text-center px-4">
-                            <div className="relative w-48 h-48 mb-8">
-                                <img src="https://cdn-icons-png.flaticon.com/512/3083/3083677.png" />
+                            <div className={'relative w-48 h-48 mb-8' + (!observation.isPostTestCorrect ? ' grayscale' : '')}>
+                                <img src="https://cdn-icons-png.flaticon.com/512/3083/3083645.png" />
                             </div>
                             <h2 className="text-gray-800 text-lg font-semibold mb-2">
-                                Observasimu Selesai!
+                                {observation.isPostTestCorrect
+                                    ? 'Latihanmu Selesai!'
+                                    : 'Yuk, Kita Coba Lagi!'}
                             </h2>
                             <p className="text-gray-600 text-sm mb-6">
-                                Kamu telah berhasil mempelajari volume {shape.name.toLowerCase()}. Selanjutnya, kamu dapat menguji pengetahuannmu melalui latihan.
+                                {observation.isPostTestCorrect
+                                    ? 'Kamu berhasil menjawab soal latihan dengan benar. Ini menunjukkan bahwa kamu sudah paham cara menggunakan rumus yang telah kamu pelajari.'
+                                    : 'Kamu belum berhasil menjawab soal latihan dengan benar, tapi jangan khawatir kita bisa mencobanya lagi.'}
                             </p>
-                            <Formula type="primary" className="mb-8">
-                                Volume {shape.name} = {formatFormula(shape.vFormula)}
-                            </Formula>
                         </div>
 
-                        <Link href={`/observations/${observation.id}/test/post`}>
-                            <button type="button" className="btn btn-primary btn-block">
-                                Latihan
-                            </button>
-                        </Link>
+                        {observation.isPostTestCorrect ? (
+                            <Link href="/">
+                                <button type="button" className="btn btn-primary btn-block">
+                                    Kembali Ke Beranda
+                                </button>
+                            </Link>
+                        ) : (
+                            <Link href={`/observations/${observation.id}/test/post`}>
+                                <button type="button" className="btn btn-error btn-block text-white">
+                                    Coba Lagi
+                                </button>
+                            </Link>
+                        )}
                     </div>
                 </MessageBalloon>
             </section>
@@ -77,7 +86,7 @@ const ObservationResult: ComponentWithAuth<Props> = ({ observation, shape }) => 
     </main>
 );
 
-ObservationResult.auth = true;
+PostTestResult.auth = true;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const headers = context.req.headers;
@@ -92,4 +101,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return { props: { observation, shape } };
 };
 
-export default ObservationResult;
+export default PostTestResult;
