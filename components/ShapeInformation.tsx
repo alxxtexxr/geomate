@@ -3,13 +3,14 @@ import Link from 'next/link';
 // import { Transition } from '@headlessui/react';
 import Sheet from 'react-modal-sheet';
 import { MdRemoveRedEye } from 'react-icons/md';
+import katex from 'katex';
 
 // Component
 import ShapePreview from './ShapePreview';
 import Formula from './Formula';
 
 // Util
-import { getShape, formatFormula, extractMathSymbolCodes, getMathSymbol } from '../Utils';
+import { getShape, formatFormula, extractMathSymbolCodes, getMathSymbol, formatFormulaToKatex } from '../Utils';
 
 // Types
 import type { ShapeCode } from '@prisma/client';
@@ -64,9 +65,14 @@ const ShapeInformation = ({ shapeCode, onHide }: Props) => {
                                 {/* Formula */}
                                 <div className="relative border border-gray-300 rounded-2xl shadow-sm shadow-blue-800/10">
                                     <div className="absolute flex justify-center transform -translate-y-1/2 w-full">
-                                        <Formula>
-                                            Volume {shape.name} = {formatFormula(shape.vFormula)}
-                                        </Formula>
+                                        {/* {shape.vFormulaUndiscovered} */}
+                                        <Formula formula={shape.vFormulaUndiscovered}/>
+                                        {/* <div
+                                            className="inline-flex text-lg mx-0.5 py-4 px-8 border rounded-full bg-white text-gray-800 border-gray-300"
+                                            dangerouslySetInnerHTML={{
+                                                __html: katex.renderToString('V_{tabung} = ' + formatFormulaToKatex(shape.vFormula))
+                                            }}
+                                        /> */}
                                     </div>
 
                                     <div className="pt-8 px-4">

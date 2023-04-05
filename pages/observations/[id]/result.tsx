@@ -49,9 +49,7 @@ const ObservationResult: ComponentWithAuth<Props> = ({ observation, shape }) => 
                             <p className="text-gray-600 text-sm mb-6">
                                 Kamu telah berhasil mempelajari volume {shape.name.toLowerCase()}. Selanjutnya, kamu dapat menguji pengetahuannmu melalui latihan.
                             </p>
-                            <Formula type="primary" className="mb-8">
-                                Volume {shape.name} = {formatFormula(shape.vFormula)}
-                            </Formula>
+                            <Formula formula={shape.vFormulaDiscovered} type="primary" className="mb-8" />
                         </div>
 
                         <Link href={`/observations/${observation.id}/test/post`}>

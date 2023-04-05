@@ -24,6 +24,8 @@ export const SHAPES: Shape[] = [
     name: SHAPE_NAME_MAP['cylinder'],
     description: 'Bangun tiga-dimensi yang mempunyai dua alas sejajar dan keduanya lingkaran yang kongruen.',
     vFormula: 'pi*r^2*t',
+    vFormulaUndiscovered: 'V_{tabung} = Luas\\ Alas \\times t',
+    vFormulaDiscovered: 'V_{tabung} = \\pi \\times r^2 \\times t',
 
     // v2.x
     introductionMessages: [
@@ -60,6 +62,8 @@ export const SHAPES: Shape[] = [
     name: SHAPE_NAME_MAP['cone'],
     description: 'Bangun tiga-dimensi dengan alas lingkaran dan satu verteks.',
     vFormula: '(pi*r^2*t)/3',
+    vFormulaUndiscovered: 'V_{kerucut} = \\dfrac{V_{tabung}}{3}',
+    vFormulaDiscovered: 'V_{kerucut} = \\dfrac{\\pi \\times r^2 \\times t}{3}',
 
     // v2.x
     introductionMessages: [
@@ -95,6 +99,8 @@ export const SHAPES: Shape[] = [
     name: SHAPE_NAME_MAP['sphere'],
     description: 'Bangun tiga dimensi dengan semua titik dalam ruang berjarak tetap dari titik tertentu, yang disebut pusat.',
     vFormula: '4/3*pi*r^3',
+    vFormulaUndiscovered: 'V_{bola} = 4 \\times V_{kerucut}',
+    vFormulaDiscovered: 'V_{bola} = \\dfrac{4 \\times \\pi \\times r^2 \\times t}{3}',
 
     // v2.x
     introductionMessages: [

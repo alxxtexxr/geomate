@@ -5,6 +5,8 @@ type Shape = {
     name: string,
     description: string,
     vFormula: string,
+    vFormulaUndiscovered: string,
+    vFormulaDiscovered: string,
 
     // v2.x 
     introductionMessages: { 
