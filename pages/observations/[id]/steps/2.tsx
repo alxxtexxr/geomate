@@ -15,7 +15,7 @@ import Note from '../../../../components/Observation/ObservationNote';
 import { KEYBOARD_LAYOUTS, SHAPE_PREVIEW_DEFAULT_HEIGHT } from '../../../../Constants';
 
 // Utils
-import { getShape, formatFormula, checkFormula, roundToNearest, getPiString, extractFormulaFractionParts } from '../../../../Utils';
+import { getShape, formatFormula, checkFormula, floorToNearest, getPiString, extractFormulaFractionParts } from '../../../../Utils';
 
 // Types
 import type { GetServerSideProps } from 'next';
@@ -65,7 +65,6 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
     const comparisonShapeFormulaToFormat = shape.code === 'sphere'
         ? 'pi*r^3'
         : comparisonShapeFormula
-
     const comparisonShapeFormulaFractionParts = shape.code === 'sphere' && comparisonShapeFormula
         ? extractFormulaFractionParts(comparisonShapeFormula)
         : undefined;
@@ -81,11 +80,11 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
         r2: observation.r,
         r3: observation.r,
         t: observation.t,
-        v: comparisonShapeFormula && roundToNearest(+Parser.evaluate(comparisonShapeFormula, {
+        v: comparisonShapeFormula && floorToNearest(+Parser.evaluate(comparisonShapeFormula, {
             pi: pi,
             r: observation.r || 0,
             t: shape.code === 'sphere' ? observation.r || 0 : observation.t || 0,
-        }), 0.005).toFixed(2),
+        }), 0.01).toFixed(2),
         sphereT: 'r',
     };
 
@@ -126,7 +125,6 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [highlight, setHighlight] = useState<string>();
-    const [rI, setRi] = useState(1);
 
     // Functions
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -456,24 +454,6 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                     )}
                                 </>
                             )}
-
-
-                            {/* {isInputCorrect.formula && shape.code === 'sphere' && (
-                                <>
-                                    <FormControl
-                                        name="correctedFormula"
-                                        placeholder={comparisonShape ? `Rumus V. ${comparisonShape.name}` : ''}
-                                        value="1/3×π×r²×(r)"
-                                        disabled
-                                    />
-                                    <FormControl
-                                        name="correctedFormula"
-                                        placeholder={comparisonShape ? `Rumus V. ${comparisonShape.name}` : ''}
-                                        value="1/3×π×r³"
-                                        disabled
-                                    />
-                                </>
-                            )} */}
 
                             {isInputCorrect.formula && (
                                 <>

@@ -15,7 +15,7 @@ import { Message, FormControl, Label, Spinner, InputOp, Keyboard, Note } from '.
 import Loading from '../../../../components/Loading';
 
 // Utils
-import { getShape, roundToNearest } from '../../../../Utils';
+import { getShape, roundToNearest, floorToNearest } from '../../../../Utils';
 
 // Types
 import type { GetServerSideProps } from 'next';
@@ -36,6 +36,9 @@ const MESSAGES_MAP: { [key: string]: string[] } = {
     ],
     cone: [
         'Dibagi berapakah volume tabung tadi (bawah) agar hasilnya sama dengan volume kerucut di perhitungan awal (atas)?',
+    ],
+    sphere: [
+        'Dikali berapakah volume kerucut tadi (bawah) agar hasilnya sama dengan volume bola di perhitungan awal (atas)?',
     ],
 };
 
@@ -89,8 +92,8 @@ const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
     const nOp = shape.code === 'cone' ? '× 1/' : '×';
     const nComparisonV = observation.comparisonV
         ? (shape.code === 'cone'
-            ? roundToNearest(observation.comparisonV / +form.n, 0.005).toFixed(1)
-            : roundToNearest(observation.comparisonV * +form.n, 0.005).toFixed(1))
+            ? floorToNearest(observation.comparisonV / +form.n, 0.01).toFixed(1)
+            : (+form.n === 1 ? observation.comparisonV : floorToNearest(observation.comparisonV * +form.n, 0.01).toFixed(1)))
         : '';
     const isNComparisonVCorrect = +nComparisonV === observation.v;
 

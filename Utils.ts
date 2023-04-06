@@ -222,6 +222,10 @@ export const roundToNearest = (num: number, increment: number) => {
     return Math.round(num / increment) * increment;
 };
 
+export const floorToNearest = (num: number, increment: number) => {
+    return Math.floor(num / increment) * increment
+};
+
 export const getPiString = (r: number | null) => r && !(r % 7) ? '22/7' : '3.14';
 export const getPi = (r: number | null) => Parser.evaluate(getPiString(r))
 

@@ -14,7 +14,7 @@ import Loading from '../../../../components/Loading';
 import { KEYBOARD_LAYOUTS } from '../../../../Constants';
 
 // Utils
-import { getShape, getMathSymbol, extractMathSymbolCodes, roundToNearest, getPi } from '../../../../Utils';
+import { getShape, getMathSymbol, extractMathSymbolCodes, floorToNearest, getPi } from '../../../../Utils';
 
 // Types
 import type { GetServerSideProps } from 'next';
@@ -105,10 +105,10 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
     useEffect(() => {
         // Calculate the volume
         const previousV = form.v;
-        const newV = roundToNearest(Parser.evaluate(shape.vFormula, {
+        const newV = floorToNearest(Parser.evaluate(shape.vFormula, {
             ...form,
             pi: getPi(+form.r),
-        }), 0.005).toFixed(1);
+        }), 0.1).toFixed(1);
 
         if (newV !== previousV) {
             setForm({
