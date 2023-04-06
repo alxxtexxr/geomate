@@ -25,6 +25,7 @@ export const SHAPES: Shape[] = [
     description: 'Bangun tiga-dimensi yang mempunyai dua alas sejajar dan keduanya lingkaran yang kongruen.',
     vFormula: 'pi*r^2*t',
     vFormulaUndiscovered: 'V_{tabung} = Luas\\ Alas \\times t',
+    vFormulaUndiscoveredMathSymbols: ['baseArea', 't'],
     vFormulaDiscovered: 'V_{tabung} = \\pi \\times r^2 \\times t',
 
     // v2.x
@@ -47,21 +48,12 @@ export const SHAPES: Shape[] = [
         reply: 'OK, mulai saja!',
       },
     ],
-
-    // stimulation: 'Jika memelihara ikan hias pastinya kita membutuhkan sebuah wadah untuk menampung ikan tersebut. Dan salah satu wadah yang mudah didapat dan bisa digunakan ialah toples.  ',
-    // stimulationImage: '/images/cylinder-stimulation.jpeg',
-    // problemIdentification: 'Cobalah amati toples yang kamu miliki yang sekiranya dapat digunakan sebagai wadah ikan hias. Lalu hitunglah volume air yang diperlukan untuk memenuhi toples tersebut.',
-    // problemIdentificationImage: '/images/cylinder-stimulation.jpeg',
-    // lpFormula: '2*pi*r*(r+t)',
-    // nVertices: 0,
-    // nEdges: 2,
-    // nFaces: 3,
   },
   {
     code: 'cone',
     name: SHAPE_NAME_MAP['cone'],
     description: 'Bangun tiga-dimensi dengan alas lingkaran dan satu verteks.',
-    vFormula: '(pi*r^2*t)/3',
+    vFormula: '(pi*r^2*t)/(3)',
     vFormulaUndiscovered: 'V_{kerucut} = \\dfrac{V_{tabung}}{3}',
     vFormulaDiscovered: 'V_{kerucut} = \\dfrac{\\pi \\times r^2 \\times t}{3}',
 
@@ -84,21 +76,12 @@ export const SHAPES: Shape[] = [
         reply: 'OK, Mulai saja!',
       },
     ],
-
-    // stimulation: 'Ut Consequat Semper Viverra Nam?',
-    // stimulationImage: '/images/placeholder-image.jpeg',
-    // problemIdentification: 'Aliquam Faucibus Purus in Massa?',
-    // problemIdentificationImage: '/images/placeholder-image.jpeg',
-    // lpFormula: 'pi*r*(r+s)',
-    // nVertices: 1,
-    // nEdges: 1,
-    // nFaces: 2,
   },
   {
     code: 'sphere',
     name: SHAPE_NAME_MAP['sphere'],
     description: 'Bangun tiga dimensi dengan semua titik dalam ruang berjarak tetap dari titik tertentu, yang disebut pusat.',
-    vFormula: '4/3*pi*r^3',
+    vFormula: '(4*pi*r^3)/(3)',
     vFormulaUndiscovered: 'V_{bola} = 4 \\times V_{kerucut}',
     vFormulaDiscovered: 'V_{bola} = \\dfrac{4 \\times \\pi \\times r^2 \\times t}{3}',
 
@@ -118,45 +101,10 @@ export const SHAPES: Shape[] = [
       },
       {
         message: 'Langkah selanjutnya, kita akan melakukan observasi dan mencari tahu bagaimana sih volume benda tersebut dihitung',
-        reply: 'OK, Mumai saja!',
+        reply: 'OK, Mulai saja!',
       },
     ],
-
   },
-  // {
-  //   name: 'Prisma',
-  //   code: 'prism',
-  //   // stimulation: 'Ut Consequat Semper Viverra Nam?',
-  //   // stimulationImage: '/images/placeholder-image.jpeg',
-  //   // problemIdentification: 'Aliquam Faucibus Purus in Massa?',
-  //   // problemIdentificationImage: '/images/placeholder-image.jpeg',
-  //   description: 'Bangun geometri dengan dua alas yang kongruen, segi banyak yang sejajar, dan semua permukaannya merupakan jajaran genjang.',
-  //   vFormula: 'la*t',
-  //   // lpFormula: '( 2 * la ) + ( ka * t )',
-  //   // nVertices: 'n × 2',
-  //   // nEdges: 'n × 3',
-  //   // nFaces: 'n + 2',
-
-  //   // v2.x
-  //   // introductionMessages: [],
-  // },
-  // {
-  //   name: 'Limas',
-  //   code: 'pyramid',
-  //   // stimulation: 'Ut Consequat Semper Viverra Nam?',
-  //   // stimulationImage: '/images/placeholder-image.jpeg',
-  //   // problemIdentification: 'Aliquam Faucibus Purus in Massa?',
-  //   // problemIdentificationImage: '/images/placeholder-image.jpeg',
-  //   description: 'Bangun tiga-dimensi yang mempunyai segi banyak sebagai alas dan semua sisinya segitiga dengan verteks yang saling bertemu.',
-  //   vFormula: '(1/3)*la*t',
-  //   // lpFormula: 'la + lst',
-  //   // nVertices: 'n + 1',
-  //   // nEdges: 'n × 2',
-  //   // nFaces: 'n + 1',
-
-  //   // v2.x
-  //   // introductionMessages: [],
-  // },
 ];
 
 export const MATH_SYMBOLS: MathSymbol[] = [
@@ -164,26 +112,6 @@ export const MATH_SYMBOLS: MathSymbol[] = [
     symbol: 'π',
     code: 'pi',
     title: 'Pi',
-  },
-  {
-    symbol: 'a△',
-    code: 'baseA',
-    title: 'Alas Segitiga',
-  },
-  {
-    symbol: 't△',
-    code: 'baseT',
-    title: 'Tinggi Segitiga',
-  },
-  {
-    symbol: 's□',
-    code: 'baseS',
-    title: 'Sisi Persegi',
-  },
-  {
-    symbol: 'LA',
-    code: 'la',
-    title: 'Luas Alas',
   },
   {
     symbol: 'r',
@@ -198,30 +126,14 @@ export const MATH_SYMBOLS: MathSymbol[] = [
     defaultValue: 20,
   },
   {
-    symbol: 's',
-    code: 's',
-    title: 'Garis Pelukis',
-  },
-
-  {
-    symbol: 'LST',
-    code: 'lst',
-    title: 'Luas Sisi Tegak',
-  },
-  {
-    symbol: 'KA',
-    code: 'ka',
-    title: 'Keliling Alas',
-  },
-  {
     symbol: 'V',
     code: 'v',
     title: 'Volume',
   },
   {
-    symbol: 'LP',
-    code: 'lp',
-    title: 'Luas Permukaan',
+    symbol: 'L',
+    code: 'baseArea',
+    title: 'Luas Alas',
   },
 ];
 

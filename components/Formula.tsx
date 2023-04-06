@@ -18,7 +18,7 @@ const Formula = ({ formula, type = 'DEFAULT', className: cx, ...rest }: Props & 
 
     return (
         <div
-            className={`inline-flex text-lg mx-0.5 py-4 px-6 border rounded-full ${typeCx}`}
+            className={`inline-flex mx-0.5 py-4 px-6 border rounded-full ${typeCx}`}
             dangerouslySetInnerHTML={{
                 __html: katex.renderToString(formula)
             }}

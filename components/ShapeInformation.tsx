@@ -23,7 +23,9 @@ type Props = {
 const ShapeInformation = ({ shapeCode, onHide }: Props) => {
     const shape = shapeCode && getShape(shapeCode);
     const isShowing = !!shapeCode;
-    const mathSymbolCodes = shape !== undefined ? extractMathSymbolCodes(shape.vFormula, true) : [];
+    const mathSymbolCodes = shape !== undefined && shape.vFormulaUndiscoveredMathSymbols !== undefined
+        ? shape.vFormulaUndiscoveredMathSymbols
+        : [];
 
     // State
     const [highlight, setHighlight] = useState<string>();
@@ -65,14 +67,7 @@ const ShapeInformation = ({ shapeCode, onHide }: Props) => {
                                 {/* Formula */}
                                 <div className="relative border border-gray-300 rounded-2xl shadow-sm shadow-blue-800/10">
                                     <div className="absolute flex justify-center transform -translate-y-1/2 w-full">
-                                        {/* {shape.vFormulaUndiscovered} */}
-                                        <Formula formula={shape.vFormulaUndiscovered}/>
-                                        {/* <div
-                                            className="inline-flex text-lg mx-0.5 py-4 px-8 border rounded-full bg-white text-gray-800 border-gray-300"
-                                            dangerouslySetInnerHTML={{
-                                                __html: katex.renderToString('V_{tabung} = ' + formatFormulaToKatex(shape.vFormula))
-                                            }}
-                                        /> */}
+                                        <Formula formula={shape.vFormulaUndiscovered} />
                                     </div>
 
                                     <div className="pt-8 px-4">

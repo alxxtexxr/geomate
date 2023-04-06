@@ -34,10 +34,10 @@ export const getInitials = (name: string) => {
 export const getShape = (code: string) => SHAPES.filter((SHAPE) => SHAPE.code === code)[0];
 
 // Math Symbol
-export const getMathSymbol = (code: string) => 
+export const getMathSymbol = (code: string) =>
     MATH_SYMBOLS.filter((MATH_SYMBOL) => MATH_SYMBOL.code === code)[0];
-    
-export const extractMathSymbolCodes = (formula: string, includePi = false) => 
+
+export const extractMathSymbolCodes = (formula: string, includePi = false) =>
     (includePi ? formula : formula.replace('pi', '')).match(/\b[a-zA-Z]+\b/g) || [];
 
 // Base Shape Symbol
@@ -224,3 +224,21 @@ export const roundToNearest = (num: number, increment: number) => {
 
 export const getPiString = (r: number | null) => r && !(r % 7) ? '22/7' : '3.14';
 export const getPi = (r: number | null) => Parser.evaluate(getPiString(r))
+
+// export const extractFormulaFractionParts = (str: string): string[] => {
+//     return str.split("/").reduce((acc: string[], curr: string) => {
+//         if (acc.length === 0 || acc[acc.length - 1].split("(").length === acc[acc.length - 1].split(")").length) {
+//             acc.push(curr);
+//         } else {
+//             acc[acc.length - 1] += "/" + curr;
+//         }
+//         return acc;
+//     }, []).map((part: string) => part.replace(/\(|\)/g, ""));
+// }
+
+export const extractFormulaFractionParts = (formula: string) => {
+    let _formula = formula;
+    if (_formula.startsWith('(')) { _formula = _formula.slice(0) }
+    if (_formula.endsWith(')')) { _formula = _formula.slice(1, -1) }
+    return _formula.split(')/(')
+}

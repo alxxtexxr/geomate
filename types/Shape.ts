@@ -6,6 +6,7 @@ type Shape = {
     description: string,
     vFormula: string,
     vFormulaUndiscovered: string,
+    vFormulaUndiscoveredMathSymbols?: string[],
     vFormulaDiscovered: string,
 
     // v2.x 

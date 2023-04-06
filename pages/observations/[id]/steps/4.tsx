@@ -5,7 +5,7 @@ import Router from 'next/router';
 // Components
 import ShapePreview from '../../../../components/ShapePreview';
 import BottomSheet from '../../../../components/BottomSheet';
-import { Message, FormControl, Input, Label, InputOp, Keyboard } from '../../../../components/Observation';
+import { Message, FormControl, Input, Label, InputOp, InputFraction, Keyboard } from '../../../../components/Observation';
 import Loading from '../../../../components/Loading';
 
 // Constants
@@ -149,12 +149,12 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
         }
     };
 
-    const isAllInputCorrect = () => 
-        Object.entries(isInputCorrect).every(([input, value]) => 
+    const isAllInputCorrect = () =>
+        Object.entries(isInputCorrect).every(([input, value]) =>
             // Don't check 'n', 'vFormulaA', and 'vFormulaB' if the shape is cylinder
-            shape.code === 'cylinder' && (input === 'n' || input === 'vFormulaA' || input === 'vFormulaB') || 
+            shape.code === 'cylinder' && (input === 'n' || input === 'vFormulaA' || input === 'vFormulaB') ||
             // Don't check 'vFormula' if the shape is cylinder
-            shape.code === 'cone' && input === 'vFormula' || 
+            shape.code === 'cone' && input === 'vFormula' ||
             value
         );
 
@@ -308,28 +308,29 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
                             )}
                             {shape.code === 'cone' && (
                                 <div className="grid grid-cols-3">
-                                    <div className="grid grid-cols-12 gap-2 col-start-2 col-span-2 border border-dashed border-gray-400 p-2 rounded-xl">
-                                        <div className="col-start-2 col-span-10">
-                                            <Input
-                                                name="vFormulaA"
-                                                isCorrect={isInputCorrect.vFormulaA}
-                                                placeholder={`Rumus V. ${comparisonShape?.name}`}
-                                                value={form.vFormulaA}
-                                                onChange={handleChange}
-                                                onFocus={handleFocus}
-                                            />
-                                        </div>
-                                        <hr className="border-gray-800 col-span-12" />
-                                        <div className="col-start-2 col-span-10">
-                                            <Input
-                                                name="vFormulaB"
-                                                isCorrect={isInputCorrect.vFormulaB}
-                                                placeholder={`?`}
-                                                value={form.vFormulaB}
-                                                onChange={handleChange}
-                                                onFocus={handleFocus}
-                                            />
-                                        </div>
+                                    <div className="col-start-2 col-span-2">
+                                        <InputFraction
+                                            inputA={(
+                                                <Input
+                                                    name="vFormulaA"
+                                                    isCorrect={isInputCorrect.vFormulaA}
+                                                    placeholder={`Rumus V. ${comparisonShape?.name}`}
+                                                    value={form.vFormulaA}
+                                                    onChange={handleChange}
+                                                    onFocus={handleFocus}
+                                                />
+                                            )}
+                                            inputB={(
+                                                <Input
+                                                    name="vFormulaB"
+                                                    isCorrect={isInputCorrect.vFormulaB}
+                                                    placeholder={`?`}
+                                                    value={form.vFormulaB}
+                                                    onChange={handleChange}
+                                                    onFocus={handleFocus}
+                                                />
+                                            )}
+                                        />
                                     </div>
                                 </div>
                             )}

@@ -1,6 +1,6 @@
 import { useState, Fragment } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { PerspectiveCamera, OrbitControls, Plane, Line } from '@react-three/drei';
+import { PerspectiveCamera, OrbitControls, Plane, Line, Circle } from '@react-three/drei';
 // import { HiOutlineCube } from 'react-icons/hi';
 
 // Components
@@ -76,14 +76,23 @@ const ShapePreview = ({
                                     r={r}
                                     t={t}
                                     x={x}
-                                    { ...(highlight && { opacity: 0.5 })}
-                                    { ...(color && { color: color })}
+                                    {...(highlight && { opacity: 0.5 })}
+                                    {...(color && { color: color })}
                                 />
-                                <Line
-                                    points={[[0, y1, 0], [0, y2, z2]]}
-                                    lineWidth={5}
-                                    color="red"
-                                />
+                                {(highlight && ['r', 't'].includes(highlight)) && (
+                                    <Line
+                                        points={[[0, y1, 0], [0, y2, z2]]}
+                                        lineWidth={5}
+                                        color="red"
+                                    />
+                                )}
+                                {(highlight && highlight === 'baseArea') && (
+                                    <mesh rotation={[-Math.PI / 2, 0, 0]}>
+                                        <Circle args={[r, 128]}>
+                                            <meshMatcapMaterial color="red" />
+                                        </Circle>
+                                    </mesh>
+                                )}
                             </Fragment>
                         )
                     })}
