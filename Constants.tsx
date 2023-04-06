@@ -83,7 +83,7 @@ export const SHAPES: Shape[] = [
     description: 'Bangun tiga dimensi dengan semua titik dalam ruang berjarak tetap dari titik tertentu, yang disebut pusat.',
     vFormula: '(4*pi*r^3)/(3)',
     vFormulaUndiscovered: 'V_{bola} = 4 \\times V_{kerucut}',
-    vFormulaDiscovered: 'V_{bola} = \\dfrac{4 \\times \\pi \\times r^2 \\times t}{3}',
+    vFormulaDiscovered: 'V_{bola} = \\dfrac{4 \\times \\pi \\times r^3}{3}',
 
     // v2.x
     introductionMessages: [
@@ -310,6 +310,11 @@ export const KEYBOARD_LAYOUTS: { [key: string]: KeyboardLayoutObject } = {
       'π r t {bksp}',
       '+ - / × ² ³',
 
+    ],
+  },
+  alphabeticFormula: {
+    default: [
+      'π r t ² ³ {bksp}',
     ],
   },
 };

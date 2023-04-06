@@ -12,7 +12,7 @@ import Loading from '../../../../components/Loading';
 import { KEYBOARD_LAYOUTS } from '../../../../Constants';
 
 // Utils
-import { getShape, formatFormula, checkFormula } from '../../../../Utils';
+import { getShape, formatFormula, checkFormula, extractFormulaFractionParts } from '../../../../Utils';
 
 // Types
 import type { GetServerSideProps } from 'next';
@@ -26,6 +26,8 @@ type Props = {
     observation: Observation,
     shape: Shape,
 };
+
+type FormValues = { [key: string]: string | number | null };
 
 const INPUT_OP_MAP: { [key: string]: string } = {
     cylinder: '×',
@@ -44,7 +46,13 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
     const comparisonShape = comparisonShapeCode && getShape(comparisonShapeCode);
     const comparisonShapeFormula = shape.code === 'cylinder'
         ? 'pi*r^2' // The formula of area of a circle
-        : (comparisonShape && comparisonShape.vFormula)
+        : (comparisonShape && comparisonShape.vFormula);
+    const comparisonShapeFormulaFractionParts = shape.code === 'sphere' && comparisonShapeFormula
+        ? extractFormulaFractionParts(comparisonShapeFormula)
+        : undefined;
+    const comparisonShapeFormulaA = comparisonShapeFormulaFractionParts !== undefined
+        ? comparisonShapeFormulaFractionParts[0].replaceAll(' ', '').replaceAll('*', ' * ').replaceAll('^', ' ^').split(' ')
+        : undefined;
 
     // Configure keyboard
     const keyboardRef = useRef(null);
@@ -54,6 +62,10 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
         vFormula: KEYBOARD_LAYOUTS.formula,
         vFormulaA: KEYBOARD_LAYOUTS.formula,
         vFormulaB: KEYBOARD_LAYOUTS.formula,
+        sphereT: KEYBOARD_LAYOUTS.alphabeticFormula,
+        x1: KEYBOARD_LAYOUTS.formula,
+        x2: KEYBOARD_LAYOUTS.formula,
+        x3: KEYBOARD_LAYOUTS.formula,
     };
 
     // Define correct values
@@ -68,15 +80,27 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
         vFormula: shape.vFormula && formatFormula(shape.vFormula),
         vFormulaA: comparisonShapeFormula && formatFormula(comparisonShapeFormula),
         vFormulaB: correctNs[shape.code],
+        sphereT: 'r',
     };
 
     // States
+    const [sphereVFormulaACorrectValues, setSphereVFormulaACorrectValues] = useState(['4', 'π', 'r³']);
+    const [sphereVFormulaAInputtedValues, setSphereVFormulaAInputtedValues] = useState<ObservationFormValues>({
+        x1: '',
+        x2: '',
+        x3: '',
+    });
+
     const [form, setForm] = useState<ObservationFormValues>({
         comparisonVFormula: '',
         n: '',
         vFormula: '',
         vFormulaA: '',
         vFormulaB: '',
+        sphereT: '',
+        x1: '',
+        x2: '',
+        x3: '',
     });
     const [focusedInputName, setFocusedInputName] = useState<string | null>(null);
     const [isInputCorrect, setIsInputCorrect] = useState({
@@ -85,6 +109,10 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
         vFormula: false,
         vFormulaA: false,
         vFormulaB: false,
+        sphereT: false,
+        x1: false,
+        x2: false,
+        x3: false,
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -151,12 +179,64 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
 
     const isAllInputCorrect = () =>
         Object.entries(isInputCorrect).every(([input, value]) =>
-            // Don't check 'n', 'vFormulaA', and 'vFormulaB' if the shape is cylinder
-            shape.code === 'cylinder' && (input === 'n' || input === 'vFormulaA' || input === 'vFormulaB') ||
-            // Don't check 'vFormula' if the shape is cylinder
-            shape.code === 'cone' && input === 'vFormula' ||
+            // Don't check 'n', 'vFormulaA', 'vFormulaB', 'sphereT', 'x1', 'x2', 'x3' if the shape is cylinder
+            shape.code === 'cylinder' && (input === 'n' || input === 'vFormulaA' || input === 'vFormulaB' || input === 'sphereT' || input === 'x1' || input === 'x2' || input === 'x3') ||
+            // Don't check 'vFormula', 'sphereT', 'x1', 'x2', 'x3' if the shape is cylinder
+            shape.code === 'cone' && (input === 'vFormula' || input === 'sphereT' || input === 'x1' || input === 'x2' || input === 'x3') ||
+            // Don't check 'comparisonVFormula', 'vFormulaA', 'vFormulaB', 'vFormula' if the shape is cylinder
+            shape.code === 'sphere' && (input === 'comparisonVFormula' || input === 'vFormulaA' || input === 'vFormulaB' || input === 'vFormula') ||
             value
         );
+
+    const updateXn = (xn: string) => {
+        setSphereVFormulaACorrectValues((prevSetSphereVFormulaACorrectValues) => {
+            if (form[xn]) {
+                const filteredValues = prevSetSphereVFormulaACorrectValues?.filter((prevSetSphereVFormulaACorrectValue) => {
+                    // If x-n value is exist in prevSetSphereVFormulaACorrectValues,
+                    // Update x-n status into correct
+                    // Don't return the values into prevSetSphereVFormulaACorrectValues
+                    if (prevSetSphereVFormulaACorrectValue === form[xn]) {
+                        setIsInputCorrect((prevIsInputCorrect) => ({
+                            ...prevIsInputCorrect,
+                            [xn]: true,
+                        }));
+                        setSphereVFormulaAInputtedValues((prevSetSphereVFormulaAInputtedValues) => ({
+                            ...prevSetSphereVFormulaAInputtedValues,
+                            [xn]: form[xn],
+                        }))
+
+                        return false;
+                    } else {
+                        return true;
+                    }
+                });
+
+                return filteredValues;
+                // If x-n value is empty,
+                // Update x-n status into incorrect
+                // Add previous x-n value into sphereVFormulaACorrectValues
+                // Remove previous x-n value from sphereVFormulaAInputtedValues
+            } else {
+                // console.log('test')
+                setIsInputCorrect((prevIsInputCorrect) => ({
+                    ...prevIsInputCorrect,
+                    [xn]: false,
+                }));
+
+                const addedValues = sphereVFormulaAInputtedValues[xn] ? [
+                    ...prevSetSphereVFormulaACorrectValues,
+                    sphereVFormulaAInputtedValues[xn],
+                ] : prevSetSphereVFormulaACorrectValues;
+
+                setSphereVFormulaAInputtedValues((prevSetSphereVFormulaAInputtedValues) => ({
+                    ...prevSetSphereVFormulaAInputtedValues,
+                    [xn]: '',
+                }))
+
+                return addedValues;
+            }
+        });
+    }
 
     // Effects
     useEffect(() => {
@@ -186,7 +266,7 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
 
         // Check if vFormulaA is correct
         if (form.vFormulaA && correctValues.vFormulaA) {
-            console.log('vFormulaA', form.vFormulaA, correctValues.vFormulaA, checkFormula('' + form.vFormulaA, correctValues.vFormulaA))
+            // console.log('vFormulaA', form.vFormulaA, correctValues.vFormulaA, checkFormula('' + form.vFormulaA, correctValues.vFormulaA))
             setIsInputCorrect({
                 ...isInputCorrect,
                 vFormulaA: checkFormula('' + form.vFormulaA, correctValues.vFormulaA),
@@ -198,6 +278,16 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
             ...prevIsInputCorrect,
             vFormulaB: +form.vFormulaB === correctValues.vFormulaB,
         }));
+
+        // Check if sphereT is correct
+        setIsInputCorrect((prevIsInputCorrect) => ({
+            ...prevIsInputCorrect,
+            sphereT: form.sphereT === correctValues.sphereT,
+        }));
+
+        updateXn('x1');
+        updateXn('x2');
+        updateXn('x3');
     }, [form]);
 
     return (
@@ -224,7 +314,7 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
                         {/* Inputs */}
                         <div className="grid grid-cols-1 gap-2">
                             {/* comparisonVFormula Input */}
-                            {shape.code === 'cylinder' ? (
+                            {shape.code === 'cylinder' && (
                                 <div className="grid grid-cols-3">
                                     <Label symbol="V">{`Volume ${shape.name}`}</Label>
                                     <div className="col-span-2">
@@ -245,38 +335,75 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                         </div>
                                     </div>
                                 </div>
-                            ) : (
+                            )}
+                            {shape.code === 'cone' && (
+                                <FormControl
+                                    label={`Rumus V. ${shape.name}`}
+                                    symbol="V"
+                                    isCorrect={isInputCorrect.comparisonVFormula}
+                                    name="comparisonVFormula"
+                                    placeholder={comparisonShape ? `Rumus V. ${comparisonShape.name}` : ''}
+                                    value={form.comparisonVFormula}
+                                    onChange={handleChange}
+                                    onFocus={handleFocus}
+                                />
+                            )}
+                            {shape.code === 'sphere' && (
+                                <div className="grid grid-cols-3">
+                                    <Label symbol="V2">
+                                        Rumus V. Bola
+                                    </Label>
+                                    <div className="col-span-2">
+                                        <InputFraction
+                                            inputA={(
+                                                <div className="flex items-center font-mono text-base">
+                                                    {comparisonShapeFormulaA !== undefined && comparisonShapeFormulaA.map((mathSymbol, i) => {
+                                                        const formattedMathSymbol = formatFormula(mathSymbol);
+                                                        if (formattedMathSymbol === 't') {
+                                                            const name = 'sphereT';
+
+                                                            const isCorrect = (isInputCorrect as { [key: string]: boolean })[name]
+                                                            const isCorrectCx = isCorrect ? 'input-primary' : 'input-error';
+
+                                                            return (
+                                                                <input
+                                                                    key={i}
+                                                                    className={`input input-bordered flex-grow w-16 mx-0.5 ${isCorrectCx}`}
+                                                                    placeholder="t"
+                                                                    name={name}
+                                                                    value={(form as FormValues)[name] || ''}
+                                                                    onChange={handleChange}
+                                                                    onFocus={handleFocus}
+                                                                />
+                                                            );
+                                                        } else {
+                                                            return (
+                                                                <div
+                                                                    key={i}
+                                                                    className="mx-0.5"
+                                                                >
+                                                                    {formattedMathSymbol}
+                                                                </div>
+                                                            )
+                                                        }
+                                                    })}
+                                                </div>
+                                            )}
+                                            inputB={(
+                                                <input
+                                                    className="input input-bordered w-full"
+                                                    value="3"
+                                                    disabled
+                                                />
+                                            )}
+                                        />
+                                    </div>
+                                </div>
+                            )}
+
+                            {shape.code !== 'cylinder' && (
                                 <>
-                                    <FormControl
-                                        label={`Rumus V. ${shape.name}`}
-                                        symbol="V"
-                                        isCorrect={isInputCorrect.comparisonVFormula}
-                                        name="comparisonVFormula"
-                                        placeholder={comparisonShape ? `Rumus V. ${comparisonShape.name}` : ''}
-                                        value={form.comparisonVFormula}
-                                        onChange={handleChange}
-                                        onFocus={handleFocus}
-                                    />
-
-                                    {isInputCorrect.comparisonVFormula && shape.code === 'sphere' && (
-                                        <>
-                                            <FormControl
-                                                name="correctedFormula"
-                                                placeholder={comparisonShape ? `Rumus V. ${comparisonShape.name}` : ''}
-                                                value="1/3×π×r²×(r)"
-                                                disabled
-                                            />
-                                            <FormControl
-                                                name="correctedFormula"
-                                                placeholder={comparisonShape ? `Rumus V. ${comparisonShape.name}` : ''}
-                                                value="1/3×π×r³"
-                                                disabled
-                                            />
-                                        </>
-                                    )}
-
                                     <InputOp>{INPUT_OP_MAP[shape.code]}</InputOp>
-
                                     {/* n input */}
                                     <div className="grid grid-cols-3">
                                         <div className="col-start-2 col-span-2">
@@ -328,6 +455,58 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                                     value={form.vFormulaB}
                                                     onChange={handleChange}
                                                     onFocus={handleFocus}
+                                                />
+                                            )}
+                                        />
+                                    </div>
+                                </div>
+                            )}
+                            {shape.code === 'sphere' && (
+                                <div className="grid grid-cols-3">
+                                    <div className="col-span-2 col-start-2">
+                                        <InputFraction
+                                            inputA={(
+                                                <div className="flex items-center font-mono text-base">
+                                                    {comparisonShapeFormulaFractionParts !== undefined && comparisonShapeFormulaFractionParts[0]
+                                                        .replaceAll(' ', '')
+                                                        .replaceAll('*', ' * ')
+                                                        .split(' ')
+                                                        .map((mathSymbol, i) => {
+                                                            if (/[a-zA-Z]/.test(mathSymbol)) {
+                                                                const name = 'x' + (i / 2 + 1);
+
+                                                                const isCorrect = (isInputCorrect as { [key: string]: boolean })[name]
+                                                                const isCorrectCx = isCorrect ? 'input-primary' : 'input-error';
+
+                                                                return (
+                                                                    <input
+                                                                        key={i}
+                                                                        className={`input input-bordered flex-grow w-12 mx-0.5 ${isCorrectCx}`}
+                                                                        placeholder="?"
+                                                                        name={name}
+                                                                        value={(form as FormValues)[name] || ''}
+                                                                        onChange={handleChange}
+                                                                        onFocus={handleFocus}
+                                                                    />
+                                                                );
+                                                            } else {
+                                                                return (
+                                                                    <div
+                                                                        key={i}
+                                                                        className="mx-0.5"
+                                                                    >
+                                                                        {formatFormula(mathSymbol)}
+                                                                    </div>
+                                                                )
+                                                            }
+                                                        })}
+                                                </div>
+                                            )}
+                                            inputB={(
+                                                <input
+                                                    className="input input-bordered w-full"
+                                                    value="3"
+                                                    disabled
                                                 />
                                             )}
                                         />

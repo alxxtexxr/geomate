@@ -92,7 +92,7 @@ const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
     const nOp = shape.code === 'cone' ? '× 1/' : '×';
     const nComparisonV = observation.comparisonV
         ? (shape.code === 'cone'
-            ? floorToNearest(observation.comparisonV / +form.n, 0.01).toFixed(1)
+            ? floorToNearest(observation.comparisonV / +form.n, 0.1)
             : (+form.n === 1 ? observation.comparisonV : floorToNearest(observation.comparisonV * +form.n, 0.01).toFixed(1)))
         : '';
     const isNComparisonVCorrect = +nComparisonV === observation.v;
