@@ -105,10 +105,10 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
     useEffect(() => {
         // Calculate the volume
         const previousV = form.v;
-        const newV = floorToNearest(Parser.evaluate(shape.vFormula, {
+        const newV = Parser.evaluate(shape.vFormulaRounded, {
             ...form,
             pi: getPi(+form.r),
-        }), 0.1).toFixed(1);
+        }).toFixed(2);
 
         if (newV !== previousV) {
             setForm({

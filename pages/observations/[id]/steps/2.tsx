@@ -62,6 +62,9 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
     const comparisonShapeFormula = shape.code === 'cylinder'
         ? 'pi*r^2' // The formula of area of a circle
         : (comparisonShape && comparisonShape.vFormula)
+    const comparisonShapeFormulaRounded = shape.code === 'cylinder'
+        ? 'roundTo(roundTo(pi*r^2,2),2)' // The formula of area of a circle
+        : (comparisonShape && comparisonShape.vFormulaRounded)
     const comparisonShapeFormulaToFormat = shape.code === 'sphere'
         ? 'pi*r^3'
         : comparisonShapeFormula
@@ -80,11 +83,11 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
         r2: observation.r,
         r3: observation.r,
         t: observation.t,
-        v: comparisonShapeFormula && floorToNearest(+Parser.evaluate(comparisonShapeFormula, {
+        v: comparisonShapeFormulaRounded && Parser.evaluate(comparisonShapeFormulaRounded, {
             pi: pi,
             r: observation.r || 0,
             t: shape.code === 'sphere' ? observation.r || 0 : observation.t || 0,
-        }), 0.01).toFixed(2),
+        }).toFixed(2),
         sphereT: 'r',
     };
 
@@ -98,7 +101,7 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
         r3: KEYBOARD_LAYOUTS.numeric,
         t: KEYBOARD_LAYOUTS.numeric,
         v: KEYBOARD_LAYOUTS.numeric,
-        sphereT: KEYBOARD_LAYOUTS.formula,
+        sphereT: KEYBOARD_LAYOUTS.alphabeticFormula,
     };
 
     // States
