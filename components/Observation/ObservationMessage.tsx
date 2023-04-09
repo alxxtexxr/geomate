@@ -3,19 +3,19 @@ import Image from 'next/image';
 import Typewriter from 'typewriter-effect';
 
 type Props = {
-    messages: string[],
+    message: string | string[],
     button?: JSX.Element,
 };
 
 const TYPEWRITER_DELAY = 25;
 
-const ObservationMessage = ({ messages, button }: Props) => (
+const ObservationMessage = ({ message, button }: Props) => (
     <div className="grid grid-cols-4 gap-4 w-full">
         <div className="col-span-1 flex justify-center items-center">
             <div className="relative w-full aspect-square drop-shadow-md-blue-800">
                 <Image
-                    src="/images/geo-head.svg"
-                    alt="Geo"
+                    src="/images/mascot-head.svg"
+                    alt={process.env.NEXT_PUBLIC_APP_MASCOT_NAME}
                     layout="fill"
                     objectFit="contain"
                 />
@@ -27,20 +27,24 @@ const ObservationMessage = ({ messages, button }: Props) => (
                 position="l"
                 className="flex-grow text-sm"
             >
-                <div className="font-semibold mb-1">Geo</div>
+                <div className="font-semibold mb-1">{process.env.NEXT_PUBLIC_APP_MASCOT_NAME}</div>
                 <Typewriter
                     options={{
                         delay: TYPEWRITER_DELAY,
                         cursor: '',
                     }}
                     onInit={(typewriter) => {
-                        let _typewriter = typewriter.typeString(messages[0]);
+                        if (typeof message === 'string') {
+                            typewriter.typeString(message).start()
+                        } else if (Array.isArray(message)) {
+                            let _typewriter = typewriter.typeString(message[0]);
 
-                        messages.slice(1).map((message) => {
-                            _typewriter = _typewriter.pauseFor(1000).deleteAll(TYPEWRITER_DELAY).typeString(message)
-                        })
+                            message.slice(1).map((message) => {
+                                _typewriter = _typewriter.pauseFor(1000).deleteAll(TYPEWRITER_DELAY).typeString(message)
+                            })
 
-                        _typewriter.start()
+                            _typewriter.start()
+                        }
                     }}
                 />
                 {button ? (

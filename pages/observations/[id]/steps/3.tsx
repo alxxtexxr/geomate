@@ -30,16 +30,10 @@ type Props = {
     shape: Shape,
 };
 
-const MESSAGES_MAP: { [key: string]: string[] } = {
-    cylinder: [
-        'Selanjutnya, volume tabung dapat diperoleh dengan mengalikan luas alas dengan tinggi tabung',
-    ],
-    cone: [
-        'Dibagi berapakah volume tabung tadi (bawah) agar hasilnya sama dengan volume kerucut di perhitungan awal (atas)?',
-    ],
-    sphere: [
-        'Dikali berapakah volume kerucut tadi (bawah) agar hasilnya sama dengan volume bola di perhitungan awal (atas)?',
-    ],
+const MESSAGE_MAP: { [key: string]: string } = {
+    cylinder: 'Selanjutnya, volume tabung dapat diperoleh dengan mengalikan luas alas dengan tinggi tabung',
+    cone: 'Dibagi berapakah volume tabung tadi (bawah) agar hasilnya sama dengan volume kerucut di perhitungan awal (atas)?',
+    sphere: 'Dikali berapakah volume kerucut tadi (bawah) agar hasilnya sama dengan volume bola di perhitungan awal (atas)?',
 };
 
 const INPUT_OP_MAP: { [key: string]: string } = {
@@ -177,7 +171,7 @@ const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 {/* Form */}
                 <form className="w-inherit pt-4 px-4 pb-space-for-keyboard" onSubmit={handleSubmit}>
                     <div className="grid grid-cols-1 gap-4">
-                        <Message messages={MESSAGES_MAP[shape.code]} />
+                        <Message message={MESSAGE_MAP[shape.code]} />
 
                         {/* Inputs */}
                         <div className="grid grid-cols-1 gap-2">
@@ -242,7 +236,7 @@ const ObservationStep3: ComponentWithAuth<Props> = ({ observation, shape }) => {
                     </div>
 
                     {/* Button */}
-                    <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-inherit p-4">
+                    <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 bg-white bg-opacity-95 w-inherit p-4">
                         {isSubmitting ? (<Loading.Button />) : (
                             <button
                                 type="submit"

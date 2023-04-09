@@ -6,10 +6,9 @@ import Link from 'next/link';
 // Components
 import Navbar from '../../../../../components/Navbar';
 import MessageBalloon from '../../../../../components/MessageBalloon';
-import Formula from '../../../../../components/Formula';
 
 // Utils
-import { getShape, formatFormula } from '../../../../../Utils';
+import { getShape } from '../../../../../Utils';
 
 // Types
 import type { GetServerSideProps } from 'next';
@@ -40,7 +39,7 @@ const PostTestResult: ComponentWithAuth<Props> = ({ observation, shape }) => (
                 >
                     <div className="flex flex-col h-full">
                         <div className="flex flex-grow flex-col justify-center items-center text-center px-4">
-                            <div className={'relative w-48 h-48 mb-8' + (!observation.isPostTestCorrect ? ' grayscale' : '')}>
+                            <div className={'relative w-48 h-48 mb-8 mt-6 ' + (!observation.isPostTestCorrect ? 'grayscale' : '')}>
                                 <img src="https://cdn-icons-png.flaticon.com/512/3083/3083645.png" />
                             </div>
                             <h2 className="text-gray-800 text-lg font-semibold mb-2">
@@ -48,7 +47,7 @@ const PostTestResult: ComponentWithAuth<Props> = ({ observation, shape }) => (
                                     ? 'Latihanmu Selesai!'
                                     : 'Yuk, Kita Coba Lagi!'}
                             </h2>
-                            <p className="text-gray-600 text-sm mb-6">
+                            <p className="text-gray-600 text-sm mb-8">
                                 {observation.isPostTestCorrect
                                     ? 'Kamu berhasil menjawab soal latihan dengan benar. Ini menunjukkan bahwa kamu sudah paham cara menggunakan rumus yang telah kamu pelajari.'
                                     : 'Kamu belum berhasil menjawab soal latihan dengan benar, tapi jangan khawatir kita bisa mencobanya lagi.'}
@@ -75,8 +74,8 @@ const PostTestResult: ComponentWithAuth<Props> = ({ observation, shape }) => (
             <div className="overflow-hidden">
                 <div className="relative h-48 -mb-6 filter drop-shadow-md-blue-800">
                     <Image
-                        src="/images/geo.svg"
-                        alt="Geo"
+                        src="/images/mascot.svg"
+                        alt={process.env.NEXT_PUBLIC_APP_MASCOT_NAME}
                         layout="fill"
                         objectFit="contain"
                     />

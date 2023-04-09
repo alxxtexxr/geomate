@@ -32,17 +32,15 @@ type Props = {
 
 type FormValues = { [key: string]: string | number | null };
 
-const MESSAGES_MAP: { [key: string]: string[] } = {
-    cylinder: [
-        'Untuk menghitung volume tabung, pertama kita perlu mencari luas alas tabung terlebih dahulu',
-    ],
+const MESSAGE_MAP: { [key: string]: string | string[] } = {
+    cylinder: 'Untuk menemukan rumus volume tabung, pertama kita perlu mencari luas alasnya terlebih dahulu',
     cone: [
-        'Untuk menghitung volume kerucut, kita bisa memanfaatkan rumus volume tabung yang telah kamu pelajari.',
-        'Dengan rumus yang telah kamu pelajari, yuk kita hitung terlebih dahulu volume tabung dengan radius dan tinggi yang sama dengan kerucut sebelumnya',
+        'Untuk menemukan rumus volume kerucut, kita dapat memanfaatkan rumus volume tabung yang telah kamu pelajari.',
+        'Dengan rumus tersebut, yuk kita hitung terlebih dahulu volume tabung dengan jari-jari dan tinggi yang sama dengan kerucut sebelumnya',
     ],
     sphere: [
         'Untuk menghitung volume bola, kita bisa memanfaatkan rumus volume kerucut yang telah kamu pelajari.',
-        'Dengan rumus yang telah kamu pelajari, yuk kita hitung terlebih dahulu volume kerucut dengan tinggi yang sama dengan radius bola sebelumnya',
+        'Dengan rumus tersebut, yuk kita hitung terlebih dahulu volume kerucut dengan tinggi yang harus sama dengan jari-jarinya, sehingga t = r',
     ]
 };
 
@@ -260,7 +258,7 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 {/* Form */}
                 <form className="w-inherit pt-4 px-4 pb-space-for-keyboard" onSubmit={handleSubmit}>
                     <div className="grid grid-cols-1 gap-4">
-                        <Message messages={MESSAGES_MAP[shape.code]} />
+                        <Message message={MESSAGE_MAP[shape.code]} />
 
                         {/* Inputs */}
                         <div className="grid grid-cols-1 gap-2">

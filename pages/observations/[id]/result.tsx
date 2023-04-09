@@ -40,7 +40,7 @@ const ObservationResult: ComponentWithAuth<Props> = ({ observation, shape }) => 
                 >
                     <div className="flex flex-col h-full">
                         <div className="flex flex-grow flex-col justify-center items-center text-center px-4">
-                            <div className="relative w-48 h-48 mb-8">
+                            <div className="relative w-48 h-48 mb-8 mt-6">
                                 <img src="https://cdn-icons-png.flaticon.com/512/3083/3083677.png" />
                             </div>
                             <h2 className="text-gray-800 text-lg font-semibold mb-2">
@@ -64,8 +64,8 @@ const ObservationResult: ComponentWithAuth<Props> = ({ observation, shape }) => 
             <div className="overflow-hidden">
                 <div className="relative h-48 -mb-6 filter drop-shadow-md-blue-800">
                     <Image
-                        src="/images/geo.svg"
-                        alt="Geo"
+                        src="/images/mascot.svg"
+                        alt={process.env.NEXT_PUBLIC_APP_MASCOT_NAME}
                         layout="fill"
                         objectFit="contain"
                     />

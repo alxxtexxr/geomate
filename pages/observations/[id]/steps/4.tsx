@@ -309,7 +309,7 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 {/* Form */}
                 <form className="w-inherit pt-4 px-4 pb-space-for-keyboard" onSubmit={handleSubmit}>
                     <div className="grid grid-cols-1 gap-4">
-                        <Message messages={[`Dari observasi yang telah dilakukan, dapat disimpulkan bahwa rumus volume ${shape.name.toLowerCase()} adalah:`]} />
+                        <Message message={`Dari observasi yang telah dilakukan, dapat disimpulkan bahwa rumus volume ${shape.name.toLowerCase()} adalah:`} />
 
                         {/* Inputs */}
                         <div className="grid grid-cols-1 gap-2">

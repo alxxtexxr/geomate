@@ -1,6 +1,7 @@
 import { useState, Fragment } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { PerspectiveCamera, OrbitControls, Plane, Line, Circle } from '@react-three/drei';
+import * as THREE from 'three';
 // import { HiOutlineCube } from 'react-icons/hi';
 
 // Components
@@ -89,7 +90,7 @@ const ShapePreview = ({
                                 {(highlight && highlight === 'baseArea') && (
                                     <mesh rotation={[-Math.PI / 2, 0, 0]}>
                                         <Circle args={[r, 128]}>
-                                            <meshMatcapMaterial color="red" />
+                                            <meshMatcapMaterial color="red" side={THREE.DoubleSide} />
                                         </Circle>
                                     </mesh>
                                 )}

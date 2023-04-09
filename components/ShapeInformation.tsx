@@ -2,7 +2,7 @@ import { Fragment, useState } from 'react';
 import Link from 'next/link';
 // import { Transition } from '@headlessui/react';
 import Sheet from 'react-modal-sheet';
-import { MdRemoveRedEye } from 'react-icons/md';
+import { MdClose, MdRemoveRedEye } from 'react-icons/md';
 import katex from 'katex';
 
 // Component
@@ -38,18 +38,26 @@ const ShapeInformation = ({ shapeCode, onHide }: Props) => {
 
     return (
         <Sheet
-            snapPoints={[-1]}
             isOpen={isShowing}
             onClose={_onHide}
+            disableDrag
+            className="w-full sm:w-96"
+            style={{ left: '50%', transform: 'translateX(-50%)' }}
         >
             <Sheet.Container>
-                <Sheet.Header />
+                {/* <Sheet.Header>
+                    <div className="p-2">
+                        <button className="btn btn-ghost">
+                            <MdClose className="text-2xl" />
+                        </button>
+                    </div>
+                </Sheet.Header> */}
                 <Sheet.Content>
-                    <div className="px-4">
+                    <div className="p-4">
                         {shape !== undefined ? (
                             <>
                                 {/* Preview */}
-                                <div className="bg-black rounded-2xl mb-8 overflow-hidden">
+                                <div className="sticky bg-black rounded-xl mb-8 overflow-hidden">
                                     <ShapePreview
                                         shapeCode={shape.code}
                                         r={14}
@@ -59,18 +67,18 @@ const ShapeInformation = ({ shapeCode, onHide }: Props) => {
                                 </div>
 
                                 {/* Description */}
-                                <div className="text-center mb-14 px-4">
+                                <div className="text-center px-4">
                                     <h1 className="text-gray-800 font-medium mb-2">Apa itu {shape.name}?</h1>
                                     <p className="text-gray-600 text-sm">{shape.description}</p>
                                 </div>
 
                                 {/* Formula */}
-                                <div className="relative border border-gray-300 rounded-2xl shadow-sm shadow-blue-800/10">
-                                    <div className="absolute flex justify-center transform -translate-y-1/2 w-full">
-                                        <Formula formula={shape.vFormulaUndiscovered} />
+                                <div className="relative mt-16 p-4 border border-gray-300 rounded-2xl shadow-sm shadow-blue-800/10">
+                                    <div className="text-center -mt-12">
+                                        <Formula formula={shape.vFormulaUndiscovered} className="mt-0.5" />
                                     </div>
 
-                                    <div className="pt-8 px-4">
+                                    <div className="">
                                         {mathSymbolCodes.map((mathSymbolCode, i) => {
                                             // Filtering for every symbols, I think this code will have bad performance
                                             const mathSymbol = getMathSymbol(mathSymbolCode);
@@ -82,7 +90,7 @@ const ShapeInformation = ({ shapeCode, onHide }: Props) => {
                                                             {mathSymbol.symbol}
                                                         </div>
                                                         <div className="text-gray-600 text-sm -mb-px">
-                                                            {mathSymbol.title}
+                                                            {shape.code === 'cylinder' ? mathSymbol.title : mathSymbol.title.replaceAll('Alas', 'Lingkaran')}
                                                         </div>
                                                         {mathSymbolCode === 'pi' ? (
                                                             <div className="text-gray-800 font-mono my-3 mr-3 ml-auto">
@@ -108,7 +116,7 @@ const ShapeInformation = ({ shapeCode, onHide }: Props) => {
                                         })}
                                     </div>
 
-                                    <div className="pt-2 px-4 pb-4">
+                                    <div className="">
                                         <Link href={`/introduction/${shapeCode}`}>
                                             <button type="button" className="btn btn-primary btn-block">
                                                 Pelajari Volume

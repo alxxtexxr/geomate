@@ -124,8 +124,8 @@ const Introduction: ComponentWithAuth<Props> = ({ shape }) => {
                                 <div className="relative col-span-3 w-full aspect-square drop-shadow-md-blue-800">
                                     {isMascot && (
                                         <Image
-                                            src="/images/geo-head.svg"
-                                            alt="Geo"
+                                            src="/images/mascot-head.svg"
+                                            alt={process.env.NEXT_PUBLIC_APP_MASCOT_NAME}
                                             layout="fill"
                                             objectFit="contain"
                                         />
@@ -138,7 +138,7 @@ const Introduction: ComponentWithAuth<Props> = ({ shape }) => {
                                     className="col-span-8 flex-grow text-gray-600 text-sm shadow-sm shadow-blue-800/10"
                                 >
                                     <div className="font-semibold mb-1">
-                                        {isMascot ? 'Geo' : session?.user.name}
+                                        {isMascot ? process.env.NEXT_PUBLIC_APP_MASCOT_NAME : session?.user.name}
                                     </div>
                                     <Typewriter
                                         options={{

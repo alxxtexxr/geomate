@@ -22,7 +22,7 @@ export const SHAPES: Shape[] = [
   {
     code: 'cylinder',
     name: SHAPE_NAME_MAP['cylinder'],
-    description: 'Bangun tiga-dimensi yang mempunyai dua alas sejajar dan keduanya lingkaran yang kongruen.',
+    description: 'Tabung merupakan bangun ruang yang mempunyai dua alas sejajar dan berbentuk lingkaran yang saling kongruen.',
     vFormula: 'pi*r^2*t',
     vFormulaRounded: 'roundTo(roundTo(pi*r^2,2)*t,2)',
     vFormulaUndiscovered: 'V_{tabung} = Luas\\ Alas \\times t',
@@ -32,79 +32,80 @@ export const SHAPES: Shape[] = [
     // v2.x
     introductionMessages: [
       {
-        message: 'Pernahkah kamu bertanya-tanya, bagaimana sih cara menghitung volume benda tabung?',
-        reply: 'Memang bagaimana?',
-        image: 'https://paragram.id/upload/media/entries/2020-05/26/15702-2-ed79a264a10471ecff72dfd215f8f91f.jpg',
+        message: 'Pernahkah kamu berpikir bagaimana cara menentukan volume air dalam gelas?',
+        reply: 'Iya, bagaimana caranya?',
       },
       {
-        message: 'Jika kamu ingin tahu, kita dapat mempelajarinya!',
-        reply: 'Baiklah',
+        message: 'Jika kamu ingin tahu, kita dapat mempelajarinya bersama-sama!',
+        reply: 'Yuk kita pelajari!',
       },
       {
-        message: 'Carilah benda tabung di sekitarmu seperti kaleng, toples, atau botol.',
-        reply: 'OK, sudah',
+        message: 'Pertama-tama carilah benda berbentuk tabung di sekitarmu seperti gelas, toples, atau kaleng',
+        reply: 'Sudah',
       },
       {
-        message: 'Langkah selanjutnya, kita akan melakukan observasi dan mencari tahu bagaimana sih volume benda tersebut dihitung',
-        reply: 'OK, mulai saja!',
+        message: 'Langkah selanjutnya, kita akan melakukan observasi dan mencari tahu cara menghitung volume tabung',
+        reply: 'Mulai!',
       },
     ],
   },
   {
     code: 'cone',
     name: SHAPE_NAME_MAP['cone'],
-    description: 'Bangun tiga-dimensi dengan alas lingkaran dan satu verteks.',
+    description: 'Kerucut merupakan bangun ruang yang dibatasi oleh sebuah sisi lengkung dan sebuah sisi alas yang berbentuk lingkaran.',
     vFormula: '(pi*r^2*t)/(3)',
     vFormulaRounded: 'roundTo(roundTo(roundTo(pi*r^2,2)*t/3,2),2)',
-    vFormulaUndiscovered: 'V_{kerucut} = \\dfrac{V_{tabung}}{3}',
+    vFormulaUndiscovered: ['V_{kerucut} = \\dfrac{V_{tabung}}{3}', 'V_{kerucut} = \\dfrac{Luas\\ Lingkaran \\times t}{3}'],
+    vFormulaUndiscoveredMathSymbols: ['baseArea', 't'],
     vFormulaDiscovered: 'V_{kerucut} = \\dfrac{\\pi \\times r^2 \\times t}{3}',
 
     // v2.x
     introductionMessages: [
       {
-        message: 'Pernahkah kamu bertanya-tanya, bagaimana sih menghitung volume benda kerucut?',
-        reply: 'Memang bagaimana?',
+        message: 'Pernahkah kamu berpikir bagaimana cara menentukan volume nasi untuk membuat tumpeng yang berbentuk kerucut?',
+        reply: 'Iya, bagaimana caranya?',
       },
       {
-        message: 'Jika kamu ingin tahu, kita dapat mempelajarinya!',
-        reply: 'Baiklah',
+        message: 'Jika kamu ingin tahu, kita dapat mempelajarinya bersama-sama!',
+        reply: 'Yuk kita pelajari!',
       },
       {
-        message: 'Carilah benda kerucut di sekitarmu seperti topi ulang tahun, tutup saji, atau cone es krim',
-        reply: 'Baik, sudah',
+        message: 'Pertama-tama carilah benda berbentuk kerucut di sekitarmu seperti contong eskrim, tutup saji, atau topi ulang tahun',
+        reply: 'Sudah',
       },
       {
-        message: 'Langkah selanjutnya, kita akan melakukan observasi dan mencari tahu bagaimana sih volume benda tersebut dihitung',
-        reply: 'OK, Mulai saja!',
+        message: 'Langkah selanjutnya, kita akan melakukan observasi dan mencari tahu cara menghitung volume kerucut',
+        reply: 'Mulai!',
       },
     ],
   },
   {
     code: 'sphere',
     name: SHAPE_NAME_MAP['sphere'],
-    description: 'Bangun tiga dimensi dengan semua titik dalam ruang berjarak tetap dari titik tertentu, yang disebut pusat.',
+    description: 'Bola merupakan bangun ruang yang dibentuk oleh titik-titik yang berjarak sama terhadap suatu titik pusat.',
     vFormula: '(4*pi*r^3)/(3)',
     vFormulaRounded: 'roundTo(4*roundTo(roundTo(pi*r^3,2)/3,2),2)',
-    vFormulaUndiscovered: 'V_{bola} = 4 \\times V_{kerucut}',
+    vFormulaUndiscovered: ['V_{bola} = 4 \\times V_{kerucut}', 'V_{bola} = 4 \\times \\dfrac{V_{tabung}}{3}', 'V_{bola} = 4 \\times \\dfrac{Luas\\ Lingkaran \\times r}{3}'],
+    vFormulaUndiscoveredMathSymbols: ['baseArea', 'r'],
     vFormulaDiscovered: 'V_{bola} = \\dfrac{4 \\times \\pi \\times r^3}{3}',
 
     // v2.x
     introductionMessages: [
       {
-        message: 'Pernahkah kamu bertanya-tanya, bagaimana sih menghitung volume benda bola?',
-        reply: 'Memang bagaimana?',
+        message: 'Pernahkah kamu berpikir bagaimana cara menentukan volume bola?',
+        reply: 'Iya, bagaimana caranya?',
       },
       {
-        message: 'Jika kamu ingin tahu, kita dapat mempelajarinya!',
-        reply: 'Baiklah',
+        message: 'Jika kamu ingin tahu, kita dapat mempelajarinya bersama-sama!',
+        reply: 'Yuk kita pelajari!',
       },
       {
-        message: 'Carilah benda bola di sekitarmu seperti bola sepak, kelereng, atau balon.',
-        reply: 'Baik, sudah',
+        message: 'Pertama-tama carilah benda berbentuk bola di sekitarmu seperti kelereng, bola, atau semangka',
+        reply: 'Sudah',
       },
       {
-        message: 'Langkah selanjutnya, kita akan melakukan observasi dan mencari tahu bagaimana sih volume benda tersebut dihitung',
-        reply: 'OK, Mulai saja!',
+        message: 'Langkah selanjutnya, kita akan melakukan observasi dan mencari tahu cara menghitung volume bola',
+        reply: 'Mulai!',
       },
     ],
   },
@@ -119,7 +120,7 @@ export const MATH_SYMBOLS: MathSymbol[] = [
   {
     symbol: 'r',
     code: 'r',
-    title: 'Radius',
+    title: 'Jari-Jari',
     defaultValue: 14,
   },
   {

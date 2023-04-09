@@ -137,7 +137,7 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 {/* Form */}
                 <form className="w-inherit p-4" onSubmit={handleSubmit}>
                     <div className="grid grid-cols-1 gap-4">
-                        <Message messages={['Sebelumnya, ukurlah objek yang kamu amati kemudian catatlah hasil pengukuranmu!']} />
+                        <Message message="Ukurlah objek yang kamu amati lalu catatlah hasil pengukuranmu!" />
 
                         <Note>
                             <>Klik ikon <MdOutlineSwitchCamera className="inline-flex text-primary text-lg mx-0.5" /> untuk mengukur menggunakan kamera</>
@@ -181,9 +181,7 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
                         </div>
                         {isFormFilled() && (
                             <Message
-                                messages={[
-                                    `Dari volume ${shape.name.toLowerCase()} yang diperoleh, yuk kita temukan bagaimana cara menghitung volume tersebut!`,
-                                ]}
+                                message={`Dari volume ${shape.name.toLowerCase()} yang diperoleh, yuk kita temukan rumus untuk menghitung volume tersebut!`}
                                 button={isSubmitting ? (<Loading.Button />) : (
                                     <button
                                         type="submit"
