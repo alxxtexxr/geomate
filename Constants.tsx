@@ -158,7 +158,7 @@ export const NAVBAR_BOTTOM_MENU = [
     icon: (<AiOutlineScan className="text-3xl" />),
     activeIcon: (<AiOutlineScan className="text-3xl" />),
     title: 'Scanner',
-    href: '/classification',
+    href: '/scanner',
   },
   {
     icon: (<MdOutlineLeaderboard className="text-2xl" />),
