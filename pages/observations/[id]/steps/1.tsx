@@ -9,12 +9,13 @@ import ShapePreview from '../../../../components/ShapePreview';
 import BottomSheet from '../../../../components/BottomSheet';
 import { Message, FormControl, Keyboard, Note } from '../../../../components/Observation';
 import Loading from '../../../../components/Loading';
+import ARMeasurement from '../../../../components/ARMeasurement';
 
 // Constants
 import { KEYBOARD_LAYOUTS } from '../../../../Constants';
 
 // Utils
-import { getShape, getMathSymbol, extractMathSymbolCodes, floorToNearest, getPi } from '../../../../Utils';
+import { getShape, getMathSymbol, extractMathSymbolCodes, getPi } from '../../../../Utils';
 
 // Types
 import type { GetServerSideProps } from 'next';
@@ -41,6 +42,7 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
     const [focusedInputName, setFocusedInputName] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [highlight, setHighlight] = useState<string>();
+    const [measuredInputName, setMeasuredInputName] = useState<string | null>(null);
 
     // Functions
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -162,7 +164,7 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                             setHighlight(e.target.name);
                                         }
                                     }}
-                                // onBlur
+                                    onMeasure={() => setMeasuredInputName(mathSymbolCode)}
                                 />
                             ))}
                             <div className="grid grid-cols-1 gap-4">
@@ -205,6 +207,20 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
                     setFocusedInputName={setFocusedInputName}
                     onChange={handleKeyboardChange}
                     onHide={() => setHighlight(undefined)}
+                />
+            )}
+
+            {/* AR Measurement */}
+            {measuredInputName && (
+                <ARMeasurement
+                    onSubmit={(distance: number) => {
+                        setForm((prevForm) => ({
+                            ...prevForm,
+                            [measuredInputName]: '' + distance,
+                        }));
+                        setMeasuredInputName(null);
+                    }}
+                    onHide={() => setMeasuredInputName(null)}
                 />
             )}
         </main >

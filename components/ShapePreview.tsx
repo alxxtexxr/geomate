@@ -115,7 +115,7 @@ const ShapePreview = ({
 
             {isLivePreviewing && (
                 <ARLivePreview
-                    onClose={() => setIsLivePreviewing(false)}
+                    onHide={() => setIsLivePreviewing(false)}
                     shapeCode={shapeCode}
                     r={r}
                     t={t}

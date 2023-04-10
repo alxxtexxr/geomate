@@ -11,6 +11,7 @@ type Props = {
     suffix?: string | null,
     isCorrect?: boolean | null,
     canMeasure?: boolean,
+    onMeasure?: () => void,
 };
 
 const ObservationFormControl = ({
@@ -19,6 +20,7 @@ const ObservationFormControl = ({
     suffix = null,
     isCorrect = null,
     canMeasure = false,
+    onMeasure,
     ...rest
 }: Props & InputHTMLAttributes<HTMLInputElement>) => (
     <div className="grid grid-cols-3">
@@ -30,6 +32,7 @@ const ObservationFormControl = ({
                 suffix={suffix}
                 isCorrect={isCorrect}
                 canMeasure={canMeasure}
+                onMeasure={onMeasure}
                 {...rest}
             />
         </div>

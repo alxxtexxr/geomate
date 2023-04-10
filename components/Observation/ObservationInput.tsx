@@ -6,12 +6,14 @@ type Props = {
     isCorrect?: boolean | null,
     suffix?: string | null,
     canMeasure?: boolean,
+    onMeasure?: () => void,
 };
 
 const ObservationInput = ({
     isCorrect,
     suffix = null,
     canMeasure = false,
+    onMeasure,
     ...rest
 }: Props & InputHTMLAttributes<HTMLInputElement>) => {
     const inputCx = isCorrect !== null ? (isCorrect ? 'input-primary' : 'input-error') : '';
@@ -27,7 +29,11 @@ const ObservationInput = ({
                     {...rest}
                 />
                 {canMeasure && (
-                    <button type="button" className="absolute right-0 btn btn-toggle ml-2">
+                    <button
+                        type="button"
+                        className="absolute right-0 btn btn-toggle ml-2"
+                        onClick={onMeasure}
+                    >
                         <MdOutlineSwitchCamera className="text-2xl" />
                     </button>
                 )}

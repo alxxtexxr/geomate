@@ -30,8 +30,8 @@ type WindowSize = {
 }
 
 
-const WIDTH = 384;
-const HEIGHT = 288
+// const WIDTH = 384;
+// const HEIGHT = 288;
 
 // Hook
 const useWindowSize = () => {
@@ -103,8 +103,8 @@ const Scanner: ComponentWithAuth = () => {
             const y = prediction.box[1];
             const w = (prediction.box[2] - prediction.box[0]);
             const h = (prediction.box[3] - prediction.box[1]);
-            const xCenter = x + (w / 2)
-            const yCenter = y + (h / 2)
+            const xCenter = x + (w / 2);
+            const yCenter = y + (h / 2);
             const r = 24;
 
             ctx.strokeStyle = 'white';
@@ -309,6 +309,6 @@ const Scanner: ComponentWithAuth = () => {
     );
 };
 
-Scanner.auth = false;
+Scanner.auth = true;
 
 export default Scanner;
