@@ -1,4 +1,4 @@
-import { MdOutlineHome, MdInfoOutline, MdOutlineLeaderboard, MdOutlinePersonOutline, MdHome, MdLeaderboard, MdPerson, MdInfo } from 'react-icons/md';
+import { MdOutlineHome, MdOutlineArticle, MdOutlineLeaderboard, MdOutlinePersonOutline, MdHome, MdLeaderboard, MdPerson, MdArticle } from 'react-icons/md';
 import { AiOutlineScan } from 'react-icons/ai'
 
 // Types
@@ -149,10 +149,10 @@ export const NAVBAR_BOTTOM_MENU = [
     href: '/',
   },
   {
-    icon: (<MdInfoOutline className="text-2xl" />),
-    activeIcon: (<MdInfo className="text-2xl" />),
-    title: 'Pengantar',
-    href: '/guides',
+    icon: (<MdOutlineArticle className="text-2xl" />),
+    activeIcon: (<MdArticle className="text-2xl" />),
+    title: 'Evaluasi',
+    href: '/evaluations',
   },
   {
     icon: (<AiOutlineScan className="text-3xl" />),
