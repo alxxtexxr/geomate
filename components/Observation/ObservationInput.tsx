@@ -26,6 +26,7 @@ const ObservationInput = ({
                 <input
                     type="text"
                     className={`input input-bordered font-mono w-full ${inputCx}`}
+                    readOnly
                     {...rest}
                 />
                 {canMeasure && (

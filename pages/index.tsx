@@ -66,7 +66,7 @@ const Home: ComponentWithAuth<Props> = ({ menu }) => {
 					<div className="flex bg-white p-6 rounded-2xl shadow-sm shadow-blue-800/20">
 						<MdInfo className="text-primary text-2xl mr-4" />
 						<span className="font-medium text-gray-800">
-							Pengantar
+							Petunjuk
 						</span>
 					</div>
 				</Link>

@@ -18,11 +18,11 @@ const Guides: ComponentWithAuth = () => {
     return (
         <main className="bg-base-100 w-inherit min-h-screen">
             <Head>
-                <title>Pengantar | {process.env.NEXT_PUBLIC_APP_NAME}</title>
+                <title>Petunjuk | {process.env.NEXT_PUBLIC_APP_NAME}</title>
             </Head>
 
             <Navbar.Top
-                title="Pengantar"
+                title="Petunjuk"
                 leftButton={(
                     <button type="button" className="btn btn-circle btn-ghost" onClick={router.back}>
                         <MdArrowBack className="text-2xl" />

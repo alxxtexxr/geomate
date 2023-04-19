@@ -326,6 +326,7 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                                 value={form.comparisonVFormula}
                                                 onChange={handleChange}
                                                 onFocus={handleFocus}
+                                                readOnly
                                             />
                                             {(nOps[shape.code]).split('').map((c, i) => (
                                                 <div className="mx-0.5" key={i}>
@@ -374,6 +375,7 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                                                     value={(form as FormValues)[name] || ''}
                                                                     onChange={handleChange}
                                                                     onFocus={handleFocus}
+                                                                    readOnly
                                                                 />
                                                             );
                                                         } else {
@@ -414,6 +416,7 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                                 value={form.n}
                                                 onChange={handleChange}
                                                 onFocus={handleFocus}
+                                                readOnly
                                             />
                                         </div>
                                     </div>
@@ -445,6 +448,7 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                                     value={form.vFormulaA}
                                                     onChange={handleChange}
                                                     onFocus={handleFocus}
+                                                    readOnly
                                                 />
                                             )}
                                             inputB={(
@@ -455,6 +459,7 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                                     value={form.vFormulaB}
                                                     onChange={handleChange}
                                                     onFocus={handleFocus}
+                                                    readOnly
                                                 />
                                             )}
                                         />
@@ -487,6 +492,7 @@ const ObservationStep4: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                                                         value={(form as FormValues)[name] || ''}
                                                                         onChange={handleChange}
                                                                         onFocus={handleFocus}
+                                                                        readOnly
                                                                     />
                                                                 );
                                                             } else {

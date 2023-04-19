@@ -318,6 +318,7 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                                                         value={(form as FormValues)[name] || ''}
                                                                         onChange={handleChange}
                                                                         onFocus={handleFocus}
+                                                                        readOnly
                                                                     />
                                                                 );
                                                             } else {
@@ -368,6 +369,7 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                                                                 value={(form as FormValues)[name] || ''}
                                                                                 onChange={handleChange}
                                                                                 onFocus={handleFocus}
+                                                                                readOnly
                                                                             />
                                                                         );
                                                                     } else {
@@ -424,6 +426,7 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                                                                             value={(form as FormValues)[name] || ''}
                                                                                             onChange={handleChange}
                                                                                             onFocus={handleFocus}
+                                                                                            readOnly
                                                                                         />
                                                                                     );
                                                                                 } else {
@@ -485,6 +488,7 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                                                     value={(form as FormValues)[name] || ''}
                                                                     onChange={handleChange}
                                                                     onFocus={handleFocus}
+                                                                    readOnly
                                                                 />
                                                             );
                                                         } else {
@@ -534,6 +538,7 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                                 value={form.v || ''}
                                                 onChange={handleChange}
                                                 onFocus={handleFocus}
+                                                readOnly
                                             />
                                         </div>
                                     </div>

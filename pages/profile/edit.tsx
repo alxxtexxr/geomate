@@ -4,7 +4,7 @@ import ImageUploading from 'react-images-uploading';
 import { MdEdit } from 'react-icons/md';
 
 // Components
-import Navbar from '../../components/Navbar';
+// import Navbar from '../../components/Navbar';
 import Avatar from '../../components/Avatar';
 
 // Types
@@ -34,7 +34,7 @@ const EditProfile: ComponentWithAuth = () => {
 
     return (
         <main>
-            <Navbar.Top title="Edit Profil" backHref="/profile" />
+            {/* <Navbar.Top title="Edit Profil" backHref="/profile" /> */}
             <section className="flex flex-col items-center px-4">
                 <ImageUploading
                     multiple
