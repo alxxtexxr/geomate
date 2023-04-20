@@ -15,6 +15,7 @@ module.exports = {
       },
       aspectRatio: {
         '4/3': '4 / 3',
+        'phone': '393 / 851',
       },
       padding: {
         'space-for-keyboard': '263px',
@@ -59,6 +60,7 @@ module.exports = {
           'secondary': '#C8DFEC',
           'base-100': '#E9EDFE',
           'base-200': '#83B1FE',
+          'error': '#ef4444',
         },
       },
     ],

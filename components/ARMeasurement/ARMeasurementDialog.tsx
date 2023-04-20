@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Text, Plane } from '@react-three/drei';
 
 // Components
-import Button from './XRMeasurementDialogButton';
+import Button from './ARMeasurementDialogButton';
 
 // Types
 type Props = {

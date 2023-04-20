@@ -2,25 +2,27 @@ import { useRef, useState, useEffect, FormEvent, ChangeEvent, FocusEvent } from 
 import Head from 'next/head'
 import Router from 'next/router';
 import { Parser } from 'expr-eval';
+import { MdOutlineSwitchCamera } from 'react-icons/md';
 
 // Components
 import ShapePreview from '../../../../components/ShapePreview';
 import BottomSheet from '../../../../components/BottomSheet';
-import { Message, FormControl, Keyboard } from '../../../../components/Observation';
+import { Message, FormControl, Keyboard, Note } from '../../../../components/Observation';
 import Loading from '../../../../components/Loading';
+import ARMeasurement from '../../../../components/ARMeasurement';
 
 // Constants
 import { KEYBOARD_LAYOUTS } from '../../../../Constants';
 
 // Utils
-import { getShape, getMathSymbol, extractMathSymbolCodes, roundToNearest } from '../../../../Utils';
+import { getShape, getMathSymbol, extractMathSymbolCodes, getPi } from '../../../../Utils';
 
 // Types
 import type { GetServerSideProps } from 'next';
 import type { Observation } from '@prisma/client';
 import type ComponentWithAuth from '../../../../types/ComponentWithAuth';
 import type Shape from '../../../../types/Shape';
-import ObservationFormValues from '../../../../types/ObservationFormValues';
+import type ObservationFormValues from '../../../../types/ObservationFormValues';
 
 type Props = {
     observation: Observation,
@@ -33,13 +35,14 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
 
     // States
     const [form, setForm] = useState<ObservationFormValues>({
-        r: '' + getMathSymbol('r').defaultValue,
-        t: '' + getMathSymbol('t').defaultValue,
+        r: '',
+        t: '',
         v: '',
     });
     const [focusedInputName, setFocusedInputName] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [highlight, setHighlight] = useState<string>();
+    const [measuredInputName, setMeasuredInputName] = useState<string | null>(null);
 
     // Functions
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -104,10 +107,10 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
     useEffect(() => {
         // Calculate the volume
         const previousV = form.v;
-        const newV = roundToNearest(Parser.evaluate(shape.vFormula, {
+        const newV = Parser.evaluate(shape.vFormulaRounded, {
             ...form,
-            pi: 3.14,
-        }), 0.005).toFixed(1);
+            pi: getPi(+form.r),
+        }).toFixed(2);
 
         if (newV !== previousV) {
             setForm({
@@ -123,38 +126,36 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 <title>Observasi (1/4) | {process.env.NEXT_PUBLIC_APP_NAME}</title>
             </Head>
 
-            <div className="sticky top-0 z-10 rounded-b-2xl border-shadow-b overflow-hidden">
-                <div className="bg-black rounded-b-2xl overflow-hidden">
-                    <ShapePreview
-                        shapeCode={shape.code}
-                        r={+form.r || 0}
-                        t={+form.t || 0}
-                        highlight={highlight}
-                    />
-                </div>
-
-                {/* Message */}
-                <div className="flex bg-white bg-opacity-95 p-4">
-                    <Message>
-                        Catatlah hasil observasimu pada form di bawah ini!
-                    </Message>
-                </div>
+            <div className="sticky top-0 z-10 bg-black rounded-b-2xl overflow-hidden">
+                <ShapePreview
+                    shapeCode={shape.code}
+                    r={+form.r || 1}
+                    t={+form.t || 1}
+                    highlight={highlight}
+                />
             </div>
 
             <BottomSheet className="w-inherit">
                 {/* Form */}
                 <form className="w-inherit p-4" onSubmit={handleSubmit}>
                     <div className="grid grid-cols-1 gap-4">
+                        <Message message="Ukurlah objek yang kamu amati lalu catatlah hasil pengukuranmu!" />
+
+                        <Note>
+                            <>Klik ikon <MdOutlineSwitchCamera className="inline-flex text-primary text-lg mx-0.5" /> untuk mengukur menggunakan kamera</>
+                        </Note>
+
                         {/* Inputs */}
                         <div className="grid grid-cols-1 gap-2">
                             {vMathSymbolCodes.map((mathSymbolCode) => (
                                 <FormControl
                                     key={mathSymbolCode}
-                                    title={getMathSymbol(mathSymbolCode).title}
+                                    label={getMathSymbol(mathSymbolCode).title}
                                     symbol={mathSymbolCode}
                                     suffix="cm"
                                     canMeasure
                                     name={mathSymbolCode}
+                                    placeholder="?"
                                     value={(form as ObservationFormValues)[mathSymbolCode]}
                                     onChange={handleChange}
                                     onFocus={(e) => {
@@ -163,30 +164,35 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
                                             setHighlight(e.target.name);
                                         }
                                     }}
-                                // onBlur
+                                    onMeasure={() => setMeasuredInputName(mathSymbolCode)}
                                 />
                             ))}
-                            <hr className="border-gray-300" />
-                            <FormControl
-                                title="Volume"
-                                symbol="v"
-                                suffix="cm²"
-                                value={form.v}
-                                disabled
-                            />
+                            <div className="grid grid-cols-1 gap-4">
+                                <hr className="border-gray-300" />
+                                <Note>
+                                    Berdasarkan hasil pengukuranmu, diperoleh:
+                                </Note>
+                                <FormControl
+                                    label={`Volume ${shape.name}`}
+                                    symbol="V"
+                                    suffix="cm²"
+                                    value={form.v}
+                                    disabled
+                                />
+                            </div>
                         </div>
-                    </div>
-
-                    {/* Button */}
-                    <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 bg-white bg-opacity-95 w-inherit p-4 rounded-t-2xl">
-                        {isSubmitting ? (<Loading.Button />) : (
-                            <button
-                                type="submit"
-                                className="btn btn-primary btn-block"
-                                disabled={!isFormFilled()}
-                            >
-                                Selanjutnya
-                            </button>
+                        {isFormFilled() && (
+                            <Message
+                                message={`Dari volume ${shape.name.toLowerCase()} yang diperoleh, yuk kita temukan rumus untuk menghitung volume tersebut!`}
+                                button={isSubmitting ? (<Loading.Button />) : (
+                                    <button
+                                        type="submit"
+                                        className="btn btn-primary btn-block"
+                                        disabled={!isFormFilled()}
+                                    >
+                                        Selanjutnya
+                                    </button>
+                                )} />
                         )}
                     </div>
                 </form>
@@ -201,6 +207,20 @@ const ObservationStep1: ComponentWithAuth<Props> = ({ observation, shape }) => {
                     setFocusedInputName={setFocusedInputName}
                     onChange={handleKeyboardChange}
                     onHide={() => setHighlight(undefined)}
+                />
+            )}
+
+            {/* AR Measurement */}
+            {measuredInputName && (
+                <ARMeasurement
+                    onSubmit={(distance: number) => {
+                        setForm((prevForm) => ({
+                            ...prevForm,
+                            [measuredInputName]: '' + distance,
+                        }));
+                        setMeasuredInputName(null);
+                    }}
+                    onHide={() => setMeasuredInputName(null)}
                 />
             )}
         </main >

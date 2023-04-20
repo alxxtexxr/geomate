@@ -2,18 +2,20 @@ import { useRef, useState, FormEvent, ChangeEvent, FocusEvent, useEffect } from 
 import Head from 'next/head'
 import Router from 'next/router';
 import { Parser } from 'expr-eval';
+import katex from 'katex';
 
 // Components
 import ShapePreview from '../../../../components/ShapePreview';
 import BottomSheet from '../../../../components/BottomSheet';
-import { Message, FormControl, Keyboard } from '../../../../components/Observation';
+import { Message, FormControl, Label, Input, InputOp, InputFraction, Keyboard } from '../../../../components/Observation';
 import Loading from '../../../../components/Loading';
+import Note from '../../../../components/Observation/ObservationNote';
 
 // Constants
 import { KEYBOARD_LAYOUTS, SHAPE_PREVIEW_DEFAULT_HEIGHT } from '../../../../Constants';
 
 // Utils
-import { getShape, formatFormula, checkFormula, roundToNearest } from '../../../../Utils';
+import { getShape, formatFormula, checkFormula, floorToNearest, getPiString, extractFormulaFractionParts } from '../../../../Utils';
 
 // Types
 import type { GetServerSideProps } from 'next';
@@ -30,7 +32,23 @@ type Props = {
 
 type FormValues = { [key: string]: string | number | null };
 
+const MESSAGE_MAP: { [key: string]: string | string[] } = {
+    cylinder: 'Untuk menemukan rumus volume tabung, pertama kita perlu mencari luas alasnya terlebih dahulu',
+    cone: [
+        'Untuk menemukan rumus volume kerucut, kita dapat memanfaatkan rumus volume tabung yang telah kamu pelajari.',
+        'Dengan rumus tersebut, yuk kita hitung terlebih dahulu volume tabung dengan jari-jari dan tinggi yang sama dengan kerucut sebelumnya',
+    ],
+    sphere: [
+        'Untuk menghitung volume bola, kita bisa memanfaatkan rumus volume kerucut yang telah kamu pelajari.',
+        'Dengan rumus tersebut, yuk kita hitung terlebih dahulu volume kerucut dengan tinggi yang harus sama dengan jari-jarinya, sehingga t = r',
+    ]
+};
+
 const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
+    // Define Pi value
+    const piString = getPiString(observation.r);
+    const pi = Parser.evaluate(piString)
+
     // Define comparisonShape
     const comparisonShapeCodes: { [key: string]: ShapeCode | null } = {
         cylinder: null,
@@ -42,44 +60,69 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
     const comparisonShapeFormula = shape.code === 'cylinder'
         ? 'pi*r^2' // The formula of area of a circle
         : (comparisonShape && comparisonShape.vFormula)
+    const comparisonShapeFormulaRounded = shape.code === 'cylinder'
+        ? 'roundTo(roundTo(pi*r^2,2),2)' // The formula of area of a circle
+        : (comparisonShape && comparisonShape.vFormulaRounded)
     const comparisonShapeFormulaToFormat = shape.code === 'sphere'
-        ? '1/3*pi*r^3'
+        ? 'pi*r^3'
         : comparisonShapeFormula
+    const comparisonShapeFormulaFractionParts = shape.code === 'sphere' && comparisonShapeFormula
+        ? extractFormulaFractionParts(comparisonShapeFormula)
+        : undefined;
+    const comparisonShapeFormulaA = comparisonShapeFormulaFractionParts !== undefined
+        ? comparisonShapeFormulaFractionParts[0].replaceAll(' ', '').replaceAll('*', ' * ').replaceAll('^', ' ^').split(' ')
+        : undefined;
 
     // Define correct values
     const correctValues = {
+        baseShape: 'lingkaran',
         formula: comparisonShapeFormula && formatFormula(comparisonShapeFormula),
         r: observation.r,
+        r2: observation.r,
+        r3: observation.r,
         t: observation.t,
-        v: comparisonShapeFormula && roundToNearest(+Parser.evaluate(comparisonShapeFormula, {
-            pi: 3.14,
+        v: comparisonShapeFormulaRounded && Parser.evaluate(comparisonShapeFormulaRounded, {
+            pi: pi,
             r: observation.r || 0,
             t: shape.code === 'sphere' ? observation.r || 0 : observation.t || 0,
-        }), 0.005).toFixed(2),
+        }).toFixed(2),
+        sphereT: 'r',
     };
 
     // Configure keyboard
     const keyboardRef = useRef(null);
     const keyboardLayouts: { [key: string]: KeyboardLayoutObject } = {
+        baseShape: KEYBOARD_LAYOUTS.alphabetic,
         formula: KEYBOARD_LAYOUTS.formula,
         r: KEYBOARD_LAYOUTS.numeric,
+        r2: KEYBOARD_LAYOUTS.numeric,
+        r3: KEYBOARD_LAYOUTS.numeric,
         t: KEYBOARD_LAYOUTS.numeric,
         v: KEYBOARD_LAYOUTS.numeric,
+        sphereT: KEYBOARD_LAYOUTS.alphabeticFormula,
     };
 
     // States
     const [form, setForm] = useState<ObservationFormValues>({
+        baseShape: '',
         formula: '',
         r: '',
+        r2: '',
+        r3: '',
         t: '',
         v: '',
+        sphereT: '',
     });
     const [focusedInputName, setFocusedInputName] = useState<string | null>(null);
     const [isInputCorrect, setIsInputCorrect] = useState({
+        baseShape: false,
         formula: false,
         r: false,
         t: false,
         v: false,
+        sphereT: false,
+        r2: false,
+        r3: false,
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [highlight, setHighlight] = useState<string>();
@@ -106,19 +149,29 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
     };
 
     const updateForm = (name: string, value: string) => {
-        // Check if formula is correct
-        if (correctValues.formula && name === 'formula') {
-            // console.log(name, value, '=', correctValues.formula)
-            setIsInputCorrect({
-                ...isInputCorrect,
-                formula: checkFormula(value, correctValues.formula),
-            });
-        } else {
-            console.log(name, value, '=', (correctValues as { [key: string]: string | number })[name])
-            setIsInputCorrect({
-                ...isInputCorrect,
-                [name]: +value === +(correctValues as { [key: string]: string | number })[name],
-            });
+        switch (name) {
+            case 'baseShape':
+            case 'sphereT':
+                console.log(name, value.toLowerCase(), correctValues[name])
+                setIsInputCorrect({
+                    ...isInputCorrect,
+                    [name]: value.toLowerCase() === correctValues[name],
+                });
+                break;
+            case 'formula':
+                if (correctValues.formula) {
+                    setIsInputCorrect({
+                        ...isInputCorrect,
+                        formula: checkFormula(value, correctValues.formula),
+                    });
+                }
+                break;
+            default:
+                console.log(name, +value, +(correctValues as { [key: string]: string | number })[name])
+                setIsInputCorrect({
+                    ...isInputCorrect,
+                    [name]: +value === +(correctValues as { [key: string]: string | number })[name],
+                });
         }
 
         setForm({
@@ -156,11 +209,13 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
 
     const isFormulaFilled = (formula: string) => {
         let filteredFormula = formula?.replaceAll('pi', '')
-        if (shape.code === 'sphere') { filteredFormula = filteredFormula?.replaceAll('t', '') }
+
+        if (shape.code === 'sphere') {
+            filteredFormula += ' sphereT r2 r3';
+            filteredFormula = filteredFormula?.replaceAll('t', '')
+        }
 
         const abcMathSymbols = filteredFormula?.match(/[a-zA-Z]+/g);
-
-        console.log(abcMathSymbols);
 
         const filteredIsInputCorrect = Object.fromEntries(
             Object.entries(isInputCorrect).filter(([key]) => abcMathSymbols?.includes(key))
@@ -169,7 +224,7 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
         return Object.values(filteredIsInputCorrect).every((v) => v);
     }
 
-    const isAllInputCorrect = () => isFormulaFilled(`v = ${comparisonShapeFormula}`);
+    const isAllInputCorrect = () => isFormulaFilled(`v ${comparisonShapeFormula}`);
 
     return (
         <main className="w-inherit h-screen bg-white">
@@ -177,130 +232,317 @@ const ObservationStep2: ComponentWithAuth<Props> = ({ observation, shape }) => {
                 <title>Observasi (2/4) | {process.env.NEXT_PUBLIC_APP_NAME}</title>
             </Head>
 
-            <div className="sticky top-0 z-10 rounded-b-2xl border-shadow-b overflow-hidden">
-                <div className="bg-black rounded-b-2xl overflow-hidden">
-                    {comparisonShapeCode && (
-                        <ShapePreview
-                            height={SHAPE_PREVIEW_DEFAULT_HEIGHT / 2}
-                            shapeCode={shape.code}
-                            r={observation.r || 0}
-                            t={observation.t || 0}
-                            highlight={highlight}
-                        />
-                    )}
-
+            <div className="sticky top-0 z-10 bg-black rounded-b-2xl overflow-hidden">
+                {comparisonShapeCode && (
                     <ShapePreview
-                        // Kek, this one is horrifying
-                        // It will multiply 136 by 2 if 'comparisonShapeCode' is null
-                        // Else it will multiply 136 by 1
-                        height={SHAPE_PREVIEW_DEFAULT_HEIGHT / 2 * -(+!!comparisonShapeCode - 2)}
-                        shapeCode={comparisonShapeCode || shape.code}
-                        r={+form.r || 0}
-                        t={shape.code === 'sphere' ? +form.r : +form.t || 0}
+                        height={SHAPE_PREVIEW_DEFAULT_HEIGHT / 2}
+                        shapeCode={shape.code}
+                        r={observation.r || 0}
+                        t={observation.t || 0}
                         highlight={highlight}
                     />
-                </div>
-
-                {/* Message */}
-                <div className="flex bg-white bg-opacity-95 p-4">
-                    <Message>
-                        Catatlah hasil observasimu pada form di bawah ini!
-                    </Message>
-                </div>
+                )}
+                <ShapePreview
+                    // Kek, this one is horrifying
+                    // It will multiply 136 by 2 if 'comparisonShapeCode' is null
+                    // Else it will multiply 136 by 1
+                    height={SHAPE_PREVIEW_DEFAULT_HEIGHT / 2 * -(+!!comparisonShapeCode - 2)}
+                    shapeCode={comparisonShapeCode || shape.code}
+                    r={+form.r || 0}
+                    t={shape.code === 'sphere' ? +form.r : +form.t || 0}
+                    highlight={highlight}
+                />
             </div>
 
             <BottomSheet className="w-inherit">
                 {/* Form */}
                 <form className="w-inherit pt-4 px-4 pb-space-for-keyboard" onSubmit={handleSubmit}>
                     <div className="grid grid-cols-1 gap-4">
+                        <Message message={MESSAGE_MAP[shape.code]} />
 
                         {/* Inputs */}
                         <div className="grid grid-cols-1 gap-2">
-                            {/* formula Input */}
-                            <FormControl
-                                title={shape.code === 'cylinder' ? 'Luas Lingkaran' : (comparisonShape ? `Volume ${comparisonShape.name}` : 'Volume')}
-                                symbol={shape.code === 'cylinder' ? 'a' : 'v2'}
-                                isCorrect={isInputCorrect.formula}
-                                name="formula"
-                                placeholder={shape.code === 'cylinder' ? 'Rumus L. Lingkaran' : (comparisonShape ? `Rumus V. ${comparisonShape.name}` : '')}
-                                value={form.formula}
-                                onChange={handleChange}
-                                onFocus={handleFocus}
-                            />
+                            {/* baseShape Input */}
+                            {shape.code === 'cylinder' && (
+                                <FormControl
+                                    label="Bentuk Alas"
+                                    symbol="●"
+                                    isCorrect={isInputCorrect.baseShape}
+                                    name="baseShape"
+                                    placeholder="?"
+                                    value={form.baseShape}
+                                    onChange={handleChange}
+                                    onFocus={handleFocus}
+                                />
+                            )}
 
-                            {isInputCorrect.formula && shape.code === 'sphere' && (
+                            {/* formula Input */}
+                            {((shape.code === 'cylinder' && isInputCorrect.baseShape) || shape.code === 'cone') && (
+                                <FormControl
+                                    label={shape.code === 'cylinder' ? 'Luas Lingkaran' : (comparisonShape ? `Volume ${comparisonShape.name}` : 'Volume')}
+                                    symbol={shape.code === 'cylinder' ? 'L' : 'V2'}
+                                    isCorrect={isInputCorrect.formula}
+                                    name="formula"
+                                    placeholder={shape.code === 'cylinder' ? 'Rumus L. Lingkaran' : (comparisonShape ? `Rumus V. ${comparisonShape.name}` : '')}
+                                    value={form.formula}
+                                    onChange={handleChange}
+                                    onFocus={handleFocus}
+                                />
+                            )}
+
+                            {/* {console.log(formulaFractionParts)} */}
+                            {shape.code === 'sphere' && (
                                 <>
-                                    <FormControl
-                                        name="correctedFormula"
-                                        placeholder={comparisonShape ? `Rumus V. ${comparisonShape.name}` : ''}
-                                        value="1/3×π×r²×(r)"
-                                        disabled
-                                    />
-                                    <FormControl
-                                        name="correctedFormula"
-                                        placeholder={comparisonShape ? `Rumus V. ${comparisonShape.name}` : ''}
-                                        value="1/3×π×r³"
-                                        disabled
-                                    />
+                                    <div className="grid grid-cols-3">
+                                        <Label symbol="V2">
+                                            Volume Kerucut
+                                        </Label>
+                                        <div className="col-span-2">
+                                            <InputFraction
+                                                inputA={(
+                                                    <div className="flex items-center font-mono text-base">
+                                                        {comparisonShapeFormulaA !== undefined && comparisonShapeFormulaA.map((mathSymbol, i) => {
+                                                            const formattedMathSymbol = formatFormula(mathSymbol);
+                                                            if (formattedMathSymbol === 't') {
+                                                                const name = 'sphereT';
+
+                                                                const isCorrect = (isInputCorrect as { [key: string]: boolean })[name]
+                                                                const isCorrectCx = isCorrect ? 'input-primary' : 'input-error';
+
+                                                                return (
+                                                                    <input
+                                                                        key={i}
+                                                                        className={`input input-bordered flex-grow w-16 mx-0.5 ${isCorrectCx}`}
+                                                                        placeholder="t"
+                                                                        name={name}
+                                                                        value={(form as FormValues)[name] || ''}
+                                                                        onChange={handleChange}
+                                                                        onFocus={handleFocus}
+                                                                        readOnly
+                                                                    />
+                                                                );
+                                                            } else {
+                                                                return (
+                                                                    <div
+                                                                        key={i}
+                                                                        className="mx-0.5"
+                                                                    >
+                                                                        {formattedMathSymbol}
+                                                                    </div>
+                                                                )
+                                                            }
+                                                        })}
+                                                    </div>
+                                                )}
+                                                inputB={(
+                                                    <input
+                                                        className="input input-bordered w-full"
+                                                        value="3"
+                                                        disabled
+                                                    />
+                                                )}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {isInputCorrect.sphereT && (
+                                        <>
+                                            <InputOp>=</InputOp>
+                                            <div className="grid grid-cols-3">
+                                                <div className="col-span-2 col-start-2">
+                                                    <InputFraction
+                                                        inputA={(
+                                                            <div className="flex items-center font-mono text-base">
+                                                                {comparisonShapeFormulaA !== undefined && comparisonShapeFormulaA.map((mathSymbol, i) => {
+                                                                    const formattedMathSymbol = formatFormula(mathSymbol);
+                                                                    if (/[a-zA-Z]/.test(formattedMathSymbol)) {
+                                                                        const name = 'r' + (i === comparisonShapeFormulaA.indexOf('r') ? 2 : 3);
+                                                                        const isCorrect = (isInputCorrect as { [key: string]: boolean })[name];
+                                                                        const isCorrectCx = isCorrect ? 'input-primary' : 'input-error';
+
+                                                                        return (
+                                                                            <input
+                                                                                key={i}
+                                                                                className={`input input-bordered flex-grow w-16 mx-0.5 ${isCorrectCx}`}
+                                                                                placeholder="r"
+                                                                                name={name}
+                                                                                value={(form as FormValues)[name] || ''}
+                                                                                onChange={handleChange}
+                                                                                onFocus={handleFocus}
+                                                                                readOnly
+                                                                            />
+                                                                        );
+                                                                    } else {
+                                                                        return (
+                                                                            <div
+                                                                                key={i}
+                                                                                className="mx-0.5"
+                                                                            >
+                                                                                {formattedMathSymbol}
+                                                                            </div>
+                                                                        )
+                                                                    }
+                                                                })}
+                                                            </div>
+                                                        )}
+                                                        inputB={(
+                                                            <input
+                                                                className="input input-bordered w-full"
+                                                                value="3"
+                                                                disabled
+                                                            />
+                                                        )}
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            {(isInputCorrect.r2 && isInputCorrect.r3) && (
+                                                <>
+                                                    <InputOp>=</InputOp>
+                                                    <div className="grid grid-cols-3">
+                                                        <div className="col-span-2 col-start-2">
+                                                            <InputFraction
+                                                                inputA={(
+                                                                    <div className="flex items-center font-mono text-base">
+
+                                                                        {comparisonShapeFormulaToFormat && comparisonShapeFormulaToFormat
+                                                                            .replaceAll(' ', '')
+                                                                            .replaceAll('*', ' * ')
+                                                                            .replaceAll('^', ' ^')
+                                                                            .split(' ')
+                                                                            .map((mathSymbol, i) => {
+                                                                                const formattedMathSymbol = formatFormula(mathSymbol);
+                                                                                if (/[a-zA-Z]/.test(formattedMathSymbol)) {
+                                                                                    const name = 'r';
+                                                                                    const isCorrect = (isInputCorrect as { [key: string]: boolean })[name];
+                                                                                    const isCorrectCx = isCorrect ? 'input-primary' : 'input-error';
+
+                                                                                    return (
+                                                                                        <input
+                                                                                            key={i}
+                                                                                            className={`input input-bordered flex-grow w-16 mx-0.5 ${isCorrectCx}`}
+                                                                                            placeholder="r"
+                                                                                            name={name}
+                                                                                            value={(form as FormValues)[name] || ''}
+                                                                                            onChange={handleChange}
+                                                                                            onFocus={handleFocus}
+                                                                                            readOnly
+                                                                                        />
+                                                                                    );
+                                                                                } else {
+                                                                                    return (
+                                                                                        <div
+                                                                                            key={i}
+                                                                                            className="mx-0.5"
+                                                                                        >
+                                                                                            {formattedMathSymbol}
+                                                                                        </div>
+                                                                                    )
+                                                                                }
+                                                                            })}
+                                                                    </div>
+                                                                )}
+                                                                inputB={(
+                                                                    <input
+                                                                        className="input input-bordered w-full"
+                                                                        value="3"
+                                                                        disabled
+                                                                    />
+                                                                )}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </>
+                                            )}
+                                        </>
+                                    )}
                                 </>
                             )}
 
                             {isInputCorrect.formula && (
-                                <div className="grid grid-cols-3">
-                                    <div className="col-start-2 col-span-2">
-                                        <div className="flex items-center font-mono text-base">
-                                            {comparisonShapeFormulaToFormat && comparisonShapeFormulaToFormat
-                                                .replaceAll(' ', '')
-                                                .replaceAll('*', ' * ')
-                                                .replaceAll('^', ' ^')
-                                                .split(' ')
-                                                .map((mathSymbol, i) => {
-                                                    const formattedMathSymbol = formatFormula(mathSymbol);
-                                                    if (/[a-zA-Z]/.test(formattedMathSymbol)) {
-                                                        const name = shape.code === 'sphere' && formattedMathSymbol === 't' ? 'r' : formattedMathSymbol;
+                                <>
+                                    <InputOp>=</InputOp>
+                                    <div className="grid grid-cols-3">
+                                        <div className="col-start-2 col-span-2">
+                                            <div className="flex items-center font-mono text-base">
+                                                {comparisonShapeFormulaToFormat && comparisonShapeFormulaToFormat
+                                                    .replaceAll(' ', '')
+                                                    .replaceAll('*', ' * ')
+                                                    .replaceAll('^', ' ^')
+                                                    .split(' ')
+                                                    .map((mathSymbol, i) => {
+                                                        const formattedMathSymbol = formatFormula(mathSymbol);
+                                                        if (/[a-zA-Z]/.test(formattedMathSymbol)) {
+                                                            const name = shape.code === 'sphere' && formattedMathSymbol === 't' ? 'r' : formattedMathSymbol;
 
-                                                        const isCorrect = (isInputCorrect as { [key: string]: boolean })[name]
-                                                        const isCorrectCx = isCorrect ? 'input-primary' : 'input-error';
+                                                            const isCorrect = (isInputCorrect as { [key: string]: boolean })[name]
+                                                            const isCorrectCx = isCorrect ? 'input-primary' : 'input-error';
 
 
-                                                        return (
-                                                            <input
-                                                                key={i}
-                                                                className={`input input-bordered flex-grow w-16 mx-0.5 ${isCorrectCx}`}
-                                                                placeholder={shape.code === 'sphere' && formattedMathSymbol === 't' ? '(r)' : formattedMathSymbol}
-                                                                name={name}
-                                                                value={(form as FormValues)[name] || ''}
-                                                                onChange={handleChange}
-                                                                onFocus={handleFocus}
-                                                            />
-                                                        );
-                                                    } else {
-                                                        return (
-                                                            <div
-                                                                key={i}
-                                                                className="mx-0.5"
-                                                            >
-                                                                {formattedMathSymbol}
-                                                            </div>
-                                                        )
-                                                    }
-                                                })}
+                                                            return (
+                                                                <input
+                                                                    key={i}
+                                                                    className={`input input-bordered flex-grow w-16 mx-0.5 ${isCorrectCx}`}
+                                                                    placeholder={shape.code === 'sphere' && formattedMathSymbol === 't' ? '(r)' : formattedMathSymbol}
+                                                                    name={name}
+                                                                    value={(form as FormValues)[name] || ''}
+                                                                    onChange={handleChange}
+                                                                    onFocus={handleFocus}
+                                                                    readOnly
+                                                                />
+                                                            );
+                                                        } else {
+                                                            return (
+                                                                <div
+                                                                    key={i}
+                                                                    className="mx-0.5"
+                                                                >
+                                                                    {formattedMathSymbol}
+                                                                </div>
+                                                            )
+                                                        }
+                                                    })}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                </>
                             )}
 
                             {/* formulaResult Input */}
                             {comparisonShapeFormulaToFormat && isFormulaFilled(comparisonShapeFormulaToFormat) && (
-                                <FormControl
-                                    suffix={`cm${shape.code === 'cylinder' ? '²' : '³'}`}
-                                    name="v"
-                                    isCorrect={isInputCorrect.v}
-                                    placeholder="?"
-                                    value={form.v || ''}
-                                    onChange={handleChange}
-                                    onFocus={handleFocus}
-                                />
+                                <>
+                                    <InputOp>=</InputOp>
+
+                                    <div className="grid grid-cols-3">
+                                        <div className="flex items-center">
+                                            <Note>
+                                                <>
+                                                    Nilai π =
+                                                    {piString === '22/7' ? (
+                                                        <div
+                                                            className="inline-flex text-lg mx-0.5 font-mono"
+                                                            dangerouslySetInnerHTML={{
+                                                                __html: katex.renderToString(piString.replaceAll('22/7', '\\frac{22}{7}'), { throwOnError: false })
+                                                            }}
+                                                        />
+                                                    ) : ' ' + piString}
+                                                </>
+                                            </Note>
+                                        </div>
+                                        <div className="col-span-2">
+                                            <Input
+                                                suffix={`cm${shape.code === 'cylinder' ? '²' : '³'}`}
+                                                name="v"
+                                                isCorrect={isInputCorrect.v}
+                                                placeholder="?"
+                                                value={form.v || ''}
+                                                onChange={handleChange}
+                                                onFocus={handleFocus}
+                                                readOnly
+                                            />
+                                        </div>
+                                    </div>
+                                </>
                             )}
                         </div>
                     </div>

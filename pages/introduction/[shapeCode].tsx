@@ -3,7 +3,9 @@ import { useSession } from 'next-auth/react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Router from 'next/router';
+import Link from 'next/link';
 import Typewriter from 'typewriter-effect';
+import { MdHome, MdChat } from 'react-icons/md';
 
 // Components
 import Navbar from '../../components/Navbar';
@@ -29,9 +31,9 @@ type Message = {
     image?: string,
 };
 
-const Introduction: ComponentWithAuth<Props> = ({ shape }) => {
-    const TYPING_DELAY = 25;
+const TYPEWRITER_DELAY = 25;
 
+const Introduction: ComponentWithAuth<Props> = ({ shape }) => {
     // Session
     const { data: session } = useSession();
 
@@ -40,8 +42,6 @@ const Introduction: ComponentWithAuth<Props> = ({ shape }) => {
     const messagesSubWrapperRef = useRef<HTMLDivElement>(null);
 
     // States
-    // const [step, setStep] = useState(0);
-    const [isLoading, setIsLoading] = useState(false);
     const [isTyping, setIsTyping] = useState(true);
     const [messages, setMessages] = useState<Message[]>([
         {
@@ -51,17 +51,12 @@ const Introduction: ComponentWithAuth<Props> = ({ shape }) => {
         },
     ]);
     const [shouldReverse, setShouldReverse] = useState(false);
+    const [isButtonGroupShowing, setIsButtonGroupShowing] = useState(false);
 
     const isReplyShowing = (messages.length % 2 !== 0 && !isTyping);
 
 
     // Effect
-    const scrollToBottom = () => {
-        if (messagesWrapperRef.current) {
-            messagesWrapperRef.current.scrollTo({ top: messagesWrapperRef.current.scrollHeight })
-        }
-    }
-
     useEffect(() => {
         let intervalId: NodeJS.Timeout;
 
@@ -70,7 +65,7 @@ const Introduction: ComponentWithAuth<Props> = ({ shape }) => {
                 if (messagesSubWrapperRef.current && messagesWrapperRef.current) {
                     setShouldReverse(messagesSubWrapperRef.current.offsetHeight > messagesWrapperRef.current.offsetHeight)
                 }
-            }, TYPING_DELAY * 4);
+            }, TYPEWRITER_DELAY * 4);
         }
 
         return () => {
@@ -80,8 +75,6 @@ const Introduction: ComponentWithAuth<Props> = ({ shape }) => {
 
     // Function
     const startObservation = async () => {
-        setIsLoading(true);
-
         try {
             const res = await fetch(`/api/observations`, {
                 method: 'POST',
@@ -94,7 +87,6 @@ const Introduction: ComponentWithAuth<Props> = ({ shape }) => {
 
             await Router.push(`/observations/${observation.id}/steps/1`);
         } catch (err) {
-            setIsLoading(false);
             console.error(err);
         }
     };
@@ -106,7 +98,16 @@ const Introduction: ComponentWithAuth<Props> = ({ shape }) => {
             </Head>
 
             <div className="fixed z-10 w-inherit bg-base-100 bg-opacity-95">
-                <Navbar.Top title={shape.name} backHref="/" />
+                <Navbar.Top
+                    title={shape.name}
+                    leftButton={(
+                        <Link href="/">
+                            <button className="btn btn-circle btn-ghost">
+                                <MdHome className="text-2xl" />
+                            </button>
+                        </Link>
+                    )}
+                />
             </div>
 
             <div
@@ -115,18 +116,16 @@ const Introduction: ComponentWithAuth<Props> = ({ shape }) => {
             >
                 <div ref={messagesSubWrapperRef} className="grid grid-cols-1 gap-2 px-4 pt-16 pb-38">
                     {messages.map((message, i) => {
-                        // const messageColorBalloon = message.sender === 'mascot' ? 'white' : 'base-200';
                         const isMascot = message.sender === 'mascot';
                         const isUser = message.sender === 'user';
 
                         return (
                             <div className="grid grid-cols-12 gap-4" key={i}>
-
                                 <div className="relative col-span-3 w-full aspect-square drop-shadow-md-blue-800">
                                     {isMascot && (
                                         <Image
-                                            src="/images/geo-head.svg"
-                                            alt="Geo"
+                                            src="/images/mascot-head.svg"
+                                            alt={process.env.NEXT_PUBLIC_APP_MASCOT_NAME}
                                             layout="fill"
                                             objectFit="contain"
                                         />
@@ -138,44 +137,45 @@ const Introduction: ComponentWithAuth<Props> = ({ shape }) => {
                                     position={isMascot ? 'tl' : 'tr'}
                                     className="col-span-8 flex-grow text-gray-600 text-sm shadow-sm shadow-blue-800/10"
                                 >
-                                    <div className="font-semibold mb-2">
-                                        {isMascot ? 'Geo' : session?.user.name}
+                                    <div className="font-semibold mb-1">
+                                        {isMascot ? process.env.NEXT_PUBLIC_APP_MASCOT_NAME : session?.user.name}
                                     </div>
                                     <Typewriter
                                         options={{
-                                            delay: TYPING_DELAY,
+                                            delay: TYPEWRITER_DELAY,
                                             cursor: '',
                                         }}
                                         onInit={(typewriter) => {
                                             let _typewriter = typewriter.typeString(message.message)
 
-                                            console.log({ message });
+                                            // If the message has image, add the image
                                             if (message.image) {
                                                 _typewriter = _typewriter.typeString(`<img class="mt-4 rounded-md" src="${message.image}" />`);
                                             }
 
-                                            _typewriter.callFunction(() => {
-                                                if (isUser) {
-                                                    setIsTyping(true);
+                                            _typewriter
+                                                .callFunction(() => {
+                                                    if (isUser) {
+                                                        setIsTyping(true);
 
-                                                    // If messages are not completed
-                                                    if (Math.ceil(messages.length / 2) < shape.introductionMessages.length) {
-                                                        setMessages([
-                                                            ...messages,
-                                                            {
-                                                                sender: 'mascot',
-                                                                message: shape.introductionMessages[Math.ceil(messages.length / 2)].message,
-                                                            },
-                                                        ]);
-                                                    } else {
-                                                        startObservation();
+                                                        // If messages are not completed
+                                                        if (Math.ceil(messages.length / 2) < shape.introductionMessages.length) {
+                                                            setMessages([
+                                                                ...messages,
+                                                                {
+                                                                    sender: 'mascot',
+                                                                    message: shape.introductionMessages[Math.ceil(messages.length / 2)].message,
+                                                                },
+                                                            ]);
+                                                        } else {
+                                                            startObservation();
+                                                        }
                                                     }
-                                                }
 
-                                                if (isMascot) {
-                                                    setIsTyping(false);
-                                                }
-                                            })
+                                                    if (isMascot) {
+                                                        setIsTyping(false);
+                                                    }
+                                                })
                                                 .start();
                                         }}
                                     />
@@ -186,34 +186,49 @@ const Introduction: ComponentWithAuth<Props> = ({ shape }) => {
                 </div>
             </div >
 
-            <div className="fixed bottom-0 w-inherit grid grid-cols-1 gap-2 bg-white bg-opacity-95 p-4 rounded-t-2xl shadow-md shadow-blue-800/10">
-                {isReplyShowing ? (
+            {isButtonGroupShowing ? (
+                <div className="fixed bottom-0 w-inherit grid grid-cols-1 gap-2 bg-white bg-opacity-95 p-4 rounded-t-2xl shadow-md shadow-blue-800/10">
+                    {isReplyShowing ? (
+                        <button
+                            className="btn btn-primary btn-block"
+                            onClick={() => {
+                                // Add reply to messages
+                                setIsTyping(true);
+
+                                // If messages are not completed
+                                setMessages([
+                                    ...messages,
+                                    {
+                                        sender: 'user',
+                                        message: shape.introductionMessages[Math.ceil(messages.length / 2) - 1].reply,
+                                    }
+                                ]);
+                            }}
+                        >
+                            {shape.introductionMessages[Math.ceil(messages.length / 2) - 1].reply}
+                        </button>
+                    ) : (
+                        <Loading.Button />
+                    )}
                     <button
-                        className="btn btn-primary btn-block"
-                        onClick={() => {
-                            // Add reply to messages
-                            setIsTyping(true);
-
-                            // If messages are not completed
-                            setMessages([
-                                ...messages,
-                                {
-                                    sender: 'user',
-                                    message: shape.introductionMessages[Math.ceil(messages.length / 2) - 1].reply,
-                                }
-                            ]);
-                        }}
+                        type="button"
+                        className="btn btn-ghost-primary btn-block"
+                        onClick={() => setIsButtonGroupShowing(false)}
                     >
-                        {shape.introductionMessages[Math.ceil(messages.length / 2) - 1].reply}
+                        Tutup
                     </button>
-                ) : (
-                    <Loading.Button />
-                )}
-                <button className="btn btn-ghost-primary btn-block">
-                    Tutup
-                </button>
-
-            </div>
+                </div>
+            ) : (
+                <div className="fixed bottom-0 w-inherit flex justify-center items-center py-9">
+                    <button
+                        type="button"
+                        className="btn btn-primary btn-circle btn-lg shadow-md shadow-blue-800/20"
+                        onClick={() => setIsButtonGroupShowing(true)}
+                    >
+                        <MdChat className="text-3xl" />
+                    </button>
+                </div>
+            )}
 
         </main >
     );

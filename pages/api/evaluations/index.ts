@@ -20,8 +20,6 @@ const handle = async (req: NextApiRequest, res: NextApiResponse) => {
                     },
                 });
 
-                // console.log({questions});
-
                 const evaluation = await prisma.evaluation.create({
                     data: {
                         user: { connect: { email: session.user?.email as string } },

@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
-import Router from 'next/router';
+import Link from 'next/link';
 
 // Components
 import Navbar from '../../../components/Navbar';
 import MessageBalloon from '../../../components/MessageBalloon';
 import Formula from '../../../components/Formula';
-import Loading from '../../../components/Loading';
 
 // Utils
 import { getShape, formatFormula } from '../../../Utils';
@@ -16,103 +15,67 @@ import { getShape, formatFormula } from '../../../Utils';
 import type { GetServerSideProps } from 'next';
 import type ComponentWithAuth from '../../../types/ComponentWithAuth';
 import type Shape from '../../../types/Shape';
-import type { Observation, Evaluation } from '@prisma/client';
+import type { Observation } from '@prisma/client';
 
 type Props = {
     observation: Observation,
     shape: Shape,
 };
 
-const ObservationPage: ComponentWithAuth<Props> = ({ observation, shape }) => {
-    // State
-    const [isLoading, setIsLoading] = useState(false);
+const ObservationResult: ComponentWithAuth<Props> = ({ observation, shape }) => (
+    <main className="flex flex-col bg-base-100 min-h-screen">
+        <Head>
+            <title>Hasil Observasi | {process.env.NEXT_PUBLIC_APP_NAME}</title>
+        </Head>
 
-    // Function
-    const startEvaluation = async () => {
-        setIsLoading(true);
+        <Navbar.Top title="Hasil Observasi" />
 
-        try {
-            const body = {
-                shapeCode: shape.code,
-            };
-
-            const res = await fetch(`/api/evaluations/`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(body),
-            });
-            const evaluation: Evaluation = await res.json();
-
-            await Router.push(`/evaluations/${evaluation.id}/no/1`);
-        } catch (err) {
-            setIsLoading(false);
-            console.error(err);
-        }
-    };
-
-    return (
-        <main className="flex flex-col bg-base-100 min-h-screen">
-            <Head>
-                <title>Hasil Observasi | {process.env.NEXT_PUBLIC_APP_NAME}</title>
-            </Head>
-
-            <Navbar.Top title="Hasil Observasi" />
-
-            <div className="flex flex-grow flex-col px-4">
-                <section className="flex flex-grow pb-8">
-                    <MessageBalloon
-                        color="white"
-                        position="b"
-                        size="lg"
-                        className="flex-grow shadow-sm shadow-blue-800/10"
-                    >
-                        <div className="flex flex-col h-full">
-                            <div className="flex flex-grow flex-col items-center text-center px-4">
-                                <div className="relative w-36 h-36 mt-10 mb-10">
-                                    <img src="https://cdn-icons-png.flaticon.com/512/9436/9436122.png" />
-                                </div>
-                                <h2 className="text-gray-800 text-lg font-semibold mb-2">
-                                    Observasi Selesai!
-                                </h2>
-                                <p className="text-gray-600 text-sm mb-6">
-                                    Kamu telah berhasil mempelajari volume {shape.name.toLowerCase()}. Selanjutnya, kamu dapat menguji pengetahuannmu melalui evaluasi.
-                                </p>
-                                <Formula type="primary" className="mb-8">
-                                    Rumus Volume = {formatFormula(shape.vFormula)}
-                                </Formula>
+        <div className="flex flex-grow flex-col px-4">
+            <section className="flex flex-grow pb-8">
+                <MessageBalloon
+                    color="white"
+                    position="b"
+                    size="lg"
+                    className="flex-grow shadow-sm shadow-blue-800/10"
+                >
+                    <div className="flex flex-col h-full">
+                        <div className="flex flex-grow flex-col justify-center items-center text-center px-4">
+                            <div className="relative w-48 h-48 mb-8 mt-6">
+                                <img src="https://cdn-icons-png.flaticon.com/512/3083/3083677.png" />
                             </div>
-
-                            {isLoading ? (
-                                <Loading.Button />
-                            ) : (
-                                <button
-                                    type="button"
-                                    className="btn btn-primary btn-block"
-                                    onClick={startEvaluation}
-                                >
-                                    Evaluasi
-                                </button>
-                            )}
+                            <h2 className="text-gray-800 text-lg font-semibold mb-2">
+                                Observasimu Selesai!
+                            </h2>
+                            <p className="text-gray-600 text-sm mb-6">
+                                Kamu telah berhasil mempelajari volume {shape.name.toLowerCase()}. Selanjutnya, kamu dapat menguji pengetahuannmu melalui latihan.
+                            </p>
+                            <Formula formula={shape.vFormulaDiscovered} type="primary" className="mb-8" />
                         </div>
-                    </MessageBalloon>
-                </section>
 
-                <div className="overflow-hidden">
-                    <div className="relative h-48 -mb-6 filter drop-shadow-md">
-                        <Image
-                            src="/images/geo.svg"
-                            alt="Geo"
-                            layout="fill"
-                            objectFit="contain"
-                        />
+                        <Link href={`/observations/${observation.id}/test/post`}>
+                            <button type="button" className="btn btn-primary btn-block">
+                                Latihan
+                            </button>
+                        </Link>
                     </div>
+                </MessageBalloon>
+            </section>
+
+            <div className="overflow-hidden">
+                <div className="relative h-48 -mb-6 filter drop-shadow-md-blue-800">
+                    <Image
+                        src="/images/mascot.svg"
+                        alt={process.env.NEXT_PUBLIC_APP_MASCOT_NAME}
+                        layout="fill"
+                        objectFit="contain"
+                    />
                 </div>
             </div>
-        </main>
-    );
-};
+        </div>
+    </main>
+);
 
-ObservationPage.auth = true;
+ObservationResult.auth = true;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const headers = context.req.headers;
@@ -127,4 +90,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return { props: { observation, shape } };
 };
 
-export default ObservationPage;
+export default ObservationResult;

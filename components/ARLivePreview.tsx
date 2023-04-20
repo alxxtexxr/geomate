@@ -4,7 +4,7 @@ import {
     useHitTest,
     ARCanvas,
 } from '@react-three/xr';
-import { IoArrowBackOutline } from 'react-icons/io5';
+import { MdClose } from 'react-icons/md';
 
 // Components
 import Overlay from './Overlay';
@@ -52,13 +52,13 @@ const CanvasInner = ({ shapeCode, r, t }: CanvasInnerProps) => {
 };
 
 type Props = CanvasInnerProps & {
-    onClose: () => void,
+    onHide: () => void,
 };
 
-const ARLivePreview = ({ onClose, ...canvasInnerProps }: Props) => (
+const ARLivePreview = ({ onHide, ...canvasInnerProps }: Props) => (
     <Overlay.Black>
-        <button className="btn btn-circle btn-ghost absolute z-10 left-2 top-2" onClick={onClose}>
-            <IoArrowBackOutline className="text-2xl" />
+        <button className="btn btn-circle btn-ghost absolute z-10 left-2 top-2" onClick={onHide}>
+            <MdClose className="text-2xl" />
         </button>
         <div className="relative z-10 px-8">
             <p className="mb-4">Petunjuk cara melihat model 3D bentuk di dunia nyata menggunakan AR:</p>

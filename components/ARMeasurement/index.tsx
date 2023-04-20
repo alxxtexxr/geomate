@@ -8,11 +8,11 @@ import {
 } from '@react-three/xr';
 import { useThree } from '@react-three/fiber';
 import { Ring, Circle, Line } from '@react-three/drei';
-import { IoArrowBackOutline } from 'react-icons/io5';
+import { MdClose } from 'react-icons/md';
 
 // Components
 import Overlay from '../Overlay';
-import Dialog from './XRMeasurementDialog';
+import Dialog from './ARMeasurementDialog';
 
 const Reticle = forwardRef<THREE.Mesh<THREE.BufferGeometry, THREE.Material | THREE.Material[]>>((props, ref) => (
     <mesh ref={ref}>
@@ -155,13 +155,13 @@ const CanvasInner = ({ onSubmit }: CanvasInnerProps) => {
 
 type Props = {
     onSubmit: (distance: number) => void,
-    onClose: () => void,
+    onHide: () => void,
 };
 
-const XRMeasurement = ({ onSubmit, onClose }: Props) => (
+const XRMeasurement = ({ onSubmit, onHide }: Props) => (
     <Overlay.Black>
-        <button className="btn btn-circle btn-ghost absolute z-10 left-2 top-2" onClick={onClose}>
-            <IoArrowBackOutline className="text-2xl" />
+        <button className="btn btn-circle btn-ghost absolute z-10 left-2 top-2" onClick={onHide}>
+            <MdClose className="text-2xl" />
         </button>
         <div className="relative z-10 px-8">
             <p className="mb-4">Petunjuk cara mengukur menggunakan kamera:</p>

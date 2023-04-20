@@ -14,55 +14,68 @@ const handle = async (req: NextApiRequest, res: NextApiResponse) => {
             case 'GET':
                 const observation = await prisma.observation.findUnique({
                     where: { id: id as string },
+                    include: {
+                        postTestQuestion: {
+                            select: {
+                                question: true,
+                                image: true,
+                                answerChoices: true,
+                            },
+                        },
+                    },
                 });
 
                 res.json(observation);
                 break;
             case 'PUT':
                 const {
-                    // nVertices,
-                    // nEdges,
-                    // nFaces,
-                    // nBaseVertices,
-                    // baseA,
-                    // baseT,
-                    // baseS,
                     r,
                     t,
-                    // s,
-                    // la,
-                    // lst,
-                    // ka,
                     v,
-                    // lp,
-                    
-                    // v2.x
                     comparisonV,
                     isCompleted,
+                    postTestAnswer,
                 } = req.body;
 
+                let isPostTestCorrect;
+
+                // If there's post-test answer, check if post-test correct
+                if (postTestAnswer) {
+                    // Get the correct answer of observation post-test question 
+                    const observation = await prisma.observation.findUnique({
+                        where: { id: id as string },
+                        select: {
+                            postTestQuestion: {
+                                select: {
+                                    correctAnswer: true,
+                                }
+                            },
+                        }
+                    });
+
+                    // Throw error if observation doesn't exist
+                    if (!observation) { 
+                        throw new Error('No observation found.'); 
+                    }
+
+                    // Check if post-test correct
+                    console.log(postTestAnswer, observation.postTestQuestion.correctAnswer)
+                    isPostTestCorrect = postTestAnswer === observation.postTestQuestion.correctAnswer;
+                }
+
+                // Update observation
                 const result = await prisma.observation.update({
                     where: { id: id as string },
                     data: {
-                        // nVertices: nVertices,
-                        // nEdges: nEdges,
-                        // nFaces: nFaces,
-                        // nBaseVertices: nBaseVertices,
-                        // baseA: baseA,
-                        // baseT: baseT,
-                        // baseS: baseS,
                         r: r,
                         t: t,
-                        // s: s,
-                        // la: la,
-                        // lst: lst,
-                        // ka: ka,
                         v: v,
-                        // lp: lp,
-
-                        // v2.x
                         comparisonV: comparisonV,
                         isCompleted: isCompleted,
+
+                        // Post-test
+                        postTestAnswer: postTestAnswer,
+                        isPostTestCorrect: isPostTestCorrect,
                     },
                 });
 

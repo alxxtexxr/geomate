@@ -12,7 +12,7 @@
 }
 
 /* Override DaisyUI styles */
-:root, [data-theme] { @apply bg-white }
+:root, [data-theme] { @apply bg-gray-100 }
 
 .btn { @apply rounded-full }
 
@@ -61,6 +61,18 @@
     border-color: hsl(var(--p) / var(--tw-border-opacity));
 }
 
+.input-disabled.input-primary, 
+.input[disabled].input-primary {
+    background-color: rgb(247 250 255) !important;
+    @apply text-primary border-primary !important
+}
+
+.input-disabled.input-error, 
+.input[disabled].input-error {
+    background-color: rgb(254 248 248) !important;
+    @apply text-error border-error !important
+}
+
 .input-disabled, .input[disabled] {
     @apply bg-gray-50 border-gray-200
 }
@@ -70,6 +82,16 @@
 }
 
 .rating input:checked~input { --tw-bg-opacity: 0.36 }
+
+.tooltip {
+    --tooltip-tail: 5px;
+    --tooltip-offset: calc(100% + 6px + var(--tooltip-tail, 0px));
+    --tooltip-tail-offset: calc(100% + 6px - var(--tooltip-tail));
+}
+.tooltip-base {
+    --tooltip-color: hsla(220deg 13.04% 90.98%);
+    --tooltip-text-color: hsl(215deg 13.79% 34.12%);
+}
 
 /* Override React Toastify styles */
 .Toastify__toast-container {
@@ -167,6 +189,7 @@
 
 .message-balloon-l.message-balloon-md::before,
 .message-balloon-tl.message-balloon-md::before,
+.message-balloon-r.message-balloon-md::before,
 .message-balloon-tr.message-balloon-md::before { @apply border-x-8 border-y-6 }
 
 .message-balloon-b.message-balloon-lg::before,
@@ -174,10 +197,13 @@
 .message-balloon-br.message-balloon-lg::before { @apply translate-y-8 border-x-12 border-y-16 }
 
 /* Color */
-.message-balloon-white { @apply bg-white }
+.message-balloon-white, 
+.message-balloon-white-outline { @apply bg-white text-gray-600 }
 .message-balloon-primary { @apply bg-primary text-white }
-.message-balloon-base-100 { @apply bg-base-100 }
+.message-balloon-base-100 { @apply bg-base-100 text-gray-600 }
 .message-balloon-base-200 { @apply bg-base-200 text-white }
+
+.message-balloon-white-outline { @apply border border-gray-300 }
 
 .message-balloon-l.message-balloon-base-100::before,
 .message-balloon-tl.message-balloon-base-100::before { @apply border-r-base-100 }
@@ -188,12 +214,11 @@
 .message-balloon-r.message-balloon-white::before,
 .message-balloon-tr.message-balloon-white::before { @apply border-l-white }
 
-
-
 .message-balloon-b.message-balloon-white::before,
-.message-balloon-bl.message-balloon-white::before {
-    @apply border-t-white
-}
+.message-balloon-bl.message-balloon-white::before { @apply border-t-white }
+
+.message-balloon-l.message-balloon-white-outline::before,
+.message-balloon-tl.message-balloon-white-outline::before { @apply border-r-gray-200 }
 
 .message-balloon-r.message-balloon-primary::before,
 .message-balloon-tr.message-balloon-primary::before { @apply border-l-primary }

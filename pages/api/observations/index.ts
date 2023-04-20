@@ -22,9 +22,25 @@ const handle = async (req: NextApiRequest, res: NextApiResponse) => {
             case 'POST':
                 const { shapeCode } = req.body;
 
+                // Get post-test question for observation
+                const postTestQuestion = await prisma.question.findFirst({
+                    where: {
+                        shapeCode: shapeCode,
+                        // type: { equals: 'post_test_mcq' },
+                        type: 'post_test_mcq',
+                    },
+                });
+
+                // Throw error if post-test question doesn't exist
+                if (!postTestQuestion) { 
+                    throw new Error('No post test question found.'); 
+                }
+
+                // Create new observation with given shape code, post-test question, and user
                 const result = await prisma.observation.create({
                     data: {
                         shapeCode: shapeCode,
+                        postTestQuestion: { connect: { id: postTestQuestion.id } },
                         user: { connect: { email: session.user?.email as string } },
                     },
                 });

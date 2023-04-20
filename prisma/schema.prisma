@@ -35,8 +35,9 @@ enum ShapeCode {
 }
 
 enum QuestionType {
-  multiple_choices
-  essay
+  post_test_mcq
+  evaluation_mcq
+  evaluation_essay
 }
 
 // Models
@@ -94,6 +95,7 @@ model Question {
   type                QuestionType
   answerChoices       AnswerChoice[]
   evaluationQuestions EvaluationQuestion[]
+  observations        Observation[]
 }
 
 model EvaluationQuestion {
@@ -109,12 +111,12 @@ model EvaluationQuestion {
 }
 
 model Evaluation {
-  id          String   @id @default(cuid())
-  shapeCode    ShapeCode
-  score       Int      @default(0)
-  isCompleted Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id          String    @id @default(cuid())
+  shapeCode   ShapeCode
+  score       Int       @default(0)
+  isCompleted Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
   user                User                 @relation(fields: [userId], references: [id])
   userId              String
@@ -124,28 +126,22 @@ model Evaluation {
 }
 
 model Observation {
-  id            String    @id @default(cuid())
-  shapeCode     ShapeCode
-  // image         String?
-  // nVertices     Int?
-  // nEdges        Int?
-  // nFaces        Int?
-  // nBaseVertices Int?
-  // baseA         Float?
-  // baseT         Float?
-  // baseS         Float?
-  r             Float?
-  t             Float?
-  // s             Float?
-  // la            Float?
-  // lst           Float?
-  // ka            Float?
-  v             Float?
-  // lp            Float?
-  comparisonV   Float?
-  isCompleted   Boolean   @default(false)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id        String    @id @default(cuid())
+  shapeCode ShapeCode
+
+  r           Float?
+  t           Float?
+  v           Float?
+  comparisonV Float?
+  isCompleted Boolean @default(false)
+
+  postTestQuestion   Question @relation(fields: [postTestQuestionId], references: [id])
+  postTestQuestionId String
+  postTestAnswer     String?
+  isPostTestCorrect  Boolean?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   user   User   @relation(fields: [userId], references: [id])
   userId String

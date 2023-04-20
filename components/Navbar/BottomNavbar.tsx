@@ -23,11 +23,11 @@ const BottomNavbar = ({ menu }: Props) => {
                 <ul className="flex text-center px-2">
                     {menu.map((menuI, i) => i + 1 === midI ? (
                         <li key={menuI.href} className="flex-none -mt-8 -mx-2">
-                            {/* <Link href={menuI.href}> */}
+                            <Link href={menuI.href}>
                                 <a className="btn btn-primary btn-circle btn-lg shadow-md shadow-blue-800/20">
                                     {menuI.icon}
                                 </a>
-                            {/* </Link> */}
+                            </Link>
                         </li>
                     ) : (
                         <li key={menuI.href} className="flex-1">

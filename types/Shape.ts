@@ -5,6 +5,10 @@ type Shape = {
     name: string,
     description: string,
     vFormula: string,
+    vFormulaRounded: string,
+    vFormulaUndiscovered: string | string[],
+    vFormulaUndiscoveredMathSymbols?: string[],
+    vFormulaDiscovered: string,
 
     // v2.x 
     introductionMessages: { 

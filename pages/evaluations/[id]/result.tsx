@@ -165,8 +165,8 @@ const EvaluationPage: ComponentWithAuth<Props> = ({ evaluation, notifications })
                 <div className="overflow-hidden">
                     <div className="relative h-48 -mb-6 filter drop-shadow-md">
                         <Image
-                            src="/images/geo.svg"
-                            alt="Geo"
+                            src="/images/mascot.svg"
+                            alt={process.env.NEXT_PUBLIC_APP_MASCOT_NAME}
                             layout="fill"
                             objectFit="contain"
                         />
