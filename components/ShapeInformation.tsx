@@ -42,7 +42,7 @@ const ShapeInformation = ({ shapeCode, onHide }: Props) => {
             onClose={_onHide}
             disableDrag
             className="w-full sm:w-96"
-            style={{ left: '50%', transform: 'translateX(-50%)' }}
+            style={{ zIndex: 90, left: '50%', transform: 'translateX(-50%)' }}
         >
             <Sheet.Container>
                 {/* <Sheet.Header>
@@ -57,7 +57,7 @@ const ShapeInformation = ({ shapeCode, onHide }: Props) => {
                         {shape !== undefined ? (
                             <>
                                 {/* Preview */}
-                                <div className="sticky bg-black rounded-xl mb-8 overflow-hidden">
+                                <div className="relative bg-black rounded-xl mb-8 overflow-hidden">
                                     <ShapePreview
                                         shapeCode={shape.code}
                                         r={14}
