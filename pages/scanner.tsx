@@ -1,5 +1,6 @@
 import { useRef, useCallback, useState, useEffect } from 'react';
 import Webcam from 'react-webcam';
+import Head from 'next/head';
 import Link from 'next/link';
 import { MdClose, MdSettings } from 'react-icons/md';
 import Sheet from 'react-modal-sheet';
@@ -29,10 +30,6 @@ type WindowSize = {
     height: number | undefined;
 }
 
-
-// const WIDTH = 384;
-// const HEIGHT = 288;
-
 // Hook
 const useWindowSize = () => {
     // Initialize state with undefined width/height so server and client renders match
@@ -54,13 +51,13 @@ const useWindowSize = () => {
         }
 
         // Add event listener
-        window.addEventListener("resize", handleResize);
+        window.addEventListener('resize', handleResize);
 
         // Call handler right away so state gets updated with initial window size
         handleResize();
 
         // Remove event listener on cleanup
-        return () => window.removeEventListener("resize", handleResize);
+        return () => window.removeEventListener('resize', handleResize);
     }, []); // Empty array ensures that effect is only run on mount
     return windowSize;
 }
@@ -73,6 +70,7 @@ const Scanner: ComponentWithAuth = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     // States
+    const [socket, setSocket] = useState<WebSocket | null>(null);
     const [deviceId, setDeviceId] = useState('');
     const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
     const [selectedShapeCode, setSetectedShapeCode] = useState<ShapeCode>();
@@ -177,30 +175,21 @@ const Scanner: ComponentWithAuth = () => {
             try {
                 // Create an image file of the frame
                 const file = await videoFrameToFile(webcamRef.current.video, 'image/jpeg');
-                // Check image with base64
-                // const reader = new FileReader();
-                // reader.readAsDataURL(file);
-                // reader.onloadend = function () {
-                //   var base64data = reader.result;
-                //   console.log(base64data);
-                // }
-                const formData = new FormData();
-                formData.append('file', file);
 
-                // Detect the shape of the object in the image with API
-                const response = await fetch('http://localhost:8000/detect', {
-                    method: 'POST',
-                    body: formData
-                })
-                const data = await response.json()
+                // Check if the socket is open before sending data
+                if (socket && socket.readyState === WebSocket.OPEN) {
+                    socket.send(file);
+                } else {
+                    console.log('WebSocket connection is not open yet.');
+                }
 
                 // Add delay for 1s to predict again
                 setTimeout(() => {
-                    if (Array.isArray(data) && data.length) {
-                        drawBoxes(data);
-                    }
+                    // if (Array.isArray(data) && data.length) {
+                    //     drawBoxes(data);
+                    // }
                     predict();
-                }, 1000);
+                }, 2000);
             } catch (error) {
                 console.error(error)
             };
@@ -223,32 +212,64 @@ const Scanner: ComponentWithAuth = () => {
         } else {
             navigator.mediaDevices.enumerateDevices().then(loadDevices);
         }
+
+        // Establish WebSocket connection only when deviceId changes or the previous connection is closed
+        if (deviceId && (!socket || socket.readyState === WebSocket.CLOSED)) {
+            const newSocket = new WebSocket(`${process.env.NEXT_PUBLIC_APP_ML_WS_URL}/detect/ws`);
+            setSocket(newSocket);
+
+            newSocket.onopen = () => {
+                console.log('WebSocket connection is open');
+            };
+
+            newSocket.onmessage = (e) => {
+                const predictions = JSON.parse(e.data)
+
+                if (Array.isArray(predictions)) {
+                    drawBoxes(predictions);
+                }
+            };
+
+            newSocket.onclose = () => {
+                console.log('WebSocket connection closed');
+            };
+        }
+
+        return () => {
+            // Close the WebSocket connection when the component unmounts
+            if (socket) {
+                socket.close();
+            }
+        };
     }, [loadDevices, devices, deviceId, webcamRef, canvasRef]);
 
     return (
-        <main className="relative bg-black w-inherit h-screen">
-            <div className="fixed z-10 w-inherit bg-black bg-opacity-5">
-                <Navbar.Top
-                    title="Scanner"
-                    leftButton={(
-                        <Link href="/">
-                            <button type="button" className="btn btn-circle btn-ghost-light">
-                                <MdClose className="text-2xl" />
-                            </button>
-                        </Link>
-                    )}
-                    rightButton={(
-                        <button
-                            type="button"
-                            className="btn btn-circle btn-ghost-light"
-                            onClick={() => setIsSettingOpen(true)}
-                        >
-                            <MdSettings className="text-2xl" />
+        <main className="relative flex justify-center items-center bg-black w-inherit h-screen">
+            <Head>
+                <title>Scanner | {process.env.NEXT_PUBLIC_APP_NAME}</title>
+            </Head>
+
+            <Navbar.Top
+                title="Scanner"
+                leftButton={(
+                    <Link href="/">
+                        <button type="button" className="btn btn-circle btn-ghost-light">
+                            <MdClose className="text-2xl" />
                         </button>
-                    )}
-                    light
-                />
-            </div>
+                    </Link>
+                )}
+                rightButton={(
+                    <button
+                        type="button"
+                        className="btn btn-circle btn-ghost-light"
+                        onClick={() => setIsSettingOpen(true)}
+                    >
+                        <MdSettings className="text-2xl" />
+                    </button>
+                )}
+                light
+                className="fixed top-0 z-10 w-inherit bg-black bg-opacity-5"
+            />
 
             <Sheet
                 snapPoints={[140]}
@@ -299,8 +320,10 @@ const Scanner: ComponentWithAuth = () => {
 
             <canvas
                 ref={canvasRef}
-                width={windowWidth}
-                height={windowHeight}
+                // width={windowWidth}
+                // height={windowHeight}
+                width={webcamRef.current?.video?.videoWidth}
+                height={webcamRef.current?.video?.videoHeight}
                 className="absolute inset-0"
             />
 

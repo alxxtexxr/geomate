@@ -33,9 +33,6 @@ type Props = {
 };
 
 const Profile: ComponentWithAuth<Props> = ({ achievements }) => {
-    // Constant
-    const PAGE_TITLE = 'Profil';
-
     // Session
     const { data: session } = useSession();
 
@@ -45,7 +42,7 @@ const Profile: ComponentWithAuth<Props> = ({ achievements }) => {
     return (
         <main className="bg-base-100 w-inherit min-h-screen pb-20">
             <Head>
-                <title>{PAGE_TITLE} | {process.env.NEXT_PUBLIC_APP_NAME}</title>
+                <title>Profil | {process.env.NEXT_PUBLIC_APP_NAME}</title>
             </Head>
 
             {/* Header */}
